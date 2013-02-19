@@ -22,6 +22,7 @@ package net.sf.mzmine.modules.visualization.tic;
 import net.sf.mzmine.data.ChromatographicPeak;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
+
 import org.jfree.data.xy.AbstractXYDataset;
 
 /**

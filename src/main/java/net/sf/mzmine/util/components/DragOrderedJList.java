@@ -19,11 +19,14 @@
 
 package net.sf.mzmine.util.components;
 
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Vector;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
 
 /**
  * A modified JList that can reorder items in the DefaultListModel by dragging with the mouse.

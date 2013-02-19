@@ -140,8 +140,6 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void addFile(final RawDataFile newFile) {
 
-	assert newFile != null;
-	
 	Runnable swingCode = new Runnable() {
 	    public void run() {
 		treeModel.addObject(newFile);
@@ -160,8 +158,6 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void removeFile(final RawDataFile file) {
 
-	assert file != null;
-	
 	Runnable swingCode = new Runnable() {
 	    public void run() {
 		treeModel.removeObject(file);
@@ -191,8 +187,6 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void addPeakList(final PeakList peakList) {
 
-	assert peakList != null;
-	
 	Runnable swingCode = new Runnable() {
 	    public void run() {
 		treeModel.addObject(peakList);
@@ -210,8 +204,6 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void removePeakList(final PeakList peakList) {
 
-	assert peakList != null;
-	
 	Runnable swingCode = new Runnable() {
 	    public void run() {
 		treeModel.removeObject(peakList);

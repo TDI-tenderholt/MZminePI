@@ -40,7 +40,7 @@ public class MassDetectionParameters extends SimpleParameterSet {
     public static final MassDetector massDetectors[] = {
 	    new CentroidMassDetector(), new ExactMassDetector(),
 	    new LocalMaxMassDetector(), new RecursiveMassDetector(),
-	    new WaveletMassDetector() };
+	    new WaveletMassDetector(), new ScanExport() };
 
     public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
 

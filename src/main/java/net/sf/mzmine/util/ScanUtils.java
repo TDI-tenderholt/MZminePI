@@ -372,8 +372,8 @@ public class ScanUtils {
         }
 
         // If the spectrum has no zero data points, it should be centroid
-        if (!hasZeroDP)
-            return true;
+//        if (!hasZeroDP)
+//            return true;
 
         double massStep = mzRange.getSize() / dataPoints.length;
         double tempdiff, diff = 0, previousMass = dataPoints[0].getMZ();

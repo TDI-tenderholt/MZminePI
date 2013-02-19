@@ -19,6 +19,7 @@
 package net.sf.mzmine.modules.peaklistmethods.alignment.path.functions;
 
 import java.util.Comparator;
+
 import net.sf.mzmine.data.PeakListRow;
 
 public class AlignmentSorterFactory {

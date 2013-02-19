@@ -24,8 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
+
 import jmprojection.PCA;
 import jmprojection.Preprocess;
 import jmprojection.ProjectionStatus;
@@ -45,8 +47,14 @@ import net.sf.mzmine.taskcontrol.TaskEvent;
 import net.sf.mzmine.taskcontrol.TaskListener;
 import net.sf.mzmine.taskcontrol.TaskStatus;
 import net.sf.mzmine.util.PeakMeasurementType;
+
 import org.jfree.data.xy.AbstractXYDataset;
-import weka.core.*;
+
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.SparseInstance;
 import weka.gui.hierarchyvisualizer.HierarchyVisualizer;
 
 public class ClusteringTask extends AbstractXYDataset implements

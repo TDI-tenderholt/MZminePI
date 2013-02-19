@@ -19,6 +19,16 @@
 
 package net.sf.mzmine.modules.visualization.scatterplot.scatterplotchart;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+
 import net.sf.mzmine.data.ChromatographicPeak;
 import net.sf.mzmine.data.PeakIdentity;
 import net.sf.mzmine.data.PeakList;
@@ -35,6 +45,7 @@ import net.sf.mzmine.util.components.ComponentToolTipManager;
 import net.sf.mzmine.util.components.ComponentToolTipProvider;
 import net.sf.mzmine.util.components.PeakSummaryComponent;
 import net.sf.mzmine.util.dialogs.AxesSetupDialog;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -45,13 +56,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.ui.RectangleInsets;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ScatterPlotChart extends ChartPanel implements
                                                  ComponentToolTipProvider {

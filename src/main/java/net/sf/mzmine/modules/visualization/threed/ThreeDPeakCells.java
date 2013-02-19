@@ -19,13 +19,21 @@
 
 package net.sf.mzmine.modules.visualization.threed;
 
+import java.rmi.RemoteException;
+
 import net.sf.mzmine.data.ChromatographicPeak;
 import net.sf.mzmine.util.Range;
-import visad.*;
+import visad.CellImpl;
+import visad.ConstantMap;
+import visad.Data;
+import visad.DataReference;
+import visad.DataReferenceImpl;
+import visad.Display;
+import visad.GriddedSet;
+import visad.MathType;
+import visad.VisADException;
 import visad.bom.PickManipulationRendererJ3D;
 import visad.java3d.DisplayImplJ3D;
-
-import java.rmi.RemoteException;
 
 /**
  * This class represents a 3D boxes which are displayed when user shift+clicks
