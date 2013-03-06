@@ -24,7 +24,7 @@ import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.centroid.CentroidMassDetector;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.exactmass.ExactMassDetector;
-import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.scanexport.ScanExport;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.Veritomyx;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.localmaxima.LocalMaxMassDetector;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.recursive.RecursiveMassDetector;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.wavelet.WaveletMassDetector;
@@ -41,7 +41,7 @@ public class MassDetectionParameters extends SimpleParameterSet {
     public static final MassDetector massDetectors[] = {
 	    new CentroidMassDetector(), new ExactMassDetector(),
 	    new LocalMaxMassDetector(), new RecursiveMassDetector(),
-	    new WaveletMassDetector(), new ScanExport() };
+	    new WaveletMassDetector(), new Veritomyx() };
 
     public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
 

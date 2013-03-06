@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2013-2013 The Veritomyx
  * 
  * This file is part of MZmine 2.
  * 
@@ -17,7 +17,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.scanexport;
+package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx;
 
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectorSetupDialog;
@@ -26,22 +26,22 @@ import net.sf.mzmine.parameters.impl.SimpleParameterSet;
 import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
 import net.sf.mzmine.util.ExitCode;
 
-public class ScanExportParameters extends SimpleParameterSet {
-
+public class VeritomyxParameters extends SimpleParameterSet
+{
 	public static final DoubleParameter noiseLevel = new DoubleParameter(
 			"Noise level",
 			"Intensities less than this value are interpreted as noise.",
 			MZmineCore.getConfiguration().getIntensityFormat());
 
-	public ScanExportParameters() {
+	public VeritomyxParameters()
+	{
 		super(new UserParameter[] { noiseLevel });
 	}
 
-	public ExitCode showSetupDialog() {
-		MassDetectorSetupDialog dialog = new MassDetectorSetupDialog(
-				ScanExport.class, this);
+	public ExitCode showSetupDialog()
+	{
+		MassDetectorSetupDialog dialog = new MassDetectorSetupDialog(Veritomyx.class, this);
 		dialog.setVisible(true);
 		return dialog.getExitCode();
 	}
-
 }
