@@ -19,23 +19,33 @@
 
 package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx;
 
-import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectorSetupDialog;
 import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
-import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
+import net.sf.mzmine.parameters.parametertypes.BooleanParameter;
+import net.sf.mzmine.parameters.parametertypes.IntegerParameter;
 import net.sf.mzmine.util.ExitCode;
 
 public class VeritomyxParameters extends SimpleParameterSet
 {
-	public static final DoubleParameter noiseLevel = new DoubleParameter(
-			"Noise level",
-			"Intensities less than this value are interpreted as noise.",
-			MZmineCore.getConfiguration().getIntensityFormat());
+	public static final IntegerParameter first_scan = new IntegerParameter(
+			"Min Scan Number",
+			"Scan number of first scan to centroid.",
+			1);
+	public static final IntegerParameter last_scan = new IntegerParameter(
+			"Max Scan Number",
+			"Scan number of last scan of scan range to centroid.",
+			1);
+	public static final BooleanParameter dump_scans = new BooleanParameter(
+			"Export Scan Files",
+			"Write specified scans to text files for processing.");
+	public static final BooleanParameter read_peaks = new BooleanParameter(
+			"Import Peak Lists",
+			"Read peak lists for specified scans from processed text files.");
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { noiseLevel });
+		super(new UserParameter[] { first_scan, last_scan, dump_scans, read_peaks });
 	}
 
 	public ExitCode showSetupDialog()
