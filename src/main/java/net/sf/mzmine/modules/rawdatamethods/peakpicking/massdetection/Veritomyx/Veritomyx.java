@@ -42,7 +42,6 @@ import com.google.common.io.Files;
 public class Veritomyx implements MassDetector
 {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private boolean scans_dumped = false;
 
 	/**
 	 * 
@@ -59,30 +58,29 @@ public class Veritomyx implements MassDetector
 		RawDataFile rawdata = scan.getDataFile();
 		ArrayList<VeritomyxMzDataPoint> mzPeaks = new ArrayList<VeritomyxMzDataPoint>();
 
-		if (dump_scans && !scans_dumped)
+		if (dump_scans)
 		{
-			for (int s = first_scan; s < last_scan; s++)
+			for (int s = first_scan; s <= last_scan; s++)
 			{
 				scan = rawdata.getScan(s);
 				if (scan == null)
 					continue;
 
-				String line;
-				String scanfilename = datafilename + ".scan_" + s + ".txt";
+				String scanfilename = datafilename + ".MS" + scan.getMSLevel() +"_S" + s + ".txt";
 				logger.info("Saving scan to " + scanfilename);
-				DataPoint points[] = scan.getDataPoints();
+				DataPoint points[] = scan.getDataPoints();	// get data sorted in m/z
 				try
 				{
-					File scanfile = new File(scanfilename);
-					PrintWriter fd = new PrintWriter(scanfile);
-					FileChecksum fchksum = new FileChecksum(scanfile);
-					fd.println("# Raw File: " + scan.getDataFile().getName());
-					fd.println("# Scan: "     + scan.getScanNumber());
-					fd.println("# MS Level: " + scan.getMSLevel());
+					File         scanfile = new File(scanfilename);
+					PrintWriter  fd       = new PrintWriter(scanfile);
+					FileChecksum fchksum  = new FileChecksum(scanfile);
+					fd.print("# Raw File: " + scan.getDataFile().getName() + "\n");
+					fd.print("# Scan: "     + scan.getScanNumber() + "\n");
+					fd.print("# MS Level: " + scan.getMSLevel() + "\n");
 					for (int i = 0; i < scan.getNumberOfDataPoints(); i++)
 					{
-						line = points[i].getMZ() + "\t" + points[i].getIntensity();
-						fd.println(line);
+						String line = points[i].getMZ() + "\t" + points[i].getIntensity();
+						fd.print(line + "\n");
 						fchksum.hash_line(line);
 					}
 					fd.close();
@@ -96,7 +94,6 @@ public class Veritomyx implements MassDetector
 					return mzPeaks.toArray(new DataPoint[0]);
 				}
 			}
-			scans_dumped = true;
 		}
 
 		if (read_peaks)
@@ -107,7 +104,7 @@ public class Veritomyx implements MassDetector
 				return mzPeaks.toArray(new DataPoint[0]);
 			}
 
-			String centfilename = scan.getDataFile().getName() + ".scan_" + s + "_cent.txt";
+			String centfilename = datafilename + ".MS" + scan.getMSLevel() +"_S" + s + "_cent.txt";
 			logger.info("Reading centroided data from " + centfilename);
 			try
 			{
