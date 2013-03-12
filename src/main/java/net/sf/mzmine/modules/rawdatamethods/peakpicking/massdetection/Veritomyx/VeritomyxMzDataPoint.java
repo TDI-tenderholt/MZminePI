@@ -27,45 +27,32 @@ import net.sf.mzmine.main.MZmineCore;
 /**
  * This class represent an m/z peak within a spectrum
  */
-public class ScanMzDataPoint implements DataPoint
+public class VeritomyxMzDataPoint implements DataPoint
 {
 	private double mz, intensity;
-	private DataPoint[] rawDataPoints;
-
+	
 	/**
 	 * This constructor takes the given raw data point to represent this m/z peak.
 	 * 
 	 * @param dataPoint
 	 */
-	public ScanMzDataPoint(DataPoint dataPoint)
+	public VeritomyxMzDataPoint(DataPoint dataPoint)
 	{
-		this(dataPoint.getMZ(), dataPoint.getIntensity(), new DataPoint[] { dataPoint });
-	}
-
-	/**
-	 * This constructor takes the given m/z and intensity (provided as DataPoint)
-	 * to represent this m/z peak and sets the raw data points accordingly.
-	 * 
-	 * @param dataPoint
-	 * @param rawDataPoints
-	 */
-	public ScanMzDataPoint(DataPoint dp, DataPoint[] rawDataPoints)
-	{
-		this(dp.getMZ(), dp.getIntensity(), rawDataPoints);
+		this.mz        = dataPoint.getMZ();
+		this.intensity = dataPoint.getIntensity();
 	}
 
 	/**
 	 * This constructor takes the given m/z and intensity to represent this m/z
 	 * peak and sets the raw data points accordingly.
 	 * 
-	 * @param dataPoint
-	 * @param rawDataPoints
+	 * @param mz
+	 * @param intensity
 	 */
-	public ScanMzDataPoint(double mz, double intensity,	DataPoint[] rawDataPoints)
+	public VeritomyxMzDataPoint(double mz, double intensity)
 	{
-		this.mz = mz;
+		this.mz        = mz;
 		this.intensity = intensity;
-		this.rawDataPoints = rawDataPoints;
 	}
 
 	/**
@@ -84,22 +71,6 @@ public class ScanMzDataPoint implements DataPoint
 		return mz;
 	}
 
-	/**
-	 * Sets the m/z value of this m/z peak
-	 */
-	public void setMZ(double mz)
-	{
-		this.mz = mz;
-	}
-
-	/**
-	 * This method returns an array of raw data points that form this m/z peak
-	 */
-	public DataPoint[] getRawDataPoints()
-	{
-		return rawDataPoints;
-	}
-
 	public boolean equals(Object obj)
 	{
 		if (!(obj instanceof DataPoint))
@@ -115,7 +86,7 @@ public class ScanMzDataPoint implements DataPoint
 
 	public String getName()
 	{
-		Format mzFormat = MZmineCore.getConfiguration().getMZFormat();
+		Format mzFormat        = MZmineCore.getConfiguration().getMZFormat();
 		Format intensityFormat = MZmineCore.getConfiguration().getIntensityFormat();
 		String str = "m/z: " + mzFormat.format(mz) + ", intensity: " + intensityFormat.format(intensity);
 		return str;
