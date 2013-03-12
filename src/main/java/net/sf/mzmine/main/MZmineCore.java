@@ -206,7 +206,7 @@ public final class MZmineCore {
 			desktop.getMainFrame().setVisible(true);
 
 			// show the welcome message
-			desktop.setStatusBarText("Welcome to MZmine 2 (vtmx v0.2)");
+			desktop.setStatusBarText("Welcome to MZmine 2 (VTMX v0.2)");
 
 			// register shutdown hook only if we have GUI - we don't want to
 			// save configuration on exit if we only run a batch
