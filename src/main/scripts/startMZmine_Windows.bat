@@ -12,17 +12,17 @@ rem represents the system temporary directory.
 set TMP_FILE_DIRECTORY=%TEMP%
 
 rem Set R environment variables.
-set R_HOME=C:\Program Files\R\R-2.12.0
+set R_HOME=C:\Program Files\R\R-2.15.3
 set R_SHARE_DIR=%R_HOME%\share 
 set R_INCLUDE_DIR=%R_HOME%\include
 set R_DOC_DIR=%R_HOME%\doc
-set R_LIBS_USER=%USERPROFILE%\Documents\R\win-library\2.12
+set R_LIBS_USER=%USERPROFILE%\Documents\R\win-library\2.15
 
 rem Include R DLLs in PATH.
-set PATH=%PATH%;%R_HOME%\bin\i386
+set PATH=%PATH%;%R_HOME%\bin\x64
 
 rem The directory holding the JRI shared library (libjri.so).
-set JRI_LIB_PATH=%R_LIBS_USER%\rJava\jri\i386
+set JRI_LIB_PATH=%R_LIBS_USER%\rJava\jri\x64
 
 rem It is usually not necessary to modify the JAVA_COMMAND parameter, but 
 rem if you like to run a specific Java Virtual Machine, you may set the 
