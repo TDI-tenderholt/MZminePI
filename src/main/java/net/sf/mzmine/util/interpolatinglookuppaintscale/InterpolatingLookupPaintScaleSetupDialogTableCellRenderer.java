@@ -22,7 +22,6 @@ package net.sf.mzmine.util.interpolatinglookuppaintscale;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.TreeMap;
-
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
