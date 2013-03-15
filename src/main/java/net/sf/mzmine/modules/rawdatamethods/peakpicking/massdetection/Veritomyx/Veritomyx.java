@@ -42,6 +42,7 @@ import com.google.common.io.Files;
 public class Veritomyx implements MassDetector
 {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private boolean scans_dumped = false;
 
 	/**
 	 * 
@@ -58,7 +59,7 @@ public class Veritomyx implements MassDetector
 		RawDataFile rawdata = scan.getDataFile();
 		ArrayList<VeritomyxMzDataPoint> mzPeaks = new ArrayList<VeritomyxMzDataPoint>();
 
-		if (dump_scans)
+		if (dump_scans && !scans_dumped)
 		{
 			for (int s = first_scan; s <= last_scan; s++)
 			{
@@ -94,12 +95,13 @@ public class Veritomyx implements MassDetector
 					return mzPeaks.toArray(new DataPoint[0]);
 				}
 			}
+			scans_dumped = true;
 		}
 
 		if (read_peaks)
 		{
 			int s = scan.getScanNumber();
-			if ((s < first_scan) || (s < last_scan))
+			if ((s >= first_scan) || (s <= last_scan))
 			{
 				return mzPeaks.toArray(new DataPoint[0]);
 			}
