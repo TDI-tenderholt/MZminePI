@@ -350,4 +350,13 @@ public class SimpleScan implements Scan {
 	public MassList getMassList(@Nonnull String name) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void exportToFile(String filename) {
+		throw new UnsupportedOperationException();
+	}
+
+	public int exportMasslistToFile(String massListName, String filename) {
+		throw new UnsupportedOperationException();
+	}
 }

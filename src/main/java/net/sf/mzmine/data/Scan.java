@@ -160,4 +160,19 @@ public interface Scan {
 
     public void removeMassList(@Nonnull MassList massList);
 
+	/**
+	 * Export the scan to a text file in two column tab-delimited format
+	 * 
+	 * @param String filename to export to, if null, filename will be generated from scan information
+	 */
+    public void exportToFile(@Nullable String filename);
+
+    /**
+	 * Export the mass list to a text file in two column tab-delimited format
+	 * 
+	 * @param String massListName
+	 * @param String filename to export to, if null, filename will be generated from scan information
+	 * @return 1 if exported, 0 if requested mass list not found not found
+	 */
+	public int exportMasslistToFile(String massListName, @Nullable String filename);
 }

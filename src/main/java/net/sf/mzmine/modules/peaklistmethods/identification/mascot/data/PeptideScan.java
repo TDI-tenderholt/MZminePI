@@ -416,5 +416,15 @@ public class PeptideScan implements Scan {
 		
 	}
 
+	@Override
+	public void exportToFile(String filename) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int exportMasslistToFile(String massListName, String filename) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.data.impl.SimpleDataPoint;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
 import FileChecksum.FileChecksum;
@@ -57,7 +58,7 @@ public class Veritomyx implements MassDetector
 		String datafilename = scan.getDataFile().getName();
 
 		RawDataFile rawdata = scan.getDataFile();
-		ArrayList<VeritomyxMzDataPoint> mzPeaks = new ArrayList<VeritomyxMzDataPoint>();
+		ArrayList<DataPoint> mzPeaks = new ArrayList<DataPoint>();
 
 		if (dump_scans && !scans_dumped)
 		{
@@ -66,34 +67,7 @@ public class Veritomyx implements MassDetector
 				scan = rawdata.getScan(s);
 				if (scan == null)
 					continue;
-
-				String scanfilename = datafilename + ".MS" + scan.getMSLevel() +"_S" + s + ".txt";
-				logger.info("Saving scan to " + scanfilename);
-				DataPoint points[] = scan.getDataPoints();	// get data sorted in m/z
-				try
-				{
-					File         scanfile = new File(scanfilename);
-					PrintWriter  fd       = new PrintWriter(scanfile);
-					FileChecksum fchksum  = new FileChecksum(scanfile);
-					fd.print("# Raw File: " + scan.getDataFile().getName() + "\n");
-					fd.print("# Scan: "     + scan.getScanNumber() + "\n");
-					fd.print("# MS Level: " + scan.getMSLevel() + "\n");
-					for (int i = 0; i < scan.getNumberOfDataPoints(); i++)
-					{
-						String line = points[i].getMZ() + "\t" + points[i].getIntensity();
-						fd.print(line + "\n");
-						fchksum.hash_line(line);
-					}
-					fd.close();
-					fchksum.append_txt(false);
-					fd = null;
-				}
-				catch (Exception e)
-				{
-					logger.info(e.getMessage());
-					e.printStackTrace();
-					return mzPeaks.toArray(new DataPoint[0]);
-				}
+				scan.exportToFile(null);
 			}
 			scans_dumped = true;
 		}
@@ -125,7 +99,7 @@ public class Veritomyx implements MassDetector
 					Scanner sc = new Scanner(line);
 					double mz  = sc.nextDouble();
 					double y   = sc.nextDouble();
-					mzPeaks.add(new VeritomyxMzDataPoint(mz, y));
+					mzPeaks.add(new SimpleDataPoint(mz, y));
 					sc.close();
 				}
 			}
