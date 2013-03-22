@@ -21,7 +21,6 @@ package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -67,7 +66,7 @@ public class Veritomyx implements MassDetector
 				scan = rawdata.getScan(s);
 				if (scan == null)
 					continue;
-				scan.exportToFile(null);
+				scan.exportToFile("", "");
 			}
 			scans_dumped = true;
 		}
@@ -80,7 +79,7 @@ public class Veritomyx implements MassDetector
 				return mzPeaks.toArray(new DataPoint[0]);
 			}
 
-			String centfilename = datafilename + ".MS" + scan.getMSLevel() +"_S" + s + "_cent.txt";
+			String centfilename = scan.exportFilename("").replace(".txt", "_cent.txt");
 			logger.info("Reading centroided data from " + centfilename);
 			try
 			{

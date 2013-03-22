@@ -352,11 +352,15 @@ public class SimpleScan implements Scan {
 	}
 
 	@Override
-	public void exportToFile(String filename) {
-		throw new UnsupportedOperationException();
+	public String exportFilename(@Nonnull String massListName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public int exportMasslistToFile(String massListName, String filename) {
-		throw new UnsupportedOperationException();
+	@Override
+	public int exportToFile(@Nonnull String massListName,
+			@Nonnull String filename) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

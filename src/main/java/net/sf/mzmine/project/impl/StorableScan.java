@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.SwingUtilities;
 
 import net.sf.mzmine.data.DataPoint;
@@ -417,83 +418,90 @@ public class StorableScan implements Scan {
 		return null;
 	}
 
+    /*
+     * Get the filename that the scan or mass list would be exported to by default
+     * 
+ 	 * @param String massListName or if empty to return scan export filename
+    */
+    public String exportFilename(String massListName)
+    {
+    	String filename = getDataFile().getName()
+							+ ".scan" + String.format("%04d", getScanNumber()) 
+							+ ".ms" + getMSLevel()
+    						+ (massListName.isEmpty() ? "" : ".ml_" + massListName)
+    						+ ".txt";
+		return filename;
+    }
+    
 	/**
-	 * Export the scan to a text file in two column tab-delimited format
+	 * Export the scan or mass list to a text file in two column tab-delimited format
 	 * 
-	 * @param String filename to export to, if null, filename will be generated from scan information
-	 */
-	public void exportToFile(String filename)
-	{
-		String dfileName = getDataFile().getName();
-		if (filename == null)
-		{
-			filename = dfileName + ".scan" + String.format("%04d", getScanNumber())
-								 + ".ms" + getMSLevel()
-								 + ".txt";
-		}
-		logger.info("Exporting scan " + getScanNumber() + " to file " + filename);
-		try {
-			FileWriter fd = new FileWriter(new File(filename));
-			DataPoint pts[] = getDataPoints();
-			int num = pts.length;
-			fd.write("# Raw Data File: " + dfileName + "\n");
-			fd.write("# Scan: " + getScanNumber() + "\n");
-			fd.write("# MS Level: " + getMSLevel() + "\n");
-			fd.write("# Data Points: " + num + "\n");
-			fd.write("# mz Range (min, max): " + getMZRange().getMin() + ", " + getMZRange().getMax() + "\n");
-			for (int p = 0; p < num; p++)
-			{
-				DataPoint pt = pts[p];
-				fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
-			}
-			fd.close();
-		} catch (IOException ex) {
-			Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing scan file, " + filename, ex);
-		}
-	}
-
-	/**
-	 * Export the mass list to a text file in two column tab-delimited format
-	 * 
-	 * @param String massListName
-	 * @param String filename to export to, if null, filename will be generated from scan information
+	 * @param String massListName or if empty to export scan data points
+	 * @param String filename to export to, if empty, filename will be generated from scan information
 	 * @return 1 if exported, 0 if requested mass list not found not found
 	 */
-	public int exportMasslistToFile(String massListName, String filename)
-	{	
+	public int exportToFile(String massListName, String filename)
+	{
 		int exported = 0;
-		MassList massList = getMassList(massListName);
-		if (massList != null)	// Skip those scans which do not have a mass list of given name
+		String dfileName = getDataFile().getName();
+		if (filename.isEmpty())
+			filename = exportFilename(massListName);
+
+		if (massListName.isEmpty())	// export scan
 		{
-			exported = 1;
-			String dfileName = getDataFile().getName();
-			if (filename == null)
-			{
-				filename = dfileName + ".scan" + String.format("%04d", getScanNumber())
-									 + ".ms" + getMSLevel()
-									 + ".ml_" + massListName
-									 + ".txt";
-			}
-			logger.info("Exporting mass list " + massListName + " for scan "+ getScanNumber() + " to file " + filename);
 			logger.info("Exporting scan " + getScanNumber() + " to file " + filename);
-			try {
+			try
+			{
 				FileWriter fd = new FileWriter(new File(filename));
-                DataPoint mzPeaks[] = massList.getDataPoints();
-                int num = mzPeaks.length;
-	            fd.write("# Raw Data File: " + dfileName + "\n");
-	            fd.write("# Scan: " + getScanNumber() + "\n");
-	            fd.write("# MS Level: " + getMSLevel() + "\n");
-	            fd.write("# Mass List: " + massListName + "\n");
-	            fd.write("# Data Points: " + num + "\n");
-	            for (int p = 0; p < num; p++)
-                {
-                	DataPoint pt = mzPeaks[p];
-                	fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
-            	}
-                fd.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing mass list file, " + filename, ex);
-            }
+				DataPoint pts[] = getDataPoints();
+				int num = pts.length;
+				fd.write("# Raw Data File: " + dfileName + "\n");
+				fd.write("# Scan: " + getScanNumber() + "\n");
+				fd.write("# MS Level: " + getMSLevel() + "\n");
+				fd.write("# Data Points: " + num + "\n");
+				fd.write("# mz Range (min, max): " + getMZRange().getMin() + ", " + getMZRange().getMax() + "\n");
+				for (int p = 0; p < num; p++)
+				{
+					DataPoint pt = pts[p];
+					fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
+				}
+				fd.close();
+				exported = 1;
+			}
+			catch (IOException ex)
+			{
+				Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing scan file, " + filename, ex);
+			}
+		}
+		else						// export given mass list
+		{
+			MassList massList = getMassList(massListName);
+			if (massList != null)	// Skip those scans which do not have a mass list of given name
+			{
+				logger.info("Exporting mass list " + massListName + " for scan "+ getScanNumber() + " to file " + filename);
+				try
+				{
+					FileWriter fd = new FileWriter(new File(filename));
+	                DataPoint mzPeaks[] = massList.getDataPoints();
+	                int num = mzPeaks.length;
+		            fd.write("# Raw Data File: " + dfileName + "\n");
+		            fd.write("# Scan: " + getScanNumber() + "\n");
+		            fd.write("# MS Level: " + getMSLevel() + "\n");
+		            fd.write("# Mass List: " + massListName + "\n");
+		            fd.write("# Data Points: " + num + "\n");
+		            for (int p = 0; p < num; p++)
+	                {
+	                	DataPoint pt = mzPeaks[p];
+	                	fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
+	            	}
+	                fd.close();
+					exported = 1;
+	            }
+				catch (IOException ex)
+				{
+	                Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing mass list file, " + filename, ex);
+	            }
+			}
 		}
 		return exported;
 	}
