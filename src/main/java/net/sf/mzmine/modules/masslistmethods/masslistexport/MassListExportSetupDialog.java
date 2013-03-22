@@ -55,27 +55,27 @@ public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPrevi
 		this.parameters = parameters;
 	}
 
+	private static DataPoint[] filterMassValues(DataPoint[] mzPeaks, ParameterSet parameters)
+	{
+		return mzPeaks;	// don't do any filtering
+	}
+
 	/**
 	 * This function set all the information into the plot chart
 	 * 
 	 * @param scanNumber
 	 */
-	protected void loadPreview(SpectraPlot spectrumPlot, Scan previewScan) {
-
+	protected void loadPreview(SpectraPlot spectrumPlot, Scan previewScan)
+	{
 		// Remove previous data sets
 		spectrumPlot.removeAllDataSets();
 
 		// Add scan data set
 		ScanDataSet scanDataSet = new ScanDataSet(previewScan);
-		spectrumPlot.addDataSet(scanDataSet, SpectraVisualizerWindow.scanColor,
-				false);
+		spectrumPlot.addDataSet(scanDataSet, SpectraVisualizerWindow.scanColor, false);
 
 		// If the scan is centroided, switch to centroid mode
-		if (previewScan.isCentroided()) {
-			spectrumPlot.setPlotMode(PlotMode.CENTROID);
-		} else {
-			spectrumPlot.setPlotMode(PlotMode.CONTINUOUS);
-		}
+		spectrumPlot.setPlotMode(previewScan.isCentroided() ? PlotMode.CENTROID : PlotMode.CONTINUOUS);
 		
 		// If the parameters are not complete, exit
 		ArrayList<String> errors = new ArrayList<String>();
@@ -89,9 +89,8 @@ public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPrevi
 			return;
 
 		// Perform filtering
-		DataPoint mzValues[] = massList.getDataPoints();
-		DataPoint remainingMzValues[] = MassListExport.filterMassValues(
-				mzValues, parameters);
+		DataPoint          mzValues[] = massList.getDataPoints();
+		DataPoint remainingMzValues[] = filterMassValues(mzValues, parameters);
 
 		Vector<DataPoint> removedPeaks = new Vector<DataPoint>();
 		removedPeaks.addAll(Arrays.asList(mzValues));
@@ -99,15 +98,10 @@ public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPrevi
 		DataPoint removedMzValues[] = removedPeaks.toArray(new DataPoint[0]);
 
 		// Add mass list data sets
-		DataPointsDataSet removedPeaksDataSet = new DataPointsDataSet(
-				"Removed peaks", removedMzValues);
-		DataPointsDataSet remainingPeaksDataSet = new DataPointsDataSet(
-				"Remaining peaks", remainingMzValues);
+		DataPointsDataSet   removedPeaksDataSet = new DataPointsDataSet("Removed peaks",     removedMzValues);
+		DataPointsDataSet remainingPeaksDataSet = new DataPointsDataSet("Remaining peaks", remainingMzValues);
 
-		spectrumPlot.addDataSet(removedPeaksDataSet, removedPeaksColor, false);
-		spectrumPlot.addDataSet(remainingPeaksDataSet,
-				SpectraVisualizerWindow.peaksColor, false);
-
+		spectrumPlot.addDataSet(  removedPeaksDataSet, removedPeaksColor, false);
+		spectrumPlot.addDataSet(remainingPeaksDataSet, SpectraVisualizerWindow.peaksColor, false);
 	}
-
 }

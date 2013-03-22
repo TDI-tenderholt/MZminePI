@@ -33,7 +33,7 @@ import net.sf.mzmine.util.ExitCode;
 public class MassListExportModule implements MZmineProcessingModule
 {
     private static final String MODULE_NAME = "Mass List Export";
-    private static final String MODULE_DESCRIPTION = "This method exports the selected mass peak list";
+    private static final String MODULE_DESCRIPTION = "This method exports the selected mass list";
 
     @Override
     public @Nonnull String getName()

@@ -22,48 +22,27 @@ package net.sf.mzmine.modules.masslistmethods.masslistexport;
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
 import net.sf.mzmine.parameters.parametertypes.BooleanParameter;
-import net.sf.mzmine.parameters.parametertypes.ComboParameter;
-import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
 import net.sf.mzmine.parameters.parametertypes.MassListParameter;
 import net.sf.mzmine.parameters.parametertypes.RawDataFilesParameter;
-import net.sf.mzmine.parameters.parametertypes.StringParameter;
 import net.sf.mzmine.util.ExitCode;
 
-public class MassListExportParameters extends SimpleParameterSet {
-
+public class MassListExportParameters extends SimpleParameterSet
+{
 	public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
+	public static final     MassListParameter massList  = new MassListParameter();
+	public static final      BooleanParameter dumpScans = new BooleanParameter(
+			"Export original scans",
+			"If checked, original scan data will be exported to text files as well as the selected mass list data");
 
-	public static final MassListParameter massList = new MassListParameter();
-
-//	public static final DoubleParameter resolution = new DoubleParameter(
-//			"Mass resolution",
-//			"Mass resolution is the dimensionless ratio of the mass of the peak divided by its width."
-//					+ " Peak width is taken as the full width at half maximum intensity (FWHM).");
-//
-//	public static final ComboParameter<PeakModelType> peakModel = new ComboParameter<PeakModelType>(
-//			"Peak model function",
-//			"Peaks under the curve of this peak model will be removed",
-//			PeakModelType.values());
-//
-//	public static final StringParameter suffix = new StringParameter("Suffix",
-//			"This string is added to mass list name as a suffix", "filtered");
-//
-//	public static final BooleanParameter autoRemove = new BooleanParameter(
-//			"Remove original mass list",
-//			"If checked, original mass list will be removed and only filtered version remains");
-
-	public MassListExportParameters() {
-//		super(new Parameter[] { dataFiles, massList, resolution, peakModel,
-//				suffix, autoRemove });
-		super(new Parameter[] { dataFiles, massList });
-
+	public MassListExportParameters()
+	{
+		super(new Parameter[] { dataFiles, massList, dumpScans });
 	}
 
-	public ExitCode showSetupDialog() {
-		MassListExportSetupDialog dialog = new MassListExportSetupDialog(
-				this);
+	public ExitCode showSetupDialog()
+	{
+		MassListExportSetupDialog dialog = new MassListExportSetupDialog(this);
 		dialog.setVisible(true);
 		return dialog.getExitCode();
 	}
-
 }
