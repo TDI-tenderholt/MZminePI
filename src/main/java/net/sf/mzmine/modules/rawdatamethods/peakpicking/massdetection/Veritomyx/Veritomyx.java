@@ -54,8 +54,6 @@ public class Veritomyx implements MassDetector
 		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
 		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
 		
-		String datafilename = scan.getDataFile().getName();
-
 		RawDataFile rawdata = scan.getDataFile();
 		ArrayList<DataPoint> mzPeaks = new ArrayList<DataPoint>();
 
@@ -74,7 +72,7 @@ public class Veritomyx implements MassDetector
 		if (read_peaks)
 		{
 			int s = scan.getScanNumber();
-			if ((s >= first_scan) || (s <= last_scan))
+			if ((s < first_scan) || (s > last_scan))
 			{
 				return mzPeaks.toArray(new DataPoint[0]);
 			}
