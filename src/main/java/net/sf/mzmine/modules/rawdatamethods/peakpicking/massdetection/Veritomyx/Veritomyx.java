@@ -75,36 +75,36 @@ public class Veritomyx implements MassDetector
 				scan.exportToFile("", "");
 			}
 			scans_dumped = true;
-		}
 		
-		try {
-			String args = "p=" + URLEncoder.encode("1000", "UTF-8");
-			args += "&Version=1.2.4";
-			URL url = new URL("http://test.veritomyx.com/vtmx/interface/vtmx_batch_internal.php");
-			URLConnection connection = url.openConnection();
-
-			connection.setDoOutput(true);
-			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(args);
-			out.close();
-
-	        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String decodedString;
-			while ((decodedString = in.readLine()) != null)
-			{
-				System.out.println(decodedString);
+			try {
+				String args = "p=" + URLEncoder.encode("1000", "UTF-8");
+				args += "&Version=1.2.4";
+				URL url = new URL("http://test.veritomyx.com/vtmx/interface/vtmx_batch_internal.php");
+				URLConnection connection = url.openConnection();
+	
+				connection.setDoOutput(true);
+				OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+				out.write(args);
+				out.close();
+	
+		        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String decodedString;
+				while ((decodedString = in.readLine()) != null)
+				{
+					System.out.println(decodedString);
+				}
+				in.close();
+	
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			in.close();
-
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		if (read_peaks)
@@ -115,20 +115,20 @@ public class Veritomyx implements MassDetector
 				return mzPeaks.toArray(new DataPoint[0]);
 			}
 
-			String centfilename = scan.exportFilename("").replace(".txt", "_cent.txt");
+			String centfilename = scan.exportFilename("").replace(".txt", ".vcent.txt");
 			logger.info("Reading centroided data from " + centfilename);
 			try
 			{
 				File centfile = new File(centfilename);
 				FileChecksum fchksum = new FileChecksum(centfile);
-				if (fchksum.verify(false))
+				if (!fchksum.verify(false))
 				{
 					throw new IOException("Invalid checksum in centroided file " + centfilename);
 				}
 				List<String> lines = Files.readLines(centfile , Charsets.UTF_8);
 				for (String line:lines)
 				{
-					if (line.startsWith("#"))	// skip comment lines
+					if (line.startsWith("#") || line.isEmpty())	// skip comment lines
 						continue;
 
 					Scanner sc = new Scanner(line);
