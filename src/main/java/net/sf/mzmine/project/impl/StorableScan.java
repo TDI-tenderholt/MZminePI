@@ -425,8 +425,7 @@ public class StorableScan implements Scan {
     public String exportFilename(String massListName)
     {
     	String filename = getDataFile().getName()
-							+ ".scan" + String.format("%04d", getScanNumber()) 
-							+ ".ms" + getMSLevel()
+							+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
     						+ (massListName.isEmpty() ? "" : ".ml_" + massListName)
     						+ ".txt";
 		return filename;
@@ -455,8 +454,8 @@ public class StorableScan implements Scan {
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
 				fd.write("# Raw Data File: " + dfileName + "\n");
-				fd.write("# Scan: " + getScanNumber() + "\n");
 				fd.write("# MS Level: " + getMSLevel() + "\n");
+				fd.write("# Scan: " + getScanNumber() + "\n");
 				fd.write("# Data Points: " + num + "\n");
 				fd.write("# mz Range (min, max): " + getMZRange().getMin() + ", " + getMZRange().getMax() + "\n");
 				for (int p = 0; p < num; p++)
