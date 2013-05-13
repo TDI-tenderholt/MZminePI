@@ -100,11 +100,13 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		"Set preferences...", this, KeyEvent.VK_S);
 
 	projectMenu.addSeparator();
+	
+	String programName = MZmineCore.getMZmineName();
 
 	projectSaveParameters = GUIUtils.addMenuItem(projectMenu,
-		"Save MZmine parameters...", this);
+		"Save " + programName + " parameters...", this);
 	projectLoadParameters = GUIUtils.addMenuItem(projectMenu,
-		"Load MZmine parameters...", this);
+		"Load " + programName + " parameters...", this);
 
 	projectMenu.addSeparator();
 
@@ -197,7 +199,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 	helpMenu.setMnemonic(KeyEvent.VK_H);
 	this.add(helpMenu);
 
-	showAbout = new JMenuItem("About MZmine 2 ...");
+	showAbout = new JMenuItem("About " + programName + "...");
 	showAbout.addActionListener(this);
 	addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
 

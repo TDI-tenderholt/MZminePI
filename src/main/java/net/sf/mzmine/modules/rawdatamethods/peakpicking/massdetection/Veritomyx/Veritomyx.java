@@ -78,7 +78,7 @@ public class Veritomyx implements MassDetector
 		
 			try {
 				String args = "p=" + URLEncoder.encode("1000", "UTF-8");
-				args += "&Version=1.2.4";
+				args += "&Version=1.2.6";
 				URL url = new URL("http://test.veritomyx.com/vtmx/interface/vtmx_batch_internal.php");
 				URLConnection connection = url.openConnection();
 	
@@ -152,7 +152,7 @@ public class Veritomyx implements MassDetector
 
     public @Nonnull String getName()
     {
-    	return "Veritomyx Centroid";
+    	return "Peak Investigator™";
     }
 
     @Override

@@ -39,14 +39,12 @@ public class HelpImpl {
         MZmineHelpMap helpMap;
         JarFile jarFile;
         try {
-            String path = this.getClass().getProtectionDomain().getCodeSource()
-                    .getLocation().getPath();
+            String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
             String decodedPath = URLDecoder.decode(path, "UTF-8");
             helpMap = new MZmineHelpMap(decodedPath);
             jarFile = new JarFile(decodedPath);
         } catch (Exception e) {
-            logger.warning("Could not load help files: "
-                    + ExceptionUtils.exceptionToString(e));
+            logger.warning("Could not load help files: " + ExceptionUtils.exceptionToString(e));
             return;
         }
 
@@ -67,7 +65,7 @@ public class HelpImpl {
         MZmineTOCView myTOC = new MZmineTOCView(hs, "TOC", "Table Of Contents",
                 helpMap, jarFile);
 
-        hs.setTitle("MZmine 2");
+        hs.setTitle(MZmineCore.getMZmineName());
         hs.addTOCView(myTOC);
 
     }

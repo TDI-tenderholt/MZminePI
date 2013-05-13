@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -32,7 +33,7 @@ import net.sf.mzmine.util.ExitCode;
 public class ProjectSaveAsModule implements MZmineProcessingModule {
 
     private static final String MODULE_NAME = "Save project as...";
-    private static final String MODULE_DESCRIPTION = "This module saves the current MZmine project.";
+    private static final String MODULE_DESCRIPTION = "This module saves the current " + MZmineCore.getMZmineName() + " project.";
 
     @Override
     public @Nonnull String getName() {

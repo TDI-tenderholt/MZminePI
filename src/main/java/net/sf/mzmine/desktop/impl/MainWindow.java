@@ -211,7 +211,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop,
 
     public void updateTitle() {
 	String projectName = MZmineCore.getCurrentProject().toString();
-	setTitle("MZmine " + MZmineCore.getMZmineVersion() + ": " + projectName);
+	setTitle(MZmineCore.getMZmineName() + " " + MZmineCore.getMZmineVersion() + ": " + projectName);
     }
 
     /**
@@ -295,7 +295,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop,
 
 	this.dispose();
 
-	logger.info("Exiting MZmine");
+	logger.info("Exiting " + MZmineCore.getMZmineName());
 
 	System.exit(0);
 
@@ -303,9 +303,6 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop,
     }
 
     @Override
-    public @Nonnull
-    String getName() {
-	return "MZmine main window";
-    }
+    public @Nonnull String getName() { return MZmineCore.getMZmineName() + " main window"; }
 
 }

@@ -231,12 +231,15 @@ public class ProjectOpeningTask extends AbstractTask {
 
         logger.info("Checking project version");
 
+        String mzmineNameString    = MZmineCore.getMZmineName() + " ";
+        String mzmineVersionString = MZmineCore.getMZmineVersion();
+
         ZipEntry versionEntry = zipFile
                 .getEntry(ProjectSavingTask.VERSION_FILENAME);
 
         if (versionEntry == null) {
             throw new IOException(
-                    "This file is not valid MZmine 2 project. It does not contain version information.");
+                    "This file is not valid " + mzmineNameString + "project. It does not contain version information.");
         }
 
         Pattern versionPattern = Pattern.compile("^(\\d+)\\.(\\d+)");
@@ -247,12 +250,9 @@ public class ProjectOpeningTask extends AbstractTask {
         String projectVersionString = reader.readLine();
         reader.close();
 
-        String mzmineVersionString = MZmineCore.getMZmineVersion();
-
         Matcher m = versionPattern.matcher(mzmineVersionString);
         if (!m.find()) {
-            throw new IOException("Invalid MZmine version "
-                    + mzmineVersionString);
+            throw new IOException("Invalid " + mzmineNameString + "version " + mzmineVersionString);
         }
         int mzmineMajorVersion = Integer.valueOf(m.group(1));
         int mzmineMinorVersion = Integer.valueOf(m.group(2));
@@ -268,9 +268,11 @@ public class ProjectOpeningTask extends AbstractTask {
         // Check if project was saved with an old version
         if (projectMajorVersion == 1) {
             throw new IOException(
-                    "This project was saved with an old version (MZmine "
+                    "This project was saved with an old version ("
+                    		+ mzmineNameString
                             + projectVersionString
-                            + ") and it cannot be opened in MZmine "
+                            + ") and it cannot be opened in "
+                            + mzmineNameString
                             + mzmineVersionString);
         }
 
@@ -293,10 +295,9 @@ public class ProjectOpeningTask extends AbstractTask {
         // Check if project was saved with a newer version
         if ((projectMajorVersion > mzmineMajorVersion)
                 || ((projectMajorVersion == mzmineMajorVersion) && (projectMinorVersion > mzmineMinorVersion))) {
-            String warning = "Warning: this project was saved with a newer version of MZmine ("
-                    + projectVersionString
-                    + "). Opening this project in MZmine "
-                    + mzmineVersionString
+            String warning = "Warning: this project was saved with a newer version of "
+            		+ mzmineNameString + "(" + projectVersionString
+                    + "). Opening this project in " + mzmineNameString + mzmineVersionString
                     + " may result in errors or loss of information.";
             MZmineCore.getDesktop().displayMessage(warning);
         }
@@ -321,7 +322,7 @@ public class ProjectOpeningTask extends AbstractTask {
 
         if (configEntry == null) {
             throw new IOException(
-                    "This file is not valid MZmine 2 project. It does not contain configuration data.");
+                    "This file is not valid " + MZmineCore.getMZmineName() + " project. It does not contain configuration data.");
         }
 
         InputStream configInputStream = zipFile.getInputStream(configEntry);
@@ -347,8 +348,7 @@ public class ProjectOpeningTask extends AbstractTask {
 
         logger.info("Loading raw data files");
 
-        Pattern filePattern = Pattern
-                .compile("Raw data file #([\\d]+) (.*)\\.xml$");
+        Pattern filePattern = Pattern.compile("Raw data file #([\\d]+) (.*)\\.xml$");
 
         Enumeration zipEntries = zipFile.entries();
         while (zipEntries.hasMoreElements()) {

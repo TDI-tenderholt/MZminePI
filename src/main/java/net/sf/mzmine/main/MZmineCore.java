@@ -89,7 +89,7 @@ public final class MZmineCore {
 			e.printStackTrace();
 		}
 
-		logger.info("Starting MZmine " + getMZmineVersion());
+		logger.info("Starting " + getMZmineName() + " " + getMZmineVersion());
 
 		// Remove old temporary files, if we find any
 		TmpFileCleanup.removeOldTemporaryFiles();
@@ -206,7 +206,7 @@ public final class MZmineCore {
 			desktop.getMainFrame().setVisible(true);
 
 			// show the welcome message
-			desktop.setStatusBarText("Welcome to MZmine 2 (VTMX v0.2)");
+			desktop.setStatusBarText("Welcome to " + getMZmineName() + " " + getMZmineVersion());
 
 			// register shutdown hook only if we have GUI - we don't want to
 			// save configuration on exit if we only run a batch
@@ -274,21 +274,37 @@ public final class MZmineCore {
 		return new RawDataFileImpl(name);
 	}
 
-	@Nonnull
-	public static String getMZmineVersion() {
+	/**
+	 * Get a property from the pom properties file
+	 * 
+	 * @param prop			// property to look for in properties file
+	 * @param value			// default value - if not found in properties file
+	 * @return
+	 */
+	private static String getProperty(String prop, String value)
+	{
 		try {
 			ClassLoader myClassLoader = MZmineCore.class.getClassLoader();
-			InputStream inStream = myClassLoader
-					.getResourceAsStream("META-INF/maven/net.sf.mzmine/MZmine/pom.properties");
-			if (inStream == null)
-				return "0.0";
-			Properties properties = new Properties();
-			properties.load(inStream);
-			return properties.getProperty("version");
+			InputStream inStream = myClassLoader.getResourceAsStream("pom.properties");
+			if (inStream != null)
+			{
+				Properties properties = new Properties();
+				properties.load(inStream);
+				value = properties.getProperty(prop);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "0.0";
 		}
+		return value;
+	}
+
+	@Nonnull
+	public static String getMZmineVersion() { return getProperty("version", "2.10pi"); }
+
+	@Nonnull
+	public static String getMZmineName()
+	{
+		return getProperty("artifactId", "MZmine - Peak Investigator™ Edition");
 	}
 
 }

@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -37,7 +38,7 @@ import net.sf.mzmine.util.ExitCode;
 public class ProjectLoadModule implements MZmineProcessingModule {
 
     private static final String MODULE_NAME = "Open project";
-    private static final String MODULE_DESCRIPTION = "This module opens an existing MZmine project. The current workspace will be discarded.";
+    private static final String MODULE_DESCRIPTION = "This module opens an existing " + MZmineCore.getMZmineName() + " project. The current workspace will be discarded.";
 
     @Override
     public @Nonnull String getName() {
