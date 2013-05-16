@@ -152,7 +152,7 @@ public class Veritomyx implements MassDetector
 
     public @Nonnull String getName()
     {
-    	return "Peak Investigator™";
+    	return "PeakInvestigator™";
     }
 
     @Override

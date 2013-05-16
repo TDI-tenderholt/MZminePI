@@ -80,8 +80,7 @@ public final class MZmineCore {
 		// Configure the logging properties before we start logging
 		try {
 			ClassLoader cl = MZmineCore.class.getClassLoader();
-			InputStream loggingProperties = cl
-					.getResourceAsStream("logging.properties");
+			InputStream loggingProperties = cl.getResourceAsStream(getMZmineShortName() + ".logging.properties");
 			LogManager logMan = LogManager.getLogManager();
 			logMan.readConfiguration(loggingProperties);
 			loggingProperties.close();
@@ -113,12 +112,10 @@ public final class MZmineCore {
 		for (Class<?> moduleClass : MZmineModulesList.MODULES) {
 
 			try {
-
 				logger.finest("Loading module " + moduleClass.getName());
 
 				// Create instance and init module
-				MZmineModule moduleInstance = (MZmineModule) moduleClass
-						.newInstance();
+				MZmineModule moduleInstance = (MZmineModule) moduleClass.newInstance();
 
 				// Add to the module list
 				initializedModules.put(moduleClass, moduleInstance);
@@ -274,37 +271,13 @@ public final class MZmineCore {
 		return new RawDataFileImpl(name);
 	}
 
-	/**
-	 * Get a property from the pom properties file
-	 * 
-	 * @param prop			// property to look for in properties file
-	 * @param value			// default value - if not found in properties file
-	 * @return
-	 */
-	private static String getProperty(String prop, String value)
-	{
-		try {
-			ClassLoader myClassLoader = MZmineCore.class.getClassLoader();
-			InputStream inStream = myClassLoader.getResourceAsStream("pom.properties");
-			if (inStream != null)
-			{
-				Properties properties = new Properties();
-				properties.load(inStream);
-				value = properties.getProperty(prop);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return value;
-	}
+	@Nonnull
+	public static String getMZmineName() { return "MZmine Investigator™ Edition"; }
 
 	@Nonnull
-	public static String getMZmineVersion() { return getProperty("version", "2.10pi"); }
+	public static String getMZmineShortName() { return "MZmineInvestigator"; }
 
 	@Nonnull
-	public static String getMZmineName()
-	{
-		return getProperty("artifactId", "MZmine - Peak Investigator™ Edition");
-	}
+	public static String getMZmineVersion() { return "v2.10-i0.5"; }
 
 }
