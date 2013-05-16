@@ -32,7 +32,7 @@ import net.sf.mzmine.util.ExitCode;
 
 public class MassListExportModule implements MZmineProcessingModule
 {
-    private static final String MODULE_NAME = "Spectral peaklist export";
+    private static final String MODULE_NAME = "Spectral peak list export";
     private static final String MODULE_DESCRIPTION = "This method exports the selected peak/mass list";
 
     @Override

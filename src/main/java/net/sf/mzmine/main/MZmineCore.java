@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -278,6 +277,6 @@ public final class MZmineCore {
 	public static String getMZmineShortName() { return "MZmineInvestigator"; }
 
 	@Nonnull
-	public static String getMZmineVersion() { return "v2.10-i0.5"; }
+	public static String getMZmineVersion() { return "2.10-i0.5"; }
 
 }

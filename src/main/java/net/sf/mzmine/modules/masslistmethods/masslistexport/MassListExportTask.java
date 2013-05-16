@@ -19,14 +19,8 @@
 
 package net.sf.mzmine.modules.masslistmethods.masslistexport;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.MassList;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -53,7 +47,8 @@ public class MassListExportTask extends AbstractTask
 	 * @param dataFile
 	 * @param parameters
 	 */
-	public MassListExportTask(RawDataFile dataFile, ParameterSet parameters) {
+	public MassListExportTask(RawDataFile dataFile, ParameterSet parameters)
+	{
 		this.dataFile = dataFile;
 		massListName  = parameters.getParameter(MassListExportParameters.massList).getValue();
 		dumpScans     = parameters.getParameter(MassListExportParameters.dumpScans).getValue();
@@ -62,18 +57,21 @@ public class MassListExportTask extends AbstractTask
 	/**
 	 * @see net.sf.mzmine.taskcontrol.Task#getTaskDescription()
 	 */
-	public String getTaskDescription() {
+	public String getTaskDescription()
+	{
 		return "Mass list export of " + dataFile.getName();
 	}
 
 	/**
 	 * @see net.sf.mzmine.taskcontrol.Task#getFinishedPercentage()
 	 */
-	public double getFinishedPercentage() {
+	public double getFinishedPercentage()
+	{
 		return (totalScans == 0) ? 0 : (double) processedScans / totalScans;
 	}
 
-	public RawDataFile getDataFile() {
+	public RawDataFile getDataFile()
+	{
 		return dataFile;
 	}
 
@@ -112,7 +110,8 @@ public class MassListExportTask extends AbstractTask
 		logger.info("Finished mass list export on " + dataFile);
 	}
 
-	public Object[] getCreatedObjects() {
+	public Object[] getCreatedObjects()
+	{
 		return null;
 	}
 }
