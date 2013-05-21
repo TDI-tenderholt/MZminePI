@@ -40,6 +40,7 @@ import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.masslistmethods.masslistexport.MassListExportTask;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
+import FileChecksum.FileChecksum;
 
 /**
  * Implementation of the Scan interface which stores raw data points in a
@@ -450,23 +451,26 @@ public class StorableScan implements Scan {
 			logger.info("Exporting scan " + getScanNumber() + " to file " + filename);
 			try
 			{
-				FileWriter fd = new FileWriter(new File(filename));
+				File file = new File(filename);
+				FileWriter fd = new FileWriter(file);
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
-				fd.write("# Raw Data File: " + dfileName + "\n");
-				fd.write("# MS Level: " + getMSLevel() + "\n");
-				fd.write("# Scan: " + getScanNumber() + "\n");
-				fd.write("# Data Points: " + num + "\n");
-				fd.write("# mz Range (min, max): " + getMZRange().getMin() + ", " + getMZRange().getMax() + "\n");
+				FileChecksum chksum = new FileChecksum(file);
+				fd.write(chksum.hash_line("# Raw Data File: " + dfileName + "\n"));
+				fd.write(chksum.hash_line("# MS Level: " + getMSLevel() + "\n"));
+				fd.write(chksum.hash_line("# Scan: " + getScanNumber() + "\n"));
+				fd.write(chksum.hash_line("# Data Points: " + num + "\n"));
+				fd.write(chksum.hash_line("# mz Range (min, max): " + getMZRange().getMin() + ", " + getMZRange().getMax() + "\n"));
 				for (int p = 0; p < num; p++)
 				{
 					DataPoint pt = pts[p];
-					fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
+					fd.write(chksum.hash_line(pt.getMZ() + "\t" + pt.getIntensity() + "\n"));
 				}
 				fd.close();
+				chksum.append_txt(false);
 				exported = 1;
 			}
-			catch (IOException ex)
+			catch (Exception ex)
 			{
 				Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing scan file, " + filename, ex);
 			}
