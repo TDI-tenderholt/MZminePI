@@ -174,5 +174,5 @@ public interface Scan {
 	 * @param String filename to export to, if empty, filename will be generated from scan information
 	 * @return 1 if exported, 0 if requested mass list not found not found
 	 */
-    public int exportToFile(@Nonnull String massListName, @Nonnull String filename);
+    public int exportToFile(@Nonnull String massListName, @Nonnull String filename, @Nonnull boolean binary);
 }
