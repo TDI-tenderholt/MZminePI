@@ -493,7 +493,7 @@ public class StorableScan implements Scan {
 				}
 				FileChecksum chksum = new FileChecksum(file);
 				chksum.hash_file();
-				chksum.append_txt(true);
+				chksum.append_txt(false);
 				exported = 1;
 			}
 			catch (Exception ex)
