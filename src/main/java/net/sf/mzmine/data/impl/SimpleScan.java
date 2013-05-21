@@ -337,7 +337,6 @@ public class SimpleScan implements Scan {
 
 	@Override
 	public synchronized void removeMassList(@Nonnull MassList massList) {
-
 		throw new UnsupportedOperationException();
 	}
 
@@ -358,8 +357,7 @@ public class SimpleScan implements Scan {
 	}
 
 	@Override
-	public int exportToFile(@Nonnull String massListName,
-			@Nonnull String filename) {
+	public int exportToFile(@Nonnull String massListName, @Nonnull String filename) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
