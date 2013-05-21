@@ -70,9 +70,10 @@ public class FileChecksum
 	 * Add a new line to the cumulative checksum hash.
 	 * 
 	 * @param line
+	 * @return String		// returns input unmodified line
 	 * @throws Exception
 	 */
-	public void hash_line(String line)
+	public String hash_line(String line)
 	{
 		// calculate the hash of the last sum + the new line unless it starts with the prefix
 		if (!line.startsWith(prefix))
@@ -81,6 +82,7 @@ public class FileChecksum
 			md.update(s.getBytes());
 			sum = toHex(md.digest());
 		}
+		return line;
 	}
 
 	/**
