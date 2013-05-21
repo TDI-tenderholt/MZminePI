@@ -107,14 +107,15 @@ public class MassDetectionTask extends AbstractTask {
 	    Scan scan = dataFile.getScan(scanNumbers[i]);
 
 	    MassDetector detector = massDetector.getModule();
-	    DataPoint mzPeaks[] = detector.getMassValues(scan,
-		    massDetector.getParameterSet());
+	    DataPoint mzPeaks[] = detector.getMassValues(scan, massDetector.getParameterSet());
 
-	    SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
+	    if (mzPeaks != null)
+	    {
+	    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
 
-	    // Add new mass list to the scan
-	    scan.addMassList(newMassList);
-
+		    // Add new mass list to the scan
+		    scan.addMassList(newMassList);
+	    }
 	    processedScans++;
 	}
 
