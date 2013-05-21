@@ -94,9 +94,9 @@ public class MassListExportTask extends AbstractTask
 
 			Scan scan = dataFile.getScan(scanNumbers[s]);
 			if (dumpScans)
-				scan.exportToFile("", "");
+				scan.exportToFile("", "", false);
 
-			scansWithMassList += scan.exportToFile(massListName, "");
+			scansWithMassList += scan.exportToFile(massListName, "", false);
 			processedScans++;
 		}
 
