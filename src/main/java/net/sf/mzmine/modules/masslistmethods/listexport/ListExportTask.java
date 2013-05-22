@@ -17,7 +17,7 @@
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.masslistmethods.masslistexport;
+package net.sf.mzmine.modules.masslistmethods.listexport;
 
 import java.util.logging.Logger;
 
@@ -30,7 +30,7 @@ import net.sf.mzmine.taskcontrol.TaskStatus;
 /**
  *
  */
-public class MassListExportTask extends AbstractTask
+public class ListExportTask extends AbstractTask
 {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private RawDataFile dataFile;
@@ -40,18 +40,20 @@ public class MassListExportTask extends AbstractTask
 	private int[] scanNumbers;
 
 	// User parameters
-	private String massListName;
 	private boolean dumpScans;
-
+	private boolean dumpPeaks;
+	private String  massListName;
+	
 	/**
 	 * @param dataFile
 	 * @param parameters
 	 */
-	public MassListExportTask(RawDataFile dataFile, ParameterSet parameters)
+	public ListExportTask(RawDataFile dataFile, ParameterSet parameters)
 	{
 		this.dataFile = dataFile;
-		massListName  = parameters.getParameter(MassListExportParameters.massList).getValue();
-		dumpScans     = parameters.getParameter(MassListExportParameters.dumpScans).getValue();
+		dumpScans     = parameters.getParameter(ListExportParameters.dumpScans).getValue();
+		massListName  = parameters.getParameter(ListExportParameters.massList).getValue();
+		dumpPeaks = (massListName.isEmpty() == false);
 	}
 
 	/**
@@ -59,7 +61,7 @@ public class MassListExportTask extends AbstractTask
 	 */
 	public String getTaskDescription()
 	{
-		return "Mass list export of " + dataFile.getName();
+		return "Scans and/or peaks(mass) list export of " + dataFile.getName();
 	}
 
 	/**
@@ -81,7 +83,8 @@ public class MassListExportTask extends AbstractTask
 	public void run()
 	{
 		setStatus(TaskStatus.PROCESSING);
-		logger.info("Mass list export of " + massListName + " from " + dataFile);
+		logger.info("Export of " + (dumpScans ? "Scans" : "") + ((dumpScans && dumpPeaks) ? " and " : "") +
+                    (dumpPeaks ? "peaks(mass) list of " + massListName : "") + " from " + dataFile);
 
 		int scansWithMassList = 0;
 		scanNumbers = dataFile.getScanNumbers();
@@ -96,18 +99,20 @@ public class MassListExportTask extends AbstractTask
 			if (dumpScans)
 				scan.exportToFile("", "", false);
 
-			scansWithMassList += scan.exportToFile(massListName, "", false);
+			if (dumpPeaks)
+				scansWithMassList += scan.exportToFile(massListName, "", false);
+
 			processedScans++;
 		}
 
-		if (scansWithMassList > 0)
-			setStatus(TaskStatus.FINISHED);
-		else
+		if (dumpPeaks && (scansWithMassList == 0))
 		{
 			setStatus(TaskStatus.ERROR);
 			this.errorMessage = dataFile.getName() + " has no mass list called '" + massListName + "'";
 		}
-		logger.info("Finished mass list export on " + dataFile);
+		else
+			setStatus(TaskStatus.FINISHED);
+		logger.info("Finished list export from " + dataFile);
 	}
 
 	public Object[] getCreatedObjects()

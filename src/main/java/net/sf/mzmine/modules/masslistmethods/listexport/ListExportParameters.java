@@ -17,7 +17,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.masslistmethods.masslistexport;
+package net.sf.mzmine.modules.masslistmethods.listexport;
 
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
@@ -26,22 +26,22 @@ import net.sf.mzmine.parameters.parametertypes.MassListParameter;
 import net.sf.mzmine.parameters.parametertypes.RawDataFilesParameter;
 import net.sf.mzmine.util.ExitCode;
 
-public class MassListExportParameters extends SimpleParameterSet
+public class ListExportParameters extends SimpleParameterSet
 {
 	public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
 	public static final     MassListParameter massList  = new MassListParameter();
 	public static final      BooleanParameter dumpScans = new BooleanParameter(
 			"Export original scans",
-			"If checked, original scan data will be exported to text files as well as the selected mass list data");
+			"If checked, original scan data will be exported to text files");
 
-	public MassListExportParameters()
+	public ListExportParameters()
 	{
-		super(new Parameter[] { dataFiles, massList, dumpScans });
+		super(new Parameter[] { dataFiles, dumpScans, massList });
 	}
 
 	public ExitCode showSetupDialog()
 	{
-		MassListExportSetupDialog dialog = new MassListExportSetupDialog(this);
+		ListExportSetupDialog dialog = new ListExportSetupDialog(this);
 		dialog.setVisible(true);
 		return dialog.getExitCode();
 	}

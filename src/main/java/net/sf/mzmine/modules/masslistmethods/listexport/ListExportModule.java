@@ -17,7 +17,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.masslistmethods.masslistexport;
+package net.sf.mzmine.modules.masslistmethods.listexport;
 
 import java.util.Collection;
 
@@ -30,30 +30,24 @@ import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.taskcontrol.Task;
 import net.sf.mzmine.util.ExitCode;
 
-public class MassListExportModule implements MZmineProcessingModule
+public class ListExportModule implements MZmineProcessingModule
 {
     private static final String MODULE_NAME = "Spectral peak list export";
-    private static final String MODULE_DESCRIPTION = "This method exports the selected peak/mass list";
+    private static final String MODULE_DESCRIPTION = "This method exports the selected scans and/or peaks(mass) list";
 
     @Override
-    public @Nonnull String getName()
-	{
-    	return MODULE_NAME;
-    }
+    public @Nonnull String getName() { return MODULE_NAME; }
 
     @Override
-    public @Nonnull String getDescription()
-	{
-    	return MODULE_DESCRIPTION;
-    }
+    public @Nonnull String getDescription() { return MODULE_DESCRIPTION; }
 
     @Override
     @Nonnull
     public ExitCode runModule(@Nonnull ParameterSet parameters, @Nonnull Collection<Task> tasks)
 	{
-		RawDataFile[] dataFiles = parameters.getParameter(MassListExportParameters.dataFiles).getValue();
+		RawDataFile[] dataFiles = parameters.getParameter(ListExportParameters.dataFiles).getValue();
 		for (RawDataFile dataFile : dataFiles) {
-		    Task newTask = new MassListExportTask(dataFile, parameters.cloneParameter());
+		    Task newTask = new ListExportTask(dataFile, parameters.cloneParameter());
 		    tasks.add(newTask);
 		}
 	
@@ -69,6 +63,6 @@ public class MassListExportModule implements MZmineProcessingModule
     @Override
     public @Nonnull Class<? extends ParameterSet> getParameterSetClass()
 	{
-    	return MassListExportParameters.class;
+    	return ListExportParameters.class;
     }
 }

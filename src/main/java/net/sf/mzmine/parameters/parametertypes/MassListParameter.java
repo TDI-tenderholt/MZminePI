@@ -31,8 +31,8 @@ public class MassListParameter implements UserParameter<String, MassListComponen
 	private String name, description, value;
 
 	public MassListParameter() {
-		this.name = "Mass list";
-		this.description = "Please select a mass list name";
+		this.name = "Peaks(mass) list";
+		this.description = "Please select a peaks(mass) list name";
 	}
 
 	/**
@@ -96,10 +96,6 @@ public class MassListParameter implements UserParameter<String, MassListComponen
 	
 	@Override
 	public boolean checkValue(Collection<String> errorMessages) {
-		if ((value == null) || (value.trim().length() == 0)) {
-			errorMessages.add(name + " is not set properly");
-			return false;
-		}
 		return true;
 	}
 

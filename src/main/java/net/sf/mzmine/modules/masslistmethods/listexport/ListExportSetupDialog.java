@@ -17,7 +17,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.masslistmethods.masslistexport;
+package net.sf.mzmine.modules.masslistmethods.listexport;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -40,7 +40,12 @@ import net.sf.mzmine.parameters.dialogs.ParameterSetupDialogWithScanPreview;
  * is used to preview how the selected mass detector and his parameters works
  * over the raw data file.
  */
-public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPreview {
+public class ListExportSetupDialog extends ParameterSetupDialogWithScanPreview {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2722983771927341631L;
 
 	private static final Color removedPeaksColor = Color.orange;
 
@@ -50,7 +55,7 @@ public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPrevi
 	 * @param parameters
 	 * @param massFilterTypeNumber
 	 */
-	public MassListExportSetupDialog(ParameterSet parameters) {
+	public ListExportSetupDialog(ParameterSet parameters) {
 		super(parameters);
 		this.parameters = parameters;
 	}
@@ -83,7 +88,7 @@ public class MassListExportSetupDialog extends ParameterSetupDialogWithScanPrevi
 		if (! paramsOK) return;
 		
 		// Get mass list
-		String massListName = parameters.getParameter(MassListExportParameters.massList).getValue();
+		String massListName = parameters.getParameter(ListExportParameters.massList).getValue();
 		MassList massList = previewScan.getMassList(massListName);
 		if (massList == null)
 			return;

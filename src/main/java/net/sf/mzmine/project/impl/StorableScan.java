@@ -38,7 +38,7 @@ import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
 import net.sf.mzmine.main.MZmineCore;
-import net.sf.mzmine.modules.masslistmethods.masslistexport.MassListExportTask;
+import net.sf.mzmine.modules.masslistmethods.listexport.ListExportTask;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 import FileChecksum.FileChecksum;
@@ -428,7 +428,7 @@ public class StorableScan implements Scan {
     {
     	String filename = getDataFile().getName()
 							+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
-    						+ (massListName.isEmpty() ? "" : ".ml_" + massListName)
+    						+ (massListName.isEmpty() ? "" : ".peaks_" + massListName)
     						+ ".txt";
 		return filename;
     }
@@ -498,7 +498,7 @@ public class StorableScan implements Scan {
 			}
 			catch (Exception ex)
 			{
-				Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing scan file, " + filename, ex);
+				Logger.getLogger(ListExportTask.class.getName()).log(Level.SEVERE, "Failed writing scan file, " + filename, ex);
 			}
 		}
 		else						// export given mass list
@@ -536,7 +536,7 @@ public class StorableScan implements Scan {
 	            }
 				catch (Exception ex)
 				{
-	                Logger.getLogger(MassListExportTask.class.getName()).log(Level.SEVERE, "Failed writing mass list file, " + filename, ex);
+	                Logger.getLogger(ListExportTask.class.getName()).log(Level.SEVERE, "Failed writing mass list file, " + filename, ex);
 	            }
 			}
 		}
