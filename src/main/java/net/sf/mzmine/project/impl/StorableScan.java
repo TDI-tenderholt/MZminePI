@@ -41,6 +41,9 @@ import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.masslistmethods.listexport.ListExportTask;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
+
+import org.apache.commons.io.FilenameUtils;
+
 import FileChecksum.FileChecksum;
 
 /**
@@ -426,8 +429,8 @@ public class StorableScan implements Scan {
     */
     public String exportFilename(String massListName)
     {
-    	String filename = getDataFile().getName()
-							+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
+    	String filename = FilenameUtils.removeExtension(getDataFile().getName())
+    						+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
     						+ (massListName.isEmpty() ? "" : ".peaks_" + massListName)
     						+ ".txt";
 		return filename;
