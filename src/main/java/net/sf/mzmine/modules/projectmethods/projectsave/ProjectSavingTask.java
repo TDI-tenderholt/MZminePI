@@ -264,30 +264,29 @@ public class ProjectSavingTask extends AbstractTask {
      * 
      * @throws java.io.IOException
      */
-    private void saveConfiguration(ZipOutputStream zipStream)
-	    throws IOException {
+    private void saveConfiguration(ZipOutputStream zipStream) throws IOException
+    {
+		logger.info("Saving configuration file");
 
-	logger.info("Saving configuration file");
+		currentSavedObjectName = "configuration";
 
-	currentSavedObjectName = "configuration";
+		zipStream.putNextEntry(new ZipEntry(CONFIG_FILENAME));
+		File tempConfigFile = File.createTempFile("mzmineconfig", ".tmp");
 
-	zipStream.putNextEntry(new ZipEntry(CONFIG_FILENAME));
-	File tempConfigFile = File.createTempFile("mzmineconfig", ".tmp");
+		try {
+		    MZmineCore.getConfiguration().saveConfiguration(tempConfigFile);
+		} catch (Exception e) {
+		    throw new IOException("Could not save configuration"
+			    + ExceptionUtils.exceptionToString(e));
+		}
 
-	try {
-	    MZmineCore.getConfiguration().saveConfiguration(tempConfigFile);
-	} catch (Exception e) {
-	    throw new IOException("Could not save configuration"
-		    + ExceptionUtils.exceptionToString(e));
-	}
+		FileInputStream fileStream = new FileInputStream(tempConfigFile);
 
-	FileInputStream fileStream = new FileInputStream(tempConfigFile);
+		StreamCopy copyMachine = new StreamCopy();
+		copyMachine.copy(fileStream, zipStream);
 
-	StreamCopy copyMachine = new StreamCopy();
-	copyMachine.copy(fileStream, zipStream);
-
-	fileStream.close();
-	tempConfigFile.delete();
+		fileStream.close();
+		tempConfigFile.delete();
     }
 
     /**
