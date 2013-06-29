@@ -2,9 +2,14 @@ package FileChecksum;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 /**
  * FileChecksum Class used to create and verify Veritomyx file checksums.
@@ -29,7 +34,9 @@ public class FileChecksum
 	public  final String       prefix  = "# checksum:";
 	private final String       seed    = "Veritomyx hash seed!";
 	private MessageDigest md;
+	private String        filename;
 	private File          file;
+	private List<String>  lines;
 	private String        sum;		// computed hash
 	private String        fsum;		// hash read from file
 
@@ -39,6 +46,7 @@ public class FileChecksum
 	 */
 	public FileChecksum(String filename) throws Exception
 	{
+		this.filename = filename;
 		file = new File(filename);
 		reset();
 	}
@@ -50,6 +58,7 @@ public class FileChecksum
 	public FileChecksum(File file) throws Exception
 	{
 		this.file = file;
+		filename = file.getPath();
 		reset();
 	}
 
@@ -64,6 +73,7 @@ public class FileChecksum
 		fsum  = "";
 		sum   = "";
 		hash_line(seed);		// start with special hash seed
+		lines = new ArrayList<String>();
 	}
 
 	/**
@@ -95,15 +105,35 @@ public class FileChecksum
 	{
 		reset();
 		String line;
-		BufferedReader pann_fd = new BufferedReader(new FileReader(file));
-		while ((line = pann_fd.readLine()) != null)
+		BufferedReader fd = null;
+		if (filename.endsWith(".gz"))
+			fd = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(filename))));
+		else
+			fd = new BufferedReader(new FileReader(file));
+		if (fd != null)
 		{
-			if (line.startsWith(prefix))
-				fsum = line.substring(prefix.length());	// extract the hash from the file
-			else
-				hash_line(line);		// calculate the hash of the last sum + the new line
+			while ((line = fd.readLine()) != null)
+			{
+				if (line.startsWith(prefix))
+				{
+					fsum = line.substring(prefix.length());	// extract the hash from the file
+					lines.add(line);
+				}
+				else
+					lines.add(hash_line(line));		// calculate the hash of the last sum + the new line
+			}
+			fd.close();
 		}
-		pann_fd.close();
+	}
+	
+	/**
+	 * Return list of strings from file
+	 * 
+	 * @return
+	 */
+	public List<String> getFileStrings()
+	{
+		return lines;
 	}
 
 	/**

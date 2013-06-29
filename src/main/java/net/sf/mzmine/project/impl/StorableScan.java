@@ -467,28 +467,6 @@ public class StorableScan implements Scan {
 	}
 
 	/**
-	 * Read from a compressed file into memory
-	 * 
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	public String gzipReadFile(String filename) throws IOException
-	{
-		GZIPInputStream fd = new GZIPInputStream(new FileInputStream(filename));
-        byte[] buf = new byte[65536];
-        int len;
-        String str = "";
-        while ((len = fd.read(buf)) != -1)
-        {
-        	String s = new String(buf);
-         	str += s.substring(0,len);
-        }
-        fd.close();
-        return str;
-	}
-    
-	/**
 	 * Export the scan or mass list to a text file in two column tab-delimited format
 	 * 
 	 * @param massListName		// if empty, export scan data points
