@@ -19,15 +19,20 @@
 
 package net.sf.mzmine.project.impl;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.Nonnull;
 import javax.swing.SwingUtilities;
@@ -422,29 +427,75 @@ public class StorableScan implements Scan {
 		return null;
 	}
 
-    /*
-     * Get the filename that the scan or mass list would be exported to by default
-     * 
- 	 * @param String massListName or if empty to return scan export filename
-    */
-    public String exportFilename(String massListName)
-    {
-    	String filename = FilenameUtils.removeExtension(getDataFile().getName())
-    						+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
-    						+ (massListName.isEmpty() ? "" : ".peaks_" + massListName)
-    						+ ".txt";
+	/**
+	 * Get the filename that the scan or mass list would be exported to by default
+	 * 
+	 * @param massListName	// if empty, return scan export filename
+	 * @return
+	 */
+	public String exportFilename(String massListName)
+	{
+		String filename = FilenameUtils.removeExtension(getDataFile().getName())
+							+ ".ms" + getMSLevel() + "scan" + String.format("%04d", getScanNumber())
+							+ (massListName.isEmpty() ? "" : ".peaks_" + massListName)
+							+ ".txt";
 		return filename;
-    }
+	}
+
+	/**
+	 * Write to file from memory with option to gzip it
+	 * 
+	 * @param path
+	 * @param filedata
+	 * @return
+	 * @throws IOException
+	 */
+	public void writeFile(String path, String filedata) throws IOException
+	{
+		if (path.endsWith(".gz"))
+		{
+			BufferedWriter gz = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path))));
+			gz.write(filedata);
+			gz.close();
+		}
+		else
+		{
+	        FileWriter fd = new FileWriter(path);
+	        fd.write(filedata);
+			fd.close();
+		}
+	}
+
+	/**
+	 * Read from a compressed file into memory
+	 * 
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	public String gzipReadFile(String filename) throws IOException
+	{
+		GZIPInputStream fd = new GZIPInputStream(new FileInputStream(filename));
+        byte[] buf = new byte[65536];
+        int len;
+        String str = "";
+        while ((len = fd.read(buf)) != -1)
+        {
+        	String s = new String(buf);
+         	str += s.substring(0,len);
+        }
+        fd.close();
+        return str;
+	}
     
 	/**
 	 * Export the scan or mass list to a text file in two column tab-delimited format
 	 * 
-	 * @param String massListName or if empty to export scan data points
-	 * @param String filename to export to, if empty, filename will be generated from scan information
-	 * @param boolean				// if true, output binary file, otherwise text (only applies to scan output, not masslist)
-	 * @return 1 if exported, 0 if requested mass list not found not found
+	 * @param massListName		// if empty, export scan data points
+	 * @param filename			// if empty, filename will be generated from scan information
+	 * @return					// 1 if exported, 0 if requested mass list not found not found
 	 */
-	public int exportToFile(String massListName, String filename, boolean binary)
+	public int exportToFile(String massListName, String filename)
 	{
 		int exported = 0;
 		String dfileName = getDataFile().getName();
@@ -457,46 +508,21 @@ public class StorableScan implements Scan {
 			try
 			{
 				File file = new File(filename);
+				FileChecksum chksum = new FileChecksum(file);
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
-				if (!binary)	// output text file
-				{
-					FileWriter fd = new FileWriter(file);
-					fd.write("# Raw Data File: " + dfileName + "\n");
-		            fd.write("# Scan: " + getScanNumber() + "\n");
-		            fd.write("# MS Level: " + getMSLevel() + "\n");
-		            fd.write("# Mass List: " + massListName + "\n");
-		            fd.write("# Data Points: " + num + "\n");
-		            for (int p = 0; p < num; p++)
-	                {
-	                	DataPoint pt = pts[p];
-	                	fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
-	            	}
-	                fd.close();
-				}
-				else	// output binary file
-				{
-					RandomAccessFile fd = new RandomAccessFile(filename,"rw");
-					fd.setLength(0);
-					fd.writeUTF(dfileName);					// # Raw Data File:
-					fd.writeByte(Double.SIZE);
-					fd.writeByte(getMSLevel());				// # MS Level:
-					fd.writeShort(getScanNumber());			// # Scan:
-					fd.writeShort(num);						// # Data Points:
-					fd.writeDouble(getMZRange().getMin());	// # mz Range (min, max):
-					fd.writeDouble(getMZRange().getMax());
-					for (int p = 0; p < num; p++)
-					{
-						DataPoint pt = pts[p];
-						fd.writeDouble(pt.getMZ());
-						fd.writeDouble(pt.getIntensity());
-					}
-					fd.writeByte(0x0a);				// put a newline at end of binary section to make checksum work right
-					fd.close();
-				}
-				FileChecksum chksum = new FileChecksum(file);
-				chksum.hash_file();
-				chksum.append_txt(false);
+				String filedata = "";
+				filedata += chksum.hash_line("# Raw Data File: " + dfileName       + "\n");
+				filedata += chksum.hash_line("# Scan: "          + getScanNumber() + "\n");
+				filedata += chksum.hash_line("# MS Level: "      + getMSLevel()    + "\n");
+				filedata += chksum.hash_line("# Mass List: "     + massListName    + "\n");
+				filedata += chksum.hash_line("# Data Points: "   + num             + "\n");
+		        for (int p = 0; p < num; p++)
+	                filedata += chksum.hash_line(pts[p].getMZ() + "\t" + pts[p].getIntensity() + "\n");
+		        filedata += chksum.checksum_line();	// add checksum to the file data
+
+		        writeFile(filename, filedata);		// write the file
+
 				exported = 1;
 			}
 			catch (Exception ex)
@@ -506,11 +532,6 @@ public class StorableScan implements Scan {
 		}
 		else						// export given mass list
 		{
-			if (binary)
-			{
-				// binary mode ignored
-				logger.info("binary mode ignored for mass list output");
-			}
 			MassList massList = getMassList(massListName);
 			if (massList != null)	// Skip those scans which do not have a mass list of given name
 			{

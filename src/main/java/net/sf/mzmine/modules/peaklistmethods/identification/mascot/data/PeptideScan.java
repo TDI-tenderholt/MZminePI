@@ -423,7 +423,7 @@ public class PeptideScan implements Scan {
 	}
 
 	@Override
-	public int exportToFile(@Nonnull String massListName, @Nonnull String filename, @Nonnull boolean binary) {
+	public int exportToFile(@Nonnull String massListName, @Nonnull String filename) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
