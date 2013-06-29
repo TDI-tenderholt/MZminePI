@@ -51,17 +51,17 @@ public class MassDetectionTask extends AbstractTask {
      */
     @SuppressWarnings("unchecked")
     public MassDetectionTask(RawDataFile dataFile, ParameterSet parameters) {
-
-	this.dataFile = dataFile;
-
-	this.massDetector = parameters.getParameter(
-		MassDetectionParameters.massDetector).getValue();
-
-	this.msLevel = parameters.getParameter(MassDetectionParameters.msLevel)
-		.getValue();
-
-	this.name = parameters.getParameter(MassDetectionParameters.name)
-		.getValue();
+	
+		this.dataFile = dataFile;
+	
+		this.massDetector = parameters.getParameter(
+			MassDetectionParameters.massDetector).getValue();
+	
+		this.msLevel = parameters.getParameter(MassDetectionParameters.msLevel)
+			.getValue();
+	
+		this.name = parameters.getParameter(MassDetectionParameters.name)
+			.getValue();
 
     }
 
@@ -69,64 +69,64 @@ public class MassDetectionTask extends AbstractTask {
      * @see net.sf.mzmine.taskcontrol.Task#getTaskDescription()
      */
     public String getTaskDescription() {
-	return "Detecting masses in " + dataFile;
+    	return "Detecting masses in " + dataFile;
     }
 
     /**
      * @see net.sf.mzmine.taskcontrol.Task#getFinishedPercentage()
      */
     public double getFinishedPercentage() {
-	if (totalScans == 0)
-	    return 0;
-	else
-	    return (double) processedScans / totalScans;
+		if (totalScans == 0)
+		    return 0;
+		else
+		    return (double) processedScans / totalScans;
     }
 
     public RawDataFile getDataFile() {
-	return dataFile;
+    	return dataFile;
     }
 
     /**
      * @see Runnable#run()
      */
     public void run() {
-
-	setStatus(TaskStatus.PROCESSING);
-
-	logger.info("Started mass detector on " + dataFile);
-
-	int scanNumbers[] = dataFile.getScanNumbers(msLevel);
-	totalScans = scanNumbers.length;
-
-	// Process scans one by one
-	for (int i = 0; i < totalScans; i++) {
-
-	    if (isCanceled())
-		return;
-
-	    Scan scan = dataFile.getScan(scanNumbers[i]);
-
-	    MassDetector detector = massDetector.getModule();
-	    DataPoint mzPeaks[] = detector.getMassValues(scan, massDetector.getParameterSet());
-
-	    if (mzPeaks != null)
-	    {
-	    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
-
-		    // Add new mass list to the scan
-		    scan.addMassList(newMassList);
-	    }
-	    processedScans++;
-	}
-
-	setStatus(TaskStatus.FINISHED);
-
-	logger.info("Finished mass detector on " + dataFile);
+	
+		setStatus(TaskStatus.PROCESSING);
+	
+		logger.info("Started mass detector on " + dataFile);
+	
+		int scanNumbers[] = dataFile.getScanNumbers(msLevel);
+		totalScans = scanNumbers.length;
+	
+		// Process scans one by one
+		for (int i = 0; i < totalScans; i++) {
+	
+		    if (isCanceled())
+		    	return;
+	
+		    Scan scan = dataFile.getScan(scanNumbers[i]);
+	
+		    MassDetector detector = massDetector.getModule();
+		    DataPoint mzPeaks[] = detector.getMassValues(scan, massDetector.getParameterSet());
+	
+		    if (mzPeaks != null)
+		    {
+		    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
+	
+			    // Add new mass list to the scan
+			    scan.addMassList(newMassList);
+		    }
+		    processedScans++;
+		}
+	
+		setStatus(TaskStatus.FINISHED);
+	
+		logger.info("Finished mass detector on " + dataFile);
 
     }
 
     public Object[] getCreatedObjects() {
-	return null;
+    	return null;
     }
 
 }
