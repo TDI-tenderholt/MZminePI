@@ -107,6 +107,16 @@ public class FileChecksum
 	}
 
 	/**
+	 * Return the checksum string
+	 * 
+	 * @return
+	 */
+	public String checksum_line()
+	{
+		return prefix + sum + "\n";
+	}
+
+	/**
 	 * Append the computed hash to the text file as a single comment line at the end of the file.
 	 * The data should all have been pre-written to the file.
 	 * 
@@ -116,9 +126,8 @@ public class FileChecksum
 	 */
 	public boolean append_txt(boolean validate) throws Exception
 	{
-		String line = prefix + sum + "\n";
 		FileOutputStream fd = new FileOutputStream(file, true);
-		fd.write(line.getBytes());
+		fd.write(checksum_line().getBytes());
 		fd.close();
 		boolean ret = (validate) ? verify(true) : true;
 		return ret;
