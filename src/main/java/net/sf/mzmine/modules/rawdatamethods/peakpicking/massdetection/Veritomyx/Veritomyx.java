@@ -61,7 +61,6 @@ import FileChecksum.FileChecksum;
 public class Veritomyx implements MassDetector
 {
 	private Logger logger       = Logger.getLogger(this.getClass().getName());
-	private int last_scan_num   = -1;
 	private SftpUtil sftp       = SftpUtilFactory.getSftpUtil();
 	private SftpSession session = null;
 	private String host         = "boman";
@@ -172,7 +171,7 @@ public class Veritomyx implements MassDetector
 		try {
 			// build the URL parameters
 			String args = "?Version=" + "1.2.6";
-			args += "&p=" + URLEncoder.encode("1000", "UTF-8");
+			args += "&p="    + URLEncoder.encode("1000", "UTF-8");
 			args += "&User=" + URLEncoder.encode("regression@veritomyx.com", "UTF-8");
 			args += "&Code=" + URLEncoder.encode("joe3test", "UTF-8");
 			args += "&Action=" + "upload";
@@ -262,10 +261,8 @@ public class Veritomyx implements MassDetector
 		List<DataPoint> mzPeaks = null;
 		RawDataFile raw   = scan.getDataFile();
 		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
-		int totalScans = scanNumbers.length;
 		int scan_num   = scan.getScanNumber();
 		boolean start  = (scan_num == scanNumbers[0]);				// first scan in full set
-		boolean end    = (scan_num == scanNumbers[totalScans - 1]);	// last scan in full set
 
 		if (start)
 		{

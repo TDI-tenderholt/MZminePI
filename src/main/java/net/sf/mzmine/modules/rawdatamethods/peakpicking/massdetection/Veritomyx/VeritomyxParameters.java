@@ -24,10 +24,14 @@ import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
 import net.sf.mzmine.parameters.parametertypes.BooleanParameter;
 import net.sf.mzmine.parameters.parametertypes.IntegerParameter;
+import net.sf.mzmine.parameters.parametertypes.StringParameter;
+import net.sf.mzmine.parameters.parametertypes.StringPasswordParameter;
 import net.sf.mzmine.util.ExitCode;
 
 public class VeritomyxParameters extends SimpleParameterSet
 {
+	public static final StringParameter username = new StringParameter("Username", "Login name for Veritomyx SaaS.");
+	public static final StringPasswordParameter password = new StringPasswordParameter("Password", "Password for Veritomyx SaaS.");
 	public static final IntegerParameter first_scan = new IntegerParameter(
 			"Min Scan Number",
 			"Scan number of first scan to centroid.",
@@ -45,7 +49,7 @@ public class VeritomyxParameters extends SimpleParameterSet
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { first_scan, last_scan, dump_scans, read_peaks });
+		super(new UserParameter[] { username, password, first_scan, last_scan, dump_scans, read_peaks });
 	}
 
 	public ExitCode showSetupDialog()
