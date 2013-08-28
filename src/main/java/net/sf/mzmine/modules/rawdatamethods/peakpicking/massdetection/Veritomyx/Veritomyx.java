@@ -19,10 +19,14 @@
 
 package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +42,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
 import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
@@ -47,6 +52,10 @@ import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
 import net.sf.opensftp.SftpUtil;
 import net.sf.opensftp.SftpUtilFactory;
+
+import org.xeustechnologies.jtar.TarEntry;
+import org.xeustechnologies.jtar.TarOutputStream;
+
 import FileChecksum.FileChecksum;
 
 public class Veritomyx implements MassDetector
@@ -228,13 +237,10 @@ public class Veritomyx implements MassDetector
 			in.close();
 
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -245,6 +251,7 @@ public class Veritomyx implements MassDetector
 	 * @param scan
 	 * @param parameters
 	 * @return
+	 * @throws FileNotFoundException 
 	 */
 	public DataPoint[] getMassValues(Scan scan, ParameterSet parameters)
 	{
@@ -252,67 +259,101 @@ public class Veritomyx implements MassDetector
 		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
 		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
-
 		List<DataPoint> mzPeaks = null;
-		int scan_num = scan.getScanNumber();
-		if ((scan_num >= first_scan) && (scan_num <= last_scan))	// only process scans within requested range
+		RawDataFile raw   = scan.getDataFile();
+		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
+		int totalScans = scanNumbers.length;
+		int scan_num   = scan.getScanNumber();
+		boolean start  = (scan_num == scanNumbers[0]);				// first scan in full set
+		boolean end    = (scan_num == scanNumbers[totalScans - 1]);	// last scan in full set
+
+		if (start)
 		{
-			String filename = scan.exportFilename("") + ".gz";
-	
 			if (dump_scans)
 			{
-				scan.exportToFile("", filename);
-				_sftp_put_file(filename);
-			}
-	
-			if (read_peaks)
-			{
-				// convert filename to expected peak file name
-				String pfilename = filename.replace(".txt", ".vcent.txt");
-				logger.info("Reading centroided data from " + pfilename);
-				_sftp_get_file(pfilename);
-				try
-				{
-					File centfile = new File(pfilename);
-					FileChecksum fchksum = new FileChecksum(centfile);
-					if (!fchksum.verify(false))
-						throw new IOException("Invalid checksum in centroided file " + pfilename);
-	
-					List<String> lines = fchksum.getFileStrings();
-					mzPeaks = new ArrayList<DataPoint>();
-					for (String line:lines)
+				String tarfilename = raw.getName() + ".scans.tar";
+				try {
+					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
+
+					// scans to tar
+					for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
 					{
-						if (line.startsWith("#") || line.isEmpty())	// skip comment lines
-							continue;
-	
-						Scanner sc = new Scanner(line);
-						double mz  = sc.nextDouble();
-						double y   = sc.nextDouble();
-						mzPeaks.add(new SimpleDataPoint(mz, y));
-						sc.close();
+						// get the scan and export it to a file
+						scan = raw.getScan(scan_num);
+						if (scan != null)
+						{
+							String filename = scan.exportFilename("") + ".gz";
+							scan.exportToFile("", filename);
+
+							// put the exported scan into the tar file
+							File f = new File(filename);
+							tarfile.putNextEntry(new TarEntry(f, filename));
+							BufferedInputStream origin = new BufferedInputStream(new FileInputStream(f));
+							int count;
+							byte data[] = new byte[2048];
+							while ((count = origin.read(data)) != -1)
+								tarfile.write(data, 0, count);
+							origin.close();
+							f.delete();			// remove the scan file
+							tarfile.flush();
+						}
 					}
-				}
-				catch (Exception e)
-				{
+					tarfile.close();
+
+					_open_sftp_session();
+					_sftp_put_file(tarfilename);
+					_close_sftp_session();
+				} catch (IOException e) {
 					logger.info(e.getMessage());
 					e.printStackTrace();
 				}
+				File f = new File(tarfilename);
+				f.delete();			// remove the tar file
+			}
+
+			if (read_peaks)
+			{
+				for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
+				{
+					// convert filename to expected peak file name
+					scan            = raw.getScan(scan_num);
+					String filename = scan.exportFilename("") + ".gz";
+					String pfilename = filename.replace(".txt", ".vcent.txt");
+					logger.info("Reading centroided data from " + pfilename);
+					_sftp_get_file(pfilename);
+					try
+					{
+						File centfile = new File(pfilename);
+						FileChecksum fchksum = new FileChecksum(centfile);
+						if (!fchksum.verify(false))
+							throw new IOException("Invalid checksum in centroided file " + pfilename);
+	
+						List<String> lines = fchksum.getFileStrings();
+						mzPeaks = new ArrayList<DataPoint>();
+						for (String line:lines)
+						{
+							if (line.startsWith("#") || line.isEmpty())	// skip comment lines
+								continue;
+	
+							Scanner sc = new Scanner(line);
+							double mz  = sc.nextDouble();
+							double y   = sc.nextDouble();
+							mzPeaks.add(new SimpleDataPoint(mz, y));
+							sc.close();
+						}
+					}
+					catch (Exception e)
+					{
+						logger.info(e.getMessage());
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 
-		if (last_scan_num == -1)
-		{
-			int[] i = scan.getDataFile().getScanNumbers(scan.getMSLevel());
-			last_scan_num = i[i.length - 1];
-		}
-		if (scan_num == last_scan_num)	// last scan in set
-		{
-			_close_sftp_session();
-		}
-
-		if (mzPeaks != null)
-			return mzPeaks.toArray(new DataPoint[0]);	// Return an array of detected peaks sorted by MZ
-		return null;
+		if (mzPeaks == null)
+			return null;
+		return mzPeaks.toArray(new DataPoint[0]);	// Return an array of detected peaks sorted by MZ
 	}
 
 	/**
