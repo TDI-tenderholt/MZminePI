@@ -63,20 +63,23 @@ public class Veritomyx implements MassDetector
 	private Logger logger       = Logger.getLogger(this.getClass().getName());
 	private SftpUtil sftp       = SftpUtilFactory.getSftpUtil();
 	private SftpSession session = null;
-	private String host         = "boman";
-	private String user         = "dschmidt";
-	private String password     = "vtmx.eldersdi";
+	private String host         = "secure.veritomyx.com";
+	private String user         = null;
+	private String password     = null;
 	private String dir          = "batches";
 
 	/**
 	 * Open the SFTP session
+	 * 
+	 * @param user
+	 * @param pw
 	 */
 	private boolean _open_sftp_session()
 	{
 		if (session == null)
 		{
 			try {
-				session = sftp.connectByPasswdAuth(host, 22, user, password, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 10000);
+				session = sftp.connectByPasswdAuth(host, 22, user, password, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 3000);
 			} catch (SftpException e) {
 				session = null;
 				logger.info("Error: Cannot connect to SFTP server " + user + "@" + host);
@@ -254,6 +257,8 @@ public class Veritomyx implements MassDetector
 	 */
 	public DataPoint[] getMassValues(Scan scan, ParameterSet parameters)
 	{
+		user               = parameters.getParameter(VeritomyxParameters.username).getValue();
+		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
 		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
 		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
@@ -263,11 +268,14 @@ public class Veritomyx implements MassDetector
 		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
 		int scan_num   = scan.getScanNumber();
 		boolean start  = (scan_num == scanNumbers[0]);				// first scan in full set
+		logger.info("user " + user + " " + password);
 
 		if (start)
 		{
 			if (dump_scans)
 			{
+				_open_sftp_session();		// make sure we have a connection before taking time to build tar file
+
 				String tarfilename = raw.getName() + ".scans.tar";
 				try {
 					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
@@ -297,7 +305,6 @@ public class Veritomyx implements MassDetector
 					}
 					tarfile.close();
 
-					_open_sftp_session();
 					_sftp_put_file(tarfilename);
 					_close_sftp_session();
 				} catch (IOException e) {
