@@ -66,7 +66,8 @@ public class Veritomyx implements MassDetector
 	private String host         = "secure.veritomyx.com";
 	private String user         = null;
 	private String password     = null;
-	private String dir          = "batches";
+	private int    project      = 0;
+	private String dir          = null;
 
 	/**
 	 * Open the SFTP session
@@ -86,6 +87,7 @@ public class Veritomyx implements MassDetector
 				e.printStackTrace();
 				return false;
 			}
+			dir = "projects/" + project + "/batches";
 			SftpResult result = sftp.cd(session, dir);
 			if (!result.getSuccessFlag())
 			{
@@ -259,6 +261,7 @@ public class Veritomyx implements MassDetector
 	{
 		user               = parameters.getParameter(VeritomyxParameters.username).getValue();
 		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
+		project            = parameters.getParameter(VeritomyxParameters.project).getValue();
 		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
 		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
