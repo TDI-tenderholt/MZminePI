@@ -22,7 +22,6 @@ package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,10 +63,11 @@ public class Veritomyx implements MassDetector
 	private SftpUtil sftp       = SftpUtilFactory.getSftpUtil();
 	private SftpSession session = null;
 	private String host         = "secure.veritomyx.com";
+	private String project      = "0";
 	private String user         = null;
 	private String password     = null;
-	private int    project      = 0;
 	private String dir          = null;
+	private String tarfilename  = null;
 
 	/**
 	 * Open the SFTP session
@@ -170,44 +170,41 @@ public class Veritomyx implements MassDetector
 		return true;
 	}
 
-	private void _web_page()
+	private void _web_job_trigger(String fname)
 	{
-		String exsistingFileName = "";
 		try {
 			// build the URL parameters
 			String args = "?Version=" + "1.2.6";
-			args += "&p="    + URLEncoder.encode("1000", "UTF-8");
 			args += "&User=" + URLEncoder.encode("regression@veritomyx.com", "UTF-8");
 			args += "&Code=" + URLEncoder.encode("joe3test", "UTF-8");
-			args += "&Action=" + "upload";
-			args += "&Size=" + "0";
-			args += "&Fcnt=" + "0";
-			args += "&Files=" + "0";
-			args += "&Pcmd=" + "ctr";	// Centroid
-			args += "&Tarf=" + URLEncoder.encode(exsistingFileName, "UTF-8");
-			args += "&Over=" + "0";
+			args += "&Project=" + URLEncoder.encode(project, "UTF-8");
+			args += "&Action=" + "run";
+			args += "&Command=" + "ckm";	// Centroid Set
+			args += "&File=" + URLEncoder.encode(fname, "UTF-8");
+			args += "&Force=" + "0";
 			System.out.println(args + "\n");
 
-			String boundary = "***232404jkg4220957934FW**";
 
-			URL url = new URL("http://test.veritomyx.com/vtmx/interface/vtmx_batch_internal_t.php" + args);
+			URL url = new URL("http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + args);
 			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
 
 			uc.setDoOutput(true);
-			uc.setDoInput(true);
 			uc.setAllowUserInteraction(false);
 			uc.setUseCaches(false);
 			uc.setRequestMethod("POST");
 			uc.setRequestProperty("Connection", "Keep-Alive");
-			uc.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
+/* extra code to write a file to the connection
+			uc.setDoInput(true);
+			String boundary = "***232404jkg4220957934FW**";
+			uc.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 			DataOutputStream dos = new DataOutputStream(uc.getOutputStream());
 			dos.writeBytes("--" + boundary + "\r\n");
-			dos.writeBytes("Content-Disposition: form-data; name=\"userfile\";" + " filename=\"" + exsistingFileName + "\"" + "\r\n");
+			dos.writeBytes("Content-Disposition: form-data; name=\"userfile\";" + " filename=\"" + fname + "\"" + "\r\n");
 			dos.writeBytes("\r\n");
 
 			// create a buffer of maximum size
-			FileInputStream fileInputStream = new FileInputStream(new File(exsistingFileName));
+			FileInputStream fileInputStream = new FileInputStream(new File(fname));
 			int maxBufferSize = 1 * 1024 * 1024;;
 			int bytesAvailable = fileInputStream.available();
 			int bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -230,6 +227,7 @@ public class Veritomyx implements MassDetector
 			fileInputStream.close();
 			dos.flush();
 			dos.close();
+*/
 
 			// Read the response from the HTTP server
 			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -261,7 +259,7 @@ public class Veritomyx implements MassDetector
 	{
 		user               = parameters.getParameter(VeritomyxParameters.username).getValue();
 		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
-		project            = parameters.getParameter(VeritomyxParameters.project).getValue();
+		project            = parameters.getParameter(VeritomyxParameters.project).getValue().toString();
 		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
 		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
@@ -269,9 +267,8 @@ public class Veritomyx implements MassDetector
 		List<DataPoint> mzPeaks = null;
 		RawDataFile raw   = scan.getDataFile();
 		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
-		int scan_num   = scan.getScanNumber();
-		boolean start  = (scan_num == scanNumbers[0]);				// first scan in full set
-		logger.info("user " + user + " " + password);
+		int scan_num      = scan.getScanNumber();
+		boolean start     = (scan_num == scanNumbers[0]);				// first scan in full set
 
 		if (start)
 		{
@@ -279,7 +276,7 @@ public class Veritomyx implements MassDetector
 			{
 				_open_sftp_session();		// make sure we have a connection before taking time to build tar file
 
-				String tarfilename = raw.getName() + ".scans.tar";
+				tarfilename = raw.getName() + ".scans.tar";
 				try {
 					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
 
@@ -310,12 +307,15 @@ public class Veritomyx implements MassDetector
 
 					_sftp_put_file(tarfilename);
 					_close_sftp_session();
+
+					_web_job_trigger(tarfilename);
+
 				} catch (IOException e) {
 					logger.info(e.getMessage());
 					e.printStackTrace();
 				}
 				File f = new File(tarfilename);
-				f.delete();			// remove the tar file
+				f.delete();			// remove the local copy of the tar file
 			}
 
 			if (read_peaks)
