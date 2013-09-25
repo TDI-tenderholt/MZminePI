@@ -19,14 +19,23 @@
 
 package net.sf.mzmine.parameters.parametertypes;
 
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import javax.swing.JPasswordField;
 
 import net.sf.mzmine.parameters.UserParameter;
 
 import org.w3c.dom.Element;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class PasswordParameter implements UserParameter<String, JPasswordField>
 {
@@ -98,13 +107,13 @@ public class PasswordParameter implements UserParameter<String, JPasswordField>
     {
     	char[] pw = component.getPassword();
     	value = new String(pw);
-        Arrays.fill(pw, '0');	//Zero out the possible password, for security.
+    	Arrays.fill(pw, '0');	//Zero out the possible password, for security.
     }
 
     @Override
     public void setValueToComponent(JPasswordField component, String newValue)
     {
-    	component.setText(newValue);
+	    component.setText(value);
     }
 
     @Override
