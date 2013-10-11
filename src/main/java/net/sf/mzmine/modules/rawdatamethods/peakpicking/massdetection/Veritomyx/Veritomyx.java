@@ -27,10 +27,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -53,139 +52,234 @@ import net.sf.opensftp.SftpUtil;
 import net.sf.opensftp.SftpUtilFactory;
 
 import org.xeustechnologies.jtar.TarEntry;
+import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
 import FileChecksum.FileChecksum;
 
+import com.Ostermiller.util.SizeLimitInputStream;
+
 public class Veritomyx implements MassDetector
 {
-	private Logger logger       = Logger.getLogger(this.getClass().getName());
-	private SftpUtil sftp       = SftpUtilFactory.getSftpUtil();
-	private SftpSession session = null;
-	private String host         = "secure.veritomyx.com";
-	private String project      = "0";
-	private String user         = null;
-	private String password     = null;
-	private String dir          = null;
-	private String tarfilename  = null;
+	private static final int WEB_UNDEFINED = -3;
+	private static final int WEB_EXCEPTION = -2;
+	private static final int WEB_ERROR     = -1;
+	private static final int WEB_RUNNING   =  0;
+	private static final int WEB_DONE      =  1;
+	private int    web_result = WEB_UNDEFINED;
+	private String web_str    = null;
+
+	private Logger      logger      = null;
+	private SftpUtil    sftp        = null;
+	private SftpSession session     = null;
+	private String      host        = null;
+	private int         project     = 0;
+	private String      username    = null;
+	private String      password    = null;
+	private String      sftp_user   = null;
+	private String      sftp_pw     = null;
+	private String      dir         = null;
+	private String      tarfilename = null;
+
+	public Veritomyx()
+	{
+		logger = Logger.getLogger(this.getClass().getName());
+		sftp   = SftpUtilFactory.getSftpUtil();
+		host   = "secure.veritomyx.com";
+	}
 
 	/**
-	 * Open the SFTP session
+	 * Return the name of this module
 	 * 
-	 * @param user
-	 * @param pw
+	 * @return
 	 */
-	private boolean _open_sftp_session()
+	public @Nonnull String getName()
 	{
-		if (session == null)
+		return "PeakInvestigator™";
+	}
+
+	@Override
+	public @Nonnull Class<? extends ParameterSet> getParameterSetClass()
+	{
+		return VeritomyxParameters.class;
+	}
+
+	/**
+	 * Compute the peaks list for the given scan
+	 * 
+	 * @param scan
+	 * @param parameters
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	public DataPoint[] getMassValues(Scan scan, ParameterSet parameters)
+	{
+		username           = parameters.getParameter(VeritomyxParameters.username).getValue();
+		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
+		project            = parameters.getParameter(VeritomyxParameters.project).getValue();
+		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
+		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
+		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
+		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
+		List<DataPoint> mzPeaks = null;
+		RawDataFile raw   = scan.getDataFile();
+		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
+		int scan_num      = scan.getScanNumber();
+		boolean start     = (scan_num == scanNumbers[0]);				// first scan in full set
+
+		if (start)
 		{
-			try {
-				session = sftp.connectByPasswdAuth(host, 22, user, password, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 3000);
-			} catch (SftpException e) {
-				session = null;
-				logger.info("Error: Cannot connect to SFTP server " + user + "@" + host);
-				e.printStackTrace();
-				return false;
-			}
-			dir = "projects/" + project + "/batches";
-			SftpResult result = sftp.cd(session, dir);
-			if (!result.getSuccessFlag())
+			if (dump_scans)
 			{
-				result = sftp.mkdir(session, dir);
-				if (!result.getSuccessFlag())
-				{
-					logger.info("Error: Cannot create remote directory, " + dir);
-					return false;
+				_open_sftp_session();		// make sure we have a connection before taking time to build tar file
+
+				tarfilename = raw.getName() + ".scans.tar";
+				try {
+					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
+
+					// scans to tar
+					for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
+					{
+						// get the scan and export it to a file
+						scan = raw.getScan(scan_num);
+						if (scan != null)
+						{
+							String filename = scan.exportFilename("") + ".gz";
+							scan.exportToFile("", filename);
+
+							// put the exported scan into the tar file
+							File f = new File(filename);
+							tarfile.putNextEntry(new TarEntry(f, filename));
+							BufferedInputStream origin = new BufferedInputStream(new FileInputStream(f));
+							int count;
+							byte data[] = new byte[2048];
+							while ((count = origin.read(data)) != -1)
+								tarfile.write(data, 0, count);
+							origin.close();
+							f.delete();			// remove the scan file
+							tarfile.flush();
+						}
+					}
+					tarfile.close();
+
+					_sftp_put_file(tarfilename);
+					_close_sftp_session();
+
+					if (_web_page("run") < WEB_RUNNING)
+						logger.info("Error: Failed to launch job for " + tarfilename);
+					else
+						logger.info(web_str.split(" ",2)[1]);
+
+				} catch (IOException e) {
+					logger.info(e.getMessage());
+					e.printStackTrace();
 				}
-				result = sftp.cd(session, dir);
-				if (!result.getSuccessFlag())
+				File f = new File(tarfilename);
+				f.delete();			// remove the local copy of the tar file
+			}
+
+			if (read_peaks)
+			{
+				while (web_result != WEB_DONE)
 				{
-					logger.info("Error: Cannot find remote directory, " + dir);
-					return false;
+					try {
+						Thread.sleep(60 * 1000);	// sleep for 60 seconds
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					_web_page("status");
+					logger.info(web_str.split(" ",2)[1]);
+				}
+
+				// read the results tar file
+				String pfilename = tarfilename.replace(".scans.tar", ".vcent.tar");
+				_sftp_get_file(pfilename);
+				logger.info("Reading centroided data from " + pfilename);
+
+				try {
+					TarInputStream tis = new TarInputStream(new FileInputStream(pfilename));
+					TarEntry tarEntry;
+					while ((tarEntry = tis.getNextEntry()) != null)
+					{
+						if (tarEntry.isDirectory()) continue;
+
+						InputStream tmpIn = new SizeLimitInputStream(tis, tarEntry.getSize());				
+						// process tmpIn - create other streams on top of it for example ...
+					}
+					tis.close();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
+				{
+					// convert filename to expected peak file name
+					scan = raw.getScan(scan_num);
+					
+					try
+					{
+						File centfile = new File(pfilename);
+						FileChecksum fchksum = new FileChecksum(centfile);
+						if (!fchksum.verify(false))
+							throw new IOException("Invalid checksum in centroided file " + pfilename);
+	
+						List<String> lines = fchksum.getFileStrings();
+						mzPeaks = new ArrayList<DataPoint>();
+						for (String line:lines)
+						{
+							if (line.startsWith("#") || line.isEmpty())	// skip comment lines
+								continue;
+	
+							Scanner sc = new Scanner(line);
+							double mz  = sc.nextDouble();
+							double y   = sc.nextDouble();
+							mzPeaks.add(new SimpleDataPoint(mz, y));
+							sc.close();
+						}
+					}
+					catch (Exception e)
+					{
+						logger.info(e.getMessage());
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-		return true;
+
+		if (mzPeaks == null)
+			return null;
+		return mzPeaks.toArray(new DataPoint[0]);	// Return an array of detected peaks sorted by MZ
 	}
 
 	/**
-	 * Close the SFTP session
-	 */
-	private void _close_sftp_session()
-	{
-		sftp.disconnect(session);
-		session = null;
-	}
-
-	/**
-	 * Transfer the given file to SFTP drop
+	 * Get the first line of a web page from the Veritomyx server
+	 * Puts first line of results into web_results String
 	 * 
-	 * @param fname
+	 * @param action
+	 * @return int
 	 */
-	private boolean _sftp_put_file(String fname)
+	private int _web_page(String action)
 	{
-		SftpResult result;
-
-		logger.info("Put " + user + "@" + host + ":" + dir + "/" + fname);
-		if (!_open_sftp_session())
-			return false;
-
-		result = sftp.rm(session, fname);
-		result = sftp.put(session, fname, fname + ".filepart");
-		if (!result.getSuccessFlag())
-		{
-			logger.info("Error: Cannot write file: " + fname);
-			return false;
-		}
-		result = sftp.rename(session, fname + ".filepart", fname); //rename a remote file
-		if (!result.getSuccessFlag())
-		{
-			logger.info("Error: Cannot rename file: " + fname);
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Transfer the given file from SFTP drop
-	 * 
-	 * @param fname
-	 */
-	private boolean _sftp_get_file(String fname)
-	{
-		SftpResult  result;
-
-		logger.info("Get " + user + "@" + host + ":" + dir + "/" + fname);
-		if (!_open_sftp_session())
-			return false;
-
-		result = sftp.get(session, fname);
-		if (!result.getSuccessFlag())
-		{
-			logger.info("Error: Cannot read file: " + fname);
-			return false;
-		}
-
-		return true;
-	}
-
-	private void _web_job_trigger(String fname)
-	{
+		web_result = WEB_UNDEFINED;
+		web_str    = null;
 		try {
-			// build the URL parameters
-			String args = "?Version=" + "1.2.6";
-			args += "&User=" + URLEncoder.encode("regression@veritomyx.com", "UTF-8");
-			args += "&Code=" + URLEncoder.encode("joe3test", "UTF-8");
-			args += "&Project=" + URLEncoder.encode(project, "UTF-8");
-			args += "&Action=" + "run";
-			args += "&Command=" + "ckm";	// Centroid Set
-			args += "&File=" + URLEncoder.encode(fname, "UTF-8");
-			args += "&Force=" + "0";
-			System.out.println(args + "\n");
+			// build the URL with parameters
+			String page = "http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + 
+					"?Version=" + "1.2.6" +
+					"&User="    + URLEncoder.encode(username, "UTF-8") +
+					"&Code="    + URLEncoder.encode(password, "UTF-8") +
+					"&Project=" + project +
+					"&Action="  + action;
+			if ((action == "run") || (action == "status"))	// need more parameters for these command
+			{
+				page += "&Command=" + "ckm" +	// Centroid Set
+						"&File="    + URLEncoder.encode(tarfilename, "UTF-8") +
+						"&Force="   + "0";
+			}
+			System.out.println(page + "\n");
 
-
-			URL url = new URL("http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + args);
+			URL url = new URL(page);
 			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
 
 			uc.setDoOutput(true);
@@ -235,147 +329,141 @@ public class Veritomyx implements MassDetector
 			while ((decodedString = in.readLine()) != null)
 			{
 				System.out.println(decodedString);
+				if (web_str == null) web_str = decodedString;
 			}
 			in.close();
 
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			web_str = e.getMessage();
+			web_result = WEB_EXCEPTION;
 		}
-	}
-
-	/**
-	 * Compute the peaks list for the given scan
-	 * 
-	 * @param scan
-	 * @param parameters
-	 * @return
-	 * @throws FileNotFoundException 
-	 */
-	public DataPoint[] getMassValues(Scan scan, ParameterSet parameters)
-	{
-		user               = parameters.getParameter(VeritomyxParameters.username).getValue();
-		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
-		project            = parameters.getParameter(VeritomyxParameters.project).getValue().toString();
-		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
-		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
-		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
-		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
-		List<DataPoint> mzPeaks = null;
-		RawDataFile raw   = scan.getDataFile();
-		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
-		int scan_num      = scan.getScanNumber();
-		boolean start     = (scan_num == scanNumbers[0]);				// first scan in full set
-
-		if (start)
+		if (web_result == WEB_UNDEFINED)
 		{
-			if (dump_scans)
-			{
-				_open_sftp_session();		// make sure we have a connection before taking time to build tar file
-
-				tarfilename = raw.getName() + ".scans.tar";
-				try {
-					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
-
-					// scans to tar
-					for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
-					{
-						// get the scan and export it to a file
-						scan = raw.getScan(scan_num);
-						if (scan != null)
-						{
-							String filename = scan.exportFilename("") + ".gz";
-							scan.exportToFile("", filename);
-
-							// put the exported scan into the tar file
-							File f = new File(filename);
-							tarfile.putNextEntry(new TarEntry(f, filename));
-							BufferedInputStream origin = new BufferedInputStream(new FileInputStream(f));
-							int count;
-							byte data[] = new byte[2048];
-							while ((count = origin.read(data)) != -1)
-								tarfile.write(data, 0, count);
-							origin.close();
-							f.delete();			// remove the scan file
-							tarfile.flush();
-						}
-					}
-					tarfile.close();
-
-					_sftp_put_file(tarfilename);
-					_close_sftp_session();
-
-					_web_job_trigger(tarfilename);
-
-				} catch (IOException e) {
-					logger.info(e.getMessage());
-					e.printStackTrace();
-				}
-				File f = new File(tarfilename);
-				f.delete();			// remove the local copy of the tar file
-			}
-
-			if (read_peaks)
-			{
-				for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
-				{
-					// convert filename to expected peak file name
-					scan            = raw.getScan(scan_num);
-					String filename = scan.exportFilename("") + ".gz";
-					String pfilename = filename.replace(".txt", ".vcent.txt");
-					logger.info("Reading centroided data from " + pfilename);
-					_sftp_get_file(pfilename);
-					try
-					{
-						File centfile = new File(pfilename);
-						FileChecksum fchksum = new FileChecksum(centfile);
-						if (!fchksum.verify(false))
-							throw new IOException("Invalid checksum in centroided file " + pfilename);
-	
-						List<String> lines = fchksum.getFileStrings();
-						mzPeaks = new ArrayList<DataPoint>();
-						for (String line:lines)
-						{
-							if (line.startsWith("#") || line.isEmpty())	// skip comment lines
-								continue;
-	
-							Scanner sc = new Scanner(line);
-							double mz  = sc.nextDouble();
-							double y   = sc.nextDouble();
-							mzPeaks.add(new SimpleDataPoint(mz, y));
-							sc.close();
-						}
-					}
-					catch (Exception e)
-					{
-						logger.info(e.getMessage());
-						e.printStackTrace();
-					}
-				}
-			}
+			if      (web_str.startsWith("Done: "))    { web_result = WEB_DONE;    }
+			else if (web_str.startsWith("Error: "))   { web_result = WEB_ERROR;   }
+			else if (web_str.startsWith("Running: ")) { web_result = WEB_RUNNING; }
 		}
-
-		if (mzPeaks == null)
-			return null;
-		return mzPeaks.toArray(new DataPoint[0]);	// Return an array of detected peaks sorted by MZ
+		return web_result;
 	}
 
 	/**
-	 * Return the name of this module
+	 * Open the SFTP session
 	 * 
-	 * @return
+	 * @return boolean
 	 */
-	public @Nonnull String getName()
+	private boolean _open_sftp_session()
 	{
-		return "PeakInvestigator™";
+		if (sftp_user == null)
+		{
+			if (_web_page("sftp") != WEB_DONE)
+			{
+				logger.info("Error: SFTP access not available");
+				return false;
+			}
+			String sa[] = web_str.split(" ");
+			sftp_user  = sa[1];
+			sftp_pw    = sa[2];
+		}
+		if (session == null)
+		{
+			try {
+				session = sftp.connectByPasswdAuth(host, 22, sftp_user, sftp_pw, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 3000);
+			} catch (SftpException e) {
+				session = null;
+				logger.info("Error: Cannot connect to SFTP server " + sftp_user + "@" + host);
+				e.printStackTrace();
+				return false;
+			}
+			dir = "projects/" + project;
+			SftpResult result = sftp.cd(session, dir);	// cd into the project directory
+			if (!result.getSuccessFlag())
+			{
+				result = sftp.mkdir(session, dir + "/batches");
+				if (!result.getSuccessFlag())
+				{
+					logger.info("Error: Cannot create remote directory, " + dir + "/batches");
+					return false;
+				}
+				result = sftp.mkdir(session, dir + "/results");
+				if (!result.getSuccessFlag())
+				{
+					logger.info("Error: Cannot create remote directory, " + dir + "/results");
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
-	@Override
-	public @Nonnull Class<? extends ParameterSet> getParameterSetClass()
+	/**
+	 * Close the SFTP session
+	 */
+	private void _close_sftp_session()
 	{
-		return VeritomyxParameters.class;
+		sftp.disconnect(session);
+		session = null;
 	}
+
+	/**
+	 * Transfer the given file to SFTP drop
+	 * 
+	 * @param fname
+	 */
+	private boolean _sftp_put_file(String fname)
+	{
+		SftpResult result;
+
+		logger.info("Put " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		if (!_open_sftp_session())
+			return false;
+
+		sftp.cd(session, "batches");
+		result = sftp.rm(session, fname);
+		result = sftp.put(session, fname, fname + ".filepart");
+		if (!result.getSuccessFlag())
+		{
+			sftp.cd(session, "..");
+			logger.info("Error: Cannot write file: " + fname);
+			return false;
+		}
+		else
+		{
+			result = sftp.rename(session, fname + ".filepart", fname); //rename a remote file
+			if (!result.getSuccessFlag())
+			{
+				sftp.cd(session, "..");
+				logger.info("Error: Cannot rename file: " + fname);
+				return false;
+			}
+		}
+		sftp.cd(session, "..");
+
+		return true;
+	}
+
+	/**
+	 * Transfer the given file from SFTP drop
+	 * 
+	 * @param fname
+	 */
+	private boolean _sftp_get_file(String fname)
+	{
+		SftpResult result;
+
+		logger.info("Get " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		if (!_open_sftp_session())
+			return false;
+
+		sftp.cd(session, "results");
+		result = sftp.get(session, fname);
+		sftp.cd(session, "..");
+		if (!result.getSuccessFlag())
+		{
+			logger.info("Error: Cannot read file: " + fname);
+			return false;
+		}
+
+		return true;
+	}
+
 }
