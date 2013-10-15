@@ -27,7 +27,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nonnull;
 
@@ -56,8 +56,6 @@ import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
 import FileChecksum.FileChecksum;
-
-import com.Ostermiller.util.SizeLimitInputStream;
 
 public class Veritomyx implements MassDetector
 {
@@ -117,69 +115,88 @@ public class Veritomyx implements MassDetector
 		username           = parameters.getParameter(VeritomyxParameters.username).getValue();
 		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
 		project            = parameters.getParameter(VeritomyxParameters.project).getValue();
-		boolean dump_scans = parameters.getParameter(VeritomyxParameters.dump_scans).getValue();
-		boolean read_peaks = parameters.getParameter(VeritomyxParameters.read_peaks).getValue();
+		boolean start_job  = parameters.getParameter(VeritomyxParameters.start_job).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
 		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
 		List<DataPoint> mzPeaks = null;
 		RawDataFile raw   = scan.getDataFile();
-		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
 		int scan_num      = scan.getScanNumber();
-		boolean start     = (scan_num == scanNumbers[0]);				// first scan in full set
+		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
+		if (scanNumbers[0] > first_scan)						// make sure the first scan is in range
+			first_scan = scanNumbers[0];
+		if (scanNumbers[scanNumbers.length - 1] < last_scan)	// make sure the last scan is in range
+			last_scan = scanNumbers[scanNumbers.length - 1];
+		tarfilename = raw.getName() + ".scans.tar";
 
-		if (start)
+		// simply return null if we are not in our scan range
+		if ((scan_num < first_scan) || (scan_num > last_scan))
+			return null;
+
+		if (start_job)	// launch the job on remote server
 		{
-			if (dump_scans)
+			String filename = scan.exportFilename("") + ".gz";
+			scan.exportToFile("", filename);
+
+			if (scan_num == last_scan)
 			{
+				TarOutputStream     tarfile = null;
+				BufferedInputStream origin  = null;
+				
 				_open_sftp_session();		// make sure we have a connection before taking time to build tar file
-
-				tarfilename = raw.getName() + ".scans.tar";
+				
 				try {
-					TarOutputStream tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
-
-					// scans to tar
+					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
+	
+					// archive all the scan files
 					for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
 					{
 						// get the scan and export it to a file
 						scan = raw.getScan(scan_num);
 						if (scan != null)
 						{
-							String filename = scan.exportFilename("") + ".gz";
-							scan.exportToFile("", filename);
-
+							filename = scan.exportFilename("") + ".gz";
+	
 							// put the exported scan into the tar file
 							File f = new File(filename);
 							tarfile.putNextEntry(new TarEntry(f, filename));
-							BufferedInputStream origin = new BufferedInputStream(new FileInputStream(f));
+							origin = new BufferedInputStream(new FileInputStream(f));
 							int count;
 							byte data[] = new byte[2048];
 							while ((count = origin.read(data)) != -1)
 								tarfile.write(data, 0, count);
 							origin.close();
-							f.delete();			// remove the scan file
+							f.delete();			// remove the local copy of the scan file
 							tarfile.flush();
 						}
 					}
 					tarfile.close();
-
+	
 					_sftp_put_file(tarfilename);
 					_close_sftp_session();
-
-					if (_web_page("run") < WEB_RUNNING)
+	
+					if (_web_page("run", tarfilename) < WEB_RUNNING)
+					{
 						logger.info("Error: Failed to launch job for " + tarfilename);
+					}
 					else
 						logger.info(web_str.split(" ",2)[1]);
-
+	
 				} catch (IOException e) {
 					logger.info(e.getMessage());
 					e.printStackTrace();
+				} finally {
+					try { tarfile.close(); } catch (Exception e) {}
+					try { origin.close(); } catch (Exception e) {}
 				}
 				File f = new File(tarfilename);
 				f.delete();			// remove the local copy of the tar file
 			}
-
-			if (read_peaks)
+		}
+		else	// read the resulting peaks file
+		{
+			if (scan_num == first_scan)
 			{
+				_web_page("status", tarfilename);
 				while (web_result != WEB_DONE)
 				{
 					try {
@@ -187,63 +204,68 @@ public class Veritomyx implements MassDetector
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					_web_page("status");
-					logger.info(web_str.split(" ",2)[1]);
+					_web_page("status", tarfilename);
 				}
-
-				// read the results tar file
-				String pfilename = tarfilename.replace(".scans.tar", ".vcent.tar");
-				_sftp_get_file(pfilename);
-				logger.info("Reading centroided data from " + pfilename);
-
-				try {
-					TarInputStream tis = new TarInputStream(new FileInputStream(pfilename));
-					TarEntry tarEntry;
-					while ((tarEntry = tis.getNextEntry()) != null)
-					{
-						if (tarEntry.isDirectory()) continue;
-
-						InputStream tmpIn = new SizeLimitInputStream(tis, tarEntry.getSize());				
-						// process tmpIn - create other streams on top of it for example ...
-					}
-					tis.close();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				for (scan_num = first_scan; scan_num <= last_scan; scan_num++)
+				logger.info(web_str.split(" ",2)[1]);
+	
+				// read the results tar file and extract all the peaks lists
+				String rtarfilename = raw.getName() + ".vcent.tar";	// results tar file name
+				_sftp_get_file(rtarfilename);
+				logger.info("Reading centroided data from " + rtarfilename);
 				{
-					// convert filename to expected peak file name
-					scan = raw.getScan(scan_num);
-					
-					try
-					{
-						File centfile = new File(pfilename);
-						FileChecksum fchksum = new FileChecksum(centfile);
-						if (!fchksum.verify(false))
-							throw new IOException("Invalid checksum in centroided file " + pfilename);
-	
-						List<String> lines = fchksum.getFileStrings();
-						mzPeaks = new ArrayList<DataPoint>();
-						for (String line:lines)
+					TarInputStream tis = null;
+					FileOutputStream outputStream = null;
+					try {
+						tis = new TarInputStream(new GZIPInputStream(new FileInputStream(rtarfilename)));
+						TarEntry tf;
+						int bytesRead;
+						byte buf[] = new byte[1024];
+						while ((tf = tis.getNextEntry()) != null)
 						{
-							if (line.startsWith("#") || line.isEmpty())	// skip comment lines
-								continue;
-	
-							Scanner sc = new Scanner(line);
-							double mz  = sc.nextDouble();
-							double y   = sc.nextDouble();
-							mzPeaks.add(new SimpleDataPoint(mz, y));
-							sc.close();
+							if (tf.isDirectory()) continue;
+							System.out.println(tf.getName() + " - " + tf.getSize() + " bytes");
+							outputStream = new FileOutputStream(tf.getName());
+							while ((bytesRead = tis.read(buf, 0, 1024)) > -1)
+								outputStream.write(buf, 0, bytesRead);
+							outputStream.close();
 						}
-					}
-					catch (Exception e)
-					{
-						logger.info(e.getMessage());
-						e.printStackTrace();
+						tis.close();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					} finally {
+						try { tis.close(); } catch (Exception e) {}
+						try { outputStream.close(); } catch (Exception e) {}
 					}
 				}
+			}
+
+			// convert filename to expected peak file name
+			String pfilename = scan.exportFilename("").replace(".txt", ".vcent.txt");
+			try
+			{
+				File centfile = new File(pfilename);
+				FileChecksum fchksum = new FileChecksum(centfile);
+				if (!fchksum.verify(false))
+					throw new IOException("Invalid checksum in centroided file " + pfilename);
+
+				List<String> lines = fchksum.getFileStrings();
+				mzPeaks = new ArrayList<DataPoint>();
+				for (String line:lines)
+				{
+					if (line.startsWith("#") || line.isEmpty())	// skip comment lines
+						continue;
+
+					Scanner sc = new Scanner(line);
+					double mz  = sc.nextDouble();
+					double y   = sc.nextDouble();
+					mzPeaks.add(new SimpleDataPoint(mz, y));
+					sc.close();
+				}
+			}
+			catch (Exception e)
+			{
+				logger.info(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
@@ -257,9 +279,10 @@ public class Veritomyx implements MassDetector
 	 * Puts first line of results into web_results String
 	 * 
 	 * @param action
+	 * @param tname
 	 * @return int
 	 */
-	private int _web_page(String action)
+	private int _web_page(String action, String tname)
 	{
 		web_result = WEB_UNDEFINED;
 		web_str    = null;
@@ -274,7 +297,7 @@ public class Veritomyx implements MassDetector
 			if ((action == "run") || (action == "status"))	// need more parameters for these command
 			{
 				page += "&Command=" + "ckm" +	// Centroid Set
-						"&File="    + URLEncoder.encode(tarfilename, "UTF-8") +
+						"&File="    + URLEncoder.encode(tname, "UTF-8") +
 						"&Force="   + "0";
 			}
 			System.out.println(page + "\n");
@@ -355,7 +378,7 @@ public class Veritomyx implements MassDetector
 	{
 		if (sftp_user == null)
 		{
-			if (_web_page("sftp") != WEB_DONE)
+			if (_web_page("sftp", "") != WEB_DONE)
 			{
 				logger.info("Error: SFTP access not available");
 				return false;

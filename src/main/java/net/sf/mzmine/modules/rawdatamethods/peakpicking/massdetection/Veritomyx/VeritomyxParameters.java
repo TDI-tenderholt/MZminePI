@@ -31,14 +31,16 @@ import net.sf.mzmine.util.ExitCode;
 public class VeritomyxParameters extends SimpleParameterSet
 {
 	public static final StringParameter username = new StringParameter(
-			"Username",
+			"Veritomyx Username",
 			"Login name (email address) for Veritomyx SaaS.");
 	public static final PasswordParameter password = new PasswordParameter(
 			"Password",
 			"Password for Veritomyx SaaS.");
 	public static final IntegerParameter project = new IntegerParameter(
 			"Project Number",
-			"Project to which jobs will be assigned within the Veritomyx system. Your login must have access to this project.",
+			"Project to which jobs will be assigned within the Veritomyx system.\n" +
+				"Your login must have access to this project.\n" +
+				"Setting this to zero defaults to your primary project.",
 			0);
 	public static final IntegerParameter first_scan = new IntegerParameter(
 			"Min Scan Number",
@@ -48,16 +50,14 @@ public class VeritomyxParameters extends SimpleParameterSet
 			"Max Scan Number",
 			"Scan number of last scan of scan range to centroid.",
 			1);
-	public static final BooleanParameter dump_scans = new BooleanParameter(
-			"Export Scan Files",
-			"Write specified scans to text files for processing.");
-	public static final BooleanParameter read_peaks = new BooleanParameter(
-			"Import Peak Lists",
-			"Read peak lists for specified scans from processed text files.");
+	public static final BooleanParameter start_job = new BooleanParameter(
+			"Launch Centroid Job",
+			"Check this box to upload specified scans to Veritomyx servers for processing.\n" +
+				"If not checked, load peak lists for specified scans previously launched on Veritomyx servers.");
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { username, password, project, first_scan, last_scan, dump_scans, read_peaks });
+		super(new UserParameter[] { username, password, project, first_scan, last_scan, start_job });
 	}
 
 	public ExitCode showSetupDialog()
