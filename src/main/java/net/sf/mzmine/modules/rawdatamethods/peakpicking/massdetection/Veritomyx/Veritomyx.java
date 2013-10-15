@@ -300,7 +300,7 @@ public class Veritomyx implements MassDetector
 						"&File="    + URLEncoder.encode(tname, "UTF-8") +
 						"&Force="   + "0";
 			}
-			System.out.println(page + "\n");
+			//System.out.println(page + "\n");
 
 			URL url = new URL(page);
 			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
