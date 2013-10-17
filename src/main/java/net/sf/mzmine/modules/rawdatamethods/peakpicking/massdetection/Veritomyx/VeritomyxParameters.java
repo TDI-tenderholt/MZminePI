@@ -50,14 +50,10 @@ public class VeritomyxParameters extends SimpleParameterSet
 			"Max Scan Number",
 			"Scan number of last scan of scan range to centroid.",
 			1);
-	public static final BooleanParameter start_job = new BooleanParameter(
-			"Launch Centroid Job",
-			"Check this box to upload specified scans to Veritomyx servers for processing.\n" +
-				"If not checked, load peak lists for specified scans previously launched on Veritomyx servers.");
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { username, password, project, first_scan, last_scan, start_job });
+		super(new UserParameter[] { username, password, project, first_scan, last_scan });
 	}
 
 	public ExitCode showSetupDialog()

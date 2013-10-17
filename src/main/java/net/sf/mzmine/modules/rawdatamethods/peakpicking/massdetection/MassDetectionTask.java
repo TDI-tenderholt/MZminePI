@@ -36,7 +36,7 @@ public class MassDetectionTask extends AbstractTask {
     private RawDataFile dataFile;
 
     // scan counter
-    private int processedScans = 0, totalScans = 0;
+    private int processedScans = 0, totalScans = 0, passes = 1;
     private int msLevel;
 
     // User parameters
@@ -79,7 +79,7 @@ public class MassDetectionTask extends AbstractTask {
 		if (totalScans == 0)
 		    return 0;
 		else
-		    return (double) processedScans / totalScans;
+		    return (double) processedScans / (totalScans * passes);
     }
 
     public RawDataFile getDataFile() {
@@ -89,40 +89,42 @@ public class MassDetectionTask extends AbstractTask {
     /**
      * @see Runnable#run()
      */
-    public void run() {
-	
+    public void run()
+    {
 		setStatus(TaskStatus.PROCESSING);
-	
-		logger.info("Started mass detector on " + dataFile);
-	
+
+	    MassDetector detector = massDetector.getModule();
+		logger.info("Started " + detector.getName() + " mass detector on " + dataFile);
+
 		int scanNumbers[] = dataFile.getScanNumbers(msLevel);
 		totalScans = scanNumbers.length;
-	
-		// Process scans one by one
-		for (int i = 0; i < totalScans; i++) {
-	
-		    if (isCanceled())
-		    	return;
-	
-		    Scan scan = dataFile.getScan(scanNumbers[i]);
-	
-		    MassDetector detector = massDetector.getModule();
-		    DataPoint mzPeaks[] = detector.getMassValues(scan, massDetector.getParameterSet());
-	
-		    if (mzPeaks != null)
-		    {
-		    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
-	
-			    // Add new mass list to the scan
-			    scan.addMassList(newMassList);
-		    }
-		    processedScans++;
-		}
-	
-		setStatus(TaskStatus.FINISHED);
-	
-		logger.info("Finished mass detector on " + dataFile);
+		passes = detector.getMassValuesPasses();
 
+		for (int pass = 1; pass <= passes; pass++)
+		{
+			// Process scans one by one
+			for (int i = 0; i < totalScans; i++) {
+
+			    if (isCanceled())
+			    	return;
+
+			    Scan scan = dataFile.getScan(scanNumbers[i]);
+
+			    DataPoint mzPeaks[] = detector.getMassValues(scan, pass, massDetector.getParameterSet());
+
+			    if (mzPeaks != null)
+			    {
+			    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
+
+				    // Add new mass list to the scan
+				    scan.addMassList(newMassList);
+			    }
+			    processedScans++;
+			}
+		}
+
+		setStatus(TaskStatus.FINISHED);
+		logger.info("Finished " + detector.getName() + " mass detector on " + dataFile);
     }
 
     public Object[] getCreatedObjects() {

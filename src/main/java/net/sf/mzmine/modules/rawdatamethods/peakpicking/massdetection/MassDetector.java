@@ -30,8 +30,13 @@ import net.sf.mzmine.parameters.ParameterSet;
 public interface MassDetector extends MZmineModule {
 	
 	/**
-	 * Returns mass and intensity values detected in given scan
+	 * Returns number of passes required in getting mass values
 	 */
-	public DataPoint[] getMassValues(Scan scan, ParameterSet parameters);
+	public int getMassValuesPasses();
+
+	/**
+	 * Returns mass and intensity values detected in given scan
+	 */	
+	public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters);
 
 }

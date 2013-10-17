@@ -34,10 +34,12 @@ import net.sf.mzmine.util.SortingProperty;
 
 public class ExactMassDetector implements MassDetector {
 
+	public int getMassValuesPasses() { return 1; }
+
     /**
      * @see net.sf.mzmine.modules.peakpicking.threestep.massdetection.MassDetector#getMassValues(net.sf.mzmine.data.Scan)
      */
-    public DataPoint[] getMassValues(Scan scan, ParameterSet parameters) {
+    public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters) {
 
 	double noiseLevel = parameters.getParameter(
 		ExactMassDetectorParameters.noiseLevel).getValue();

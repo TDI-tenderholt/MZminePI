@@ -49,7 +49,9 @@ public class WaveletMassDetector implements MassDetector {
     private static final int WAVELET_ESL = -5;
     private static final int WAVELET_ESR = 5;
 
-    public DataPoint[] getMassValues(Scan scan, ParameterSet parameters) {
+    public int getMassValuesPasses() { return 1; }
+
+    public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters) {
 	double noiseLevel = parameters.getParameter(
 		WaveletMassDetectorParameters.noiseLevel).getValue();
 	int scaleLevel = parameters.getParameter(
