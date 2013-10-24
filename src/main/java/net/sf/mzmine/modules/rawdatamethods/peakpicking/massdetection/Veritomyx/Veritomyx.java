@@ -151,12 +151,6 @@ public class Veritomyx implements MassDetector
 			try {
 				if (scan_num == first_scan)
 				{
-					if (!_open_sftp_session())		// make sure we have a connection before taking time to process
-					{
-						logger.info("Error: Cannot open sftp connection");
-						return null;
-					}
-
 					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
 				}
 	
@@ -195,7 +189,8 @@ public class Veritomyx implements MassDetector
 					f.delete();			// remove the local copy of the tar file
 				}
 			} catch (Exception e) {
-				logger.info("Error: " + e.getMessage());
+				logger.info(e.getMessage());
+				logger.info("Error: Cannot create tar file");
 			}
 
 			return null;	// never return peaks from pass 1
@@ -243,6 +238,8 @@ public class Veritomyx implements MassDetector
 						}
 						tis.close();
 					} catch (Exception e1) {
+						logger.info(e1.getMessage());
+						logger.info("Error: Cannot parse results file");
 						e1.printStackTrace();
 					} finally {
 						try { tis.close(); } catch (Exception e) {}
@@ -279,6 +276,7 @@ public class Veritomyx implements MassDetector
 			catch (Exception e)
 			{
 				logger.info(e.getMessage());
+				logger.info("Error: Cannot parse peaks file.");
 				e.printStackTrace();
 			}
 		}
@@ -298,8 +296,10 @@ public class Veritomyx implements MassDetector
 	 */
 	private int _web_page(String action, String tname)
 	{
+		System.setProperty("java.net.preferIPv4Stack" , "true");	// without this we get exception in getInputStream
 		web_result = WEB_UNDEFINED;
 		web_str    = null;
+		BufferedReader in = null;
 		try {
 			// build the URL with parameters
 			String page = "http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + 
@@ -314,72 +314,37 @@ public class Veritomyx implements MassDetector
 						"&File="    + URLEncoder.encode(tname, "UTF-8") +
 						"&Force="   + "1";
 			}
-			//System.out.println(page + "\n");
+			//System.out.println(page);
 
 			URL url = new URL(page);
 			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
-
-			uc.setDoOutput(true);
-			uc.setAllowUserInteraction(false);
 			uc.setUseCaches(false);
 			uc.setRequestMethod("POST");
-			uc.setRequestProperty("Connection", "Keep-Alive");
-
-/* extra code to write a file to the connection
-			uc.setDoInput(true);
-			String boundary = "***232404jkg4220957934FW**";
-			uc.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-			DataOutputStream dos = new DataOutputStream(uc.getOutputStream());
-			dos.writeBytes("--" + boundary + "\r\n");
-			dos.writeBytes("Content-Disposition: form-data; name=\"userfile\";" + " filename=\"" + fname + "\"" + "\r\n");
-			dos.writeBytes("\r\n");
-
-			// create a buffer of maximum size
-			FileInputStream fileInputStream = new FileInputStream(new File(fname));
-			int maxBufferSize = 1 * 1024 * 1024;;
-			int bytesAvailable = fileInputStream.available();
-			int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-			byte[] buffer = new byte[bufferSize];
-
-			// read file and write it into form...
-			int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-			while (bytesRead > 0)
-			{
-				dos.write(buffer, 0, bytesRead);
-				bytesAvailable = fileInputStream.available();
-				bufferSize = Math.min(bytesAvailable, maxBufferSize);
-				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-			}
-
-			// send multi-part form data necessary after file data...
-			dos.writeBytes("\r\n--" + boundary + "--\r\n");
-
-			// close streams
-			fileInputStream.close();
-			dos.flush();
-			dos.close();
-*/
+			uc.setReadTimeout(15*1000);	// give it 15 seconds to respond
+			uc.connect();
 
 			// Read the response from the HTTP server
-			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 			String decodedString;
 			while ((decodedString = in.readLine()) != null)
 			{
 				System.out.println(decodedString);
-				if (web_str == null) web_str = decodedString;
+				if (web_result == WEB_UNDEFINED)
+				{
+					web_str = decodedString;
+					if      (web_str.startsWith("Done: "))    { web_result = WEB_DONE;    }
+					else if (web_str.startsWith("Error: "))   { web_result = WEB_ERROR;   }
+					else if (web_str.startsWith("Running: ")) { web_result = WEB_RUNNING; }
+				}
 			}
-			in.close();
-
-		} catch (Exception e) {
-			web_str = e.getMessage();
-			web_result = WEB_EXCEPTION;
 		}
-		if (web_result == WEB_UNDEFINED)
+		catch (Exception e)
 		{
-			if      (web_str.startsWith("Done: "))    { web_result = WEB_DONE;    }
-			else if (web_str.startsWith("Error: "))   { web_result = WEB_ERROR;   }
-			else if (web_str.startsWith("Running: ")) { web_result = WEB_RUNNING; }
+			web_result = WEB_EXCEPTION;
+			web_str = e.getMessage();
+			logger.finest("Error: Web exception - " + web_str);
 		}
+		if (in != null) try { in.close(); } catch (IOException e) { }
 		return web_result;
 	}
 
