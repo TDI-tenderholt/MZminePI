@@ -296,10 +296,10 @@ public class Veritomyx implements MassDetector
 	 */
 	private int _web_page(String action, String tname)
 	{
-		System.setProperty("java.net.preferIPv4Stack" , "true");	// without this we get exception in getInputStream
-		web_result = WEB_UNDEFINED;
-		web_str    = null;
+		web_result        = WEB_UNDEFINED;
+		web_str           = null;
 		BufferedReader in = null;
+		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
 			String page = "http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + 
@@ -317,10 +317,11 @@ public class Veritomyx implements MassDetector
 			//System.out.println(page);
 
 			URL url = new URL(page);
-			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
+			uc = (HttpURLConnection)url.openConnection();
 			uc.setUseCaches(false);
 			uc.setRequestMethod("POST");
-			uc.setReadTimeout(15*1000);	// give it 15 seconds to respond
+			uc.setReadTimeout(15 * 1000);	// give it 15 seconds to respond
+			System.setProperty("java.net.preferIPv4Stack", "true");	// without this we get exception in getInputStream
 			uc.connect();
 
 			// Read the response from the HTTP server
@@ -344,7 +345,8 @@ public class Veritomyx implements MassDetector
 			web_str = e.getMessage();
 			logger.finest("Error: Web exception - " + web_str);
 		}
-		if (in != null) try { in.close(); } catch (IOException e) { }
+		try { in.close();      } catch (Exception e) { }
+		try { uc.disconnect(); } catch (Exception e) { }
 		return web_result;
 	}
 
