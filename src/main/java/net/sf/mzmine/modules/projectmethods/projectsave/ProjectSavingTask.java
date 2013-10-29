@@ -357,8 +357,6 @@ public class ProjectSavingTask extends AbstractTask {
 	if (isCanceled())
 	    return;
 
-	logger.info("Saving user parameters");
-
 	zipStream.putNextEntry(new ZipEntry("User parameters.xml"));
 
 	userParameterSaveHandler = new UserParameterSaveHandler(zipStream,
