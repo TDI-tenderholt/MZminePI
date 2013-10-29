@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 20013-2014 The MZminePI Development Team
  * 
  * This file is part of MZmine 2.
  * 
