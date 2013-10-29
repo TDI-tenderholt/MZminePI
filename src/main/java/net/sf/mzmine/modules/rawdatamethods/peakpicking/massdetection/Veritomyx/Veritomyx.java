@@ -43,8 +43,11 @@ import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
+import net.sf.mzmine.parameters.UserParameter;
+import net.sf.mzmine.project.impl.MZmineProjectImpl;
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
@@ -67,18 +70,19 @@ public class Veritomyx implements MassDetector
 	private int    web_result = WEB_UNDEFINED;
 	private String web_str    = null;
 
-	private Logger      logger      = null;
-	private SftpUtil    sftp        = null;
-	private SftpSession session     = null;
-	private String      host        = null;
-	private int         project     = 0;
-	private String      username    = null;
-	private String      password    = null;
-	private String      sftp_user   = null;
-	private String      sftp_pw     = null;
-	private String      dir         = null;
-	private String      tarfilename = null;
-	private TarOutputStream tarfile = null;
+	private MZmineProjectImpl project     = null;
+	private Logger            logger      = null;
+	private SftpUtil          sftp        = null;
+	private SftpSession       session     = null;
+	private String            host        = null;
+	private int               v_project   = 0;
+	private String            username    = null;
+	private String            password    = null;
+	private String            sftp_user   = null;
+	private String            sftp_pw     = null;
+	private String            dir         = null;
+	private String            tarfilename = null;
+	private TarOutputStream   tarfile     = null;
 
 	public Veritomyx()
 	{
@@ -112,6 +116,10 @@ public class Veritomyx implements MassDetector
 	 */
 	public int getMassValuesPasses()
 	{ 
+		// get the v_project so we can save the launched job info in it
+		project = (MZmineProjectImpl) MZmineCore.getCurrentProject();
+		UserParameter<String, ?> job = null;
+//		project.addParameter(job);
 		return 2;
 	}
 
@@ -127,7 +135,7 @@ public class Veritomyx implements MassDetector
 	{
 		username           = parameters.getParameter(VeritomyxParameters.username).getValue();
 		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
-		project            = parameters.getParameter(VeritomyxParameters.project).getValue();
+		v_project          = parameters.getParameter(VeritomyxParameters.project).getValue();
 		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
 		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
 		List<DataPoint> mzPeaks = null;
@@ -306,7 +314,7 @@ public class Veritomyx implements MassDetector
 					"?Version=" + "1.2.6" +
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
-					"&Project=" + project +
+					"&Project=" + v_project +
 					"&Action="  + action;
 			if ((action == "run") || (action == "status"))	// need more parameters for these command
 			{
@@ -378,8 +386,8 @@ public class Veritomyx implements MassDetector
 				e.printStackTrace();
 				return false;
 			}
-			dir = "projects/" + project;
-			SftpResult result = sftp.cd(session, dir);	// cd into the project directory
+			dir = "projects/" + v_project;
+			SftpResult result = sftp.cd(session, dir);	// cd into the v_project directory
 			if (!result.getSuccessFlag())
 			{
 				result = sftp.mkdir(session, dir + "/batches");
