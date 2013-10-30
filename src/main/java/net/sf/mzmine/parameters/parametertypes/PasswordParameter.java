@@ -19,27 +19,20 @@
 
 package net.sf.mzmine.parameters.parametertypes;
 
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
 import javax.swing.JPasswordField;
 
 import net.sf.mzmine.parameters.UserParameter;
 
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.w3c.dom.Element;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public class PasswordParameter implements UserParameter<String, JPasswordField>
 {
     private String name, description, value;
+    private BasicTextEncryptor textEncryptor = null;
 
     public PasswordParameter(String name, String description)
     {
@@ -51,7 +44,12 @@ public class PasswordParameter implements UserParameter<String, JPasswordField>
 		this.name        = name;
 		this.description = description;
 		this.value       = defaultValue;
-    }
+
+		textEncryptor = new BasicTextEncryptor();
+		// this key must remain the same for decryption to work.
+		// could improve security by not having this embedded in the code, but...
+		textEncryptor.setPassword("KweiourIU234kerj925lkjdf adfiL3899k");
+	}
 
     /**
      * @see net.sf.mzmine.data.Parameter#getName()
@@ -119,7 +117,8 @@ public class PasswordParameter implements UserParameter<String, JPasswordField>
     @Override
     public void loadValueFromXML(Element xmlElement)
     {
-    	value = xmlElement.getTextContent();
+    	String data = xmlElement.getTextContent();
+    	value = textEncryptor.decrypt(data);
     }
 
     @Override
@@ -127,7 +126,8 @@ public class PasswordParameter implements UserParameter<String, JPasswordField>
     {
 		if (value == null)
 		    return;
-		xmlElement.setTextContent(value);
+    	String data = textEncryptor.encrypt(value);
+    	xmlElement.setTextContent(data);
     }
 
     @Override
