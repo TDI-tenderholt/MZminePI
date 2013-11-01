@@ -129,7 +129,6 @@ public class StorableScan implements Scan {
 					+ e.toString());
 			return new DataPoint[0];
 		}
-
 	}
 
 	/**
@@ -230,27 +229,25 @@ public class StorableScan implements Scan {
 		return retentionTime;
 	}
 
-	void updateValues() {
+	void updateValues()
+	{
 		DataPoint dataPoints[] = getDataPoints();
 
 		// find m/z range and base peak
-		if (dataPoints.length > 0) {
-
+		if (dataPoints.length > 0)
+		{
 			basePeak = dataPoints[0];
 			mzRange = new Range(dataPoints[0].getMZ(), dataPoints[0].getMZ());
 			double tic = 0;
 
-			for (DataPoint dp : dataPoints) {
-
+			for (DataPoint dp : dataPoints)
+			{
 				if (dp.getIntensity() > basePeak.getIntensity())
 					basePeak = dp;
 
 				mzRange.extendRange(dp.getMZ());
-
 				tic += dp.getIntensity();
-
 			}
-
 			totalIonCurrent = new Double(tic);
 
 		} else {
@@ -378,9 +375,7 @@ public class StorableScan implements Scan {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
-
 	}
 
 	@Override
@@ -408,9 +403,7 @@ public class StorableScan implements Scan {
 			};
 
 			SwingUtilities.invokeLater(swingCode);
-
 		}
-
 	}
 
 	@Override
@@ -544,5 +537,4 @@ public class StorableScan implements Scan {
 		}
 		return exported;
 	}
-
 }
