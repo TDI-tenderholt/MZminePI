@@ -15,307 +15,60 @@
         </parameter>
     </preferences>
     <modules>
-        <module class="net.sf.mzmine.modules.projectmethods.projectclose.ProjectCloseModule">
-            <parameters/>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.targetedpeakdetection.TargetedPeakDetectionModule">
+        <module class="net.sf.mzmine.modules.visualization.twod.TwoDVisualizerModule">
             <parameters>
                 <parameter name="Raw data files"/>
-                <parameter name="Name suffix">detectedPeak</parameter>
-                <parameter name="Peak list file"/>
-                <parameter name="Field separator">,</parameter>
-                <parameter name="Ignore first line"/>
-                <parameter name="Intensity tolerance"/>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Retention time tolerance"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.scanfilters.ScanFiltersModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Suffix">filtered</parameter>
-                <parameter name="Filter" selected="Mean filter">
-                    <module name="Savitzky-Golay filter">
-                        <parameter name="Number of datapoints"/>
-                    </module>
-                    <module name="Mean filter">
-                        <parameter name="Window length">2.0</parameter>
-                    </module>
-                    <module name="Crop filter">
-                        <parameter name="m/z range"/>
-                    </module>
-                    <module name="Resampling filter">
-                        <parameter name="m/z bin length"/>
-                    </module>
-                </parameter>
-                <parameter name="Remove source file after filtering">false</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.linear.LinearNormalizerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">normalized</parameter>
-                <parameter name="Normalization type"/>
-                <parameter name="Peak measurement type"/>
-                <parameter name="Remove original peak list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Mass detector" selected="PeakInvestigator™">
-                    <module name="Centroid">
-                        <parameter name="Noise level">100000.0</parameter>
-                    </module>
-                    <module name="Exact mass">
-                        <parameter name="Noise level">4000.0</parameter>
-                    </module>
-                    <module name="Local maxima">
-                        <parameter name="Noise level">0.0</parameter>
-                    </module>
-                    <module name="Recursive threshold">
-                        <parameter name="Noise level">0.0</parameter>
-                        <parameter name="Min m/z peak width">0.001</parameter>
-                        <parameter name="Max m/z peak width">1.0</parameter>
-                    </module>
-                    <module name="Wavelet transform">
-                        <parameter name="Noise level">33.0</parameter>
-                        <parameter name="Scale level">3</parameter>
-                        <parameter name="Wavelet window size (%)">0.3</parameter>
-                    </module>
-                    <module name="PeakInvestigator™">
-                        <parameter name="Veritomyx Username">regression@veritomyx.com</parameter>
-                        <parameter name="Password">FqHFcZdmD9kz2NqBYyJrMKQYRwZlruFN</parameter>
-                        <parameter name="Project Number">1000</parameter>
-                        <parameter name="Min Scan Number">20</parameter>
-                        <parameter name="Max Scan Number">21</parameter>
-                    </module>
-                </parameter>
                 <parameter name="MS level">1</parameter>
-                <parameter name="Mass list name">PeakInvestigator 3.2.3</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.nist.NistMsSearchModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="NIST MS Search directory"/>
-                <parameter name="Ionization method"/>
-                <parameter name="Spectrum RT tolerance" type="absolute">3.0</parameter>
-                <parameter name="Max. peaks per spectrum">10</parameter>
-                <parameter name="Must have same identities">true</parameter>
-                <parameter name="Min. match factor">800</parameter>
-                <parameter name="Min. reverse match factor">800</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.peaklist.export.IsotopePatternExportModule">
-            <parameters>
-                <parameter name="Output file"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveModule">
-            <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\t.mzmine</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.scatterplot.ScatterPlotVisualizerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.standardcompound.StandardCompoundNormalizerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">normalized</parameter>
-                <parameter name="Normalization type">Weighted contribution of all standards</parameter>
-                <parameter name="Peak measurement type">Peak area</parameter>
-                <parameter name="m/z vs RT balance">10.0</parameter>
-                <parameter name="Standard compounds"/>
-                <parameter name="Remove original peak list">false</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.filtering.rowsfilter.RowsFilterModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">filtered</parameter>
-                <parameter name="Minimum peaks in a row">1</parameter>
-                <parameter name="Minimum peaks in an isotope pattern"/>
-                <parameter name="m/z"/>
-                <parameter name="Retention time"/>
-                <parameter name="Peak duration range">
-                    <min>0.0</min>
-                    <max>10.0</max>
-                </parameter>
-                <parameter name="Parameter"/>
-                <parameter name="Only identified?"/>
-                <parameter name="Remove source peak list after filtering"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.intensityplot.IntensityPlotModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Raw data files"/>
-                <parameter name="X axis value">Raw data file</parameter>
-                <parameter name="Y axis value">Peak height</parameter>
-                <parameter name="Peak list rows"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.fragmentsearch.FragmentSearchModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Retention time tolerance"/>
-                <parameter name="m/z tolerance of MS2 data">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Max fragment peak height"/>
-                <parameter name="Min MS2 peak height"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.peaklist.export.MSMSExportModule">
-            <parameters>
-                <parameter name="Output file"/>
-                <parameter name="Peaks(mass) list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.tic.TICVisualizerModule">
-            <parameters>
-                <parameter name="Data files"/>
-                <parameter name="MS level">1</parameter>
-                <parameter name="Plot type">Base peak intensity</parameter>
                 <parameter name="Retention time">
-                    <min>0.0</min>
-                    <max>2400.0</max>
+                    <min>0.699</min>
+                    <max>1800.17</max>
                 </parameter>
-                <parameter name="m/z">
-                    <min>75.538</min>
-                    <max>408.762</max>
+                <parameter name="m/z"/>
+                <parameter name="Peak threshold settings">
+                    <mode>ALL_PEAKS</mode>
+                    <intensityThreshold>0.0</intensityThreshold>
+                    <topPeaksThreshold>0</topPeaksThreshold>
                 </parameter>
-                <parameter name="Peaks"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.adductsearch.AdductSearchModule">
+        <module class="net.sf.mzmine.modules.visualization.histogram.HistogramVisualizerModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="RT tolerance"/>
-                <parameter name="Adducts">
-                    <adduct mass_difference="21.9825" name="[M+Na-H]" selected="false"/>
-                    <adduct mass_difference="37.9559" name="[M+K-H]" selected="false"/>
-                    <adduct mass_difference="21.9694" name="[M+Mg-2H]" selected="false"/>
-                    <adduct mass_difference="17.0265" name="[M+NH3]" selected="false"/>
-                    <adduct mass_difference="97.9769" name="[M+H3PO4]" selected="false"/>
-                    <adduct mass_difference="97.9674" name="[M+H2SO4]" selected="false"/>
-                    <adduct mass_difference="62.0004" name="[M+H2CO3]" selected="false"/>
-                    <adduct mass_difference="5.0" name="[(Deuterium)]glycerol" selected="false"/>
-                </parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Max relative adduct peak height"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.filtering.duplicatefilter.DuplicateFilterModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">filtered</parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="RT tolerance"/>
-                <parameter name="Require same identification"/>
-                <parameter name="Remove original peaklist"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.projectionplots.CDAPlotModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Data files"/>
-                <parameter name="Peak list rows"/>
-                <parameter name="Coloring type"/>
-                <parameter name="Peak measurement type">Peak area</parameter>
-                <parameter name="X-axis component"/>
-                <parameter name="Y-axis component">2</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.rtnormalizer.RTNormalizerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">normalized</parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Retention time tolerance"/>
-                <parameter name="Minimum standard intensity"/>
-                <parameter name="Remove original peak list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.projectionplots.SammonsPlotModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Data files"/>
-                <parameter name="Peak list rows"/>
-                <parameter name="Coloring type"/>
-                <parameter name="Peak measurement type">Peak area</parameter>
-                <parameter name="X-axis component"/>
-                <parameter name="Y-axis component">2</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.glycerophospholipidsearch.GPLipidSearchModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Type of lipids"/>
-                <parameter name="Minimum fatty acid length"/>
-                <parameter name="Maximum fatty acid length"/>
-                <parameter name="Maximum number of double bonds"/>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Ionization method"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.masslistmethods.shoulderpeaksfilter.ShoulderPeaksFilterModule">
-            <parameters>
                 <parameter name="Raw data files"/>
-                <parameter name="Peaks(mass) list"/>
-                <parameter name="Mass resolution">60000.0</parameter>
-                <parameter name="Peak model function">Lorentzian extended</parameter>
-                <parameter name="Suffix">filtered</parameter>
-                <parameter name="Remove original mass list">false</parameter>
+                <parameter name="Plotted data"/>
+                <parameter name="Number of bins">10</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.shapemodeler.ShapeModelerModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.alignment.ransac.RansacAlignerModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Suffix">shaped peaks</parameter>
-                <parameter name="Mass resolution"/>
-                <parameter name="Shape model"/>
-                <parameter name="Remove original peak list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.isotopes.deisotoper.IsotopeGrouperModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">ecd</parameter>
+                <parameter name="Peak list name">Aligned peak list</parameter>
                 <parameter name="m/z tolerance">
-                    <absolutetolerance>0.025</absolutetolerance>
+                    <absolutetolerance>0.001</absolutetolerance>
                     <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
-                <parameter name="Retention time tolerance" type="absolute">0.1</parameter>
-                <parameter name="Monotonic shape">false</parameter>
-                <parameter name="Maximum charge">1</parameter>
-                <parameter name="Representative isotope">Lowest m/z</parameter>
-                <parameter name="Remove original peaklist">false</parameter>
+                <parameter name="RT tolerance"/>
+                <parameter name="RT tolerance after correction"/>
+                <parameter name="RANSAC iterations"/>
+                <parameter name="Minimum number of points"/>
+                <parameter name="Threshold value"/>
+                <parameter name="Linear model"/>
+                <parameter name="Require same charge state"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.camera.CameraSearchModule">
             <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\t.mzmine</parameter>
+                <parameter name="Peak lists"/>
+                <parameter name="FWHM sigma">0.2</parameter>
+                <parameter name="FWHM percentage">0.01</parameter>
+                <parameter name="Isotopes max. charge">3</parameter>
+                <parameter name="Isotopes max. per cluster">4</parameter>
+                <parameter name="Isotopes mass tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Correlation threshold">0.9</parameter>
+                <parameter name="Correlation p-value">0.05</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.custom.CustomDBSearchModule">
@@ -338,43 +91,154 @@
                 <parameter name="Retention time tolerance" type="absolute">1.54320987654321E-7</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.alignment.join.JoinAlignerModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.clustering.ClusteringModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Peak list name">Aligned peak list</parameter>
+                <parameter name="Peak measurement type">Peak area</parameter>
+                <parameter name="Data files"/>
+                <parameter name="Peak list rows"/>
+                <parameter name="Clustering algorithm">
+                    <module name="Density-based clusterer">
+                        <parameter name="Number of iterantions">3</parameter>
+                        <parameter name="Visualization type"/>
+                    </module>
+                    <module name="Farthest first clusterer">
+                        <parameter name="Visualization type"/>
+                        <parameter name="Number of clusters to generate">3</parameter>
+                    </module>
+                    <module name="Simple KMeans">
+                        <parameter name="Visualization type"/>
+                        <parameter name="Number of clusters to generate">3</parameter>
+                    </module>
+                    <module name="Hierarchical clusterer">
+                        <parameter name="Type of link"/>
+                        <parameter name="Distances"/>
+                    </module>
+                </parameter>
+                <parameter name="Type of data">Samples</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.peakextender.PeakExtenderModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">extended</parameter>
                 <parameter name="m/z tolerance">
                     <absolutetolerance>0.001</absolutetolerance>
                     <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
-                <parameter name="Weight for m/z">10.0</parameter>
-                <parameter name="Retention time tolerance" type="absolute">0.5</parameter>
-                <parameter name="Weight for RT">10.0</parameter>
-                <parameter name="Require same charge state">false</parameter>
-                <parameter name="Require same ID">false</parameter>
-                <parameter name="Compare isotope pattern" selected="false">
-                    <parameter name="Isotope m/z tolerance">
-                        <absolutetolerance>0.025</absolutetolerance>
-                        <ppmtolerance>5.0</ppmtolerance>
-                    </parameter>
-                    <parameter name="Minimum absolute intensity">20.0</parameter>
-                    <parameter name="Minimum score">0.0</parameter>
+                <parameter name="Min height"/>
+                <parameter name="Remove original peaklist"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveAsModule">
+            <parameters>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\tomas_cajka\Agilet6550\Agilet6550.pi323.mzmine</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.filtering.duplicatefilter.DuplicateFilterModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">filtered</parameter>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="RT tolerance"/>
+                <parameter name="Require same identification"/>
+                <parameter name="Remove original peaklist"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.rtmzplots.cvplot.CVPlotModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Data files"/>
+                <parameter name="Peak measurement type">Peak height</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.targetedpeakdetection.TargetedPeakDetectionModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Name suffix">detectedPeak</parameter>
+                <parameter name="Peak list file"/>
+                <parameter name="Field separator">,</parameter>
+                <parameter name="Ignore first line"/>
+                <parameter name="Intensity tolerance"/>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Retention time tolerance"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.io.xmlimport.XMLImportModule">
+            <parameters>
+                <parameter name="Filename"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.projectionplots.SammonsPlotModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Data files"/>
+                <parameter name="Peak list rows"/>
+                <parameter name="Coloring type"/>
+                <parameter name="Peak measurement type">Peak area</parameter>
+                <parameter name="X-axis component"/>
+                <parameter name="Y-axis component">2</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.gapfilling.samerange.SameRangeGapFillerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">gap-filled</parameter>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Remove original peak list">false</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.isotopes.isotopeprediction.IsotopePatternCalculator">
+            <parameters>
+                <parameter name="Formula"/>
+                <parameter name="Charge">1</parameter>
+                <parameter name="Polarity">Positive</parameter>
+                <parameter name="Minimum abundance">0.001</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.smoothing.SmoothingModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Filename suffix">smoothed</parameter>
+                <parameter name="Filter width">9</parameter>
+                <parameter name="Remove original peak list">false</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.rawdataimport.RawDataImportModule">
+            <parameters>
+                <parameter name="Raw data file names">
+                    <file>C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\030413jah_totallipid1c.mzXML</file>
                 </parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.visualization.twod.TwoDVisualizerModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.adductsearch.AdductSearchModule">
             <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="MS level">1</parameter>
-                <parameter name="Retention time">
-                    <min>0.699</min>
-                    <max>1800.17</max>
+                <parameter name="Peak lists"/>
+                <parameter name="RT tolerance"/>
+                <parameter name="Adducts">
+                    <adduct mass_difference="21.9825" name="[M+Na-H]" selected="false"/>
+                    <adduct mass_difference="37.9559" name="[M+K-H]" selected="false"/>
+                    <adduct mass_difference="21.9694" name="[M+Mg-2H]" selected="false"/>
+                    <adduct mass_difference="17.0265" name="[M+NH3]" selected="false"/>
+                    <adduct mass_difference="97.9769" name="[M+H3PO4]" selected="false"/>
+                    <adduct mass_difference="97.9674" name="[M+H2SO4]" selected="false"/>
+                    <adduct mass_difference="62.0004" name="[M+H2CO3]" selected="false"/>
+                    <adduct mass_difference="5.0" name="[(Deuterium)]glycerol" selected="false"/>
                 </parameter>
-                <parameter name="m/z"/>
-                <parameter name="Peak threshold settings">
-                    <mode>ALL_PEAKS</mode>
-                    <intensityThreshold>0.0</intensityThreshold>
-                    <topPeaksThreshold>0</topPeaksThreshold>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
+                <parameter name="Max relative adduct peak height"/>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.formulaprediction.FormulaPredictionModule">
@@ -415,17 +279,243 @@
                 </parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveAsModule">
-            <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\tomas_cajka\Agilet6550\Agilet6550.pi323.mzmine</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.msms.MsMsPeakPickerModule">
+        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.scanfilters.ScanFiltersModule">
             <parameters>
                 <parameter name="Raw data files"/>
-                <parameter name="m/z window"/>
-                <parameter name="Time window"/>
+                <parameter name="Suffix">filtered</parameter>
+                <parameter name="Filter" selected="Mean filter">
+                    <module name="Savitzky-Golay filter">
+                        <parameter name="Number of datapoints"/>
+                    </module>
+                    <module name="Mean filter">
+                        <parameter name="Window length">2.0</parameter>
+                    </module>
+                    <module name="Crop filter">
+                        <parameter name="m/z range"/>
+                    </module>
+                    <module name="Resampling filter">
+                        <parameter name="m/z bin length"/>
+                    </module>
+                </parameter>
+                <parameter name="Remove source file after filtering">false</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.scatterplot.ScatterPlotVisualizerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule">
+            <parameters>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\t.mzmine</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.baselinecorrection.BaselineCorrectionModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Filename suffix">baseline-corrected</parameter>
+                <parameter name="Chromatogram type">TIC</parameter>
                 <parameter name="MS level">1</parameter>
+                <parameter name="Smoothing">1.0E7</parameter>
+                <parameter name="Asymmetry">0.001</parameter>
+                <parameter name="Use m/z bins">true</parameter>
+                <parameter name="m/z bin width">1.0</parameter>
+                <parameter name="Remove source file after baseline correction">true</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.complexsearch.ComplexSearchModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Ionization method"/>
+                <parameter name="Retention time tolerance"/>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Max complex peak height"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.tic.TICVisualizerModule">
+            <parameters>
+                <parameter name="Data files"/>
+                <parameter name="MS level">1</parameter>
+                <parameter name="Plot type">Base peak intensity</parameter>
+                <parameter name="Retention time">
+                    <min>0.0</min>
+                    <max>2400.0</max>
+                </parameter>
+                <parameter name="m/z">
+                    <min>75.538</min>
+                    <max>408.762</max>
+                </parameter>
+                <parameter name="Peaks"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.spectra.SpectraVisualizerModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Scan number"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.tools.mzrangecalculator.MzRangeCalculatorModule">
+            <parameters>
+                <parameter name="Formula"/>
+                <parameter name="Ionization type"/>
+                <parameter name="Charge">1</parameter>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.peaklist.export.IsotopePatternExportModule">
+            <parameters>
+                <parameter name="Output file"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.rtmzplots.logratioplot.LogratioPlotModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Group one"/>
+                <parameter name="Group two"/>
+                <parameter name="Peak measurement type">Peak height</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Mass detector" selected="PeakInvestigator™">
+                    <module name="Centroid">
+                        <parameter name="Noise level">100000.0</parameter>
+                    </module>
+                    <module name="Exact mass">
+                        <parameter name="Noise level">4000.0</parameter>
+                    </module>
+                    <module name="Local maxima">
+                        <parameter name="Noise level">0.0</parameter>
+                    </module>
+                    <module name="Recursive threshold">
+                        <parameter name="Noise level">0.0</parameter>
+                        <parameter name="Min m/z peak width">0.001</parameter>
+                        <parameter name="Max m/z peak width">1.0</parameter>
+                    </module>
+                    <module name="Wavelet transform">
+                        <parameter name="Noise level">33.0</parameter>
+                        <parameter name="Scale level">3</parameter>
+                        <parameter name="Wavelet window size (%)">0.3</parameter>
+                    </module>
+                    <module name="PeakInvestigator™">
+                        <parameter name="Veritomyx Username">regression@veritomyx.com</parameter>
+                        <parameter name="Password">JkqzGo7W7IkMZ+XMPqVEdUijaTx9KKQi</parameter>
+                        <parameter name="Project Number">1000</parameter>
+                        <parameter name="Min Scan Number">20</parameter>
+                        <parameter name="Max Scan Number">21</parameter>
+                    </module>
+                </parameter>
+                <parameter name="MS level">1</parameter>
+                <parameter name="Mass list name">PeakInvestigator 3.2.3</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.heatmaps.HeatMapModule">
+            <parameters>
+                <parameter name="Output name">\tmp\aa.pdf</parameter>
+                <parameter name="Output file type">pdf</parameter>
+                <parameter name="Sample parameter"/>
+                <parameter name="Group of reference"/>
+                <parameter name="Only identified rows">false</parameter>
+                <parameter name="Use peak area">true</parameter>
+                <parameter name="Scaling">true</parameter>
+                <parameter name="Log">true</parameter>
+                <parameter name="Show control samples">true</parameter>
+                <parameter name="P-value legend">true</parameter>
+                <parameter name="Size p-value legend">5</parameter>
+                <parameter name="Height">10</parameter>
+                <parameter name="Width">10</parameter>
+                <parameter name="Column margin">10</parameter>
+                <parameter name="Row margin">10</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.peaklist.export.MSMSExportModule">
+            <parameters>
+                <parameter name="Output file"/>
+                <parameter name="Peaks(mass) list"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.manual.ManualPeakPickerModule">
+            <parameters>
+                <parameter name="Retention time"/>
+                <parameter name="m/z range"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.projectionplots.CDAPlotModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Data files"/>
+                <parameter name="Peak list rows"/>
+                <parameter name="Coloring type"/>
+                <parameter name="Peak measurement type">Peak area</parameter>
+                <parameter name="X-axis component"/>
+                <parameter name="Y-axis component">2</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.datasetfilters.DataSetFiltersModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Suffix">filtered</parameter>
+                <parameter name="Filter">
+                    <module name="Crop filter">
+                        <parameter name="Retention time"/>
+                    </module>
+                </parameter>
+                <parameter name="Remove source file after filtering"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.shapemodeler.ShapeModelerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Suffix">shaped peaks</parameter>
+                <parameter name="Mass resolution"/>
+                <parameter name="Shape model"/>
+                <parameter name="Remove original peak list"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.glycerophospholipidsearch.GPLipidSearchModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Type of lipids"/>
+                <parameter name="Minimum fatty acid length"/>
+                <parameter name="Maximum fatty acid length"/>
+                <parameter name="Maximum number of double bonds"/>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Ionization method"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.fragmentsearch.FragmentSearchModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Retention time tolerance"/>
+                <parameter name="m/z tolerance of MS2 data">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Max fragment peak height"/>
+                <parameter name="Min MS2 peak height"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.rtnormalizer.RTNormalizerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">normalized</parameter>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.001</absolutetolerance>
+                    <ppmtolerance>5.0</ppmtolerance>
+                </parameter>
+                <parameter name="Retention time tolerance"/>
+                <parameter name="Minimum standard intensity"/>
+                <parameter name="Remove original peak list"/>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.dbsearch.OnlineDBSearchModule">
@@ -462,75 +552,29 @@
                 </parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.io.csvexport.CSVExportModule">
+        <module class="net.sf.mzmine.modules.visualization.intensityplot.IntensityPlotModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Filename">\tmp\aa.csv</parameter>
-                <parameter name="Field separator">,</parameter>
-                <parameter name="Export common elements"/>
-                <parameter name="Export identity elements"/>
-                <parameter name="Export data file elements"/>
+                <parameter name="Raw data files"/>
+                <parameter name="X axis value">Raw data file</parameter>
+                <parameter name="Y axis value">Peak height</parameter>
+                <parameter name="Peak list rows"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.visualization.spectra.SpectraVisualizerModule">
+        <module class="net.sf.mzmine.modules.visualization.infovisualizer.InfoVisualizerModule">
+            <parameters/>
+        </module>
+        <module class="net.sf.mzmine.modules.masslistmethods.chromatogrambuilder.ChromatogramBuilderModule">
             <parameters>
                 <parameter name="Raw data files"/>
-                <parameter name="Scan number"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.camera.CameraSearchModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="FWHM sigma">0.2</parameter>
-                <parameter name="FWHM percentage">0.01</parameter>
-                <parameter name="Isotopes max. charge">3</parameter>
-                <parameter name="Isotopes max. per cluster">4</parameter>
-                <parameter name="Isotopes mass tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
+                <parameter name="Peaks(mass) list"/>
+                <parameter name="Min time span (min)">0.001</parameter>
+                <parameter name="Min height">10.0</parameter>
+                <parameter name="m/z tolerance">
+                    <absolutetolerance>0.015</absolutetolerance>
                     <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
-                <parameter name="Correlation threshold">0.9</parameter>
-                <parameter name="Correlation p-value">0.05</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.baselinecorrection.BaselineCorrectionModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Filename suffix">baseline-corrected</parameter>
-                <parameter name="Chromatogram type">TIC</parameter>
-                <parameter name="MS level">1</parameter>
-                <parameter name="Smoothing">1.0E7</parameter>
-                <parameter name="Asymmetry">0.001</parameter>
-                <parameter name="Use m/z bins">true</parameter>
-                <parameter name="m/z bin width">1.0</parameter>
-                <parameter name="Remove source file after baseline correction">true</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.clustering.ClusteringModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Peak measurement type">Peak area</parameter>
-                <parameter name="Data files"/>
-                <parameter name="Peak list rows"/>
-                <parameter name="Clustering algorithm">
-                    <module name="Density-based clusterer">
-                        <parameter name="Number of iterantions">3</parameter>
-                        <parameter name="Visualization type"/>
-                    </module>
-                    <module name="Farthest first clusterer">
-                        <parameter name="Visualization type"/>
-                        <parameter name="Number of clusters to generate">3</parameter>
-                    </module>
-                    <module name="Simple KMeans">
-                        <parameter name="Visualization type"/>
-                        <parameter name="Number of clusters to generate">3</parameter>
-                    </module>
-                    <module name="Hierarchical clusterer">
-                        <parameter name="Type of link"/>
-                        <parameter name="Distances"/>
-                    </module>
-                </parameter>
-                <parameter name="Type of data">Samples</parameter>
+                <parameter name="Suffix">ec</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.io.sqlexport.SQLExportModule">
@@ -541,122 +585,9 @@
                 <parameter name="Export columns"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.smoothing.SmoothingModule">
+        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveModule">
             <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Filename suffix">smoothed</parameter>
-                <parameter name="Filter width">9</parameter>
-                <parameter name="Remove original peak list">false</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.masslistmethods.listexport.ListExportModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Export original scans">true</parameter>
-                <parameter name="Peaks(mass) list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.rtmzplots.cvplot.CVPlotModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Data files"/>
-                <parameter name="Peak measurement type">Peak height</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.infovisualizer.InfoVisualizerModule">
-            <parameters/>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.peaklist.PeakListTableModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Common columns">
-                    <item>ID</item>
-                    <item>m/z</item>
-                    <item>Ret.time</item>
-                    <item>Identity</item>
-                    <item>Comment</item>
-                    <item>Peak shape</item>
-                    <widths>49:55:62:164:98:356</widths>
-                </parameter>
-                <parameter name="Data file columns">
-                    <item>Status</item>
-                    <item>Height</item>
-                    <item>Area</item>
-                    <widths>17:100:100:100:100:71:63:100</widths>
-                </parameter>
-                <parameter name="Row height">30</parameter>
-                <parameter name="Peak shape normalization">Peak maximum</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.filtering.datasetfilters.DataSetFiltersModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Suffix">filtered</parameter>
-                <parameter name="Filter">
-                    <module name="Crop filter">
-                        <parameter name="Retention time"/>
-                    </module>
-                </parameter>
-                <parameter name="Remove source file after filtering"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.alignment.ransac.RansacAlignerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Peak list name">Aligned peak list</parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="RT tolerance"/>
-                <parameter name="RT tolerance after correction"/>
-                <parameter name="RANSAC iterations"/>
-                <parameter name="Minimum number of points"/>
-                <parameter name="Threshold value"/>
-                <parameter name="Linear model"/>
-                <parameter name="Require same charge state"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.io.xmlexport.XMLExportModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Filename"/>
-                <parameter name="Compressed file"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.visualization.threed.ThreeDVisualizerModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="MS level">1</parameter>
-                <parameter name="Retention time">
-                    <min>0.0</min>
-                    <max>0.8</max>
-                </parameter>
-                <parameter name="Retention time resolution">500</parameter>
-                <parameter name="m/z">
-                    <min>272.986</min>
-                    <max>273.086</max>
-                </parameter>
-                <parameter name="m/z resolution">500</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.gapfilling.samerange.SameRangeGapFillerModule">
-            <parameters>
-                <parameter name="Peak lists"/>
-                <parameter name="Name suffix">gap-filled</parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Remove original peak list">false</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.isotopes.isotopeprediction.IsotopePatternCalculator">
-            <parameters>
-                <parameter name="Formula"/>
-                <parameter name="Charge">1</parameter>
-                <parameter name="Polarity">Positive</parameter>
-                <parameter name="Minimum abundance">0.001</parameter>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\z.mzmine</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.gapfilling.peakfinder.PeakFinderModule">
@@ -673,35 +604,16 @@
                 <parameter name="Remove original peak list"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.manual.ManualPeakPickerModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.identification.nist.NistMsSearchModule">
             <parameters>
-                <parameter name="Retention time"/>
-                <parameter name="m/z range"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.rawdataimport.RawDataImportModule">
-            <parameters>
-                <parameter name="Raw data file names">
-                    <file>C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\030413jah_totallipid1c.mzXML</file>
-                </parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.masslistmethods.chromatogrambuilder.ChromatogramBuilderModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Peaks(mass) list"/>
-                <parameter name="Min time span (min)">0.001</parameter>
-                <parameter name="Min height">10.0</parameter>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.015</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
-                </parameter>
-                <parameter name="Suffix">ec</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.io.xmlimport.XMLImportModule">
-            <parameters>
-                <parameter name="Filename"/>
+                <parameter name="Peak lists"/>
+                <parameter name="NIST MS Search directory"/>
+                <parameter name="Ionization method"/>
+                <parameter name="Spectrum RT tolerance" type="absolute">3.0</parameter>
+                <parameter name="Max. peaks per spectrum">10</parameter>
+                <parameter name="Must have same identities">true</parameter>
+                <parameter name="Min. match factor">800</parameter>
+                <parameter name="Min. reverse match factor">800</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.DeconvolutionModule">
@@ -760,31 +672,54 @@
                 <parameter name="Remove original peak list">false</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.tools.mzrangecalculator.MzRangeCalculatorModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.alignment.join.JoinAlignerModule">
             <parameters>
-                <parameter name="Formula"/>
-                <parameter name="Ionization type"/>
-                <parameter name="Charge">1</parameter>
+                <parameter name="Peak lists"/>
+                <parameter name="Peak list name">Aligned peak list</parameter>
                 <parameter name="m/z tolerance">
                     <absolutetolerance>0.001</absolutetolerance>
                     <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
+                <parameter name="Weight for m/z">10.0</parameter>
+                <parameter name="Retention time tolerance" type="absolute">0.5</parameter>
+                <parameter name="Weight for RT">10.0</parameter>
+                <parameter name="Require same charge state">false</parameter>
+                <parameter name="Require same ID">false</parameter>
+                <parameter name="Compare isotope pattern" selected="false">
+                    <parameter name="Isotope m/z tolerance">
+                        <absolutetolerance>0.025</absolutetolerance>
+                        <ppmtolerance>5.0</ppmtolerance>
+                    </parameter>
+                    <parameter name="Minimum absolute intensity">20.0</parameter>
+                    <parameter name="Minimum score">0.0</parameter>
+                </parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.visualization.histogram.HistogramVisualizerModule">
+        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.msms.MsMsPeakPickerModule">
             <parameters>
-                <parameter name="Peak lists"/>
                 <parameter name="Raw data files"/>
-                <parameter name="Plotted data"/>
-                <parameter name="Number of bins">10</parameter>
+                <parameter name="m/z window"/>
+                <parameter name="Time window"/>
+                <parameter name="MS level">1</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.rtmzplots.logratioplot.LogratioPlotModule">
+        <module class="net.sf.mzmine.modules.projectmethods.projectclose.ProjectCloseModule">
+            <parameters/>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.io.xmlexport.XMLExportModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Group one"/>
-                <parameter name="Group two"/>
-                <parameter name="Peak measurement type">Peak height</parameter>
+                <parameter name="Filename"/>
+                <parameter name="Compressed file"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.linear.LinearNormalizerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">normalized</parameter>
+                <parameter name="Normalization type"/>
+                <parameter name="Peak measurement type"/>
+                <parameter name="Remove original peak list"/>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.projectionplots.PCAPlotModule">
@@ -798,35 +733,80 @@
                 <parameter name="Y-axis component">2</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.dataanalysis.heatmaps.HeatMapModule">
-            <parameters>
-                <parameter name="Output name">\tmp\aa.pdf</parameter>
-                <parameter name="Output file type">pdf</parameter>
-                <parameter name="Sample parameter"/>
-                <parameter name="Group of reference"/>
-                <parameter name="Only identified rows">false</parameter>
-                <parameter name="Use peak area">true</parameter>
-                <parameter name="Scaling">true</parameter>
-                <parameter name="Log">true</parameter>
-                <parameter name="Show control samples">true</parameter>
-                <parameter name="P-value legend">true</parameter>
-                <parameter name="Size p-value legend">5</parameter>
-                <parameter name="Height">10</parameter>
-                <parameter name="Width">10</parameter>
-                <parameter name="Column margin">10</parameter>
-                <parameter name="Row margin">10</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.peakextender.PeakExtenderModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.io.csvexport.CSVExportModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Name suffix">extended</parameter>
+                <parameter name="Filename">\tmp\aa.csv</parameter>
+                <parameter name="Field separator">,</parameter>
+                <parameter name="Export common elements"/>
+                <parameter name="Export identity elements"/>
+                <parameter name="Export data file elements"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.masslistmethods.listexport.ListExportModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Export original scans">true</parameter>
+                <parameter name="Peaks(mass) list"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.visualization.threed.ThreeDVisualizerModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="MS level">1</parameter>
+                <parameter name="Retention time">
+                    <min>0.0</min>
+                    <max>0.8</max>
+                </parameter>
+                <parameter name="Retention time resolution">500</parameter>
+                <parameter name="m/z">
+                    <min>272.986</min>
+                    <max>273.086</max>
+                </parameter>
+                <parameter name="m/z resolution">500</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.masslistmethods.shoulderpeaksfilter.ShoulderPeaksFilterModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Peaks(mass) list"/>
+                <parameter name="Mass resolution">60000.0</parameter>
+                <parameter name="Peak model function">Lorentzian extended</parameter>
+                <parameter name="Suffix">filtered</parameter>
+                <parameter name="Remove original mass list">false</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.isotopes.deisotoper.IsotopeGrouperModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">ecd</parameter>
                 <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
+                    <absolutetolerance>0.025</absolutetolerance>
                     <ppmtolerance>5.0</ppmtolerance>
                 </parameter>
-                <parameter name="Min height"/>
-                <parameter name="Remove original peaklist"/>
+                <parameter name="Retention time tolerance" type="absolute">0.1</parameter>
+                <parameter name="Monotonic shape">false</parameter>
+                <parameter name="Maximum charge">1</parameter>
+                <parameter name="Representative isotope">Lowest m/z</parameter>
+                <parameter name="Remove original peaklist">false</parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.batchmode.BatchModeModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Peak lists"/>
+                <parameter name="Batch queue"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.peaklistmethods.normalization.standardcompound.StandardCompoundNormalizerModule">
+            <parameters>
+                <parameter name="Peak lists"/>
+                <parameter name="Name suffix">normalized</parameter>
+                <parameter name="Normalization type">Weighted contribution of all standards</parameter>
+                <parameter name="Peak measurement type">Peak area</parameter>
+                <parameter name="m/z vs RT balance">10.0</parameter>
+                <parameter name="Standard compounds"/>
+                <parameter name="Remove original peak list">false</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.visualization.neutralloss.NeutralLossVisualizerModule">
@@ -838,23 +818,43 @@
                 <parameter name="Fragments"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.peaklistmethods.identification.complexsearch.ComplexSearchModule">
+        <module class="net.sf.mzmine.modules.visualization.peaklist.PeakListTableModule">
             <parameters>
                 <parameter name="Peak lists"/>
-                <parameter name="Ionization method"/>
-                <parameter name="Retention time tolerance"/>
-                <parameter name="m/z tolerance">
-                    <absolutetolerance>0.001</absolutetolerance>
-                    <ppmtolerance>5.0</ppmtolerance>
+                <parameter name="Common columns">
+                    <item>ID</item>
+                    <item>m/z</item>
+                    <item>Ret.time</item>
+                    <item>Identity</item>
+                    <item>Comment</item>
+                    <item>Peak shape</item>
+                    <widths>49:55:62:164:98:356</widths>
                 </parameter>
-                <parameter name="Max complex peak height"/>
+                <parameter name="Data file columns">
+                    <item>Status</item>
+                    <item>Height</item>
+                    <item>Area</item>
+                    <widths>17:100:100:100:100:71:63:100</widths>
+                </parameter>
+                <parameter name="Row height">30</parameter>
+                <parameter name="Peak shape normalization">Peak maximum</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.batchmode.BatchModeModule">
+        <module class="net.sf.mzmine.modules.peaklistmethods.filtering.rowsfilter.RowsFilterModule">
             <parameters>
-                <parameter name="Raw data files"/>
                 <parameter name="Peak lists"/>
-                <parameter name="Batch queue"/>
+                <parameter name="Name suffix">filtered</parameter>
+                <parameter name="Minimum peaks in a row">1</parameter>
+                <parameter name="Minimum peaks in an isotope pattern"/>
+                <parameter name="m/z"/>
+                <parameter name="Retention time"/>
+                <parameter name="Peak duration range">
+                    <min>0.0</min>
+                    <max>10.0</max>
+                </parameter>
+                <parameter name="Parameter"/>
+                <parameter name="Only identified?"/>
+                <parameter name="Remove source peak list after filtering"/>
             </parameters>
         </module>
     </modules>
