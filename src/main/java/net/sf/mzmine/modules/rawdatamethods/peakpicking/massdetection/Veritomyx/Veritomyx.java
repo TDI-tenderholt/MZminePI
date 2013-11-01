@@ -40,14 +40,11 @@ import java.util.zip.GZIPInputStream;
 import javax.annotation.Nonnull;
 
 import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
-import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
-import net.sf.mzmine.parameters.UserParameter;
-import net.sf.mzmine.project.impl.MZmineProjectImpl;
+import net.sf.mzmine.project.impl.RawDataFileImpl;
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
@@ -70,7 +67,6 @@ public class Veritomyx implements MassDetector
 	private int    web_result = WEB_UNDEFINED;
 	private String web_str    = null;
 
-	private MZmineProjectImpl project     = null;
 	private Logger            logger      = null;
 	private SftpUtil          sftp        = null;
 	private SftpSession       session     = null;
@@ -114,13 +110,16 @@ public class Veritomyx implements MassDetector
 	 * 
 	 * @return
 	 */
-	public int getMassValuesPasses()
-	{ 
-		// get the v_project so we can save the launched job info in it
-		project = (MZmineProjectImpl) MZmineCore.getCurrentProject();
-		UserParameter<String, ?> job = null;
-//		project.addParameter(job);
-		return 2;
+	public int getMassValuesPasses(ParameterSet parameters)
+	{
+		username  = parameters.getParameter(VeritomyxParameters.username).getValue();
+		password  = parameters.getParameter(VeritomyxParameters.password).getValue();
+		v_project = parameters.getParameter(VeritomyxParameters.project).getValue();
+		// make sure we have access to the Veritomyx Server
+		// this also gets the tarfilename and SFTP credentials
+		if (!_open_sftp_session())
+			return 0;	// return zero if we can't get to the server
+		return 2;		// this is the actual count of passes required
 	}
 
 	/**
@@ -133,20 +132,16 @@ public class Veritomyx implements MassDetector
 	 */
 	public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters)
 	{
-		username           = parameters.getParameter(VeritomyxParameters.username).getValue();
-		password           = parameters.getParameter(VeritomyxParameters.password).getValue();
-		v_project          = parameters.getParameter(VeritomyxParameters.project).getValue();
-		int     first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
-		int     last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
+		int first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
+		int last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
 		List<DataPoint> mzPeaks = null;
-		RawDataFile raw   = scan.getDataFile();
+		RawDataFileImpl raw   = (RawDataFileImpl) scan.getDataFile();
 		int scan_num      = scan.getScanNumber();
 		int scanNumbers[] = raw.getScanNumbers(scan.getMSLevel());
 		if (scanNumbers[0] > first_scan)						// make sure the first scan is in range
 			first_scan = scanNumbers[0];
 		if (scanNumbers[scanNumbers.length - 1] < last_scan)	// make sure the last scan is in range
 			last_scan = scanNumbers[scanNumbers.length - 1];
-		tarfilename = raw.getName() + ".scans.tar";
 
 		// simply return null if we are not in our scan range
 		if ((scan_num < first_scan) || (scan_num > last_scan))
@@ -159,6 +154,7 @@ public class Veritomyx implements MassDetector
 			try {
 				if (scan_num == first_scan)
 				{
+					raw.addJob(tarfilename, "start");	// record this job start
 					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
 				}
 	
@@ -186,13 +182,15 @@ public class Veritomyx implements MassDetector
 		
 					//####################################################################
 					// start for remote job
-					if (_web_page("run", tarfilename) < WEB_RUNNING)
+					if (_web_page("RUN", tarfilename) < WEB_RUNNING)
 					{
 						logger.info("Error: Failed to launch job for " + tarfilename);
+						return null;
 					}
-					else
-						logger.info(web_str.split(" ",2)[1]);
-		
+
+					// job was started - record it
+					logger.info(web_str.split(" ",2)[1]);
+					raw.addJob(tarfilename, web_str);
 					f = new File(tarfilename);
 					f.delete();			// remove the local copy of the tar file
 				}
@@ -210,7 +208,7 @@ public class Veritomyx implements MassDetector
 			{
 				//####################################################################
 				// wait for remote job to complete
-				_web_page("status", tarfilename);
+				_web_page("STATUS", tarfilename);
 				while (web_result != WEB_DONE)
 				{
 					try {
@@ -218,13 +216,13 @@ public class Veritomyx implements MassDetector
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					_web_page("status", tarfilename);
+					_web_page("STATUS", tarfilename);
 				}
 				logger.info(web_str.split(" ",2)[1]);
 	
 				//####################################################################
 				// read the results tar file and extract all the peak list files
-				String rtarfilename = raw.getName() + ".vcent.tar";	// results tar file name
+				String rtarfilename = tarfilename.replaceFirst(".scans.tar", ".vcent.tar");	// results tar file name
 				_sftp_get_file(rtarfilename);
 				logger.info("Reading centroided data from " + rtarfilename);
 				{
@@ -287,6 +285,11 @@ public class Veritomyx implements MassDetector
 				logger.info("Error: Cannot parse peaks file.");
 				e.printStackTrace();
 			}
+			
+			if (scan_num == last_scan)
+			{
+				raw.addJob(tarfilename, "end");
+			}
 		}
 
 		if (mzPeaks == null)
@@ -311,18 +314,18 @@ public class Veritomyx implements MassDetector
 		try {
 			// build the URL with parameters
 			String page = "http://" + host + "/vtmx/interface/vtmx_sftp_job.php" + 
-					"?Version=" + "1.2.6" +
+					"?Version=" + "1.2.11" +	// minimum online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + v_project +
 					"&Action="  + action;
-			if ((action == "run") || (action == "status"))	// need more parameters for these command
+			if ((action == "RUN") || (action == "STATUS"))	// need more parameters for these command
 			{
 				page += "&Command=" + "ckm" +	// Centroid Set
-						"&File="    + URLEncoder.encode(tname, "UTF-8") +
+						"&Job="     + URLEncoder.encode(tname, "UTF-8") +
 						"&Force="   + "1";
 			}
-			//System.out.println(page);
+			System.out.println(page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
@@ -367,14 +370,15 @@ public class Veritomyx implements MassDetector
 	{
 		if (sftp_user == null)
 		{
-			if (_web_page("sftp", "") != WEB_DONE)
+			if (_web_page("JOB", "") != WEB_DONE)
 			{
 				logger.info("Error: SFTP access not available");
 				return false;
 			}
 			String sa[] = web_str.split(" ");
-			sftp_user  = sa[1];
-			sftp_pw    = sa[2];
+			tarfilename = sa[1];
+			sftp_user   = sa[2];
+			sftp_pw     = sa[3];
 		}
 		if (session == null)
 		{
@@ -390,13 +394,13 @@ public class Veritomyx implements MassDetector
 			SftpResult result = sftp.cd(session, dir);	// cd into the v_project directory
 			if (!result.getSuccessFlag())
 			{
-				result = sftp.mkdir(session, dir + "/batches");
+				result = sftp.mkdir(session, "/batches");
 				if (!result.getSuccessFlag())
 				{
 					logger.info("Error: Cannot create remote directory, " + dir + "/batches");
 					return false;
 				}
-				result = sftp.mkdir(session, dir + "/results");
+				result = sftp.mkdir(session, "/results");
 				if (!result.getSuccessFlag())
 				{
 					logger.info("Error: Cannot create remote directory, " + dir + "/results");
@@ -423,11 +427,8 @@ public class Veritomyx implements MassDetector
 	 */
 	private boolean _sftp_put_file(String fname)
 	{
-		SftpResult result;	
-
+		SftpResult result;
 		logger.info("Put " + sftp_user + "@" + host + ":" + dir + "/" + fname);
-		if (!_open_sftp_session())
-			return false;
 
 		sftp.cd(session, "batches");
 		sftp.rm(session, fname);
@@ -450,7 +451,6 @@ public class Veritomyx implements MassDetector
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -462,10 +462,7 @@ public class Veritomyx implements MassDetector
 	private boolean _sftp_get_file(String fname)
 	{
 		SftpResult result;
-
 		logger.info("Get " + sftp_user + "@" + host + ":" + dir + "/" + fname);
-		if (!_open_sftp_session())
-			return false;
 
 		sftp.cd(session, "results");
 		result = sftp.get(session, fname);
@@ -480,5 +477,4 @@ public class Veritomyx implements MassDetector
 
 		return true;
 	}
-
 }
