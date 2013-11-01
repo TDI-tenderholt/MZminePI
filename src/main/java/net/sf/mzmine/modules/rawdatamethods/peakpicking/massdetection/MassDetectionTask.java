@@ -50,19 +50,12 @@ public class MassDetectionTask extends AbstractTask {
      * @param parameters
      */
     @SuppressWarnings("unchecked")
-    public MassDetectionTask(RawDataFile dataFile, ParameterSet parameters) {
-	
-		this.dataFile = dataFile;
-	
-		this.massDetector = parameters.getParameter(
-			MassDetectionParameters.massDetector).getValue();
-	
-		this.msLevel = parameters.getParameter(MassDetectionParameters.msLevel)
-			.getValue();
-	
-		this.name = parameters.getParameter(MassDetectionParameters.name)
-			.getValue();
-
+    public MassDetectionTask(RawDataFile dataFile, ParameterSet parameters)
+    {
+		this.dataFile     = dataFile;
+		this.massDetector = parameters.getParameter(MassDetectionParameters.massDetector).getValue();
+		this.msLevel      = parameters.getParameter(MassDetectionParameters.msLevel).getValue();
+		this.name         = parameters.getParameter(MassDetectionParameters.name).getValue();
     }
 
     /**
@@ -78,8 +71,7 @@ public class MassDetectionTask extends AbstractTask {
     public double getFinishedPercentage() {
 		if (totalScans == 0)
 		    return 0;
-		else
-		    return (double) processedScans / (totalScans * passes);
+		return (double) processedScans / (totalScans * passes);
     }
 
     public RawDataFile getDataFile() {
@@ -103,8 +95,8 @@ public class MassDetectionTask extends AbstractTask {
 		for (int pass = 1; pass <= passes; pass++)
 		{
 			// Process scans one by one
-			for (int i = 0; i < totalScans; i++) {
-
+			for (int i = 0; i < totalScans; i++)
+			{
 			    if (isCanceled())
 			    	return;
 
@@ -127,8 +119,8 @@ public class MassDetectionTask extends AbstractTask {
 		logger.info("Finished " + detector.getName() + " mass detector on " + dataFile);
     }
 
-    public Object[] getCreatedObjects() {
+    public Object[] getCreatedObjects()
+    {
     	return null;
     }
-
 }
