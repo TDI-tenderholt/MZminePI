@@ -40,7 +40,10 @@ enum RawDataElementName {
 	MASS_LIST("mass_list"),
 	STORED_DATAPOINTS("stored_datapoints"),
 	STORED_DATA("stored_data"),
-	STORAGE_ID("storage_id");
+	STORAGE_ID("storage_id"),
+	JOB_COUNT("num_jobs"),
+	JOB_ID("job_id"),
+	JOB_INFO("job_info");
 
 	private String elementName;
 
