@@ -29,29 +29,19 @@ public class RemoteJobInfo implements JobInfo
 {
 	private String name;
 	private String status;
+	private int min_scan, max_scan;
 	
-	public RemoteJobInfo(String name)
+	public RemoteJobInfo(String name, int min_scan, int max_scan)
 	{
-		this.setName(name);
+		this.name     = name;
+		this.status   = "Initialized";
+		this.min_scan = min_scan;
+		this.max_scan = max_scan;
 	}
 
-    public String getName()
-    {
-    	return name;
-    }
-
-    public void setName(String name)
-    {
-    	this.name = name;
-    }
-
-    public String getStatus()
-    {
-    	return status;
-    }
-
-    public void setStatus(String status)
-    {
-    	this.status = status;
-    }
+    public String getName()    { return name; }
+    public int    getMinScan() { return min_scan; }
+    public int    getMaxScan() { return max_scan; }
+    public String getStatus()  { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

@@ -28,8 +28,8 @@ import javax.annotation.Nonnull;
 public interface JobInfo
 {
     @Nonnull public String getName();
-    @Nonnull public void   setName(@Nonnull String name);
-
+    @Nonnull public int    getMinScan();
+    @Nonnull public int    getMaxScan();
     @Nonnull public String getStatus();
     @Nonnull public void   setStatus(@Nonnull String status);
 }

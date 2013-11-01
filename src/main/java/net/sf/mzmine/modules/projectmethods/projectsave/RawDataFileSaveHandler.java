@@ -208,11 +208,13 @@ class RawDataFileSaveHandler {
 		hd.endElement("", "", RawDataElementName.JOB_COUNT.getElementName());
 		for (RemoteJobInfo job : jobs)
 		{
-			atts.addAttribute("", "", RawDataElementName.JOB_ID.getElementName(), "CDATA", job.getName());
-		    hd.startElement("", "", RawDataElementName.JOB_INFO.getElementName(), atts);
+			atts.addAttribute("", "", RawDataElementName.JOB_NAME.getElementName(), "CDATA", job.getName());
+			atts.addAttribute("", "", RawDataElementName.JOB_MIN_SCAN.getElementName(), "CDATA", String.valueOf(job.getMinScan()));
+			atts.addAttribute("", "", RawDataElementName.JOB_MAX_SCAN.getElementName(), "CDATA", String.valueOf(job.getMaxScan()));
+		    hd.startElement("", "", RawDataElementName.JOB.getElementName(), atts);
 		    String s = job.getStatus();
 		    hd.characters(s.toCharArray(), 0, s.length());
-			hd.endElement("", "", RawDataElementName.JOB_INFO.getElementName());
+			hd.endElement("", "", RawDataElementName.JOB.getElementName());
 			atts.clear();
 		}
 

@@ -347,7 +347,8 @@ public class ProjectOpeningTask extends AbstractTask {
 
         Pattern filePattern = Pattern.compile("Raw data file #([\\d]+) (.*)\\.xml$");
 
-        Enumeration zipEntries = zipFile.entries();
+        @SuppressWarnings("rawtypes")
+		Enumeration zipEntries = zipFile.entries();
         while (zipEntries.hasMoreElements()) {
 
             // Canceled
@@ -380,7 +381,8 @@ public class ProjectOpeningTask extends AbstractTask {
         Pattern filePattern = Pattern
                 .compile("Peak list #([\\d]+) (.*)\\.xml$");
 
-        Enumeration zipEntries = zipFile.entries();
+        @SuppressWarnings("rawtypes")
+		Enumeration zipEntries = zipFile.entries();
         while (zipEntries.hasMoreElements()) {
 
             // Canceled

@@ -42,8 +42,10 @@ enum RawDataElementName {
 	STORED_DATA("stored_data"),
 	STORAGE_ID("storage_id"),
 	JOB_COUNT("num_jobs"),
-	JOB_ID("job_id"),
-	JOB_INFO("job_info");
+	JOB("job"),
+	JOB_NAME("name"),
+	JOB_MIN_SCAN("min_scan"),
+	JOB_MAX_SCAN("max_scan");
 
 	private String elementName;
 

@@ -154,7 +154,7 @@ public class Veritomyx implements MassDetector
 			try {
 				if (scan_num == first_scan)
 				{
-					raw.addJob(tarfilename, "start");	// record this job start
+					raw.addJob(tarfilename, first_scan, last_scan);	// record this job start
 					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(tarfilename)));
 				}
 	
@@ -182,7 +182,7 @@ public class Veritomyx implements MassDetector
 		
 					//####################################################################
 					// start for remote job
-					if (_web_page("RUN", tarfilename) < WEB_RUNNING)
+					if (_web_page("RUN") < WEB_RUNNING)
 					{
 						logger.info("Error: Failed to launch job for " + tarfilename);
 						return null;
@@ -190,7 +190,7 @@ public class Veritomyx implements MassDetector
 
 					// job was started - record it
 					logger.info(web_str.split(" ",2)[1]);
-					raw.addJob(tarfilename, web_str);
+					raw.updateJob(tarfilename, "Running");
 					f = new File(tarfilename);
 					f.delete();			// remove the local copy of the tar file
 				}
@@ -208,7 +208,7 @@ public class Veritomyx implements MassDetector
 			{
 				//####################################################################
 				// wait for remote job to complete
-				_web_page("STATUS", tarfilename);
+				_web_page("STATUS");
 				while (web_result != WEB_DONE)
 				{
 					try {
@@ -216,9 +216,10 @@ public class Veritomyx implements MassDetector
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					_web_page("STATUS", tarfilename);
+					_web_page("STATUS");
 				}
 				logger.info(web_str.split(" ",2)[1]);
+				raw.updateJob(tarfilename, "Done");
 	
 				//####################################################################
 				// read the results tar file and extract all the peak list files
@@ -288,7 +289,8 @@ public class Veritomyx implements MassDetector
 			
 			if (scan_num == last_scan)
 			{
-				raw.addJob(tarfilename, "end");
+				raw.removeJob(tarfilename);
+				_close_sftp_session();
 			}
 		}
 
@@ -302,10 +304,9 @@ public class Veritomyx implements MassDetector
 	 * Puts first line of results into web_results String
 	 * 
 	 * @param action
-	 * @param tname
 	 * @return int
 	 */
-	private int _web_page(String action, String tname)
+	private int _web_page(String action)
 	{
 		web_result        = WEB_UNDEFINED;
 		web_str           = null;
@@ -322,7 +323,7 @@ public class Veritomyx implements MassDetector
 			if ((action == "RUN") || (action == "STATUS"))	// need more parameters for these command
 			{
 				page += "&Command=" + "ckm" +	// Centroid Set
-						"&Job="     + URLEncoder.encode(tname, "UTF-8") +
+						"&Job="     + URLEncoder.encode(tarfilename, "UTF-8") +
 						"&Force="   + "1";
 			}
 			System.out.println(page);
@@ -370,7 +371,7 @@ public class Veritomyx implements MassDetector
 	{
 		if (sftp_user == null)
 		{
-			if (_web_page("JOB", "") != WEB_DONE)
+			if (_web_page("JOB") != WEB_DONE)
 			{
 				logger.info("Error: SFTP access not available");
 				return false;

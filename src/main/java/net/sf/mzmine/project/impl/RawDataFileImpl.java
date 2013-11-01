@@ -398,17 +398,38 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
 		StorableScan storedScan = new StorableScan(newScan, this, dataPoints.length, storageID);
 		scans.put(newScan.getScanNumber(), storedScan);
     }
-    
+
     /**
      * Add a remote job descriptor to the data file
-     * 
-     * @throws IOException
      */
-    public synchronized void addJob(String name, String status)
+    public synchronized void addJob(String name, int min_scan, int max_scan)
     {
-    	RemoteJobInfo job = new RemoteJobInfo(name);
-    	job.setStatus(status);
+    	RemoteJobInfo job = new RemoteJobInfo(name, min_scan, max_scan);
     	this.jobs_info.add(job);
+    }
+
+    /**
+     * Update the status of a remote job
+     */
+    public synchronized void updateJob(String name, String status)
+    {
+    	for (RemoteJobInfo job : jobs_info)
+    	{
+    		if (job.getName() == name)
+    			job.setStatus(status);
+    	}
+    }
+    
+    /**
+     * Remove a remote job descriptor to the data file
+     */
+    public synchronized void removeJob(String name)
+    {
+    	for (RemoteJobInfo job : jobs_info)
+    	{
+    		if (job.getName() == name)
+    			jobs_info.remove(job);
+    	}
     }
 
     public ArrayList<RemoteJobInfo> getJobs()

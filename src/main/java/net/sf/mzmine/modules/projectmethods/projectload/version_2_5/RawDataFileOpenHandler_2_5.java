@@ -73,6 +73,7 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
     private TreeMap<Integer, Integer> dataPointsLengths;
     private StreamCopy copyMachine;
     private ArrayList<StorableMassList> massLists;
+    private String jobName;
 
     private boolean canceled = false;
 
@@ -167,11 +168,8 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
         if (canceled)
             throw new SAXException("Parsing canceled");
 
-        if (qName.equals(RawDataElementName_2_5.QUANTITY_FRAGMENT_SCAN
-                .getElementName())) {
-            numberOfFragments = Integer
-                    .parseInt(attrs.getValue(RawDataElementName_2_5.QUANTITY
-                            .getElementName()));
+        if (qName.equals(RawDataElementName_2_5.QUANTITY_FRAGMENT_SCAN.getElementName())) {
+            numberOfFragments = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.QUANTITY.getElementName()));
             if (numberOfFragments > 0) {
                 fragmentScan = new int[numberOfFragments];
                 fragmentCount = 0;
@@ -179,29 +177,27 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
         }
 
         if (qName.equals(RawDataElementName_2_5.SCAN.getElementName())) {
-            currentStorageID = Integer.parseInt(attrs
-                    .getValue(RawDataElementName_2_5.STORAGE_ID
-                            .getElementName()));
+            currentStorageID = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.STORAGE_ID.getElementName()));
         }
 
         if (qName.equals(RawDataElementName_2_5.STORED_DATA.getElementName())) {
-            storedDataID = Integer.parseInt(attrs
-                    .getValue(RawDataElementName_2_5.STORAGE_ID
-                            .getElementName()));
-            storedDataNumDP = Integer.parseInt(attrs
-                    .getValue(RawDataElementName_2_5.QUANTITY_DATAPOINTS
-                            .getElementName()));
+        	storedDataID    = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.STORAGE_ID.getElementName()));
+            storedDataNumDP = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.QUANTITY_DATAPOINTS.getElementName()));
         }
 
         if (qName.equals(RawDataElementName_2_5.MASS_LIST.getElementName())) {
-            String name = attrs.getValue(RawDataElementName_2_5.NAME
-                    .getElementName());
-            int storageID = Integer.parseInt(attrs
-                    .getValue(RawDataElementName_2_5.STORAGE_ID
-                            .getElementName()));
-            StorableMassList newML = new StorableMassList(newRawDataFile,
-                    storageID, name, null);
+            String name   = attrs.getValue(RawDataElementName_2_5.NAME.getElementName());
+            int storageID = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.STORAGE_ID.getElementName()));
+            StorableMassList newML = new StorableMassList(newRawDataFile, storageID, name, null);
             massLists.add(newML);
+        }
+
+        if (qName.equals(RawDataElementName_2_5.JOB.getElementName()))
+        {
+            jobName  = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
+            int min_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MIN_SCAN.getElementName()));
+            int max_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MAX_SCAN.getElementName()));
+        	newRawDataFile.addJob(jobName, min_scan, max_scan);
         }
     }
 
@@ -210,14 +206,13 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String namespaceURI, String sName, String qName)
-            throws SAXException {
-
+            throws SAXException
+    {
         if (canceled)
             throw new SAXException("Parsing canceled");
 
         // <NAME>
         if (qName.equals(RawDataElementName_2_5.NAME.getElementName())) {
-
             // Adds the scan file and the name to the new raw data file
             String name = getTextOfElement();
             logger.info("Loading raw data file: " + name);
@@ -251,13 +246,11 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
             precursorMZ = Double.parseDouble(getTextOfElement());
         }
 
-        if (qName.equals(RawDataElementName_2_5.PRECURSOR_CHARGE
-                .getElementName())) {
+        if (qName.equals(RawDataElementName_2_5.PRECURSOR_CHARGE.getElementName())) {
             precursorCharge = Integer.parseInt(getTextOfElement());
         }
 
-        if (qName
-                .equals(RawDataElementName_2_5.RETENTION_TIME.getElementName())) {
+        if (qName.equals(RawDataElementName_2_5.RETENTION_TIME.getElementName())) {
             // Before MZmine 2.6 retention time was saved in seconds, but now we
             // use minutes, so we need to divide by 60
             retentionTime = Double.parseDouble(getTextOfElement()) / 60d;
@@ -267,18 +260,15 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
             centroided = Boolean.parseBoolean(getTextOfElement());
         }
 
-        if (qName.equals(RawDataElementName_2_5.QUANTITY_DATAPOINTS
-                .getElementName())) {
+        if (qName.equals(RawDataElementName_2_5.QUANTITY_DATAPOINTS.getElementName())) {
             dataPointsNumber = Integer.parseInt(getTextOfElement());
         }
 
         if (qName.equals(RawDataElementName_2_5.FRAGMENT_SCAN.getElementName())) {
-            fragmentScan[fragmentCount++] = Integer
-                    .parseInt(getTextOfElement());
+            fragmentScan[fragmentCount++] = Integer.parseInt(getTextOfElement());
         }
 
         if (qName.equals(RawDataElementName_2_5.SCAN.getElementName())) {
-
             StorableScan storableScan = new StorableScan(newRawDataFile,
                     currentStorageID, dataPointsNumber, scanNumber, msLevel,
                     retentionTime, parentScan, precursorMZ, precursorCharge,
@@ -295,9 +285,18 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
                 storableScan.addMassList(newML);
             }
             massLists.clear();
-
         }
-    }
+
+        if (qName.equals(RawDataElementName_2_5.JOB_COUNT.getElementName()))
+        {
+        	getTextOfElement();	// must remove this from the text buffer
+        }
+
+        if (qName.equals(RawDataElementName_2_5.JOB.getElementName()))
+        {
+        	newRawDataFile.updateJob(jobName, getTextOfElement());
+        }
+   }
 
     /**
      * Return a string without tab an EOF characters

@@ -19,8 +19,11 @@
 
 package net.sf.mzmine.data;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
 
+import net.sf.mzmine.data.impl.RemoteJobInfo;
 import net.sf.mzmine.util.Range;
 
 public interface RawDataFile {
@@ -102,6 +105,11 @@ public interface RawDataFile {
     public double getDataMaxBasePeakIntensity(int msLevel);
 
     public double getDataMaxTotalIonCurrent(int msLevel);
+
+    public void addJob(String name, int min_scan, int max_scan);
+    public void updateJob(String name, String status);
+    public void removeJob(String name);
+    public ArrayList<RemoteJobInfo> getJobs();
 
     /**
      * Close the file in case it is removed from the project
