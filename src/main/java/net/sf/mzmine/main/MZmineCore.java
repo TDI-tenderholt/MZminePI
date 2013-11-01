@@ -271,7 +271,7 @@ public final class MZmineCore {
 	}
 
 	@Nonnull
-	public static String getMZmineName() { return "MZmine Investigator™ Edition"; }
+	public static String getMZmineName() { return "MZmine PeakInvestigator™ Edition"; }
 
 	@Nonnull
 	public static String getMZmineShortName() { return "MZmineInvestigator"; }
