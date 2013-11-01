@@ -206,12 +206,11 @@ class RawDataFileSaveHandler {
 		hd.startElement("", "", RawDataElementName.JOB_COUNT.getElementName(), atts);
 		hd.characters(String.valueOf(jobs.size()).toCharArray(), 0, String.valueOf(jobs.size()).length());
 		hd.endElement("", "", RawDataElementName.JOB_COUNT.getElementName());
-		int job_id = 0;
 		for (RemoteJobInfo job : jobs)
 		{
-			atts.addAttribute("", "", RawDataElementName.JOB_ID.getElementName(), "CDATA", String.valueOf(job_id++));
+			atts.addAttribute("", "", RawDataElementName.JOB_ID.getElementName(), "CDATA", job.getName());
 		    hd.startElement("", "", RawDataElementName.JOB_INFO.getElementName(), atts);
-		    String s = job.getName() + "," + job.getStatus();
+		    String s = job.getStatus();
 		    hd.characters(s.toCharArray(), 0, s.length());
 			hd.endElement("", "", RawDataElementName.JOB_INFO.getElementName());
 			atts.clear();
