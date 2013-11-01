@@ -305,9 +305,7 @@ public class ProjectOpeningTask extends AbstractTask {
         // Default opening handler for MZmine 2.5 and higher
         rawDataFileOpenHandler = new RawDataFileOpenHandler_2_5();
         peakListOpenHandler = new PeakListOpenHandler_2_5(dataFilesIDMap);
-        userParameterOpenHandler = new UserParameterOpenHandler_2_5(newProject,
-                dataFilesIDMap);
-
+        userParameterOpenHandler = new UserParameterOpenHandler_2_5(newProject, dataFilesIDMap);
     }
 
     /**
@@ -317,8 +315,7 @@ public class ProjectOpeningTask extends AbstractTask {
 
         logger.info("Loading configuration file");
 
-        ZipEntry configEntry = zipFile
-                .getEntry(ProjectSavingTask.CONFIG_FILENAME);
+        ZipEntry configEntry = zipFile.getEntry(ProjectSavingTask.CONFIG_FILENAME);
 
         if (configEntry == null) {
             throw new IOException(
@@ -344,8 +341,8 @@ public class ProjectOpeningTask extends AbstractTask {
 
     private void loadRawDataFiles(ZipFile zipFile) throws IOException,
             ParserConfigurationException, SAXException, InstantiationException,
-            IllegalAccessException {
-
+            IllegalAccessException
+    {
         logger.info("Loading raw data files");
 
         Pattern filePattern = Pattern.compile("Raw data file #([\\d]+) (.*)\\.xml$");
@@ -365,17 +362,13 @@ public class ProjectOpeningTask extends AbstractTask {
                 String fileID = fileMatcher.group(1);
                 currentLoadedObjectName = fileMatcher.group(2);
 
-                String scansFileName = entryName.replaceFirst("\\.xml$",
-                        ".scans");
+                String scansFileName = entryName.replaceFirst("\\.xml$", ".scans");
                 ZipEntry scansEntry = zipFile.getEntry(scansFileName);
-                RawDataFile newFile = rawDataFileOpenHandler.readRawDataFile(
-                        zipFile, scansEntry, entry);
+                RawDataFile newFile = rawDataFileOpenHandler.readRawDataFile(zipFile, scansEntry, entry);
                 newProject.addFile(newFile);
                 dataFilesIDMap.put(fileID, newFile);
             }
-
         }
-
     }
 
     private void loadPeakLists(ZipFile zipFile) throws IOException,
