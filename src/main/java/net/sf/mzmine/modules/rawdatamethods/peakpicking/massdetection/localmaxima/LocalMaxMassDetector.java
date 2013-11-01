@@ -33,7 +33,7 @@ import net.sf.mzmine.parameters.ParameterSet;
  */
 public class LocalMaxMassDetector implements MassDetector {
 
-    public int getMassValuesPasses() { return 1; }
+    public int getMassValuesPasses(ParameterSet parameters) { return 1; }
 
     public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters) {
 

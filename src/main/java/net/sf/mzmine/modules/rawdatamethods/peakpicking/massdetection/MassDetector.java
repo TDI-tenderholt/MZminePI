@@ -31,8 +31,9 @@ public interface MassDetector extends MZmineModule {
 	
 	/**
 	 * Returns number of passes required in getting mass values
+	 * @param parameterSet 
 	 */
-	public int getMassValuesPasses();
+	public int getMassValuesPasses(ParameterSet parameterSet);
 
 	/**
 	 * Returns mass and intensity values detected in given scan

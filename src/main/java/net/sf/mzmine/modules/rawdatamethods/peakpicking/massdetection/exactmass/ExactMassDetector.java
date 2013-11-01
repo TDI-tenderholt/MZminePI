@@ -34,7 +34,7 @@ import net.sf.mzmine.util.SortingProperty;
 
 public class ExactMassDetector implements MassDetector {
 
-	public int getMassValuesPasses() { return 1; }
+	public int getMassValuesPasses(ParameterSet parameters) { return 1; }
 
     /**
      * @see net.sf.mzmine.modules.peakpicking.threestep.massdetection.MassDetector#getMassValues(net.sf.mzmine.data.Scan)

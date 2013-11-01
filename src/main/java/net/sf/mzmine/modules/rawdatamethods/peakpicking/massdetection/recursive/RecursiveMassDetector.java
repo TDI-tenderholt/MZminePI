@@ -34,7 +34,7 @@ import net.sf.mzmine.util.SortingProperty;
 
 public class RecursiveMassDetector implements MassDetector {
 
-    public int getMassValuesPasses() { return 1; }
+    public int getMassValuesPasses(ParameterSet parameters) { return 1; }
 
 	public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters) {
 
