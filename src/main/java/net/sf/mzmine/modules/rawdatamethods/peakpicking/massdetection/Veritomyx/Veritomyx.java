@@ -289,7 +289,8 @@ public class Veritomyx implements MassDetector
 			
 			if (scan_num == last_scan)
 			{
-				raw.removeJob(tarfilename);
+				raw.updateJob(tarfilename, "Delete");
+				_web_page("DONE");
 				_close_sftp_session();
 			}
 		}
@@ -320,7 +321,7 @@ public class Veritomyx implements MassDetector
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + v_project +
 					"&Action="  + action;
-			if ((action == "RUN") || (action == "STATUS"))	// need more parameters for these command
+			if ((action == "RUN") || (action == "STATUS") || (action == "DONE"))	// need more parameters for these command
 			{
 				page += "&Command=" + "ckm" +	// Centroid Set
 						"&Job="     + URLEncoder.encode(tarfilename, "UTF-8") +
