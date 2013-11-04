@@ -378,8 +378,7 @@ public class ProjectOpeningTask extends AbstractTask {
 
         logger.info("Loading peak lists");
 
-        Pattern filePattern = Pattern
-                .compile("Peak list #([\\d]+) (.*)\\.xml$");
+        Pattern filePattern = Pattern.compile("Peak list #([\\d]+) (.*)\\.xml$");
 
         @SuppressWarnings("rawtypes")
 		Enumeration zipEntries = zipFile.entries();
@@ -400,14 +399,11 @@ public class ProjectOpeningTask extends AbstractTask {
 
                 InputStream peakListStream = zipFile.getInputStream(entry);
 
-                PeakList newPeakList = peakListOpenHandler
-                        .readPeakList(peakListStream);
+                PeakList newPeakList = peakListOpenHandler.readPeakList(peakListStream);
 
                 newProject.addPeakList(newPeakList);
             }
-
         }
-
     }
 
     private void loadUserParameters(ZipFile zipFile) throws IOException,
