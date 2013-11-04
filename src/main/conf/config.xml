@@ -10,7 +10,7 @@
             <parameter name="Proxy port"/>
         </parameter>
         <parameter name="MZmine PeakInvestigator™ Edition window state">
-            <position>1964:29</position>
+            <position>1964:37</position>
             <size>1119:993</size>
         </parameter>
     </preferences>
@@ -23,6 +23,9 @@
                 <parameter name="Precursor m/z"/>
                 <parameter name="Fragments"/>
             </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectclose.ProjectCloseModule">
+            <parameters/>
         </module>
         <module class="net.sf.mzmine.modules.visualization.twod.TwoDVisualizerModule">
             <parameters>
@@ -129,9 +132,39 @@
                 <parameter name="Row margin">10</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveAsModule">
+        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule">
             <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\tomas_cajka\Agilet6550\Agilet6550.pi323.mzmine</parameter>
+                <parameter name="Raw data files"/>
+                <parameter name="Mass detector" selected="PeakInvestigator™">
+                    <module name="Centroid">
+                        <parameter name="Noise level">100000.0</parameter>
+                    </module>
+                    <module name="Exact mass">
+                        <parameter name="Noise level">4000.0</parameter>
+                    </module>
+                    <module name="Local maxima">
+                        <parameter name="Noise level">0.0</parameter>
+                    </module>
+                    <module name="Recursive threshold">
+                        <parameter name="Noise level">0.0</parameter>
+                        <parameter name="Min m/z peak width">0.001</parameter>
+                        <parameter name="Max m/z peak width">1.0</parameter>
+                    </module>
+                    <module name="Wavelet transform">
+                        <parameter name="Noise level">33.0</parameter>
+                        <parameter name="Scale level">3</parameter>
+                        <parameter name="Wavelet window size (%)">0.3</parameter>
+                    </module>
+                    <module name="PeakInvestigator™">
+                        <parameter name="Veritomyx Username">regression@veritomyx.com</parameter>
+                        <parameter name="Password">cihMkqmCKBRJXu9JC/y2ynEHfkqmuSAk</parameter>
+                        <parameter name="Project Number">1000</parameter>
+                        <parameter name="Min Scan Number">40</parameter>
+                        <parameter name="Max Scan Number">42</parameter>
+                    </module>
+                </parameter>
+                <parameter name="MS level">1</parameter>
+                <parameter name="Mass list name">PI 40-42</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.peakpicking.peakextender.PeakExtenderModule">
@@ -144,6 +177,11 @@
                 </parameter>
                 <parameter name="Min height"/>
                 <parameter name="Remove original peaklist"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveModule">
+            <parameters>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\z.mzmine</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.glycerophospholipidsearch.GPLipidSearchModule">
@@ -216,13 +254,6 @@
         </module>
         <module class="net.sf.mzmine.modules.visualization.infovisualizer.InfoVisualizerModule">
             <parameters/>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.rawdataimport.RawDataImportModule">
-            <parameters>
-                <parameter name="Raw data file names">
-                    <file>C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\030413jah_totallipid1c.mzXML</file>
-                </parameter>
-            </parameters>
         </module>
         <module class="net.sf.mzmine.modules.masslistmethods.chromatogrambuilder.ChromatogramBuilderModule">
             <parameters>
@@ -313,6 +344,11 @@
                 <parameter name="Remove source file after baseline correction">true</parameter>
             </parameters>
         </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule">
+            <parameters>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\z.mzmine</parameter>
+            </parameters>
+        </module>
         <module class="net.sf.mzmine.modules.visualization.scatterplot.ScatterPlotVisualizerModule">
             <parameters>
                 <parameter name="Peak lists"/>
@@ -349,11 +385,6 @@
                 <parameter name="Charge">1</parameter>
                 <parameter name="Polarity">Positive</parameter>
                 <parameter name="Minimum abundance">0.001</parameter>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule">
-            <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\z.mzmine</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.filtering.rowsfilter.RowsFilterModule">
@@ -398,6 +429,11 @@
                 <parameter name="Remove source file after filtering"/>
             </parameters>
         </module>
+        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveAsModule">
+            <parameters>
+                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\tomas_cajka\Agilet6550\Agilet6550.pi323.mzmine</parameter>
+            </parameters>
+        </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.io.xmlexport.XMLExportModule">
             <parameters>
                 <parameter name="Peak lists"/>
@@ -410,41 +446,6 @@
                 <parameter name="Raw data files"/>
                 <parameter name="Export original scans">true</parameter>
                 <parameter name="Peaks(mass) list"/>
-            </parameters>
-        </module>
-        <module class="net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Mass detector" selected="PeakInvestigator™">
-                    <module name="Centroid">
-                        <parameter name="Noise level">100000.0</parameter>
-                    </module>
-                    <module name="Exact mass">
-                        <parameter name="Noise level">4000.0</parameter>
-                    </module>
-                    <module name="Local maxima">
-                        <parameter name="Noise level">0.0</parameter>
-                    </module>
-                    <module name="Recursive threshold">
-                        <parameter name="Noise level">0.0</parameter>
-                        <parameter name="Min m/z peak width">0.001</parameter>
-                        <parameter name="Max m/z peak width">1.0</parameter>
-                    </module>
-                    <module name="Wavelet transform">
-                        <parameter name="Noise level">33.0</parameter>
-                        <parameter name="Scale level">3</parameter>
-                        <parameter name="Wavelet window size (%)">0.3</parameter>
-                    </module>
-                    <module name="PeakInvestigator™">
-                        <parameter name="Veritomyx Username">regression@veritomyx.com</parameter>
-                        <parameter name="Password">MEzhLaZclmn+hXtZHBP7DJiD4BWv+OGZ</parameter>
-                        <parameter name="Project Number">1000</parameter>
-                        <parameter name="Min Scan Number">40</parameter>
-                        <parameter name="Max Scan Number">42</parameter>
-                    </module>
-                </parameter>
-                <parameter name="MS level">1</parameter>
-                <parameter name="Mass list name">PI 40-42</parameter>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.visualization.peaklist.export.MSMSExportModule">
@@ -682,11 +683,6 @@
                 <parameter name="Remove original peak list"/>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveModule">
-            <parameters>
-                <parameter name="Project file">C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\z.mzmine</parameter>
-            </parameters>
-        </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.isotopes.deisotoper.IsotopeGrouperModule">
             <parameters>
                 <parameter name="Peak lists"/>
@@ -713,9 +709,6 @@
                 <parameter name="Remove original peak list">false</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.projectmethods.projectclose.ProjectCloseModule">
-            <parameters/>
-        </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.alignment.join.JoinAlignerModule">
             <parameters>
                 <parameter name="Peak lists"/>
@@ -736,6 +729,13 @@
                     </parameter>
                     <parameter name="Minimum absolute intensity">20.0</parameter>
                     <parameter name="Minimum score">0.0</parameter>
+                </parameter>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.rawdatamethods.rawdataimport.RawDataImportModule">
+            <parameters>
+                <parameter name="Raw data file names">
+                    <file>C:\Users\dschmidt\work\Veritomyx\massSpecDataFiles\AlphaUsers\charlie_clemons\030413jah_totallipid1c.mzXML</file>
                 </parameter>
             </parameters>
         </module>
@@ -775,13 +775,6 @@
                 <parameter name="Peak measurement type">Peak height</parameter>
             </parameters>
         </module>
-        <module class="net.sf.mzmine.modules.batchmode.BatchModeModule">
-            <parameters>
-                <parameter name="Raw data files"/>
-                <parameter name="Peak lists"/>
-                <parameter name="Batch queue"/>
-            </parameters>
-        </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.custom.CustomDBSearchModule">
             <parameters>
                 <parameter name="Peak lists"/>
@@ -817,6 +810,13 @@
                 <parameter name="Threshold value"/>
                 <parameter name="Linear model"/>
                 <parameter name="Require same charge state"/>
+            </parameters>
+        </module>
+        <module class="net.sf.mzmine.modules.batchmode.BatchModeModule">
+            <parameters>
+                <parameter name="Raw data files"/>
+                <parameter name="Peak lists"/>
+                <parameter name="Batch queue"/>
             </parameters>
         </module>
         <module class="net.sf.mzmine.modules.peaklistmethods.identification.formulaprediction.FormulaPredictionModule">
