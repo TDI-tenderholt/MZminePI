@@ -142,6 +142,7 @@ public class Veritomyx implements MassDetector
 			first_scan = scanNumbers[0];
 		if (scanNumbers[scanNumbers.length - 1] < last_scan)	// make sure the last scan is in range
 			last_scan = scanNumbers[scanNumbers.length - 1];
+		File f = null;
 
 		// simply return null if we are not in our scan range
 		if ((scan_num < first_scan) || (scan_num > last_scan))
@@ -163,7 +164,7 @@ public class Veritomyx implements MassDetector
 				scan.exportToFile("", filename);
 				
 				// put the exported scan into the tar file
-				File f = new File(filename);
+				f = new File(filename);
 				tarfile.putNextEntry(new TarEntry(f, filename));
 				BufferedInputStream origin = new BufferedInputStream(new FileInputStream(f));
 				int count;
@@ -244,6 +245,8 @@ public class Veritomyx implements MassDetector
 							outputStream.close();
 						}
 						tis.close();
+						f = new File(rtarfilename);
+						f.delete();			// remove the local copy of the results tar file
 					} catch (Exception e1) {
 						logger.info(e1.getMessage());
 						logger.info("Error: Cannot parse results file");
@@ -279,6 +282,7 @@ public class Veritomyx implements MassDetector
 					mzPeaks.add(new SimpleDataPoint(mz, y));
 					sc.close();
 				}
+				centfile.delete();	// delete the temporary results peaks list file
 			}
 			catch (Exception e)
 			{
@@ -310,7 +314,7 @@ public class Veritomyx implements MassDetector
 	private int _web_page(String action)
 	{
 		web_result        = WEB_UNDEFINED;
-		web_str           = null;
+		web_str           = "";
 		BufferedReader in = null;
 		HttpURLConnection uc = null;
 		try {
@@ -360,6 +364,7 @@ public class Veritomyx implements MassDetector
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
+		System.out.println("Web results: [" + web_result + "] " + web_str);
 		return web_result;
 	}
 
