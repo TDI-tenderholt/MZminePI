@@ -221,10 +221,8 @@ public final class MZmineCore {
 			ExitCode exitCode = BatchModeModule.runBatch(batchFile);
 			if (exitCode == ExitCode.OK)
 				System.exit(0);
-			else
-				System.exit(1);
+			System.exit(1);
 		}
-
 	}
 
 	@Nonnull
@@ -256,8 +254,7 @@ public final class MZmineCore {
 	 * Returns the instance of a module of given class
 	 */
 	@SuppressWarnings("unchecked")
-	public static <ModuleType> ModuleType getModuleInstance(
-			Class<ModuleType> moduleClass) {
+	public static <ModuleType> ModuleType getModuleInstance(Class<ModuleType> moduleClass) {
 		return (ModuleType) initializedModules.get(moduleClass);
 	}
 
@@ -277,6 +274,6 @@ public final class MZmineCore {
 	public static String getMZmineShortName() { return "MZmineInvestigator"; }
 
 	@Nonnull
-	public static String getMZmineVersion() { return "2.10-i0.10"; }
+	public static String getMZmineVersion() { return "2.10-i0.12"; }
 
 }
