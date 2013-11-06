@@ -35,5 +35,6 @@ cd "$SCRIPTDIR"
 echo "-version" | xargs $JAVA_COMMAND
 
 # This command starts the Java Virtual Machine
-echo "$JAVA_PARAMETERS" -classpath $CLASS_PATH $MAIN_CLASS "$@" | xargs $JAVA_COMMAND
+echo $JAVA_COMMAND "$JAVA_PARAMETERS" -classpath $CLASS_PATH $MAIN_CLASS "$@"
+echo "$JAVA_PARAMETERS" -classpath $CLASS_PATH $MAIN_CLASS "$@" | xargs $JAVA_COMMAND > MZminePI.log 2>&1
 

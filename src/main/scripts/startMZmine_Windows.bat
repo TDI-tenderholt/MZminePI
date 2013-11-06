@@ -38,7 +38,11 @@ rem Show java version, in case a problem occurs
 %JAVA_COMMAND% -version
 
 rem This command starts the Java Virtual Machine
-%JAVA_COMMAND% %JAVA_PARAMETERS% -classpath %CLASS_PATH% %MAIN_CLASS% %*
+echo %JAVA_COMMAND% %JAVA_PARAMETERS% -classpath %CLASS_PATH% %MAIN_CLASS% %*
+%JAVA_COMMAND% %JAVA_PARAMETERS% -classpath %CLASS_PATH% %MAIN_CLASS% %* > MZminePI.log 2>&1
 
 rem If there was an error, give the user chance to see it
-IF ERRORLEVEL 1 pause
+IF ERRORLEVEL 1 (
+	echo See MZminePI.log for errors
+	pause
+)
