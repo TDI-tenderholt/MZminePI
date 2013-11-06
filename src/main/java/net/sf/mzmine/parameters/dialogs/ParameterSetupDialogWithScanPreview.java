@@ -71,118 +71,110 @@ public abstract class ParameterSetupDialogWithScanPreview extends
      * @param massDetectorTypeNumber
      */
     public ParameterSetupDialogWithScanPreview(ParameterSet parameters) {
-	super(parameters);
+    	super(parameters);
     }
 
     /**
      * This method must be overloaded by derived class to load all the preview
      * data sets into the spectrumPlot
      */
-    protected abstract void loadPreview(SpectraPlot spectrumPlot,
-	    Scan previewScan);
+    protected abstract void loadPreview(SpectraPlot spectrumPlot, Scan previewScan);
 
-    private void updateTitle(Scan currentScan) {
-
-	// Formats
-	NumberFormat rtFormat = MZmineCore.getConfiguration().getRTFormat();
-	NumberFormat mzFormat = MZmineCore.getConfiguration().getMZFormat();
-	NumberFormat intensityFormat = MZmineCore.getConfiguration()
-		.getIntensityFormat();
-
-	// Set window and plot titles
-	String title = "[" + previewDataFile.getName() + "] scan #"
-		+ currentScan.getScanNumber();
-
-	String subTitle = "MS" + currentScan.getMSLevel() + ", RT "
-		+ rtFormat.format(currentScan.getRetentionTime());
-
-	DataPoint basePeak = currentScan.getBasePeak();
-	if (basePeak != null) {
-	    subTitle += ", base peak: " + mzFormat.format(basePeak.getMZ())
-		    + " m/z ("
-		    + intensityFormat.format(basePeak.getIntensity()) + ")";
-	}
-	spectrumPlot.setTitle(title, subTitle);
-
+    private void updateTitle(Scan currentScan)
+    {
+		// Formats
+		NumberFormat rtFormat = MZmineCore.getConfiguration().getRTFormat();
+		NumberFormat mzFormat = MZmineCore.getConfiguration().getMZFormat();
+		NumberFormat intensityFormat = MZmineCore.getConfiguration().getIntensityFormat();
+	
+		// Set window and plot titles
+		String title = "[" + previewDataFile.getName() + "] scan #"
+			+ currentScan.getScanNumber();
+	
+		String subTitle = "MS" + currentScan.getMSLevel() + ", RT "
+			+ rtFormat.format(currentScan.getRetentionTime());
+	
+		DataPoint basePeak = currentScan.getBasePeak();
+		if (basePeak != null) {
+		    subTitle += ", base peak: " + mzFormat.format(basePeak.getMZ())
+			    + " m/z ("
+			    + intensityFormat.format(basePeak.getIntensity()) + ")";
+		}
+		spectrumPlot.setTitle(title, subTitle);
     }
 
     /**
      * @see net.sf.mzmine.util.dialogs.ParameterSetupDialog#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent event) {
-
-	super.actionPerformed(event);
-
-	Object src = event.getSource();
-	String command = event.getActionCommand();
-
-	if (src == comboDataFileName) {
-	    int ind = comboDataFileName.getSelectedIndex();
-	    if (ind >= 0) {
-		previewDataFile = dataFiles[ind];
-		int scanNumbers[] = previewDataFile.getScanNumbers();
-		Integer scanNumbersObj[] = CollectionUtils
-			.toIntegerArray(scanNumbers);
-		ComboBoxModel model = new DefaultComboBoxModel(scanNumbersObj);
-		comboScanNumber.setModel(model);
-		comboScanNumber.setSelectedIndex(0);
-		parametersChanged();
-	    }
+	public void actionPerformed(ActionEvent event) {
+	
+		super.actionPerformed(event);
+	
+		Object src = event.getSource();
+		String command = event.getActionCommand();
+	
+		if (src == comboDataFileName) {
+		    int ind = comboDataFileName.getSelectedIndex();
+		    if (ind >= 0) {
+				previewDataFile = dataFiles[ind];
+				int scanNumbers[] = previewDataFile.getScanNumbers();
+				Integer scanNumbersObj[] = CollectionUtils.toIntegerArray(scanNumbers);
+				ComboBoxModel model = new DefaultComboBoxModel(scanNumbersObj);
+				comboScanNumber.setModel(model);
+				comboScanNumber.setSelectedIndex(0);
+				parametersChanged();
+		    }
+		}
+	
+		if (src == previewCheckBox) {
+		    if (previewCheckBox.isSelected()) {
+				// Set the height of the preview to 200 cells, so it will span
+				// the whole vertical length of the dialog (buttons are at row
+				// no 100). Also, we set the weight to 10, so the preview
+				// component will consume most of the extra available space.
+				mainPanel.add(spectrumPlot, 3, 0, 1, 200, 10, 10, GridBagConstraints.BOTH);
+				pnlPreviewFields.setVisible(true);
+				updateMinimumSize();
+				pack();
+				parametersChanged();
+				setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		    } else {
+				mainPanel.remove(spectrumPlot);
+				pnlPreviewFields.setVisible(false);
+				updateMinimumSize();
+				pack();
+				setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		    }
+		}
+	
+		if (command.equals("PREVIOUS_SCAN")) {
+		    int ind = comboScanNumber.getSelectedIndex() - 1;
+		    if (ind >= 0)
+		    	comboScanNumber.setSelectedIndex(ind);
+		}
+	
+		if (command.equals("NEXT_SCAN")) {
+		    int ind = comboScanNumber.getSelectedIndex() + 1;
+		    if (ind < (comboScanNumber.getItemCount() - 1))
+		    	comboScanNumber.setSelectedIndex(ind);
+		}
 	}
-
-	if (src == previewCheckBox) {
-	    if (previewCheckBox.isSelected()) {
-		// Set the height of the preview to 200 cells, so it will span
-		// the whole vertical length of the dialog (buttons are at row
-		// no 100). Also, we set the weight to 10, so the preview
-		// component will consume most of the extra available space.
-		mainPanel.add(spectrumPlot, 3, 0, 1, 200, 10, 10,
-			GridBagConstraints.BOTH);
-		pnlPreviewFields.setVisible(true);
-		updateMinimumSize();
-		pack();
-		parametersChanged();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
-	    } else {
-		mainPanel.remove(spectrumPlot);
-		pnlPreviewFields.setVisible(false);
-		updateMinimumSize();
-		pack();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
-	    }
-	}
-
-	if (command.equals("PREVIOUS_SCAN")) {
-	    int ind = comboScanNumber.getSelectedIndex() - 1;
-	    if (ind >= 0)
-		comboScanNumber.setSelectedIndex(ind);
-	}
-
-	if (command.equals("NEXT_SCAN")) {
-	    int ind = comboScanNumber.getSelectedIndex() + 1;
-	    if (ind < (comboScanNumber.getItemCount() - 1))
-		comboScanNumber.setSelectedIndex(ind);
-	}
-
-    }
 
     protected void parametersChanged() {
+		// Update preview as parameters have changed
+		if ((comboScanNumber == null) || (!previewCheckBox.isSelected()))
+		    return;
 
-	// Update preview as parameters have changed
-	if ((comboScanNumber == null) || (!previewCheckBox.isSelected()))
-	    return;
+		Integer scanNumber = (Integer) comboScanNumber.getSelectedItem();
+		if (scanNumber == null)
+		    return;
+		Scan currentScan = previewDataFile.getScan(scanNumber);
 
-	Integer scanNumber = (Integer) comboScanNumber.getSelectedItem();
-	if (scanNumber == null)
-	    return;
-	Scan currentScan = previewDataFile.getScan(scanNumber);
+		updateParameterSetFromComponents();
 
-	updateParameterSetFromComponents();
+		loadPreview(spectrumPlot, currentScan);
 
-	loadPreview(spectrumPlot, currentScan);
-
-	updateTitle(currentScan);
-
+		updateTitle(currentScan);
     }
 
     /**
@@ -200,8 +192,7 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 	if (dataFiles.length == 0)
 	    return;
 
-	RawDataFile selectedFiles[] = MZmineCore.getDesktop()
-		.getSelectedDataFiles();
+	RawDataFile selectedFiles[] = MZmineCore.getDesktop().getSelectedDataFiles();
 
 	if (selectedFiles.length > 0)
 	    previewDataFile = selectedFiles[0];
@@ -212,10 +203,8 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 	previewCheckBox.addActionListener(this);
 	previewCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
-	mainPanel.add(new JSeparator(), 0, getNumberOfParameters() + 1, 3, 1,
-		0, 0, GridBagConstraints.HORIZONTAL);
-	mainPanel.add(previewCheckBox, 0, getNumberOfParameters() + 2, 3, 1, 0,
-		0, GridBagConstraints.HORIZONTAL);
+	mainPanel.add(new JSeparator(), 0, getNumberOfParameters() + 1, 3, 1, 0, 0, GridBagConstraints.HORIZONTAL);
+	mainPanel.add(previewCheckBox,  0, getNumberOfParameters() + 2, 3, 1, 0, 0, GridBagConstraints.HORIZONTAL);
 
 	// Elements of pnlLab
 	JPanel pnlLab = new JPanel();
@@ -250,8 +239,7 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 	JPanel pnlScanArrows = new JPanel();
 	pnlScanArrows.setLayout(new BoxLayout(pnlScanArrows, BoxLayout.X_AXIS));
 	String leftArrow = new String(new char[] { '\u2190' });
-	GUIUtils.addButton(pnlScanArrows, leftArrow, null, this,
-		"PREVIOUS_SCAN");
+	GUIUtils.addButton(pnlScanArrows, leftArrow, null, this, "PREVIOUS_SCAN");
 
 	pnlScanArrows.add(Box.createHorizontalStrut(5));
 	pnlScanArrows.add(comboScanNumber);
@@ -270,17 +258,14 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 	pnlPreviewFields.setVisible(false);
 
 	spectrumPlot = new SpectraPlot(this);
-	spectrumPlot.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.RAISED));
+	spectrumPlot.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 	spectrumPlot.setMinimumSize(new Dimension(400, 300));
 
-	mainPanel.add(pnlPreviewFields, 0, getNumberOfParameters() + 3, 3, 1,
-		0, 0);
+	mainPanel.add(pnlPreviewFields, 0, getNumberOfParameters() + 3, 3, 1, 0, 0);
 
 	updateMinimumSize();
 	pack();
 
 	setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
     }
-
 }

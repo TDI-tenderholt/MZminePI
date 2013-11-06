@@ -36,8 +36,7 @@ import net.sf.mzmine.parameters.dialogs.ParameterSetupDialogWithScanPreview;
  * is used to preview how the selected mass detector and his parameters works
  * over the raw data file.
  */
-public class MassDetectorSetupDialog extends
-		ParameterSetupDialogWithScanPreview {
+public class MassDetectorSetupDialog extends ParameterSetupDialogWithScanPreview {
 
 	private MassDetector massDetector;
 	private ParameterSet parameters;
@@ -46,8 +45,7 @@ public class MassDetectorSetupDialog extends
 	 * @param parameters
 	 * @param massDetectorTypeNumber
 	 */
-	public MassDetectorSetupDialog(Class massDetectorClass,
-			ParameterSet parameters) {
+	public MassDetectorSetupDialog(Class massDetectorClass, ParameterSet parameters) {
 
 		super(parameters);
 
@@ -66,15 +64,13 @@ public class MassDetectorSetupDialog extends
 
 		// Set plot mode only if it hasn't been set before
 		// if the scan is centroided, switch to centroid mode
-		if (previewScan.isCentroided()) {
+		if (previewScan.isCentroided())
 			spectrumPlot.setPlotMode(PlotMode.CENTROID);
-		} else {
+		else
 			spectrumPlot.setPlotMode(PlotMode.CONTINUOUS);
-		}
 
 		spectrumPlot.removeAllDataSets();
-		spectrumPlot.addDataSet(spectraDataSet,
-				SpectraVisualizerWindow.scanColor, false);
+		spectrumPlot.addDataSet(spectraDataSet, SpectraVisualizerWindow.scanColor, false);
 
 		// If there is some illegal value, do not load the preview but just exit
 		ArrayList<String> errorMessages = new ArrayList<String>();
@@ -83,13 +79,10 @@ public class MassDetectorSetupDialog extends
 			return;
 
 		DataPoint[] mzValues = massDetector.getMassValues(previewScan, 0, parameters);
-
-		DataPointsDataSet peaksDataSet = new DataPointsDataSet("Detected peaks",
-				mzValues);
-
-		spectrumPlot.addDataSet(peaksDataSet,
-				SpectraVisualizerWindow.peaksColor, false);
-
+		if (mzValues != null)
+		{
+			DataPointsDataSet peaksDataSet = new DataPointsDataSet("Detected peaks", mzValues);
+			spectrumPlot.addDataSet(peaksDataSet, SpectraVisualizerWindow.peaksColor, false);
+		}
 	}
-
 }
