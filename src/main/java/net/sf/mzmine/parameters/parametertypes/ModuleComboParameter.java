@@ -45,34 +45,31 @@ public class ModuleComboParameter<ModuleType extends MZmineModule> implements
     private MZmineProcessingStep<ModuleType> value;
 
     @SuppressWarnings("unchecked")
-    public ModuleComboParameter(String name, String description,
-	    ModuleType modules[]) {
-	this.name = name;
-	this.description = description;
-	this.modulesWithParams = new MZmineProcessingStep[modules.length];
-	for (int i = 0; i < modules.length; i++) {
-	    ParameterSet moduleParams;
-	    try {
-		Class<? extends ParameterSet> parameterSetClass = modules[i]
-			.getParameterSetClass();
-		if (parameterSetClass != null)
-		    moduleParams = parameterSetClass.newInstance();
-		else
-		    moduleParams = null;
-		MZmineProcessingStep<ModuleType> modWithParams = new MZmineProcessingStepImpl<ModuleType>(
-			modules[i], moduleParams);
-		this.modulesWithParams[i] = modWithParams;
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
-	}
+    public ModuleComboParameter(String name, String description, ModuleType modules[]) {
+		this.name = name;
+		this.description = description;
+		this.modulesWithParams = new MZmineProcessingStep[modules.length];
+		for (int i = 0; i < modules.length; i++) {
+		    ParameterSet moduleParams;
+		    try {
+				Class<? extends ParameterSet> parameterSetClass = modules[i].getParameterSetClass();
+				if (parameterSetClass != null)
+				    moduleParams = parameterSetClass.newInstance();
+				else
+				    moduleParams = null;
+				MZmineProcessingStep<ModuleType> modWithParams = new MZmineProcessingStepImpl<ModuleType>(modules[i], moduleParams);
+				this.modulesWithParams[i] = modWithParams;
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		    }
+		}
     }
 
     public ModuleComboParameter(String name, String description,
 	    MZmineProcessingStep<ModuleType> modulesWithParams[]) {
-	this.name = name;
-	this.description = description;
-	this.modulesWithParams = modulesWithParams;
+		this.name = name;
+		this.description = description;
+		this.modulesWithParams = modulesWithParams;
     }
 
     /**
@@ -80,7 +77,7 @@ public class ModuleComboParameter<ModuleType extends MZmineModule> implements
      */
     @Override
     public String getName() {
-	return name;
+    	return name;
     }
 
     /**
@@ -88,120 +85,120 @@ public class ModuleComboParameter<ModuleType extends MZmineModule> implements
      */
     @Override
     public String getDescription() {
-	return description;
+    	return description;
     }
 
     @Override
     public ModuleComboComponent createEditingComponent() {
-	return new ModuleComboComponent(modulesWithParams);
+    	return new ModuleComboComponent(modulesWithParams);
     }
 
     public MZmineProcessingStep getValue() {
-	if (value == null)
-	    return null;
-	// First check that the module has all parameters set
-	ParameterSet embeddedParameters = value.getParameterSet();
-	if (embeddedParameters == null)
-	    return value;
-	for (Parameter p : embeddedParameters.getParameters()) {
-	    if (p instanceof UserParameter) {
-		UserParameter up = (UserParameter) p;
-		Object upValue = up.getValue();
-		if (upValue == null)
+		if (value == null)
 		    return null;
-	    }
-	}
-	return value;
+		// First check that the module has all parameters set
+		ParameterSet embeddedParameters = value.getParameterSet();
+		if (embeddedParameters == null)
+		    return value;
+		for (Parameter p : embeddedParameters.getParameters()) {
+		    if (p instanceof UserParameter) {
+			UserParameter up = (UserParameter) p;
+			Object upValue = up.getValue();
+			if (upValue == null)
+			    return null;
+		    }
+		}
+		return value;
     }
 
     @Override
     public void setValue(MZmineProcessingStep<ModuleType> value) {
-	this.value = value;
+    	this.value = value;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public ModuleComboParameter cloneParameter() {
-	MZmineProcessingStep<ModuleType> newModules[] = new MZmineProcessingStep[modulesWithParams.length];
-	MZmineProcessingStep<ModuleType> newValue = null;
-	for (int i = 0; i < modulesWithParams.length; i++) {
-	    ModuleType module = modulesWithParams[i].getModule();
-	    ParameterSet params = modulesWithParams[i].getParameterSet();
-	    params = params.cloneParameter();
-	    newModules[i] = new MZmineProcessingStepImpl<ModuleType>(module,
-		    params);
-	    if (value == modulesWithParams[i])
-		newValue = newModules[i];
-	}
-	ModuleComboParameter<ModuleType> copy = new ModuleComboParameter<ModuleType>(
-		name, description, newModules);
-	copy.setValue(newValue);
-	return copy;
+		MZmineProcessingStep<ModuleType> newModules[] = new MZmineProcessingStep[modulesWithParams.length];
+		MZmineProcessingStep<ModuleType> newValue = null;
+		for (int i = 0; i < modulesWithParams.length; i++) {
+		    ModuleType module = modulesWithParams[i].getModule();
+		    ParameterSet params = modulesWithParams[i].getParameterSet();
+		    params = params.cloneParameter();
+		    newModules[i] = new MZmineProcessingStepImpl<ModuleType>(module,
+			    params);
+		    if (value == modulesWithParams[i])
+			newValue = newModules[i];
+		}
+		ModuleComboParameter<ModuleType> copy = new ModuleComboParameter<ModuleType>(
+			name, description, newModules);
+		copy.setValue(newValue);
+		return copy;
     }
 
     @Override
     public void setValueFromComponent(ModuleComboComponent component) {
-	int index = component.getSelectedIndex();
-	if (index < 0)
-	    return;
-	this.value = modulesWithParams[index];
+		int index = component.getSelectedIndex();
+		if (index < 0)
+		    return;
+		this.value = modulesWithParams[index];
     }
 
     @Override
     public void setValueToComponent(ModuleComboComponent component,
 	    MZmineProcessingStep newValue) {
-	component.setSelectedItem(newValue);
+    	component.setSelectedItem(newValue);
     }
 
     @Override
     public void loadValueFromXML(Element xmlElement) {
-	NodeList items = xmlElement.getElementsByTagName("module");
-
-	for (int i = 0; i < items.getLength(); i++) {
-	    Element moduleElement = (Element) items.item(i);
-	    String name = moduleElement.getAttribute("name");
-	    for (int j = 0; j < modulesWithParams.length; j++) {
-		if (modulesWithParams[j].getModule().getName().equals(name)) {
-		    ParameterSet moduleParameters = modulesWithParams[j]
-			    .getParameterSet();
-		    if (moduleParameters == null)
-			continue;
-		    moduleParameters.loadValuesFromXML((Element) items.item(i));
+		NodeList items = xmlElement.getElementsByTagName("module");
+	
+		for (int i = 0; i < items.getLength(); i++) {
+		    Element moduleElement = (Element) items.item(i);
+		    String name = moduleElement.getAttribute("name");
+		    for (int j = 0; j < modulesWithParams.length; j++) {
+			if (modulesWithParams[j].getModule().getName().equals(name)) {
+			    ParameterSet moduleParameters = modulesWithParams[j]
+				    .getParameterSet();
+			    if (moduleParameters == null)
+				continue;
+			    moduleParameters.loadValuesFromXML((Element) items.item(i));
+			}
+		    }
 		}
-	    }
-	}
-	String selectedAttr = xmlElement.getAttribute("selected");
-	for (int j = 0; j < modulesWithParams.length; j++) {
-	    if (modulesWithParams[j].getModule().getName().equals(selectedAttr)) {
-		value = modulesWithParams[j];
-	    }
-	}
+		String selectedAttr = xmlElement.getAttribute("selected");
+		for (int j = 0; j < modulesWithParams.length; j++) {
+		    if (modulesWithParams[j].getModule().getName().equals(selectedAttr)) {
+			value = modulesWithParams[j];
+		    }
+		}
     }
 
     @Override
     public void saveValueToXML(Element xmlElement) {
-	if (value != null)
-	    xmlElement.setAttribute("selected", value.toString());
-	Document parentDocument = xmlElement.getOwnerDocument();
-	for (MZmineProcessingStep item : modulesWithParams) {
-	    Element newElement = parentDocument.createElement("module");
-	    newElement.setAttribute("name", item.getModule().getName());
-	    ParameterSet moduleParameters = item.getParameterSet();
-	    if (moduleParameters != null)
-		moduleParameters.saveValuesToXML(newElement);
-	    xmlElement.appendChild(newElement);
-	}
+		if (value != null)
+		    xmlElement.setAttribute("selected", value.toString());
+		Document parentDocument = xmlElement.getOwnerDocument();
+		for (MZmineProcessingStep item : modulesWithParams) {
+		    Element newElement = parentDocument.createElement("module");
+		    newElement.setAttribute("name", item.getModule().getName());
+		    ParameterSet moduleParameters = item.getParameterSet();
+		    if (moduleParameters != null)
+			moduleParameters.saveValuesToXML(newElement);
+		    xmlElement.appendChild(newElement);
+		}
     }
 
     @Override
     public boolean checkValue(Collection<String> errorMessages) {
-	if (value == null) {
-	    errorMessages.add(name + " is not set properly");
-	    return false;
-	}
-	ParameterSet moduleParameters = value.getParameterSet();
-	return moduleParameters == null
-		|| moduleParameters.checkUserParameterValues(errorMessages);
+		if (value == null) {
+		    errorMessages.add(name + " is not set properly");
+		    return false;
+		}
+		ParameterSet moduleParameters = value.getParameterSet();
+		return moduleParameters == null
+			|| moduleParameters.checkUserParameterValues(errorMessages);
     }
 
 }

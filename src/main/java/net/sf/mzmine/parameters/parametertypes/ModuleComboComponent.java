@@ -36,60 +36,58 @@ public class ModuleComboComponent extends JPanel implements ActionListener {
     private JButton setButton;
 
     public ModuleComboComponent(MZmineProcessingStep<?> modules[]) {
-
-	super(new BorderLayout());
-
-	assert modules != null;
-	assert modules.length > 0;
-
-	comboBox = new JComboBox(modules);
-	comboBox.addActionListener(this);
-	add(comboBox, BorderLayout.CENTER);
-
-	setButton = new JButton("...");
-	setButton.addActionListener(this);
-	boolean buttonEnabled = (modules[0].getParameterSet() != null);
-	setButton.setEnabled(buttonEnabled);
-	add(setButton, BorderLayout.EAST);
-
+	
+		super(new BorderLayout());
+	
+		assert modules != null;
+		assert modules.length > 0;
+	
+		comboBox = new JComboBox(modules);
+		comboBox.addActionListener(this);
+		add(comboBox, BorderLayout.CENTER);
+	
+		setButton = new JButton("...");
+		setButton.addActionListener(this);
+		boolean buttonEnabled = (modules[0].getParameterSet() != null);
+		setButton.setEnabled(buttonEnabled);
+		add(setButton, BorderLayout.EAST);
     }
 
     public int getSelectedIndex() {
-	return comboBox.getSelectedIndex();
+    	return comboBox.getSelectedIndex();
     }
 
     public void setSelectedItem(Object selected) {
-	comboBox.setSelectedItem(selected);
+    	comboBox.setSelectedItem(selected);
     }
 
     public void actionPerformed(ActionEvent event) {
-
-	Object src = event.getSource();
-
-	MZmineProcessingStep<?> selected = (MZmineProcessingStep<?>) comboBox
-		.getSelectedItem();
-
-	if (src == comboBox) {
-	    if (selected == null) {
-		setButton.setEnabled(false);
-		return;
-	    }
-	    ParameterSet parameterSet = selected.getParameterSet();
-	    int numOfParameters = parameterSet.getParameters().length;
-	    setButton.setEnabled(numOfParameters > 0);
-	}
-
-	if (src == setButton) {
-	    if (selected == null)
-		return;
-	    ParameterSet parameterSet = selected.getParameterSet();
-	    parameterSet.showSetupDialog();
-	}
-
+	
+		Object src = event.getSource();
+	
+		MZmineProcessingStep<?> selected = (MZmineProcessingStep<?>) comboBox
+			.getSelectedItem();
+	
+		if (src == comboBox) {
+		    if (selected == null) {
+			setButton.setEnabled(false);
+			return;
+		    }
+		    ParameterSet parameterSet = selected.getParameterSet();
+		    int numOfParameters = parameterSet.getParameters().length;
+		    setButton.setEnabled(numOfParameters > 0);
+		}
+	
+		if (src == setButton) {
+		    if (selected == null)
+			return;
+		    ParameterSet parameterSet = selected.getParameterSet();
+		    parameterSet.showSetupDialog();
+		}
     }
 
     @Override
     public void setToolTipText(String toolTip) {
-	comboBox.setToolTipText(toolTip);
+    	comboBox.setToolTipText(toolTip);
     }
 }
