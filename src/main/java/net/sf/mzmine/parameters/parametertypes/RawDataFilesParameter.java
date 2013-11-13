@@ -57,8 +57,7 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 
 	@Override
 	public RawDataFilesParameter cloneParameter() {
-		RawDataFilesParameter copy = new RawDataFilesParameter(minCount,
-				maxCount);
+		RawDataFilesParameter copy = new RawDataFilesParameter(minCount, maxCount);
 		copy.value = value;
 		return copy;
 	}
@@ -75,13 +74,11 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 			return false;
 		}
 		if (value.length < minCount) {
-			errorMessages.add("At least " + minCount
-					+ " raw data files must be selected");
+			errorMessages.add("At least " + minCount + " raw data files must be selected");
 			return false;
 		}
 		if (value.length > maxCount) {
-			errorMessages.add("Maximum " + maxCount
-					+ " raw data files may be selected");
+			errorMessages.add("Maximum " + maxCount + " raw data files may be selected");
 			return false;
 		}
 		return true;
