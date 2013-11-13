@@ -22,6 +22,7 @@ package net.sf.mzmine.parameters.parametertypes;
 import java.util.Collection;
 
 import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.Parameter;
 
 import org.w3c.dom.Element;
@@ -74,6 +75,17 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 			return false;
 		}
 		if (value.length < minCount) {
+			if (minCount == 1)
+			{
+				// we expect at least one file to be selected, none were, so select them all
+				RawDataFile[] dataFiles = MZmineCore.getCurrentProject().getDataFiles();
+				if (dataFiles.length > 0)
+				{
+					value = dataFiles;
+					return true;
+				}
+			}
+
 			errorMessages.add("At least " + minCount + " raw data files must be selected");
 			return false;
 		}
