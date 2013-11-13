@@ -32,8 +32,7 @@ import org.w3c.dom.Element;
  * Combo Parameter implementation
  * 
  */
-public class ComboParameter<ValueType> implements
-		UserParameter<ValueType, JComboBox> {
+public class ComboParameter<ValueType> implements UserParameter<ValueType, JComboBox> {
 
 	private String name, description;
 	private ValueType choices[], value;
@@ -42,8 +41,7 @@ public class ComboParameter<ValueType> implements
 		this(name, description, choices, null);
 	}
 
-	public ComboParameter(String name, String description, ValueType choices[],
-			ValueType defaultValue) {
+	public ComboParameter(String name, String description, ValueType choices[], ValueType defaultValue) {
 		this.name = name;
 		this.description = description;
 		this.choices = choices;
@@ -83,8 +81,7 @@ public class ComboParameter<ValueType> implements
 
 	@Override
 	public ComboParameter<ValueType> cloneParameter() {
-		ComboParameter<ValueType> copy = new ComboParameter<ValueType>(name,
-				description, choices);
+		ComboParameter<ValueType> copy = new ComboParameter<ValueType>(name, description, choices);
 		copy.value = this.value;
 		return copy;
 	}
@@ -97,8 +94,7 @@ public class ComboParameter<ValueType> implements
 			return;
 		}
 		if (!Arrays.asList(choices).contains(selectedItem)) {
-			throw new IllegalArgumentException("Invalid value for parameter "
-					+ name + ": " + selectedItem);
+			throw new IllegalArgumentException("Invalid value for parameter " + name + ": " + selectedItem);
 		}
 		int index = component.getSelectedIndex();
 		if (index < 0)
