@@ -33,9 +33,9 @@ import net.sf.mzmine.parameters.ParameterSet;
  */
 public class LocalMaxMassDetector implements MassDetector {
 
-    public int getMassValuesPasses(ParameterSet parameters) { return 1; }
+	public String getMassValuesJob(ParameterSet parameters) { return null; }
 
-    public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters) {
+    public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 
 	double noiseLevel = parameters.getParameter(
 		LocalMaxMassDetectorParameters.noiseLevel).getValue();
@@ -100,5 +100,7 @@ public class LocalMaxMassDetector implements MassDetector {
     public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
 	return LocalMaxMassDetectorParameters.class;
     }
+
+	public void getJobDone(String job) {}
 
 }
