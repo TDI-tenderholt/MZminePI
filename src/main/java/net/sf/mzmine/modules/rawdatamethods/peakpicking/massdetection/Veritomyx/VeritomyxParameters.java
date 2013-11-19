@@ -23,6 +23,7 @@ import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetect
 import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
 import net.sf.mzmine.parameters.parametertypes.IntegerParameter;
+import net.sf.mzmine.parameters.parametertypes.JobsComboParameter;
 import net.sf.mzmine.parameters.parametertypes.PasswordParameter;
 import net.sf.mzmine.parameters.parametertypes.StringParameter;
 import net.sf.mzmine.util.ExitCode;
@@ -42,21 +43,26 @@ public class VeritomyxParameters extends SimpleParameterSet
 				"Setting this to zero defaults to your primary project.",
 			0);
 	public static final IntegerParameter first_scan = new IntegerParameter(
-			"Min Scan Number",
-			"Scan number of first scan of scan range to centroid.",
-			1);
+			"Minimum Scan Number",
+			"Lower limit of scan range to centroid for new job.",
+			0);
 	public static final IntegerParameter last_scan = new IntegerParameter(
-			"Max Scan Number",
-			"Scan number of last scan of scan range to centroid.",
+			"Maximum Scan Number",
+			"Upper limit of scan range to centroid for new job.",
 			1);
+	public static final JobsComboParameter job_list = new JobsComboParameter(
+			"New or Pending Jobs (if any)",
+			"Launch a new job with given scan range or\n" +
+			"Await completion and retrieve results of a previously launched job.");
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { username, password, project, first_scan, last_scan });
+		super(new UserParameter[] { username, password, project, first_scan, last_scan, job_list });
 	}
 
 	public ExitCode showSetupDialog()
 	{
+		System.out.println("dgshack: show parameters dialog box");
 		MassDetectorSetupDialog dialog = new MassDetectorSetupDialog(Veritomyx.class, this);
 		dialog.setVisible(true);
 		return dialog.getExitCode();
