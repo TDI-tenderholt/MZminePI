@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2013-2013 The Veritomyx
  * 
  * This file is part of MZmine 2.
  * 
@@ -22,8 +22,7 @@ package net.sf.mzmine.data;
 import javax.annotation.Nonnull;
 
 /**
- * This class represent detected masses (ions) in one mass spectrum. Each ion is
- * represented by MzPeak
+ * This defines a Veritomyx job
  */
 public interface JobInfo
 {
