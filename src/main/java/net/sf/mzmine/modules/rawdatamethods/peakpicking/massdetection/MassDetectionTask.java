@@ -36,7 +36,7 @@ public class MassDetectionTask extends AbstractTask {
     private RawDataFile dataFile;
 
     // scan counter
-    private int processedScans = 0, totalScans = 0, passes = 1;
+    private int processedScans = 0, totalScans = 0;
     private int msLevel;
 
     // User parameters
@@ -71,7 +71,7 @@ public class MassDetectionTask extends AbstractTask {
     public double getFinishedPercentage() {
 		if (totalScans == 0)
 		    return 0;
-		return (double) processedScans / (totalScans * passes);
+		return (double) processedScans / totalScans;
     }
 
     public RawDataFile getDataFile() {
@@ -90,31 +90,25 @@ public class MassDetectionTask extends AbstractTask {
 
 		int scanNumbers[] = dataFile.getScanNumbers(msLevel);
 		totalScans = scanNumbers.length;
-		passes = detector.getMassValuesPasses(massDetector.getParameterSet());
+		String job = detector.getMassValuesJob(massDetector.getParameterSet());
 
-		for (int pass = 1; pass <= passes; pass++)
+		// Process scans one by one
+		for (int i = 0; i < totalScans; i++)
 		{
-			// Process scans one by one
-			for (int i = 0; i < totalScans; i++)
-			{
-			    if (isCanceled())
-			    	return;
+		    if (isCanceled())
+		    	return;
 
-			    Scan scan = dataFile.getScan(scanNumbers[i]);
-
-			    DataPoint mzPeaks[] = detector.getMassValues(scan, pass, massDetector.getParameterSet());
-
-			    if (mzPeaks != null)
-			    {
-			    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
-
-				    // Add new mass list to the scan
-				    scan.addMassList(newMassList);
-			    }
-			    processedScans++;
-			}
+		    Scan scan = dataFile.getScan(scanNumbers[i]);
+		    DataPoint mzPeaks[] = detector.getMassValues(scan, job, massDetector.getParameterSet());
+		    if (mzPeaks != null)
+		    {
+		    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
+			    scan.addMassList(newMassList);	// Add new mass list to the scan
+		    }
+		    processedScans++;
 		}
 
+		detector.getJobDone(job);
 		setStatus(TaskStatus.FINISHED);
 		logger.info("Finished " + detector.getName() + " mass detector on " + dataFile);
     }

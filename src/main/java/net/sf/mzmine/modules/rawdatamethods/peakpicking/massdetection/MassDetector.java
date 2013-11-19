@@ -30,14 +30,20 @@ import net.sf.mzmine.parameters.ParameterSet;
 public interface MassDetector extends MZmineModule {
 	
 	/**
-	 * Returns number of passes required in getting mass values
+	 * Returns the job id for getting mass values
 	 * @param parameterSet 
 	 */
-	public int getMassValuesPasses(ParameterSet parameterSet);
+	public String getMassValuesJob(ParameterSet parameterSet);
 
 	/**
 	 * Returns mass and intensity values detected in given scan
 	 */	
-	public DataPoint[] getMassValues(Scan scan, int pass, ParameterSet parameters);
+	public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters);
+
+	/**
+	 * Mark the job done
+	 * @param parameterSet 
+	 */
+	public void getJobDone(String job);
 
 }
