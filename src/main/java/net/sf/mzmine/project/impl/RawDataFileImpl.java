@@ -415,8 +415,11 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     {
     	for (RemoteJobInfo job : jobs_info)
     	{
-    		if (job.getName() == name)
+    		if (job.getName().equals(name))
+    		{
     			job.setStatus(status);
+    			break;
+    		}
     	}
     }
     
@@ -427,8 +430,11 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     {
     	for (RemoteJobInfo job : jobs_info)
     	{
-    		if (job.getName() == name)
+    		if (job.getName().equals(name))
+    		{
     			jobs_info.remove(job);
+    			break;
+    		}
     	}
     }
 
