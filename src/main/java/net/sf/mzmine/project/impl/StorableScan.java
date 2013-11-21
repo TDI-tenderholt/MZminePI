@@ -20,7 +20,6 @@
 package net.sf.mzmine.project.impl;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -434,27 +433,21 @@ public class StorableScan implements Scan {
 	}
 
 	/**
-	 * Write to file from memory with option to gzip it
+	 * Open the proper type of buffered file depending on the .gz suffix
 	 * 
 	 * @param path
 	 * @param filedata
 	 * @return
 	 * @throws IOException
 	 */
-	public void writeFile(String path, String filedata) throws IOException
+	private BufferedWriter openFile(String path) throws IOException
 	{
+		BufferedWriter fd;
 		if (path.endsWith(".gz"))
-		{
-			BufferedWriter gz = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path))));
-			gz.write(filedata);
-			gz.close();
-		}
+			fd = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path))));
 		else
-		{
-	        FileWriter fd = new FileWriter(path);
-	        fd.write(filedata);
-			fd.close();
-		}
+			fd = new BufferedWriter(new FileWriter(path));
+		return fd;
 	}
 
 	/**
@@ -475,21 +468,19 @@ public class StorableScan implements Scan {
 			logger.info("Exporting scan " + getScanNumber() + " to file " + filename);
 			try
 			{
-				File file = new File(filename);
-				FileChecksum chksum = new FileChecksum(file);
+				BufferedWriter fd = openFile(filename);
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
-				String filedata = "";
-				filedata += chksum.hash_line("# MS Level: "      + getMSLevel()    + "\n");
-				filedata += chksum.hash_line("# Scan: "          + getScanNumber() + "\n");
-				filedata += chksum.hash_line("# Mass List: "     + massListName    + "\n");
-				filedata += chksum.hash_line("# Data Points: "   + num             + "\n");
+				fd.write("# MS Level: "      + getMSLevel()    + "\n");
+				fd.write("# Scan: "          + getScanNumber() + "\n");
+				fd.write("# Mass List: "     + massListName    + "\n");
+				fd.write("# Data Points: "   + num             + "\n");
 		        for (int p = 0; p < num; p++)
-	                filedata += chksum.hash_line(pts[p].getMZ() + "\t" + pts[p].getIntensity() + "\n");
-		        filedata += chksum.checksum_line();	// add checksum to the file data
-
-		        writeFile(filename, filedata);		// write the file
-
+		        	fd.write(pts[p].getMZ() + "\t" + pts[p].getIntensity() + "\n");
+		        fd.close();
+		        FileChecksum chksum = new FileChecksum(filename);
+				chksum.hash_file();
+				chksum.append_txt(false);
 				exported = 1;
 			}
 			catch (Exception ex)
@@ -505,8 +496,7 @@ public class StorableScan implements Scan {
 				logger.info("Exporting mass list " + massListName + " for scan "+ getScanNumber() + " to file " + filename);
 				try
 				{
-					File file = new File(filename);
-					FileWriter fd = new FileWriter(file);
+					BufferedWriter fd = openFile(filename);
 					DataPoint mzPeaks[] = massList.getDataPoints();
 	                int num = mzPeaks.length;
 		            fd.write("# MS Level: "    + getMSLevel()    + "\n");
@@ -519,7 +509,7 @@ public class StorableScan implements Scan {
 	                	fd.write(pt.getMZ() + "\t" + pt.getIntensity() + "\n");
 	            	}
 	                fd.close();
-	                FileChecksum chksum = new FileChecksum(file);
+	                FileChecksum chksum = new FileChecksum(filename);
 					chksum.hash_file();
 					chksum.append_txt(false);
 					exported = 1;
