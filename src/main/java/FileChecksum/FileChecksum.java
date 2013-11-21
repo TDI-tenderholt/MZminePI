@@ -1,15 +1,20 @@
 package FileChecksum;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * FileChecksum Class used to create and verify Veritomyx file checksums.
@@ -105,11 +110,7 @@ public class FileChecksum
 	{
 		reset();
 		String line;
-		BufferedReader fd = null;
-		if (filename.endsWith(".gz"))
-			fd = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(filename))));
-		else
-			fd = new BufferedReader(new FileReader(file));
+		BufferedReader fd = openReadFile(filename);
 		if (fd != null)
 		{
 			while ((line = fd.readLine()) != null)
@@ -156,8 +157,8 @@ public class FileChecksum
 	 */
 	public boolean append_txt(boolean validate) throws Exception
 	{
-		FileOutputStream fd = new FileOutputStream(file, true);
-		fd.write(checksum_line().getBytes());
+		BufferedWriter fd = openWriteFile(filename, true);
+		fd.write(checksum_line());
 		fd.close();
 		boolean ret = (validate) ? verify(true) : true;
 		return ret;
@@ -185,8 +186,8 @@ public class FileChecksum
 		hash_line(tag2);
 		hash_line(tag3);
 		String line = tag1 + "\n" + prefix + sum + "\n" + tag2 + "\n" + tag3 + "\n";	// output the hash and the tags
-		FileOutputStream fd = new FileOutputStream(file, true);
-		fd.write(line.getBytes());
+		BufferedWriter fd = openWriteFile(filename, true);
+		fd.write(line);
 		fd.close();
 		boolean ret = (validate) ? verify(true) : true;
 		return ret;
@@ -207,6 +208,42 @@ public class FileChecksum
 		if (verbose)
 			System.out.println((good ? "Valid" : "Invalid") + " checksum in file " + file.getName());
 		return good;
+	}
+
+	/**
+	 * Open the proper type of buffered file depending on the .gz suffix
+	 * 
+	 * @param path
+	 * @param append
+	 * @return
+	 * @throws IOException
+	 */
+	private BufferedWriter openWriteFile(String path, boolean append) throws IOException
+	{
+		BufferedWriter fd;
+		if (path.endsWith(".gz"))
+			fd = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path, append))));
+		else
+			fd = new BufferedWriter(new FileWriter(path, append));
+		return fd;
+	}
+
+	/**
+	 * Open the proper type of buffered file depending on the .gz suffix
+	 * 
+	 * @param path
+	 * @param mode
+	 * @return
+	 * @throws IOException
+	 */
+	private BufferedReader openReadFile(String path) throws IOException
+	{
+		BufferedReader fd;
+		if (filename.endsWith(".gz"))
+			fd = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(path))));
+		else
+			fd = new BufferedReader(new FileReader(path));
+		return fd;
 	}
 
 	/**
