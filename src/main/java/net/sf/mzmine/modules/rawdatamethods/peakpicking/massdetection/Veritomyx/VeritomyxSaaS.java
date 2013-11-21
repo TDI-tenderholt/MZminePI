@@ -64,7 +64,6 @@ public class VeritomyxSaaS
 	private String      sftp_user = null;
 	private String      sftp_pw   = null;
 	private SftpUtil    sftp      = null;
-	private SftpSession session   = null;
 
 	private String dir = null;
 
@@ -115,12 +114,14 @@ public class VeritomyxSaaS
 		if (job_id != null)
 		{
 			sftp = SftpUtilFactory.getSftpUtil();
-			if (!openSession())
+			SftpSession session = openSession();	// open to verify we can
+			if (session == null)
 			{
 				logger.info("Error: VTMX SFTP access not available");
-				closeSession();
 				job_id = null;
 			}
+			else
+				closeSession(session);
 		}
 	}
 
@@ -219,15 +220,16 @@ public class VeritomyxSaaS
 	 * 
 	 * @return boolean
 	 */
-	private boolean openSession()
+	private SftpSession openSession()
 	{
+		SftpSession session;
 		try {
 			session = sftp.connectByPasswdAuth(host, 22, sftp_user, sftp_pw, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 3000);
 		} catch (SftpException e) {
 			session = null;
 			logger.info("Error: Cannot connect to SFTP server " + sftp_user + "@" + host);
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 		dir = "projects/" + pid;
 		SftpResult result = sftp.cd(session, dir);	// cd into the v_project directory
@@ -237,27 +239,26 @@ public class VeritomyxSaaS
 			if (!result.getSuccessFlag())
 			{
 				logger.info("Error: Cannot create remote directory, " + dir + "/batches");
-				return false;
+				return null;
 			}
 			result = sftp.mkdir(session, "/results");
 			if (!result.getSuccessFlag())
 			{
 				logger.info("Error: Cannot create remote directory, " + dir + "/results");
-				return false;
+				return null;
 			}
 		}
-		return true;
+		return session;
 	}
 
 	/**
 	 * Close the SFTP session
 	 * Call this when we are closing the instance
 	 */
-	public void closeSession()
+	private void closeSession(SftpSession session)
 	{
-		if (sftp != null)
+		if ((sftp != null) && (session != null))
 			sftp.disconnect(session);
-		session = null;
 	}
 
 	/**
@@ -269,6 +270,9 @@ public class VeritomyxSaaS
 	{
 		SftpResult result;
 		logger.info("Put " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		SftpSession session = openSession();
+		if (session == null)
+			return false;
 
 		sftp.cd(session, "batches");
 		try { sftp.rm(session, fname); } catch (Exception e) {}
@@ -278,6 +282,7 @@ public class VeritomyxSaaS
 		if (!result.getSuccessFlag())
 		{
 			logger.info("Error: Cannot write file: " + fname);
+			closeSession(session);
 			return false;
 		}
 		else
@@ -288,9 +293,11 @@ public class VeritomyxSaaS
 			if (!result.getSuccessFlag())
 			{
 				logger.info("Error: Cannot rename file: " + fname);
+				closeSession(session);
 				return false;
 			}
 		}
+		closeSession(session);
 		return true;
 	}
 
@@ -303,6 +310,9 @@ public class VeritomyxSaaS
 	{
 		SftpResult result;
 		logger.info("Get " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		SftpSession session = openSession();
+		if (session == null)
+			return false;
 
 		sftp.cd(session, "results");
 		result = sftp.get(session, fname);
@@ -310,11 +320,12 @@ public class VeritomyxSaaS
 		{
 			sftp.cd(session, "..");
 			logger.info("Error: Cannot read file: " + fname);
+			closeSession(session);
 			return false;
 		}
 		sftp.rm(session, fname);
 		sftp.cd(session, "..");
-
+		closeSession(session);
 		return true;
 	}
 }
