@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 import net.sf.mzmine.util.Range;
 
 public interface RawDataFile {
@@ -106,8 +107,7 @@ public interface RawDataFile {
 
     public double getDataMaxTotalIonCurrent(int msLevel);
 
-    public void addJob(String name, int min_scan, int max_scan);
-    public void updateJob(String name, String status);
+    public void addJob(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx);
     public void removeJob(String name);
     public ArrayList<RemoteJobInfo> getJobs();
 

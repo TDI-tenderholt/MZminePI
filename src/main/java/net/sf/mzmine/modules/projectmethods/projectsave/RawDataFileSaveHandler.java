@@ -212,7 +212,7 @@ class RawDataFileSaveHandler {
 			atts.addAttribute("", "", RawDataElementName.JOB_MIN_SCAN.getElementName(), "CDATA", String.valueOf(job.getMinScan()));
 			atts.addAttribute("", "", RawDataElementName.JOB_MAX_SCAN.getElementName(), "CDATA", String.valueOf(job.getMaxScan()));
 		    hd.startElement("", "", RawDataElementName.JOB.getElementName(), atts);
-		    String s = job.getStatus();
+		    String s = String.valueOf(job.getStatus());
 		    hd.characters(s.toCharArray(), 0, s.length());
 			hd.endElement("", "", RawDataElementName.JOB.getElementName());
 			atts.clear();

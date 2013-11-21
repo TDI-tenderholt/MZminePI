@@ -127,14 +127,14 @@ public class PeakInvestigatorTask
 			try {
 				if (scan_num == first_scan)
 				{
-					raw.addJob(job_id, first_scan, last_scan);	// record this job start
+					raw.addJob(job_id, first_scan, last_scan, vtmx);	// record this job start
 					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(intputFilename())));
 				}
-	
+
 				// export the scan to a file
 				String filename = "scan" + String.format("%04d", scan_num) + ".txt.gz";
 				scan.exportToFile("", filename);
-				
+
 				// put the exported scan into the tar file
 				f = new File(filename);
 				tarfile.putNextEntry(new TarEntry(f, filename));
@@ -152,7 +152,7 @@ public class PeakInvestigatorTask
 				{
 					tarfile.close();
 					vtmx.putFile(intputFilename());
-		
+
 					//####################################################################
 					// start for remote job
 					if (vtmx.getPage(VeritomyxSaaS.JOB_RUN) < VeritomyxSaaS.RUNNING)
@@ -163,7 +163,6 @@ public class PeakInvestigatorTask
 
 					// job was started - record it
 					logger.info(vtmx.getPageData().split(" ",2)[1]);
-					raw.updateJob(job_id, "Running");
 					f = new File(intputFilename());
 					f.delete();			// remove the local copy of the tar file
 				}
@@ -192,7 +191,6 @@ public class PeakInvestigatorTask
 			if (scan_num == first_scan)
 			{
 				logger.info(vtmx.getPageData().split(" ",2)[1]);
-				raw.updateJob(job_id, "Done");
 	
 				//####################################################################
 				// read the results tar file and extract all the peak list files
@@ -266,7 +264,6 @@ public class PeakInvestigatorTask
 			{
 				vtmx.getPage(VeritomyxSaaS.JOB_DONE);
 				raw.removeJob(job_id);
-				vtmx.closeSession();
 			}
 		}
 

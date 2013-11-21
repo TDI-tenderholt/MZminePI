@@ -42,6 +42,7 @@ import net.sf.mzmine.data.RawDataFileWriter;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.RemoteJobInfo;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.Range;
 
@@ -402,25 +403,10 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     /**
      * Add a remote job descriptor to the data file
      */
-    public synchronized void addJob(String name, int min_scan, int max_scan)
+    public synchronized void addJob(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx)
     {
-    	RemoteJobInfo job = new RemoteJobInfo(name, min_scan, max_scan);
+    	RemoteJobInfo job = new RemoteJobInfo(name, min_scan, max_scan, vtmx);
     	this.jobs_info.add(job);
-    }
-
-    /**
-     * Update the status of a remote job
-     */
-    public synchronized void updateJob(String name, String status)
-    {
-    	for (RemoteJobInfo job : jobs_info)
-    	{
-    		if (job.getName().equals(name))
-    		{
-    			job.setStatus(status);
-    			break;
-    		}
-    	}
     }
     
     /**

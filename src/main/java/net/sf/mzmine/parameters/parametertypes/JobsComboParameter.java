@@ -24,8 +24,8 @@ import java.util.Collection;
 
 import javax.swing.JComboBox;
 
-import net.sf.mzmine.data.JobInfo;
 import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.data.impl.RemoteJobInfo;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.UserParameter;
 
@@ -75,11 +75,13 @@ public class JobsComboParameter implements UserParameter<String, JComboBox>
 		choices[job_count = 0] = NEWJOB;
 		for (RawDataFile raw : dataFiles)
 		{
-			for (JobInfo job : raw.getJobs())
+			for (RemoteJobInfo job : raw.getJobs())
+			{
 				choices[++job_count] = job.getName()
 							+ "[" + job.getMinScan() + ".." + job.getMaxScan() + "]"
 							+ "    " + job.getStatus()
 							+ "    " + raw.getName();
+			}
 		}
 		return new JComboBox(choices);
 	}

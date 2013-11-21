@@ -20,6 +20,7 @@
 package net.sf.mzmine.data.impl;
 
 import net.sf.mzmine.data.JobInfo;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 
 /**
  * This defines a Veritomyx job
@@ -27,20 +28,23 @@ import net.sf.mzmine.data.JobInfo;
 public class RemoteJobInfo implements JobInfo
 {
 	private String name;
-	private String status;
 	private int min_scan, max_scan;
+	private VeritomyxSaaS vtmx;
 	
-	public RemoteJobInfo(String name, int min_scan, int max_scan)
+	public RemoteJobInfo(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx)
 	{
 		this.name     = name;
-		this.status   = "Initialized";
 		this.min_scan = min_scan;
 		this.max_scan = max_scan;
+//		if (vtmx != null)
+			this.vtmx = vtmx;
+//		else
+//			this.vtmx = new VeritomyxSaaS(username, password, pid, name, min_scan, max_scan);
+
 	}
 
     public String getName()    { return name; }
     public int    getMinScan() { return min_scan; }
     public int    getMaxScan() { return max_scan; }
-    public String getStatus()  { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public int    getStatus()  { return vtmx.getStatus(); }
 }

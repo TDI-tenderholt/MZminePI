@@ -197,7 +197,7 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
             jobName  = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
             int min_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MIN_SCAN.getElementName()));
             int max_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MAX_SCAN.getElementName()));
-        	newRawDataFile.addJob(jobName, min_scan, max_scan);
+        	newRawDataFile.addJob(jobName, min_scan, max_scan, null);
         }
     }
 
@@ -290,11 +290,6 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
         if (qName.equals(RawDataElementName_2_5.JOB_COUNT.getElementName()))
         {
         	getTextOfElement();	// must remove this from the text buffer
-        }
-
-        if (qName.equals(RawDataElementName_2_5.JOB.getElementName()))
-        {
-        	newRawDataFile.updateJob(jobName, getTextOfElement());
         }
    }
 
