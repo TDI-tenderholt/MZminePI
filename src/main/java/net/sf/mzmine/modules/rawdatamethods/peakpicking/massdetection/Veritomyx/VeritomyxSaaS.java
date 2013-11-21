@@ -115,13 +115,13 @@ public class VeritomyxSaaS
 		{
 			sftp = SftpUtilFactory.getSftpUtil();
 			SftpSession session = openSession();	// open to verify we can
-			if (session == null)
+			if (session != null)
+				closeSession(session);
+			else
 			{
 				logger.info("Error: VTMX SFTP access not available");
 				job_id = null;
 			}
-			else
-				closeSession(session);
 		}
 	}
 
