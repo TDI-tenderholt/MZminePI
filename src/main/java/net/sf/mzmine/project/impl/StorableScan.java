@@ -21,7 +21,6 @@ package net.sf.mzmine.project.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,7 +30,6 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.Nonnull;
@@ -469,7 +467,6 @@ public class StorableScan implements Scan {
 	public int exportToFile(String massListName, String filename)
 	{
 		int exported = 0;
-		String dfileName = getDataFile().getName();
 		if (filename.isEmpty())
 			filename = exportFilename(massListName);
 
@@ -483,9 +480,8 @@ public class StorableScan implements Scan {
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
 				String filedata = "";
-				filedata += chksum.hash_line("# Raw Data File: " + dfileName       + "\n");
-				filedata += chksum.hash_line("# Scan: "          + getScanNumber() + "\n");
 				filedata += chksum.hash_line("# MS Level: "      + getMSLevel()    + "\n");
+				filedata += chksum.hash_line("# Scan: "          + getScanNumber() + "\n");
 				filedata += chksum.hash_line("# Mass List: "     + massListName    + "\n");
 				filedata += chksum.hash_line("# Data Points: "   + num             + "\n");
 		        for (int p = 0; p < num; p++)
@@ -513,11 +509,10 @@ public class StorableScan implements Scan {
 					FileWriter fd = new FileWriter(file);
 					DataPoint mzPeaks[] = massList.getDataPoints();
 	                int num = mzPeaks.length;
-		            fd.write("# Raw Data File: " + dfileName + "\n");
-		            fd.write("# MS Level: " + getMSLevel() + "\n");
-		            fd.write("# Scan: " + getScanNumber() + "\n");
-		            fd.write("# Mass List: " + massListName + "\n");
-		            fd.write("# Data Points: " + num + "\n");
+		            fd.write("# MS Level: "    + getMSLevel()    + "\n");
+		            fd.write("# Scan: "        + getScanNumber() + "\n");
+		            fd.write("# Mass List: "   + massListName    + "\n");
+		            fd.write("# Data Points: " + num             + "\n");
 		            for (int p = 0; p < num; p++)
 	                {
 	                	DataPoint pt = mzPeaks[p];
