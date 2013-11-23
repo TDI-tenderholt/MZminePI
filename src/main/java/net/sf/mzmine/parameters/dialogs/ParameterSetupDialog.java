@@ -120,7 +120,6 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
      */
     @SuppressWarnings("unchecked")
 	protected void addDialogComponents() {
-    	System.out.println("dgshack: adding parameter dialog components");
 		// Main panel which holds all the components in a grid
 		mainPanel = new GridBagPanel();
 	
@@ -133,7 +132,6 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
 			if (!(p instanceof UserParameter))
 		    	continue;
 		    UserParameter up = (UserParameter) p;
-			System.out.println("dgshack: adding parameter " + up);
 
 		    JComponent comp = up.createEditingComponent();
 	

@@ -34,6 +34,7 @@ import java.util.zip.GZIPInputStream;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.project.impl.RawDataFileImpl;
 
@@ -76,16 +77,25 @@ public class PeakInvestigatorTask
 		first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
 		last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
 
+		if (first_scan > last_scan)
+		{
+			MZmineCore.getDesktop().displayErrorMessage("Error", "Improper scan number range specified", logger);
+			return;
+		}
+
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
 		vtmx = new VeritomyxSaaS(username, password, pid, job_pickup, first_scan, last_scan);
 		job_id = vtmx.getJobID();
 		status = vtmx.getStatus();
-		if (status > VeritomyxSaaS.UNDEFINED)
+		if (status <= VeritomyxSaaS.UNDEFINED)
+			logger.finest("Preparing to launch new job, " + job_id);
+		else
 		{
 			// overwrite the scan range with original job range
 			first_scan = vtmx.getFirstScan();
 			last_scan  = vtmx.getLastScan();
+			logger.finest("Picking up previously launched job, " + job_id);
 		}
 	}
 
@@ -157,7 +167,7 @@ public class PeakInvestigatorTask
 					// start for remote job
 					if (vtmx.getPage(VeritomyxSaaS.JOB_RUN) < VeritomyxSaaS.RUNNING)
 					{
-						logger.info("Error: Failed to launch job for " + job_id);
+						MZmineCore.getDesktop().displayErrorMessage("Error", "Failed to launch job for " + job_id, logger);
 						return null;
 					}
 
@@ -168,7 +178,7 @@ public class PeakInvestigatorTask
 				}
 			} catch (Exception e) {
 				logger.info(e.getMessage());
-				logger.info("Error: Cannot create tar file");
+				MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot create tar file", logger);
 			}
 
 			return null;	// never return peaks from pass 1
@@ -218,7 +228,7 @@ public class PeakInvestigatorTask
 						f.delete();			// remove the local copy of the results tar file
 					} catch (Exception e1) {
 						logger.info(e1.getMessage());
-						logger.info("Error: Cannot parse results file");
+						MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse results file", logger);
 						e1.printStackTrace();
 					} finally {
 						try { tis.close(); } catch (Exception e) {}
@@ -256,7 +266,7 @@ public class PeakInvestigatorTask
 			catch (Exception e)
 			{
 				logger.info(e.getMessage());
-				logger.info("Error: Cannot parse peaks file.");
+				MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse peaks file.", logger);
 				e.printStackTrace();
 			}
 			

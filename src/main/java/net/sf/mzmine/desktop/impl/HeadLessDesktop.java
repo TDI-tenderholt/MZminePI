@@ -78,6 +78,10 @@ public class HeadLessDesktop implements Desktop {
     public void displayMessage(String title, String msg) {
 	logger.info(msg);
     }
+	@Override
+	public void displayMessage(String title, String msg, Logger log) {
+		log.info(title + ": " + msg);
+	}
 
     @Override
     public void displayErrorMessage(String msg) {
@@ -88,6 +92,10 @@ public class HeadLessDesktop implements Desktop {
     public void displayErrorMessage(String title, String msg) {
 	logger.severe(msg);
     }
+	@Override
+	public void displayErrorMessage(String title, String msg, Logger log) {
+		log.severe(title + ": " + msg);
+	}
 
     @Override
     public void displayException(Exception e) {

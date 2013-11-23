@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.logging.Logger;
 
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
@@ -82,7 +83,9 @@ public class VeritomyxSaaS
 		// this also gets the job_id and SFTP credentials
 		if (getPage(JOB_INIT) != DONE)
 		{
-			logger.info("Error: VTMX web access not available");
+			MZmineCore.getDesktop().displayErrorMessage("Error", "VTMX web access not available", logger);
+			job_id = null;
+			return;
 		}
 		String sa[] = web_str.split(" ");
 		job_id      = sa[1];	// new job ID
@@ -97,8 +100,9 @@ public class VeritomyxSaaS
 			int existing_job_status = getPage(JOB_STATUS);
 			if ((existing_job_status != RUNNING) && (existing_job_status != DONE))
 			{
-				logger.info("Error: Job, " + jobID + ", not found");
+				MZmineCore.getDesktop().displayErrorMessage("Error", "Job, " + jobID + ", not found", logger);
 				job_id = null;	// not a valid job
+				return;
 			}
 			else
 			{
@@ -119,7 +123,7 @@ public class VeritomyxSaaS
 				closeSession(session);
 			else
 			{
-				logger.info("Error: VTMX SFTP access not available");
+				MZmineCore.getDesktop().displayErrorMessage("Error", "VTMX SFTP access not available", logger);
 				job_id = null;
 			}
 		}
@@ -150,8 +154,8 @@ public class VeritomyxSaaS
 		else
 		{
 			web_result = ERROR;
-			web_str = "Error: Invalid action";
-			logger.info(web_str);
+			web_str = "Invalid action";
+			MZmineCore.getDesktop().displayErrorMessage("Error", web_str, logger);
 			return ERROR;
 		}
 
@@ -170,15 +174,15 @@ public class VeritomyxSaaS
 				if (job_id == null)
 				{
 					web_result = ERROR;
-					web_str = "Error: Job ID not defined";
-					logger.info(web_str);
+					web_str = "Job ID not defined";
+					MZmineCore.getDesktop().displayErrorMessage("Error", web_str, logger);
 					return ERROR;
 				}
 				page += "&Command=" + "ckm" +	// Centroid Set
 						"&Job="     + URLEncoder.encode(job_id, "UTF-8") +
 						"&Force="   + "1";
 			}
-			System.out.println("dgshack: " + page);
+			logger.finest("dgshack: " + page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
@@ -193,7 +197,7 @@ public class VeritomyxSaaS
 			String decodedString;
 			while ((decodedString = in.readLine()) != null)
 			{
-				System.out.println("dgshack: " + decodedString);
+				logger.finest("dgshack: " + decodedString);
 				if (web_result == UNDEFINED)
 				{
 					web_str = decodedString;
@@ -206,12 +210,12 @@ public class VeritomyxSaaS
 		catch (Exception e)
 		{
 			web_result = EXCEPTION;
-			web_str = e.getMessage();
-			logger.finest("Error: Web exception - " + web_str);
+			web_str = "Web exception - " + e.getMessage();
+			MZmineCore.getDesktop().displayErrorMessage("Error", web_str, logger);
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
-		System.out.println("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
+		logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
 		return web_result;
 	}
 
@@ -227,7 +231,8 @@ public class VeritomyxSaaS
 			session = sftp.connectByPasswdAuth(host, 22, sftp_user, sftp_pw, SftpUtil.STRICT_HOST_KEY_CHECKING_OPTION_NO, 3000);
 		} catch (SftpException e) {
 			session = null;
-			logger.info("Error: Cannot connect to SFTP server " + sftp_user + "@" + host);
+			String msg = "Cannot connect to SFTP server " + sftp_user + "@" + host;
+			MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 			e.printStackTrace();
 			return null;
 		}
@@ -238,13 +243,15 @@ public class VeritomyxSaaS
 			result = sftp.mkdir(session, "/batches");
 			if (!result.getSuccessFlag())
 			{
-				logger.info("Error: Cannot create remote directory, " + dir + "/batches");
+				String msg = "Cannot create remote directory, " + dir + "/batches";
+				MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 				return null;
 			}
 			result = sftp.mkdir(session, "/results");
 			if (!result.getSuccessFlag())
 			{
-				logger.info("Error: Cannot create remote directory, " + dir + "/results");
+				String msg = "Cannot create remote directory, " + dir + "/results";
+				MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 				return null;
 			}
 		}
@@ -281,7 +288,8 @@ public class VeritomyxSaaS
 		sftp.cd(session, "..");
 		if (!result.getSuccessFlag())
 		{
-			logger.info("Error: Cannot write file: " + fname);
+			String msg = "Cannot write file: " + fname;
+			MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 			closeSession(session);
 			return false;
 		}
@@ -292,7 +300,8 @@ public class VeritomyxSaaS
 			sftp.cd(session, "..");
 			if (!result.getSuccessFlag())
 			{
-				logger.info("Error: Cannot rename file: " + fname);
+				String msg = "Cannot rename file: " + fname;
+				MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 				closeSession(session);
 				return false;
 			}
@@ -319,7 +328,8 @@ public class VeritomyxSaaS
 		if (!result.getSuccessFlag())
 		{
 			sftp.cd(session, "..");
-			logger.info("Error: Cannot read file: " + fname);
+			String msg = "Cannot read file: " + fname;
+			MZmineCore.getDesktop().displayErrorMessage("Error", msg, logger);
 			closeSession(session);
 			return false;
 		}

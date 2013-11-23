@@ -62,7 +62,6 @@ public class VeritomyxParameters extends SimpleParameterSet
 
 	public ExitCode showSetupDialog()
 	{
-		System.out.println("dgshack: show parameters dialog box");
 		MassDetectorSetupDialog dialog = new MassDetectorSetupDialog(Veritomyx.class, this);
 		dialog.setVisible(true);
 		return dialog.getExitCode();

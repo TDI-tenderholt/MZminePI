@@ -20,6 +20,7 @@
 package net.sf.mzmine.main;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -78,8 +79,7 @@ public final class MZmineCore {
 
 		// Configure the logging properties before we start logging
 		try {
-			ClassLoader cl = MZmineCore.class.getClassLoader();
-			InputStream loggingProperties = cl.getResourceAsStream(getMZmineShortName() + ".logging.properties");
+			InputStream loggingProperties = new FileInputStream("resources/" + getMZmineShortName() + ".logging.properties");
 			LogManager logMan = LogManager.getLogManager();
 			logMan.readConfiguration(loggingProperties);
 			loggingProperties.close();
@@ -88,6 +88,7 @@ public final class MZmineCore {
 		}
 
 		logger.info("Starting " + getMZmineName() + " " + getMZmineVersion());
+		logger.info("CWD is " + new File(".").getAbsolutePath());
 
 		// Remove old temporary files, if we find any
 		TmpFileCleanup.removeOldTemporaryFiles();
@@ -271,9 +272,9 @@ public final class MZmineCore {
 	public static String getMZmineName() { return "MZmine PeakInvestigator™ Edition"; }
 
 	@Nonnull
-	public static String getMZmineShortName() { return "MZmineInvestigator"; }
+	public static String getMZmineShortName() { return "MZminePI"; }
 
 	@Nonnull
-	public static String getMZmineVersion() { return "2.10-i0.15"; }
+	public static String getMZmineVersion() { return "2.10-i0.16"; }
 
 }
