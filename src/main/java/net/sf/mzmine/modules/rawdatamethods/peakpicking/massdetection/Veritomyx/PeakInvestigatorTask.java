@@ -67,7 +67,7 @@ public class PeakInvestigatorTask
 	public PeakInvestigatorTask(ParameterSet parameters)
 	{
 		logger = Logger.getLogger(this.getClass().getName());
-		logger.finest("Initializing PeakInvestigator™ Task");
+		logger.info("Initializing PeakInvestigator™ Task");
 
 		// pickup all the parameters
 		username   = parameters.getParameter(VeritomyxParameters.username).getValue();
@@ -89,13 +89,13 @@ public class PeakInvestigatorTask
 		job_id = vtmx.getJobID();
 		status = vtmx.getStatus();
 		if (status <= VeritomyxSaaS.UNDEFINED)
-			logger.finest("Preparing to launch new job, " + job_id);
+			logger.info("Preparing to launch new job, " + job_id);
 		else
 		{
 			// overwrite the scan range with original job range
 			first_scan = vtmx.getFirstScan();
 			last_scan  = vtmx.getLastScan();
-			logger.finest("Picking up previously launched job, " + job_id);
+			logger.info("Picking up previously launched job, " + job_id);
 		}
 	}
 
