@@ -83,7 +83,7 @@ public class VeritomyxSaaS
 		// this also gets the job_id and SFTP credentials
 		if (getPage(JOB_INIT) != DONE)
 		{
-			MZmineCore.getDesktop().displayErrorMessage("Error", "VTMX web access not available", logger);
+			MZmineCore.getDesktop().displayErrorMessage("Error", web_str, logger);
 			job_id = null;
 			return;
 		}
