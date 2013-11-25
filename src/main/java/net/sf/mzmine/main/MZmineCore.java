@@ -275,6 +275,6 @@ public final class MZmineCore {
 	public static String getMZmineShortName() { return "MZminePI"; }
 
 	@Nonnull
-	public static String getMZmineVersion() { return "2.10-i0.17"; }
+	public static String getMZmineVersion() { return "2.10-i0.18"; }
 
 }
