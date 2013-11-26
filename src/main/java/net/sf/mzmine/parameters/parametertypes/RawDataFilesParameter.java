@@ -77,9 +77,9 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 		if (value.length < minCount) {
 			if (minCount == 1)
 			{
-				// we expect at least one file to be selected, none were, so select them all
+				// we expect at least one file to be selected, none were, see if there is only one
 				RawDataFile[] dataFiles = MZmineCore.getCurrentProject().getDataFiles();
-				if (dataFiles.length > 0)
+				if (dataFiles.length == 1)
 				{
 					value = dataFiles;
 					return true;
