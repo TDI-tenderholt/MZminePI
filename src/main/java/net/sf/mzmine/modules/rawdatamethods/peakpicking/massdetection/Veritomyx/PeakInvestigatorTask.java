@@ -34,7 +34,9 @@ import java.util.zip.GZIPInputStream;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.desktop.preferences.MZminePreferences;
 import net.sf.mzmine.main.MZmineCore;
+import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.project.impl.RawDataFileImpl;
 
@@ -70,12 +72,21 @@ public class PeakInvestigatorTask
 		logger.info("Initializing PeakInvestigator™ Task");
 
 		// pickup all the parameters
-		username   = parameters.getParameter(VeritomyxParameters.username).getValue();
-		password   = parameters.getParameter(VeritomyxParameters.password).getValue();
-		pid        = parameters.getParameter(VeritomyxParameters.project).getValue();
+		MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
+		username   = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
+		password   = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
+		pid        = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
 		job_pickup = parameters.getParameter(VeritomyxParameters.job_list).getValue();
 		first_scan = parameters.getParameter(VeritomyxParameters.first_scan).getValue();
 		last_scan  = parameters.getParameter(VeritomyxParameters.last_scan).getValue();
+		
+		if ((username == null) || username.isEmpty() || (password == null) || password.isEmpty())
+		{
+			preferences.showSetupDialog();
+			username   = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
+			password   = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
+			pid        = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
+		}
 
 		if (first_scan > last_scan)
 		{
@@ -86,16 +97,22 @@ public class PeakInvestigatorTask
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
 		vtmx = new VeritomyxSaaS(username, password, pid, job_pickup, first_scan, last_scan);
-		job_id = vtmx.getJobID();
 		status = vtmx.getStatus();
-		if (status <= VeritomyxSaaS.UNDEFINED)
-			logger.info("Preparing to launch new job, " + job_id);
+		if (status <= VeritomyxSaaS.ERROR)
+			logger.severe("Error connecting to web service");
 		else
 		{
-			// overwrite the scan range with original job range
-			first_scan = vtmx.getFirstScan();
-			last_scan  = vtmx.getLastScan();
-			logger.info("Picking up previously launched job, " + job_id);
+			job_id = vtmx.getJobID();
+			pid    = vtmx.getProjectID();			
+			if (status == VeritomyxSaaS.UNDEFINED)
+				logger.info("Preparing to launch new job, " + job_id);
+			else
+			{
+				// overwrite the scan range with original job range
+				first_scan = vtmx.getFirstScan();
+				last_scan  = vtmx.getLastScan();
+				logger.info("Picking up previously launched job, " + job_id);
+			}
 		}
 	}
 
