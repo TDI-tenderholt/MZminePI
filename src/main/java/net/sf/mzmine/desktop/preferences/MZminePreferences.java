@@ -25,7 +25,10 @@ import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
+import net.sf.mzmine.parameters.parametertypes.IntegerParameter;
 import net.sf.mzmine.parameters.parametertypes.OptionalModuleParameter;
+import net.sf.mzmine.parameters.parametertypes.PasswordParameter;
+import net.sf.mzmine.parameters.parametertypes.StringParameter;
 import net.sf.mzmine.util.ExitCode;
 
 import org.w3c.dom.Element;
@@ -52,9 +55,21 @@ public class MZminePreferences extends SimpleParameterSet {
 
     public static final WindowStateParameter windowState = new WindowStateParameter();
 
+    public static final StringParameter vtmxUsername = new StringParameter(
+			"Veritomyx Username",
+			"Login name (email address) for Veritomyx SaaS.");
+	public static final PasswordParameter vtmxPassword = new PasswordParameter(
+			"Veritomyx Password",
+			"Password for Veritomyx SaaS.");
+	public static final IntegerParameter vtmxProject = new IntegerParameter(
+			"Veritomyx Project Number",
+			"Project to which jobs will be assigned within the Veritomyx system.\n" +
+				"Setting this to zero or any invalid number defaults to your primary project.",
+			0);
+
     public MZminePreferences() {
 	super(new Parameter[] { mzFormat, rtFormat, intensityFormat,
-		numOfThreads, proxySettings, windowState });
+		numOfThreads, proxySettings, windowState, vtmxUsername, vtmxPassword, vtmxProject });
     }
 
     public ExitCode showSetupDialog() {
