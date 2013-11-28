@@ -40,25 +40,19 @@ import net.sf.mzmine.util.RawDataFileUtils;
 
 class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 
-	private static final Icon projectIcon = new ImageIcon(
-			"icons/projecticon.png");
-	private static final Icon dataFileIcon = new ImageIcon("icons/xicicon.png");
-	private static final Icon spectrumIcon = new ImageIcon(
-			"icons/spectrumicon.png");
-	private static final Icon peakListsIcon = new ImageIcon(
-			"icons/peaklistsicon.png");
-	private static final Icon peakIcon = new ImageIcon("icons/peakicon.png");
-	private static final Icon peakListIcon = new ImageIcon(
-			"icons/peaklisticon_single.png");
-	private static final Icon alignedPeaklistIcon = new ImageIcon(
-			"icons/peaklisticon_aligned.png");
-	private static final Icon fileIcon = new ImageIcon("icons/fileicon.png");
-	private static final Icon fileWithMassListIcon = new ImageIcon(
-			"icons/filewithmasslisticon.png");
+	private static final Icon projectIcon          = new ImageIcon("icons/projecticon.png");
+	private static final Icon dataFileIcon         = new ImageIcon("icons/xicicon.png");
+	private static final Icon spectrumIcon         = new ImageIcon("icons/spectrumicon.png");
+	private static final Icon peakListsIcon        = new ImageIcon("icons/peaklistsicon.png");
+	private static final Icon peakIcon             = new ImageIcon("icons/peakicon.png");
+	private static final Icon peakListIcon         = new ImageIcon("icons/peaklisticon_single.png");
+	private static final Icon alignedPeaklistIcon  = new ImageIcon("icons/peaklisticon_aligned.png");
+	private static final Icon fileIcon             = new ImageIcon("icons/fileicon.png");
+	private static final Icon fileWithMassListIcon = new ImageIcon("icons/filewithmasslisticon.png");
 
-	static final Font bigFont = new Font("SansSerif", Font.PLAIN, 12);
+	static final Font bigFont     = new Font("SansSerif", Font.PLAIN, 12);
 	static final Font smallerFont = new Font("SansSerif", Font.PLAIN, 11);
-	static final Font smallFont = new Font("SansSerif", Font.PLAIN, 10);
+	static final Font smallFont   = new Font("SansSerif", Font.PLAIN, 10);
 
 	ProjectTreeRenderer() {
 		setOpenIcon(null);
@@ -94,12 +88,8 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 		if (embeddedObject instanceof RawDataFile) {
 			label.setFont(smallerFont);
 
-			boolean hasMassList = RawDataFileUtils
-					.hasMassLists((RawDataFile) embeddedObject);
-			if (hasMassList)
-				label.setIcon(fileWithMassListIcon);
-			else
-				label.setIcon(fileIcon);
+			boolean hasMassList = RawDataFileUtils.hasMassLists((RawDataFile) embeddedObject, 1);
+			label.setIcon(hasMassList ? fileWithMassListIcon : fileIcon);
 		}
 
 		if (embeddedObject instanceof Scan) {
@@ -110,10 +100,8 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 			// Change the color only if the row is not selected, otherwise we
 			// could get blue text on blue background
 			if (!sel) {
-				if (s.getMSLevel() > 1)
-					label.setForeground(Color.red);
-				else
-					label.setForeground(Color.blue);
+				Color color = (s.getMSLevel() == 1) ? Color.blue : Color.red;
+				label.setForeground(color);
 			}
 		}
 
