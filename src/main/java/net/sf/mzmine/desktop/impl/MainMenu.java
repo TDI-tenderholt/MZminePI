@@ -73,135 +73,130 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
     private Map<JMenuItem, MZmineProcessingModule> moduleMenuItems = new Hashtable<JMenuItem, MZmineProcessingModule>();
 
-    MainMenu() {
-
-	/*
-	 * Project menu
-	 */
-
-	projectMenu = new JMenu("Project");
-	projectMenu.setMnemonic(KeyEvent.VK_P);
-	add(projectMenu);
-
-	// project IO items go here (e.g. project load, save)
-
-	projectMenu.addSeparator();
-
-	// module items go here (e.g. batch mode)
-
-	projectMenu.addSeparator();
-
-	projectSampleParameters = GUIUtils.addMenuItem(projectMenu,
-		"Set sample parameters...", this, KeyEvent.VK_P);
-
-	projectMenu.addSeparator();
-
-	projectPreferences = GUIUtils.addMenuItem(projectMenu,
-		"Set preferences...", this, KeyEvent.VK_S);
-
-	projectMenu.addSeparator();
+	MainMenu() {
 	
-	String programName = MZmineCore.getMZmineName();
-
-	projectSaveParameters = GUIUtils.addMenuItem(projectMenu,
-		"Save " + programName + " parameters...", this);
-	projectLoadParameters = GUIUtils.addMenuItem(projectMenu,
-		"Load " + programName + " parameters...", this);
-
-	projectMenu.addSeparator();
-
-	projectExit = GUIUtils.addMenuItem(projectMenu, "Exit", this,
-		KeyEvent.VK_X, true);
-
-	/*
-	 * Raw data methods menu
-	 */
-
-	rawDataMenu = new JMenu("Raw data methods");
-	rawDataMenu.setMnemonic(KeyEvent.VK_R);
-	add(rawDataMenu);
-
-	rawDataFilteringMenu = new JMenu("Filtering");
-	rawDataFilteringMenu.setMnemonic(KeyEvent.VK_F);
-	rawDataMenu.add(rawDataFilteringMenu);
-
-	peakDetectionMenu = new JMenu("Peak detection");
-	peakDetectionMenu.setMnemonic(KeyEvent.VK_D);
-	rawDataMenu.add(peakDetectionMenu);
-
-	/*
-	 * Peak list methods menu
-	 */
-
-	peakListMenu = new JMenu("Peak list methods");
-	peakListMenu.setMnemonic(KeyEvent.VK_L);
-	this.add(peakListMenu);
-
-	peakListPeakPickingMenu = new JMenu("Peak detection");
-	peakListPeakPickingMenu.setMnemonic(KeyEvent.VK_P);
-	peakListMenu.add(peakListPeakPickingMenu);
-
-	gapFillingMenu = new JMenu("Gap filling");
-	gapFillingMenu.setMnemonic(KeyEvent.VK_G);
-	peakListMenu.add(gapFillingMenu);
-
-	isotopesMenu = new JMenu("Isotopes");
-	isotopesMenu.setMnemonic(KeyEvent.VK_D);
-	peakListMenu.add(isotopesMenu);
-
-	peakListFilteringMenu = new JMenu("Filtering");
-	peakListFilteringMenu.setMnemonic(KeyEvent.VK_P);
-	peakListMenu.add(peakListFilteringMenu);
-
-	alignmentMenu = new JMenu("Alignment");
-	alignmentMenu.setMnemonic(KeyEvent.VK_A);
-	peakListMenu.add(alignmentMenu);
-
-	normalizationMenu = new JMenu("Normalization");
-	normalizationMenu.setMnemonic(KeyEvent.VK_N);
-	peakListMenu.add(normalizationMenu);
-
-	identificationMenu = new JMenu("Identification");
-	identificationMenu.setMnemonic(KeyEvent.VK_I);
-	peakListMenu.add(identificationMenu);
-
-	dataAnalysisMenu = new JMenu("Data analysis");
-	dataAnalysisMenu.setMnemonic(KeyEvent.VK_S);
-	peakListMenu.add(dataAnalysisMenu);
-
-	peakListExportMenu = new JMenu("Export/Import");
-	peakListExportMenu.setMnemonic(KeyEvent.VK_E);
-	peakListMenu.add(peakListExportMenu);
-
-	/*
-	 * Visualization menu
-	 */
-
-	visualizationMenu = new JMenu("Visualization");
-	visualizationMenu.setMnemonic(KeyEvent.VK_V);
-	this.add(visualizationMenu);
-
-	visualizationMenu.addSeparator();
-
-	/*
-	 * Windows menu
-	 */
-
-	windowsMenu = new WindowsMenu();
-	windowsMenu.setMnemonic(KeyEvent.VK_W);
-	this.add(windowsMenu);
-
-	/*
-	 * Help menu
-	 */
-
-	helpMenu = new JMenu("Help");
-	helpMenu.setMnemonic(KeyEvent.VK_H);
-	this.add(helpMenu);
-
-	showAbout = new JMenuItem("About " + programName + "...");
-	showAbout.addActionListener(this);
-	addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
+		/*
+		 * Project menu
+		 */
+	
+		projectMenu = new JMenu("Project");
+		projectMenu.setMnemonic(KeyEvent.VK_P);
+		add(projectMenu);
+	
+		// project IO items go here (e.g. project load, save)
+	
+		projectMenu.addSeparator();
+	
+		// module items go here (e.g. batch mode)
+	
+		projectMenu.addSeparator();
+	
+		projectSampleParameters = GUIUtils.addMenuItem(projectMenu, "Set sample parameters...", this, KeyEvent.VK_P);
+	
+		projectMenu.addSeparator();
+	
+		projectPreferences = GUIUtils.addMenuItem(projectMenu, "Set preferences...", this, KeyEvent.VK_S);
+	
+		projectMenu.addSeparator();
+		
+		String programName = MZmineCore.getMZmineName();
+	
+		projectSaveParameters = GUIUtils.addMenuItem(projectMenu, "Save " + programName + " parameters...", this);
+		projectLoadParameters = GUIUtils.addMenuItem(projectMenu, "Load " + programName + " parameters...", this);
+	
+		projectMenu.addSeparator();
+	
+		projectExit = GUIUtils.addMenuItem(projectMenu, "Exit", this, KeyEvent.VK_X, true);
+	
+		/*
+		 * Raw data methods menu
+		 */
+	
+		rawDataMenu = new JMenu("Raw data methods");
+		rawDataMenu.setMnemonic(KeyEvent.VK_R);
+		add(rawDataMenu);
+	
+		rawDataFilteringMenu = new JMenu("Filtering");
+		rawDataFilteringMenu.setMnemonic(KeyEvent.VK_F);
+		rawDataMenu.add(rawDataFilteringMenu);
+	
+		peakDetectionMenu = new JMenu("Peak detection");
+		peakDetectionMenu.setMnemonic(KeyEvent.VK_D);
+		rawDataMenu.add(peakDetectionMenu);
+	
+		/*
+		 * Peak list methods menu
+		 */
+	
+		peakListMenu = new JMenu("Peak list methods");
+		peakListMenu.setMnemonic(KeyEvent.VK_L);
+		this.add(peakListMenu);
+	
+		peakListPeakPickingMenu = new JMenu("Peak detection");
+		peakListPeakPickingMenu.setMnemonic(KeyEvent.VK_P);
+		peakListMenu.add(peakListPeakPickingMenu);
+	
+		gapFillingMenu = new JMenu("Gap filling");
+		gapFillingMenu.setMnemonic(KeyEvent.VK_G);
+		peakListMenu.add(gapFillingMenu);
+	
+		isotopesMenu = new JMenu("Isotopes");
+		isotopesMenu.setMnemonic(KeyEvent.VK_D);
+		peakListMenu.add(isotopesMenu);
+	
+		peakListFilteringMenu = new JMenu("Filtering");
+		peakListFilteringMenu.setMnemonic(KeyEvent.VK_P);
+		peakListMenu.add(peakListFilteringMenu);
+	
+		alignmentMenu = new JMenu("Alignment");
+		alignmentMenu.setMnemonic(KeyEvent.VK_A);
+		peakListMenu.add(alignmentMenu);
+	
+		normalizationMenu = new JMenu("Normalization");
+		normalizationMenu.setMnemonic(KeyEvent.VK_N);
+		peakListMenu.add(normalizationMenu);
+	
+		identificationMenu = new JMenu("Identification");
+		identificationMenu.setMnemonic(KeyEvent.VK_I);
+		peakListMenu.add(identificationMenu);
+	
+		dataAnalysisMenu = new JMenu("Data analysis");
+		dataAnalysisMenu.setMnemonic(KeyEvent.VK_S);
+		peakListMenu.add(dataAnalysisMenu);
+	
+		peakListExportMenu = new JMenu("Export/Import");
+		peakListExportMenu.setMnemonic(KeyEvent.VK_E);
+		peakListMenu.add(peakListExportMenu);
+	
+		/*
+		 * Visualization menu
+		 */
+	
+		visualizationMenu = new JMenu("Visualization");
+		visualizationMenu.setMnemonic(KeyEvent.VK_V);
+		this.add(visualizationMenu);
+	
+		visualizationMenu.addSeparator();
+	
+		/*
+		 * Windows menu
+		 */
+	
+		windowsMenu = new WindowsMenu();
+		windowsMenu.setMnemonic(KeyEvent.VK_W);
+		this.add(windowsMenu);
+	
+		/*
+		 * Help menu
+		 */
+	
+		helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
+		this.add(helpMenu);
+	
+		showAbout = new JMenuItem("About " + programName + "...");
+		showAbout.addActionListener(this);
+		addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
 
     }
 
@@ -365,8 +360,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
 	if (src == projectLoadParameters) {
 	    JFileChooser chooser = new JFileChooser();
-	    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop()
-		    .getMainFrame());
+	    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
 	    if (returnVal == JFileChooser.APPROVE_OPTION) {
 		File configFile = chooser.getSelectedFile();
 		try {
@@ -383,8 +377,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 	}
 
 	if (src == projectPreferences) {
-	    MZminePreferences preferences = MZmineCore.getConfiguration()
-		    .getPreferences();
+	    MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
 	    preferences.showSetupDialog();
 	}
 
