@@ -71,13 +71,13 @@ public class VeritomyxSaaS
 	private int    web_result = UNDEFINED;
 	private String web_str    = null;
 
-	public VeritomyxSaaS(String username, String password, int pid, String job_str, int firstScan, int lastScan)
+	public VeritomyxSaaS(String email, String passwd, int projectID, String job_str, int firstScan, int lastScan)
 	{
 		logger = Logger.getLogger(this.getClass().getName());
 
-		this.username = username;
-		this.password = password;
-		this.pid      = pid;
+		username = email;
+		password = passwd;
+		pid      = projectID;
 		
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
@@ -88,9 +88,10 @@ public class VeritomyxSaaS
 			return;
 		}
 		String sa[] = web_str.split(" ");
-		job_id      = sa[1];	// new job ID
-		sftp_user   = sa[2];
-		sftp_pw     = sa[3];
+		pid         = Integer.parseInt(sa[1]);
+		job_id      = sa[2];	// new job ID
+		sftp_user   = sa[3];
+		sftp_pw     = sa[4];
 
 		// see if we were given a job ID
 		if ((job_str != null) && (job_str.startsWith("job-") == true))
@@ -129,6 +130,7 @@ public class VeritomyxSaaS
 		}
 	}
 
+	public int    getProjectID() { return pid;        }
 	public String getJobID()     { return job_id;     }
 	public int    getStatus()    { return getPage(JOB_STATUS); }
 	public int    getFirstScan() { return first_scan; }
@@ -164,7 +166,7 @@ public class VeritomyxSaaS
 		try {
 			// build the URL with parameters
 			String page = "http://" + host + "/interface/vtmx_sftp_job.php" + 
-					"?Version=" + "1.13" +	// minimum online CLI version that matches this interface
+					"?Version=" + "1.15" +	// minimum online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + pid +
@@ -182,7 +184,7 @@ public class VeritomyxSaaS
 						"&Job="     + URLEncoder.encode(job_id, "UTF-8") +
 						"&Force="   + "1";
 			}
-			logger.finest("dgshack: " + page);
+			// logger.finest("dgshack: " + page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
@@ -197,13 +199,14 @@ public class VeritomyxSaaS
 			String decodedString;
 			while ((decodedString = in.readLine()) != null)
 			{
-				logger.finest("dgshack: " + decodedString);
+				// logger.finest("dgshack: " + decodedString);
 				if (web_result == UNDEFINED)
 				{
 					web_str = decodedString;
-					if      (web_str.startsWith("Done: "))    { web_result = DONE;    }
-					else if (web_str.startsWith("Error: "))   { web_result = ERROR;   }
-					else if (web_str.startsWith("Running: ")) { web_result = RUNNING; }
+					if      (web_str.startsWith("Done"))      web_result = DONE;
+					else if (web_str.startsWith("Undefined")) web_result = UNDEFINED;
+					else if (web_str.startsWith("Running"))   web_result = RUNNING;
+					else                                      web_result = ERROR;
 				}
 			}
 		}
@@ -215,7 +218,7 @@ public class VeritomyxSaaS
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
-		logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
+		// logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
 		return web_result;
 	}
 
