@@ -61,10 +61,10 @@ public class VeritomyxSaaS
 	private int    first_scan;
 	private int    last_scan;
 
-	private static final String host = "secure.veritomyx.com";;
-	private String      sftp_user = null;
-	private String      sftp_pw   = null;
-	private SftpUtil    sftp      = null;
+	private static final String host = "secure.veritomyx.com";
+	private String         sftp_user = null;
+	private String         sftp_pw   = null;
+	private SftpUtil       sftp      = null;
 
 	private String dir = null;
 
@@ -166,7 +166,7 @@ public class VeritomyxSaaS
 		try {
 			// build the URL with parameters
 			String page = "http://" + host + "/interface/vtmx_sftp_job.php" + 
-					"?Version=" + "1.15" +	// minimum online CLI version that matches this interface
+					"?Version=" + MZmineCore.ReqVtmxVersion +	// online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + pid +

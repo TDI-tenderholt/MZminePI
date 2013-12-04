@@ -55,7 +55,12 @@ import net.sf.mzmine.util.ExitCode;
 /**
  * MZmine main class
  */
-public final class MZmineCore {
+public final class MZmineCore
+{
+	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
+	public static final String MZmineShortName = "MZminePI";
+	public static final String MZmineVersion   = "2.10-i0.20";
+	public static final String ReqVtmxVersion  = "1.15";	// Required Veritomyx CLI version (see VTMXweb:interface/version.inc.php)
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 
@@ -79,7 +84,7 @@ public final class MZmineCore {
 
 		// Configure the logging properties before we start logging
 		try {
-			InputStream loggingProperties = new FileInputStream("resources/" + getMZmineShortName() + ".logging.properties");
+			InputStream loggingProperties = new FileInputStream("resources/" + MZmineShortName + ".logging.properties");
 			LogManager logMan = LogManager.getLogManager();
 			logMan.readConfiguration(loggingProperties);
 			loggingProperties.close();
@@ -87,7 +92,7 @@ public final class MZmineCore {
 			e.printStackTrace();
 		}
 
-		logger.info("Starting " + getMZmineName() + " " + getMZmineVersion());
+		logger.info("Starting " + MZmineName + " " + MZmineVersion);
 		logger.info("CWD is " + new File(".").getAbsolutePath());
 
 		// Remove old temporary files, if we find any
@@ -203,7 +208,7 @@ public final class MZmineCore {
 			desktop.getMainFrame().setVisible(true);
 
 			// show the welcome message
-			desktop.setStatusBarText("Welcome to " + getMZmineName() + " " + getMZmineVersion());
+			desktop.setStatusBarText("Welcome to " + MZmineName + " " + MZmineVersion);
 
 			// register shutdown hook only if we have GUI - we don't want to
 			// save configuration on exit if we only run a batch
@@ -267,14 +272,4 @@ public final class MZmineCore {
 			throws IOException {
 		return new RawDataFileImpl(name);
 	}
-
-	@Nonnull
-	public static String getMZmineName() { return "MZmine PeakInvestigator™ Edition"; }
-
-	@Nonnull
-	public static String getMZmineShortName() { return "MZminePI"; }
-
-	@Nonnull
-	public static String getMZmineVersion() { return "2.10-i0.19"; }
-
 }

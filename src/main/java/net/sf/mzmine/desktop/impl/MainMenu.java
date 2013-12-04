@@ -99,7 +99,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 	
 		projectMenu.addSeparator();
 		
-		String programName = MZmineCore.getMZmineName();
+		String programName = MZmineCore.MZmineName;
 	
 		projectSaveParameters = GUIUtils.addMenuItem(projectMenu, "Save " + programName + " parameters...", this);
 		projectLoadParameters = GUIUtils.addMenuItem(projectMenu, "Load " + programName + " parameters...", this);

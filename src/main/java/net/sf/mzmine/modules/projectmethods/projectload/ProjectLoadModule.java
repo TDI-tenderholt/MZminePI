@@ -38,7 +38,7 @@ import net.sf.mzmine.util.ExitCode;
 public class ProjectLoadModule implements MZmineProcessingModule {
 
     private static final String MODULE_NAME = "Open project";
-    private static final String MODULE_DESCRIPTION = "This module opens an existing " + MZmineCore.getMZmineName() + " project. The current workspace will be discarded.";
+    private static final String MODULE_DESCRIPTION = "This module opens an existing " + MZmineCore.MZmineName + " project. The current workspace will be discarded.";
 
     @Override
     public @Nonnull String getName() {

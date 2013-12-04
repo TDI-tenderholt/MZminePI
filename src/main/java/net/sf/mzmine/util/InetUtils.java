@@ -40,7 +40,7 @@ public class InetUtils {
 	public static String retrieveData(URL url) throws IOException {
 
 		URLConnection connection = url.openConnection();
-		connection.setRequestProperty ( "User-agent", MZmineCore.getMZmineName());
+		connection.setRequestProperty ( "User-agent", MZmineCore.MZmineName);
 		InputStream is = connection.getInputStream();
 
 		if (is == null) {

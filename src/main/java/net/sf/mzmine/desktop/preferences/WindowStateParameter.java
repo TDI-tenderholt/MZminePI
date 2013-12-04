@@ -44,7 +44,7 @@ public class WindowStateParameter implements Parameter<Object> {
 
 	@Override
 	public String getName() {
-		return MZmineCore.getMZmineName() + " window state";
+		return MZmineCore.MZmineName + " window state";
 	}
 
 	@Override

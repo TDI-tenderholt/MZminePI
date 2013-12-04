@@ -135,7 +135,7 @@ public class MascotParameters extends SimpleParameterSet {
 					textFiled.setValue("");
 				} else if (textFiled.getName().equals("COM")) {
 					// Search Title
-					textFiled.setValue(MZmineCore.getMZmineName() + MZmineCore.getMZmineVersion());
+					textFiled.setValue(MZmineCore.MZmineName + MZmineCore.MZmineVersion);
 				} else if (textFiled.getName().equals("SEG")) {
 					// Proteinmass
 					textFiled.setValue("");
