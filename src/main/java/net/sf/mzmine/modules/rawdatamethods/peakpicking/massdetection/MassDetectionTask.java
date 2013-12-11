@@ -90,7 +90,7 @@ public class MassDetectionTask extends AbstractTask {
 
 		int scanNumbers[] = dataFile.getScanNumbers(msLevel);
 		totalScans = scanNumbers.length;
-		String job = detector.getMassValuesJob(massDetector.getParameterSet());
+		String job = detector.getMassValuesJob(dataFile, msLevel, massDetector.getParameterSet());
 
 		// Process scans one by one
 		for (int i = 0; i < totalScans; i++)

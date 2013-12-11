@@ -20,6 +20,7 @@
 package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection;
 
 import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -31,9 +32,11 @@ public interface MassDetector extends MZmineModule {
 	
 	/**
 	 * Returns the job id for getting mass values
+	 * @param dataFile 
+	 * @param msLevel 
 	 * @param parameterSet 
 	 */
-	public String getMassValuesJob(ParameterSet parameterSet);
+	public String getMassValuesJob(RawDataFile dataFile, int msLevel, ParameterSet parameterSet);
 
 	/**
 	 * Returns mass and intensity values detected in given scan

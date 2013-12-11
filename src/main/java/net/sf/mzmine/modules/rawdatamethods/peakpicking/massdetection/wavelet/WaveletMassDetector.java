@@ -25,6 +25,7 @@ import java.util.Vector;
 import javax.annotation.Nonnull;
 
 import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
@@ -49,7 +50,7 @@ public class WaveletMassDetector implements MassDetector {
     private static final int WAVELET_ESL = -5;
     private static final int WAVELET_ESR = 5;
 
-	public String getMassValuesJob(ParameterSet parameters) { return null; }
+	public String getMassValuesJob(RawDataFile raw, int msLevel, ParameterSet parameters) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 	double noiseLevel = parameters.getParameter(

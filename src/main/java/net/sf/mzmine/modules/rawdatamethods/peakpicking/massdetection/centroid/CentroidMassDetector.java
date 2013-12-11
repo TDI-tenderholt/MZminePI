@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
 
 public class CentroidMassDetector implements MassDetector {
 
-	public String getMassValuesJob(ParameterSet parameters) { return null; }
+	public String getMassValuesJob(RawDataFile raw, int msLevel, ParameterSet parameters) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 
