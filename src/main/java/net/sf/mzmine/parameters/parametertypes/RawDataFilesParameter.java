@@ -19,9 +19,12 @@
 
 package net.sf.mzmine.parameters.parametertypes;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.desktop.impl.MainWindow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.Parameter;
 
@@ -81,12 +84,30 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 				RawDataFile[] dataFiles = MZmineCore.getCurrentProject().getDataFiles();
 				if (dataFiles.length == 1)
 				{
-					value = dataFiles;
+					value = dataFiles;	// work with the single data file
 					return true;
 				}
+				
+				// see if any scans are selected and select the associated raw data files
+				MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
+				Scan selectedScans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
+				for (RawDataFile raw : dataFiles)
+				{
+					for (Scan scan : selectedScans)
+					{
+						if (scan.getDataFile().equals(raw))
+						{
+							value = Arrays.copyOf(value, value.length + 1);
+							value[value.length - 1] = raw;
+							break;
+						}
+					}
+				}
+				if (value.length >= minCount)
+					return true;
 			}
 
-			errorMessages.add("At least " + minCount + " raw data files must be selected");
+			errorMessages.add("At least " + minCount + " raw data file must be selected");
 			return false;
 		}
 		if (value.length > maxCount) {
