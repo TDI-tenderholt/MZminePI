@@ -35,7 +35,7 @@ import net.sf.mzmine.util.SortingProperty;
 
 public class ExactMassDetector implements MassDetector {
 
-	public String getMassValuesJob(RawDataFile raw, int msLevel, ParameterSet parameters) { return null; }
+	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters) { return null; }
 
     /**
      * @see net.sf.mzmine.modules.peakpicking.threestep.massdetection.MassDetector#getMassValues(net.sf.mzmine.data.Scan)
@@ -247,6 +247,6 @@ public class ExactMassDetector implements MassDetector {
 	return ExactMassDetectorParameters.class;
     }
 
-	public void getJobDone(String job) {}
+	public void finishMassValuesJob(String job) {}
 
 }

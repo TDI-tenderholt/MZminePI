@@ -31,7 +31,7 @@ import net.sf.mzmine.parameters.ParameterSet;
 
 public class CentroidMassDetector implements MassDetector {
 
-	public String getMassValuesJob(RawDataFile raw, int msLevel, ParameterSet parameters) { return null; }
+	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 
@@ -63,6 +63,6 @@ public class CentroidMassDetector implements MassDetector {
 	return CentroidMassDetectorParameters.class;
     }
 
-	public void getJobDone(String job) {}
+	public void finishMassValuesJob(String job) {}
 
 }
