@@ -58,8 +58,6 @@ public class VeritomyxSaaS
 	private String password;
 	private int    pid;
 	private String job_id = null;	// name of the job and the scans tar file
-	private int    first_scan;
-	private int    last_scan;
 
 	private static final String host = "secure.veritomyx.com";
 	private String         sftp_user = null;
@@ -71,7 +69,7 @@ public class VeritomyxSaaS
 	private int    web_result = UNDEFINED;
 	private String web_str    = null;
 
-	public VeritomyxSaaS(String email, String passwd, int projectID, String job_str, int firstScan, int lastScan)
+	public VeritomyxSaaS(String email, String passwd, int projectID, String job_str)
 	{
 		logger = Logger.getLogger(this.getClass().getName());
 
@@ -105,16 +103,7 @@ public class VeritomyxSaaS
 				job_id = null;	// not a valid job
 				return;
 			}
-			else
-			{
-				// extract scan range from job_str
-				String s  = job_str.substring(job_str.indexOf('[') + 1, job_str.indexOf(']'));
-				firstScan = Integer.parseInt(s.substring(0, s.indexOf('.')));
-				lastScan  = Integer.parseInt(s.substring(s.lastIndexOf('.') + 1));
-			}
 		}
-		first_scan = firstScan;
-		last_scan  = lastScan;
 
 		if (job_id != null)
 		{
@@ -133,8 +122,6 @@ public class VeritomyxSaaS
 	public int    getProjectID() { return pid;        }
 	public String getJobID()     { return job_id;     }
 	public int    getStatus()    { return getPage(JOB_STATUS); }
-	public int    getFirstScan() { return first_scan; }
-	public int    getLastScan()  { return last_scan;  }
 	public String getPageData()  { return web_str;    }
 
 	/**
