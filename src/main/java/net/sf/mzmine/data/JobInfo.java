@@ -27,7 +27,5 @@ import javax.annotation.Nonnull;
 public interface JobInfo
 {
     @Nonnull public String getName();
-    @Nonnull public int    getMinScan();
-    @Nonnull public int    getMaxScan();
     @Nonnull public int    getStatus();
 }
