@@ -20,6 +20,7 @@
 package net.sf.mzmine.desktop.impl.projecttree;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -35,6 +36,7 @@ import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.PeakListRow;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.data.impl.RemoteJobInfo;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.infovisualizer.InfoVisualizerModule;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTableModule;
@@ -55,12 +57,15 @@ import net.sf.mzmine.util.GUIUtils;
 /**
  * This class handles pop-up menus and double click events in the project tree
  */
-public class ProjectTreeMouseHandler extends MouseAdapter implements
-	ActionListener {
+public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListener {
 
     private ProjectTree tree;
-    private JPopupMenu dataFilePopupMenu, peakListPopupMenu, scanPopupMenu,
-	    massListPopupMenu, peakListRowPopupMenu;
+    private JPopupMenu dataFilePopupMenu,
+    				   peakListPopupMenu,
+				            jobPopupMenu,
+				           scanPopupMenu,
+    				   massListPopupMenu,
+    				peakListRowPopupMenu;
 
     /**
      * Constructor
@@ -75,6 +80,9 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements
 		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 2D visualizer", this, "SHOW_2D");
 		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 3D visualizer", this, "SHOW_3D");
 		GUIUtils.addMenuItem(dataFilePopupMenu, "Remove",             this, "REMOVE_FILE");
+	
+		jobPopupMenu = new JPopupMenu();
+		GUIUtils.addMenuItem(jobPopupMenu,      "Retrieve job", this, "RETRIEVE_JOB");
 	
 		scanPopupMenu = new JPopupMenu();
 		GUIUtils.addMenuItem(scanPopupMenu,     "Show scan", this, "SHOW_SCAN");
@@ -134,16 +142,27 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements
 		    RawDataFile[] selectedFiles = tree.getSelectedObjects(RawDataFile.class);
 		    PeakList allPeakLists[] = MZmineCore.getCurrentProject().getPeakLists();
 		    for (RawDataFile file : selectedFiles) {
-			for (PeakList peakList : allPeakLists) {
-			    if (peakList.hasRawDataFile(file)) {
-					String msg = "Cannot remove file " + file.getName()
-						+ ", because it is present in the peak list "
-						+ peakList.getName();
-					MZmineCore.getDesktop().displayErrorMessage(msg);
-					return;
-			    }
-			}
-			MZmineCore.getCurrentProject().removeFile(file);
+				for (PeakList peakList : allPeakLists) {
+				    if (peakList.hasRawDataFile(file)) {
+						String msg = "Cannot remove file " + file.getName()
+										+ ", because it is present in the peak list "
+										+ peakList.getName();
+						MZmineCore.getDesktop().displayErrorMessage(msg);
+						return;
+				    }
+				}
+				MZmineCore.getCurrentProject().removeFile(file);
+		    }
+		}
+		
+		// Actions for jobs
+	
+		if (command.equals("RETRIEVE_JOB"))
+		{
+			RemoteJobInfo selectedJobs[] = tree.getSelectedObjects(RemoteJobInfo.class);
+		    for (RemoteJobInfo job : selectedJobs)
+		    {
+		    	System.out.println(job.getName());
 		    }
 		}
 	
@@ -245,18 +264,21 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements
     }
 
     private void handlePopupTriggerEvent(MouseEvent e) {
-	
-		TreePath clickedPath = tree.getPathForLocation(e.getX(), e.getY());
+    	Component c = e.getComponent();
+    	int x = e.getX();
+    	int y = e.getY();
+		TreePath clickedPath = tree.getPathForLocation(x, y);
 		if (clickedPath == null)
 		    return;
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) clickedPath.getLastPathComponent();
 		Object clickedObject = node.getUserObject();
-	
-		if (clickedObject instanceof RawDataFile)    dataFilePopupMenu.show(e.getComponent(), e.getX(), e.getY());
-		if (clickedObject instanceof Scan)               scanPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-		if (clickedObject instanceof MassList)       massListPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-		if (clickedObject instanceof PeakList)       peakListPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-		if (clickedObject instanceof PeakListRow) peakListRowPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+
+		if      (clickedObject instanceof RawDataFile)    dataFilePopupMenu.show(c, x, y);
+		else if (clickedObject instanceof RemoteJobInfo)       jobPopupMenu.show(c, x, y);
+		else if (clickedObject instanceof Scan)               scanPopupMenu.show(c, x, y);
+		else if (clickedObject instanceof MassList)       massListPopupMenu.show(c, x, y);
+		else if (clickedObject instanceof PeakList)       peakListPopupMenu.show(c, x, y);
+		else if (clickedObject instanceof PeakListRow) peakListRowPopupMenu.show(c, x, y);
     }
 
     private void handleDoubleClickEvent(MouseEvent e) {
@@ -275,7 +297,12 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements
 		    PeakList clickedPeakList = (PeakList) clickedObject;
 		    PeakListTableModule.showNewPeakListVisualizerWindow(clickedPeakList);
 		}
-	
+		
+		if (clickedObject instanceof RemoteJobInfo) {
+			RemoteJobInfo job = (RemoteJobInfo) clickedObject;
+		    System.out.println(job.getName());
+		}
+		
 		if (clickedObject instanceof Scan) {
 		    Scan clickedScan = (Scan) clickedObject;
 		    SpectraVisualizerModule.showNewSpectrumWindow(clickedScan.getDataFile(), clickedScan.getScanNumber());

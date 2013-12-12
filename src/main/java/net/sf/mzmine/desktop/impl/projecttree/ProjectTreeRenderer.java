@@ -35,6 +35,8 @@ import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.PeakListRow;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.util.RawDataFileUtils;
 
@@ -42,6 +44,7 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 
 	private static final Icon projectIcon          = new ImageIcon("icons/projecticon.png");
 	private static final Icon dataFileIcon         = new ImageIcon("icons/xicicon.png");
+	private static final Icon cloudIcon            = new ImageIcon("icons/cloud.png");
 	private static final Icon spectrumIcon         = new ImageIcon("icons/spectrumicon.png");
 	private static final Icon peakListsIcon        = new ImageIcon("icons/peaklistsicon.png");
 	private static final Icon peakIcon             = new ImageIcon("icons/peakicon.png");
@@ -60,12 +63,9 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 		setLeafIcon(null);
 	}
 
-	public Component getTreeCellRendererComponent(JTree tree, Object node,
-			boolean sel, boolean expanded, boolean leaf, int row,
-			boolean hasFocus) {
+	public Component getTreeCellRendererComponent(JTree tree, Object node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-		JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, node,
-				sel, expanded, leaf, row, hasFocus);
+		JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, node, sel, expanded, leaf, row, hasFocus);
 
 		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
 		Object embeddedObject = treeNode.getUserObject();
@@ -90,6 +90,11 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 
 			boolean hasMassList = RawDataFileUtils.hasMassLists((RawDataFile) embeddedObject, 1);
 			label.setIcon(hasMassList ? fileWithMassListIcon : fileIcon);
+		}
+
+		if (embeddedObject instanceof RemoteJobInfo) {
+			label.setFont(smallerFont);
+			label.setIcon(cloudIcon);
 		}
 
 		if (embeddedObject instanceof Scan) {
