@@ -181,8 +181,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
 		help = new HelpImpl();
 	
 		try {
-		    BufferedImage MZmineIcon = ImageIO.read(new File(
-			    "icons/MZmineIcon.png"));
+		    BufferedImage MZmineIcon = ImageIO.read(new File("icons/MZmineIcon.png"));
 		    setIconImage(MZmineIcon);
 		} catch (IOException e) {
 		    logger.log(Level.WARNING, "Could not set application icon", e);

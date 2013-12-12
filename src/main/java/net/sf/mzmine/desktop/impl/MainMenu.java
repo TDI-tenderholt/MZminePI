@@ -74,208 +74,205 @@ public class MainMenu extends JMenuBar implements ActionListener {
     private Map<JMenuItem, MZmineProcessingModule> moduleMenuItems = new Hashtable<JMenuItem, MZmineProcessingModule>();
 
 	MainMenu() {
-	
+
 		/*
 		 * Project menu
 		 */
-	
+
 		projectMenu = new JMenu("Project");
 		projectMenu.setMnemonic(KeyEvent.VK_P);
 		add(projectMenu);
-	
+
 		// project IO items go here (e.g. project load, save)
-	
+
 		projectMenu.addSeparator();
-	
+
 		// module items go here (e.g. batch mode)
-	
+
 		projectMenu.addSeparator();
-	
+
 		projectSampleParameters = GUIUtils.addMenuItem(projectMenu, "Set sample parameters...", this, KeyEvent.VK_P);
-	
+
 		projectMenu.addSeparator();
-	
+
 		projectPreferences = GUIUtils.addMenuItem(projectMenu, "Set preferences...", this, KeyEvent.VK_S);
-	
+
 		projectMenu.addSeparator();
-		
+
 		String programName = MZmineCore.MZmineName;
-	
+
 		projectSaveParameters = GUIUtils.addMenuItem(projectMenu, "Save " + programName + " parameters...", this);
 		projectLoadParameters = GUIUtils.addMenuItem(projectMenu, "Load " + programName + " parameters...", this);
-	
+
 		projectMenu.addSeparator();
-	
+
 		projectExit = GUIUtils.addMenuItem(projectMenu, "Exit", this, KeyEvent.VK_X, true);
-	
+
 		/*
 		 * Raw data methods menu
 		 */
-	
+
 		rawDataMenu = new JMenu("Raw data methods");
 		rawDataMenu.setMnemonic(KeyEvent.VK_R);
 		add(rawDataMenu);
-	
+
 		rawDataFilteringMenu = new JMenu("Filtering");
 		rawDataFilteringMenu.setMnemonic(KeyEvent.VK_F);
 		rawDataMenu.add(rawDataFilteringMenu);
-	
+
 		peakDetectionMenu = new JMenu("Peak detection");
 		peakDetectionMenu.setMnemonic(KeyEvent.VK_D);
 		rawDataMenu.add(peakDetectionMenu);
-	
+
 		/*
 		 * Peak list methods menu
 		 */
-	
+
 		peakListMenu = new JMenu("Peak list methods");
 		peakListMenu.setMnemonic(KeyEvent.VK_L);
 		this.add(peakListMenu);
-	
+
 		peakListPeakPickingMenu = new JMenu("Peak detection");
 		peakListPeakPickingMenu.setMnemonic(KeyEvent.VK_P);
 		peakListMenu.add(peakListPeakPickingMenu);
-	
+
 		gapFillingMenu = new JMenu("Gap filling");
 		gapFillingMenu.setMnemonic(KeyEvent.VK_G);
 		peakListMenu.add(gapFillingMenu);
-	
+
 		isotopesMenu = new JMenu("Isotopes");
 		isotopesMenu.setMnemonic(KeyEvent.VK_D);
 		peakListMenu.add(isotopesMenu);
-	
+
 		peakListFilteringMenu = new JMenu("Filtering");
 		peakListFilteringMenu.setMnemonic(KeyEvent.VK_P);
 		peakListMenu.add(peakListFilteringMenu);
-	
+
 		alignmentMenu = new JMenu("Alignment");
 		alignmentMenu.setMnemonic(KeyEvent.VK_A);
 		peakListMenu.add(alignmentMenu);
-	
+
 		normalizationMenu = new JMenu("Normalization");
 		normalizationMenu.setMnemonic(KeyEvent.VK_N);
 		peakListMenu.add(normalizationMenu);
-	
+
 		identificationMenu = new JMenu("Identification");
 		identificationMenu.setMnemonic(KeyEvent.VK_I);
 		peakListMenu.add(identificationMenu);
-	
+
 		dataAnalysisMenu = new JMenu("Data analysis");
 		dataAnalysisMenu.setMnemonic(KeyEvent.VK_S);
 		peakListMenu.add(dataAnalysisMenu);
-	
+
 		peakListExportMenu = new JMenu("Export/Import");
 		peakListExportMenu.setMnemonic(KeyEvent.VK_E);
 		peakListMenu.add(peakListExportMenu);
-	
+
 		/*
 		 * Visualization menu
 		 */
-	
+
 		visualizationMenu = new JMenu("Visualization");
 		visualizationMenu.setMnemonic(KeyEvent.VK_V);
 		this.add(visualizationMenu);
-	
+
 		visualizationMenu.addSeparator();
-	
+
 		/*
 		 * Windows menu
 		 */
-	
+
 		windowsMenu = new WindowsMenu();
 		windowsMenu.setMnemonic(KeyEvent.VK_W);
 		this.add(windowsMenu);
-	
+
 		/*
 		 * Help menu
 		 */
-	
+
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		this.add(helpMenu);
-	
+
 		showAbout = new JMenuItem("About " + programName + "...");
 		showAbout.addActionListener(this);
 		addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
-
     }
 
-    public synchronized void addMenuItem(MZmineModuleCategory parentMenu,
-	    JMenuItem newItem) {
-	switch (parentMenu) {
-	case PROJECTIO:
-	    projectMenu.add(newItem, projectIOMenuIndex);
-	    projectIOMenuIndex++;
-	    projectMenuIndex++;
-	    break;
-	case PROJECT:
-	    projectMenu.add(newItem, projectMenuIndex);
-	    projectMenuIndex++;
-	    break;
-	case RAWDATA:
-	    rawDataMenu.add(newItem, rawDataMenuIndex);
-	    rawDataMenuIndex++;
-	    break;
-	case RAWDATAFILTERING:
-	    rawDataFilteringMenu.add(newItem);
-	    break;
-	case PEAKPICKING:
-	    peakDetectionMenu.add(newItem);
-	    break;
-	case PEAKLISTPICKING:
-	    peakListPeakPickingMenu.add(newItem);
-	    break;
-	case GAPFILLING:
-	    gapFillingMenu.add(newItem);
-	    break;
-	case ISOTOPES:
-	    isotopesMenu.add(newItem);
-	    break;
-	case PEAKLISTFILTERING:
-	    peakListFilteringMenu.add(newItem);
-	    break;
-	case ALIGNMENT:
-	    alignmentMenu.add(newItem);
-	    break;
-	case NORMALIZATION:
-	    normalizationMenu.add(newItem);
-	    break;
-	case IDENTIFICATION:
-	    identificationMenu.add(newItem);
-	    break;
-	case PEAKLISTEXPORT:
-	    peakListExportMenu.add(newItem);
-	    break;
-	case VISUALIZATIONRAWDATA:
-	    visualizationMenu.add(newItem, visualizationMenuIndex);
-	    visualizationMenuIndex++;
-	    break;
-	case VISUALIZATIONPEAKLIST:
-	    visualizationMenu.add(newItem);
-	    break;
-	case DATAANALYSIS:
-	    dataAnalysisMenu.add(newItem);
-	    break;
-	case HELPSYSTEM:
-	    helpMenu.add(newItem);
-	    break;
+	public synchronized void addMenuItem(MZmineModuleCategory parentMenu, JMenuItem newItem) {
+		switch (parentMenu) {
+		case PROJECTIO:
+		    projectMenu.add(newItem, projectIOMenuIndex);
+		    projectIOMenuIndex++;
+		    projectMenuIndex++;
+		    break;
+		case PROJECT:
+		    projectMenu.add(newItem, projectMenuIndex);
+		    projectMenuIndex++;
+		    break;
+		case RAWDATA:
+		    rawDataMenu.add(newItem, rawDataMenuIndex);
+		    rawDataMenuIndex++;
+		    break;
+		case RAWDATAFILTERING:
+		    rawDataFilteringMenu.add(newItem);
+		    break;
+		case PEAKPICKING:
+		    peakDetectionMenu.add(newItem);
+		    break;
+		case PEAKLISTPICKING:
+		    peakListPeakPickingMenu.add(newItem);
+		    break;
+		case GAPFILLING:
+		    gapFillingMenu.add(newItem);
+		    break;
+		case ISOTOPES:
+		    isotopesMenu.add(newItem);
+		    break;
+		case PEAKLISTFILTERING:
+		    peakListFilteringMenu.add(newItem);
+		    break;
+		case ALIGNMENT:
+		    alignmentMenu.add(newItem);
+		    break;
+		case NORMALIZATION:
+		    normalizationMenu.add(newItem);
+		    break;
+		case IDENTIFICATION:
+		    identificationMenu.add(newItem);
+		    break;
+		case PEAKLISTEXPORT:
+		    peakListExportMenu.add(newItem);
+		    break;
+		case VISUALIZATIONRAWDATA:
+		    visualizationMenu.add(newItem, visualizationMenuIndex);
+		    visualizationMenuIndex++;
+		    break;
+		case VISUALIZATIONPEAKLIST:
+		    visualizationMenu.add(newItem);
+		    break;
+		case DATAANALYSIS:
+		    dataAnalysisMenu.add(newItem);
+		    break;
+		case HELPSYSTEM:
+		    helpMenu.add(newItem);
+		    break;
+		}
 	}
-    }
 
     public void addMenuItemForModule(MZmineProcessingModule module) {
 
-	MZmineModuleCategory parentMenu = module.getModuleCategory();
-	String menuItemText = module.getName();
-	String menuItemToolTip = module.getDescription();
+		MZmineModuleCategory parentMenu = module.getModuleCategory();
+		String menuItemText = module.getName();
+		String menuItemToolTip = module.getDescription();
 
-	JMenuItem newItem = new JMenuItem(menuItemText);
-	newItem.setToolTipText(menuItemToolTip);
-	newItem.addActionListener(this);
+		JMenuItem newItem = new JMenuItem(menuItemText);
+		newItem.setToolTipText(menuItemToolTip);
+		newItem.addActionListener(this);
 
-	moduleMenuItems.put(newItem, module);
+		moduleMenuItems.put(newItem, module);
 
-	addMenuItem(parentMenu, newItem);
-
+		addMenuItem(parentMenu, newItem);
     }
 
     /**
@@ -283,108 +280,102 @@ public class MainMenu extends JMenuBar implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
 
-	Object src = e.getSource();
+		Object src = e.getSource();
 
-	MZmineProcessingModule module = moduleMenuItems.get(src);
-	if (module != null) {
-	    RawDataFile selectedFiles[] = MZmineCore.getDesktop()
-		    .getSelectedDataFiles();
-	    PeakList selectedPeakLists[] = MZmineCore.getDesktop()
-		    .getSelectedPeakLists();
+		MZmineProcessingModule module = moduleMenuItems.get(src);
+		if (module != null) {
+		    RawDataFile selectedFiles[]  = MZmineCore.getDesktop().getSelectedDataFiles();
+		    PeakList selectedPeakLists[] = MZmineCore.getDesktop().getSelectedPeakLists();
 
-	    ParameterSet moduleParameters = MZmineCore.getConfiguration()
-		    .getModuleParameters(module.getClass());
+		    ParameterSet moduleParameters = MZmineCore.getConfiguration().getModuleParameters(module.getClass());
 
-	    boolean allParametersOK = true;
-	    LinkedList<String> errorMessages = new LinkedList<String>();
-	    for (Parameter p : moduleParameters.getParameters()) {
-		if (p instanceof RawDataFilesParameter) {
-		    RawDataFilesParameter rdp = (RawDataFilesParameter) p;
-		    rdp.setValue(selectedFiles);
-		    boolean checkOK = rdp.checkValue(errorMessages);
-		    if (!checkOK) {
-			allParametersOK = false;
+		    boolean allParametersOK = true;
+		    LinkedList<String> errorMessages = new LinkedList<String>();
+		    for (Parameter p : moduleParameters.getParameters()) {
+				if (p instanceof RawDataFilesParameter) {
+				    RawDataFilesParameter rdp = (RawDataFilesParameter) p;
+				    rdp.setValue(selectedFiles);
+				    boolean checkOK = rdp.checkValue(errorMessages);
+				    if (!checkOK) {
+				    	allParametersOK = false;
+				    }
+				}
+				if (p instanceof PeakListsParameter) {
+				    PeakListsParameter plp = (PeakListsParameter) p;
+				    plp.setValue(selectedPeakLists);
+				    boolean checkOK = plp.checkValue(errorMessages);
+				    if (!checkOK) {
+				    	allParametersOK = false;
+				    }
+				}
+		    }
+
+		    if (!allParametersOK) {
+				StringBuilder message = new StringBuilder();
+				for (String m : errorMessages) {
+				    message.append(m);
+				    message.append("\n");
+				}
+				MZmineCore.getDesktop().displayMessage(message.toString());
+				return;
+		    }
+
+		    logger.finest("Setting parameters for module " + module.getName());
+		    ExitCode exitCode = moduleParameters.showSetupDialog();
+		    if (exitCode == ExitCode.OK) {
+				ParameterSet parametersCopy = moduleParameters.cloneParameter();
+				logger.finest("Starting module " + module.getName() + " with parameters " + parametersCopy);
+				ArrayList<Task> tasks = new ArrayList<Task>();
+				module.runModule(parametersCopy, tasks);
+				MZmineCore.getTaskController().addTasks(tasks.toArray(new Task[0]));
+		    }
+		    return;
+		}
+
+		if (src == projectExit) {
+		    MZmineCore.getDesktop().exitMZmine();
+		}
+
+		if (src == projectSaveParameters) {
+		    JFileChooser chooser = new JFileChooser();
+		    int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop().getMainFrame());
+		    if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File configFile = chooser.getSelectedFile();
+				try {
+				    MZmineCore.getConfiguration().saveConfiguration(configFile);
+				} catch (Exception ex) {
+				    MZmineCore.getDesktop().displayException(ex);
+				}
 		    }
 		}
-		if (p instanceof PeakListsParameter) {
-		    PeakListsParameter plp = (PeakListsParameter) p;
-		    plp.setValue(selectedPeakLists);
-		    boolean checkOK = plp.checkValue(errorMessages);
-		    if (!checkOK) {
-			allParametersOK = false;
+
+		if (src == projectLoadParameters) {
+		    JFileChooser chooser = new JFileChooser();
+		    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
+		    if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File configFile = chooser.getSelectedFile();
+				try {
+				    MZmineCore.getConfiguration().loadConfiguration(configFile);
+				} catch (Exception ex) {
+				    MZmineCore.getDesktop().displayException(ex);
+				}
 		    }
 		}
-	    }
 
-	    if (!allParametersOK) {
-		StringBuilder message = new StringBuilder();
-		for (String m : errorMessages) {
-		    message.append(m);
-		    message.append("\n");
+		if (src == projectSampleParameters) {
+		    ProjectParametersSetupDialog dialog = new ProjectParametersSetupDialog();
+		    dialog.setVisible(true);
 		}
-		MZmineCore.getDesktop().displayMessage(message.toString());
-		return;
-	    }
 
-	    logger.finest("Setting parameters for module " + module.getName());
-	    ExitCode exitCode = moduleParameters.showSetupDialog();
-	    if (exitCode == ExitCode.OK) {
-		ParameterSet parametersCopy = moduleParameters.cloneParameter();
-		logger.finest("Starting module " + module.getName() + " with parameters "
-			+ parametersCopy);
-		ArrayList<Task> tasks = new ArrayList<Task>();
-		module.runModule(parametersCopy, tasks);
-		MZmineCore.getTaskController().addTasks(
-			tasks.toArray(new Task[0]));
-	    }
-	    return;
-	}
-
-	if (src == projectExit) {
-	    MZmineCore.getDesktop().exitMZmine();
-	}
-
-	if (src == projectSaveParameters) {
-	    JFileChooser chooser = new JFileChooser();
-	    int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop()
-		    .getMainFrame());
-	    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		File configFile = chooser.getSelectedFile();
-		try {
-		    MZmineCore.getConfiguration().saveConfiguration(configFile);
-		} catch (Exception ex) {
-		    MZmineCore.getDesktop().displayException(ex);
+		if (src == projectPreferences) {
+		    MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
+		    preferences.showSetupDialog();
 		}
-	    }
-	}
 
-	if (src == projectLoadParameters) {
-	    JFileChooser chooser = new JFileChooser();
-	    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
-	    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		File configFile = chooser.getSelectedFile();
-		try {
-		    MZmineCore.getConfiguration().loadConfiguration(configFile);
-		} catch (Exception ex) {
-		    MZmineCore.getDesktop().displayException(ex);
+		if (src == showAbout) {
+		    MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
+		    mainWindow.showAboutDialog();
 		}
-	    }
-	}
-
-	if (src == projectSampleParameters) {
-	    ProjectParametersSetupDialog dialog = new ProjectParametersSetupDialog();
-	    dialog.setVisible(true);
-	}
-
-	if (src == projectPreferences) {
-	    MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
-	    preferences.showSetupDialog();
-	}
-
-	if (src == showAbout) {
-	    MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
-	    mainWindow.showAboutDialog();
-	}
 
     }
 }
