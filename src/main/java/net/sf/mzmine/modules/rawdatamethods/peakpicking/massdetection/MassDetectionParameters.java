@@ -39,9 +39,13 @@ import net.sf.mzmine.util.ExitCode;
 public class MassDetectionParameters extends SimpleParameterSet {
 
     public static final MassDetector massDetectors[] = {
-	    new CentroidMassDetector(), new ExactMassDetector(),
-	    new LocalMaxMassDetector(), new RecursiveMassDetector(),
-	    new WaveletMassDetector(), new Veritomyx() };
+	    new CentroidMassDetector(),
+	    new ExactMassDetector(),
+	    new LocalMaxMassDetector(),
+	    new RecursiveMassDetector(),
+	    new WaveletMassDetector(),
+	    new Veritomyx()
+	};
 
     public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
 
@@ -58,56 +62,55 @@ public class MassDetectionParameters extends SimpleParameterSet {
 	    "masses");
 
     public MassDetectionParameters() {
-	super(new Parameter[] { dataFiles, massDetector, msLevel, name });
+    	super(new Parameter[] { dataFiles, massDetector, msLevel, name });
     }
 
     @Override
     public ExitCode showSetupDialog() {
-
-	ExitCode exitCode = super.showSetupDialog();
-
-	// If the parameters are not complete, let's just stop here
-	if (exitCode != ExitCode.OK)
-	    return exitCode;
-
-	// Do an additional check for centroid/continuous data and show a
-	// warning if there is a potential problem
-	boolean centroidData = false;
-	int selectedMSLevel = getParameter(msLevel).getValue();
-	RawDataFile selectedFiles[] = getParameter(dataFiles).getValue();
-
-	// If no file selected (e.g. in batch mode setup), just return
-	if (selectedFiles == null)
-	    return exitCode;
-
-	for (RawDataFile file : selectedFiles) {
-	    int scanNums[] = file.getScanNumbers(selectedMSLevel);
-	    for (int scanNum : scanNums) {
-		Scan s = file.getScan(scanNum);
-		if (s.isCentroided())
-		    centroidData = true;
-	    }
-	}
-
-	// Check the selected mass detector
-	String massDetectorName = getParameter(massDetector).getValue()
-		.toString();
-
-	if ((centroidData) && (!massDetectorName.startsWith("Centroid"))) {
-	    String msg = "One or more selected files contains centroided data points at MS level "
-		    + selectedMSLevel
-		    + ". The selected mass detector could give unexpected results.";
-	    MZmineCore.getDesktop().displayMessage(msg);
-	}
-
-	if ((!centroidData) && (massDetectorName.startsWith("Centroid"))) {
-	    String msg = "None one of the selected files contain centroided data points at MS level "
-		    + selectedMSLevel
-		    + ". The selected mass detector could give unexpected results.";
-	    MZmineCore.getDesktop().displayMessage(msg);
-	}
-
-	return exitCode;
+	
+		ExitCode exitCode = super.showSetupDialog();
+	
+		// If the parameters are not complete, let's just stop here
+		if (exitCode != ExitCode.OK)
+		    return exitCode;
+	
+		// Do an additional check for centroid/continuous data and show a
+		// warning if there is a potential problem
+		boolean centroidData = false;
+		int selectedMSLevel = getParameter(msLevel).getValue();
+		RawDataFile selectedFiles[] = getParameter(dataFiles).getValue();
+	
+		// If no file selected (e.g. in batch mode setup), just return
+		if (selectedFiles == null)
+		    return exitCode;
+	
+		for (RawDataFile file : selectedFiles) {
+		    int scanNums[] = file.getScanNumbers(selectedMSLevel);
+		    for (int scanNum : scanNums) {
+				Scan s = file.getScan(scanNum);
+				if (s.isCentroided())
+				    centroidData = true;
+		    }
+		}
+	
+		// Check the selected mass detector
+		String massDetectorName = getParameter(massDetector).getValue().toString();
+	
+		if (centroidData && !massDetectorName.startsWith("Centroid")) {
+		    String msg = "One or more selected files contains centroided data points at MS level "
+			    + selectedMSLevel
+			    + ". The selected mass detector could give unexpected results.";
+		    MZmineCore.getDesktop().displayMessage(msg);
+		}
+	
+		if (!centroidData && massDetectorName.startsWith("Centroid")) {
+		    String msg = "None one of the selected files contain centroided data points at MS level "
+			    + selectedMSLevel
+			    + ". The selected mass detector could give unexpected results.";
+		    MZmineCore.getDesktop().displayMessage(msg);
+		}
+	
+		return exitCode;
 
     }
 
