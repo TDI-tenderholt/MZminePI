@@ -403,9 +403,9 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     /**
      * Add a remote job descriptor to the data file
      */
-    public synchronized void addJob(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx)
+    public synchronized void addJob(String name, String raw, VeritomyxSaaS vtmx)
     {
-    	RemoteJobInfo job = new RemoteJobInfo(name, min_scan, max_scan, vtmx);
+    	RemoteJobInfo job = new RemoteJobInfo(name, raw, vtmx);
     	this.jobs_info.add(job);
     }
     
