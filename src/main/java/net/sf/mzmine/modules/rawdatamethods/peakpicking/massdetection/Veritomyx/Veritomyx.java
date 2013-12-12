@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -56,9 +57,9 @@ public class Veritomyx implements MassDetector
 	 * @param parameters
 	 * @return
 	 */
-	public String getMassValuesJob(ParameterSet parameters)
+	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters)
 	{
-		PeakInvestigatorTask job = new PeakInvestigatorTask(parameters);
+		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, parameters);
 		String job_name = job.getName();
 		if (job_name != null)
 			jobs.add(job);
@@ -76,7 +77,7 @@ public class Veritomyx implements MassDetector
 	 */
 	public DataPoint[] getMassValues(Scan scan, String jobName, ParameterSet parameters)
 	{
-		// get the job from jobs list using the jobName
+		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
 		return (job == null) ? null : job.getMassValues(scan);
 	}
@@ -104,11 +105,12 @@ public class Veritomyx implements MassDetector
 	 * @param parameters
 	 * @return
 	 */
-	public void getJobDone(String job_name)
+	public void finishMassValuesJob(String job_name)
 	{
 		PeakInvestigatorTask job = getJobFromName(job_name);
 		if (job != null)
 		{
+			job.finish();
 			jobs.remove(job);
 		}
 	}
