@@ -19,12 +19,15 @@
 
 package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.SimpleMassList;
+import net.sf.mzmine.desktop.impl.MainWindow;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineProcessingStep;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.taskcontrol.AbstractTask;
@@ -84,21 +87,39 @@ public class MassDetectionTask extends AbstractTask {
     public void run()
     {
 		setStatus(TaskStatus.PROCESSING);
-
 	    MassDetector detector = massDetector.getModule();
 		logger.info("Started " + detector.getName() + " mass detector on " + dataFile);
 
-		int scanNumbers[] = dataFile.getScanNumbers(msLevel);
-		totalScans = scanNumbers.length;
-		String job = detector.getMassValuesJob(dataFile, msLevel, massDetector.getParameterSet());
+		// get the selected scans for this data file
+		ArrayList<Scan> scans = new ArrayList<Scan>();
+		MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
+		Scan selectedScans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
+		for (Scan scan : selectedScans)
+		{
+			if (scan.getDataFile().equals(dataFile))
+				scans.add(scan);
+			totalScans = scans.size();
+		}
+
+		// if there are no selected scans for this data file, get all of the msLevel ones
+		if (totalScans == 0)
+		{
+			int scanNumbers[] = dataFile.getScanNumbers(msLevel);
+			totalScans = scanNumbers.length;
+			for (int i = 0; i < totalScans; i++)
+				scans.add(dataFile.getScan(scanNumbers[i]));
+		}
+		totalScans += 1;	// add one for the job finish call
+
+		// start the job
+		String job = detector.startMassValuesJob(dataFile, massDetector.getParameterSet());
 
 		// Process scans one by one
-		for (int i = 0; i < totalScans; i++)
+		for (Scan scan : scans)
 		{
 		    if (isCanceled())
 		    	return;
 
-		    Scan scan = dataFile.getScan(scanNumbers[i]);
 		    DataPoint mzPeaks[] = detector.getMassValues(scan, job, massDetector.getParameterSet());
 		    if (mzPeaks != null)
 		    {
@@ -108,7 +129,10 @@ public class MassDetectionTask extends AbstractTask {
 		    processedScans++;
 		}
 
-		detector.getJobDone(job);
+		// finish the job
+		detector.finishMassValuesJob(job);
+	    processedScans++;
+
 		setStatus(TaskStatus.FINISHED);
 		logger.info("Finished " + detector.getName() + " mass detector on " + dataFile);
     }
