@@ -27,24 +27,23 @@ import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.
  */
 public class RemoteJobInfo implements JobInfo
 {
-	private String name;
-	private int min_scan, max_scan;
+	private String name, raw;
 	private VeritomyxSaaS vtmx;
 	
-	public RemoteJobInfo(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx)
+	public RemoteJobInfo(String name, String raw, VeritomyxSaaS vtmx)
 	{
-		this.name     = name;
-		this.min_scan = min_scan;
-		this.max_scan = max_scan;
+		this.name = name;
+		this.raw  = raw;
 //		if (vtmx != null)
 			this.vtmx = vtmx;
 //		else
-//			this.vtmx = new VeritomyxSaaS(username, password, pid, name, min_scan, max_scan);
+//			this.vtmx = new VeritomyxSaaS(username, password, pid, name);
 
 	}
 
-    public String getName()    { return name; }
-    public int    getMinScan() { return min_scan; }
-    public int    getMaxScan() { return max_scan; }
-    public int    getStatus()  { return vtmx.getStatus(); }
+    public String getName()        { return name; }
+    public String getRawDataFile() { return raw; }
+    public int    getStatus()      { return vtmx.getStatus(); }
+
+    public String toString()       { return name; }
 }
