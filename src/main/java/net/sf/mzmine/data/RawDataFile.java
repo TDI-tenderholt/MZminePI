@@ -107,7 +107,7 @@ public interface RawDataFile {
 
     public double getDataMaxTotalIonCurrent(int msLevel);
 
-    public void addJob(String name, int min_scan, int max_scan, VeritomyxSaaS vtmx);
+    public void addJob(String name, String raw, VeritomyxSaaS vtmx);
     public void removeJob(String name);
     public ArrayList<RemoteJobInfo> getJobs();
 
