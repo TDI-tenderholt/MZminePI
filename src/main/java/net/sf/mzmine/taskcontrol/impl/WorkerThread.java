@@ -51,31 +51,24 @@ class WorkerThread extends Thread {
 
 		Task actualTask = wrappedTask.getActualTask();
 
-		logger.finest("Starting processing of task: "
-				+ actualTask.getTaskDescription());
+		logger.finest("Starting processing of task: " + actualTask.getTaskDescription());
 
 		try {
-
 			// Process the actual task
 			actualTask.run();
 
 			// Check if task finished with an error
 			if (actualTask.getStatus() == TaskStatus.ERROR) {
-				logger.severe("Task error: " + actualTask.getErrorMessage());
-
 				String errorMsg = actualTask.getErrorMessage();
+				logger.severe("Task error: " + errorMsg);
 				if (errorMsg == null)
 					errorMsg = "Unspecified error";
-
-				MZmineCore.getDesktop().displayErrorMessage(
-						"Error of task " + actualTask.getTaskDescription(),
-						errorMsg);
+				MZmineCore.getDesktop().displayErrorMessage("Error of task " + actualTask.getTaskDescription(), errorMsg);
 			}
 
 			/*
 			 * This is important to allow the garbage collector to remove the
-			 * task, while keeping the task description in the
-			 * "Tasks in progress" window
+			 * task, while keeping the task description in the "Tasks in progress" window
 			 */
 			wrappedTask.removeTaskReference();
 
@@ -83,13 +76,10 @@ class WorkerThread extends Thread {
 
 			/*
 			 * This should never happen, it means the task did not handle its
-			 * exception properly, or there was some severe error, like
-			 * OutOfMemoryError
+			 * exception properly, or there was some severe error, like OutOfMemoryError
 			 */
 
-			logger.log(Level.SEVERE,
-					"Unhandled exception " + e + " while processing task "
-							+ actualTask.getTaskDescription(), e);
+			logger.log(Level.SEVERE, "Unhandled exception " + e + " while processing task " + actualTask.getTaskDescription(), e);
 
 			e.printStackTrace();
 

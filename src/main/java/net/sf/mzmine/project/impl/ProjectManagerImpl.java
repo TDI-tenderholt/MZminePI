@@ -42,47 +42,45 @@ public class ProjectManagerImpl implements ProjectManager {
      * @see net.sf.mzmine.modules.MZmineModule#initModule(net.sf.mzmine.main.MZmineCore)
      */
     public void initModule() {
-	currentProject = new MZmineProjectImpl();
-	myInstance = this;
+		currentProject = new MZmineProjectImpl();
+		myInstance = this;
     }
 
     public MZmineProject getCurrentProject() {
-	return currentProject;
+    	return currentProject;
     }
 
     public void setCurrentProject(MZmineProject project) {
-
-	if (project == currentProject)
-	    return;
-
-	// Close previous data files
-	if (currentProject != null) {
-	    RawDataFile prevDataFiles[] = currentProject.getDataFiles();
-	    for (RawDataFile prevDataFile : prevDataFiles) {
-		prevDataFile.close();
-	    }
-	}
-
-	this.currentProject = project;
-
-	// This is a hack to keep correct value of last opened directory (this
-	// value was overwritten when configuration file was loaded from the new
-	// project)
-	if (project.getProjectFile() != null) {
-	    File projectFile = project.getProjectFile();
-	    ParameterSet loaderParams = MZmineCore.getConfiguration()
-		    .getModuleParameters(ProjectLoadModule.class);
-	    loaderParams.getParameter(ProjectLoaderParameters.projectFile)
-		    .setValue(projectFile);
-	}
-
-	// Notify the GUI about project structure change
-	((MZmineProjectImpl) project).activateProject();
+	
+		if (project == currentProject)
+		    return;
+	
+		// Close previous data files
+		if (currentProject != null) {
+		    RawDataFile prevDataFiles[] = currentProject.getDataFiles();
+		    for (RawDataFile prevDataFile : prevDataFiles) {
+		    	prevDataFile.close();
+		    }
+		}
+	
+		this.currentProject = project;
+	
+		// This is a hack to keep correct value of last opened directory (this
+		// value was overwritten when configuration file was loaded from the new
+		// project)
+		if (project.getProjectFile() != null) {
+		    File projectFile = project.getProjectFile();
+		    ParameterSet loaderParams = MZmineCore.getConfiguration().getModuleParameters(ProjectLoadModule.class);
+		    loaderParams.getParameter(ProjectLoaderParameters.projectFile).setValue(projectFile);
+		}
+	
+		// Notify the GUI about project structure change
+		((MZmineProjectImpl) project).activateProject();
 
     }
 
     public static ProjectManagerImpl getInstance() {
-	return myInstance;
+    	return myInstance;
     }
 
 }

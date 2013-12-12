@@ -61,8 +61,7 @@ class TaskQueue extends AbstractTableModel {
 		int numOfWaitingTasks = 0;
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING)
-					|| (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
 				numOfWaitingTasks++;
 		}
 		return numOfWaitingTasks;
@@ -70,8 +69,7 @@ class TaskQueue extends AbstractTableModel {
 
 	synchronized void addWrappedTask(WrappedTask task) {
 
-		logger.finest("Adding task \"" + task
-				+ "\" to the task controller queue");
+		logger.finest("Adding task \"" + task + "\" to the task controller queue");
 
 		// If the queue is full, make a bigger queue
 		if (size == queue.length) {
@@ -115,8 +113,7 @@ class TaskQueue extends AbstractTableModel {
 	synchronized boolean allTasksFinished() {
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING)
-					|| (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
 				return false;
 		}
 		return true;
@@ -130,8 +127,7 @@ class TaskQueue extends AbstractTableModel {
 
 	/* TableModel implementation */
 
-	private static final String columns[] = { "Item", "Priority", "Status",
-			"% done" };
+	private static final String columns[] = { "Item", "Priority", "Status", "% done" };
 
 	/**
 	 * @see javax.swing.table.TableModel#getRowCount()
@@ -162,22 +158,22 @@ class TaskQueue extends AbstractTableModel {
 			Task actualTask = wrappedTask.getActualTask();
 
 			switch (column) {
-			case 0:
-				return actualTask.getTaskDescription();
-			case 1:
-				return wrappedTask.getPriority();
-			case 2:
-				return actualTask.getStatus();
-			case 3:
-				double finishedPercentage = actualTask.getFinishedPercentage();
-				LabeledProgressBar progressBar = progressBars.get(row);
-				if (progressBar == null) {
-					progressBar = new LabeledProgressBar(finishedPercentage);
-					progressBars.put(row, progressBar);
-				} else {
-					progressBar.setValue(finishedPercentage);
-				}
-				return progressBar;
+				case 0:
+					return actualTask.getTaskDescription();
+				case 1:
+					return wrappedTask.getPriority();
+				case 2:
+					return actualTask.getStatus();
+				case 3:
+					double finishedPercentage = actualTask.getFinishedPercentage();
+					LabeledProgressBar progressBar = progressBars.get(row);
+					if (progressBar == null) {
+						progressBar = new LabeledProgressBar(finishedPercentage);
+						progressBars.put(row, progressBar);
+					} else {
+						progressBar.setValue(finishedPercentage);
+					}
+					return progressBar;
 			}
 		}
 
@@ -190,14 +186,14 @@ class TaskQueue extends AbstractTableModel {
 	 */
 	public Class<?> getColumnClass(int column) {
 		switch (column) {
-		case 0:
-			return String.class;
-		case 1:
-			return TaskPriority.class;
-		case 2:
-			return TaskStatus.class;
-		case 3:
-			return LabeledProgressBar.class;
+			case 0:
+				return String.class;
+			case 1:
+				return TaskPriority.class;
+			case 2:
+				return TaskStatus.class;
+			case 3:
+				return LabeledProgressBar.class;
 		}
 		return null;
 

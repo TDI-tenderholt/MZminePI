@@ -62,25 +62,23 @@ public class MZmineProjectImpl implements MZmineProject {
 	
 		Runnable swingThreadCode = new Runnable() {
 		    public void run() {
-			MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
-	
-			// Update the name of the project in the window title
-			mainWindow.updateTitle();
-	
-			ProjectTree projectTree = mainWindow.getMainPanel()
-				.getProjectTree();
-			projectTree.setModel(treeModel);
-	
-			// Expand the rows Raw data files and Peak lists items by
-			// default
-			int childCount = treeModel.getChildCount(treeModel.getRoot());
-			for (int i = 0; i < childCount; i++) {
-			    TreeNode node = (TreeNode) treeModel.getChild(
-				    treeModel.getRoot(), i);
-			    TreeNode pathToRoot[] = treeModel.getPathToRoot(node);
-			    TreePath path = new TreePath(pathToRoot);
-			    projectTree.expandPath(path);
-			}
+				MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
+		
+				// Update the name of the project in the window title
+				mainWindow.updateTitle();
+		
+				ProjectTree projectTree = mainWindow.getMainPanel().getProjectTree();
+				projectTree.setModel(treeModel);
+		
+				// Expand the rows Raw data files and Peak lists items by
+				// default
+				int childCount = treeModel.getChildCount(treeModel.getRoot());
+				for (int i = 0; i < childCount; i++) {
+				    TreeNode node = (TreeNode) treeModel.getChild(treeModel.getRoot(), i);
+				    TreeNode pathToRoot[] = treeModel.getPathToRoot(node);
+				    TreePath path = new TreePath(pathToRoot);
+				    projectTree.expandPath(path);
+				}
 		    }
 		};
 		try {
@@ -117,8 +115,7 @@ public class MZmineProjectImpl implements MZmineProject {
     public void setParameterValue(UserParameter parameter, RawDataFile rawDataFile, Object value) {
 		if (!(hasParameter(parameter)))
 		    addParameter(parameter);
-		Hashtable<RawDataFile, Object> parameterValues = projectParametersAndValues
-			.get(parameter);
+		Hashtable<RawDataFile, Object> parameterValues = projectParametersAndValues.get(parameter);
 		if (value == null)
 		    parameterValues.remove(rawDataFile);
 		else
@@ -136,14 +133,14 @@ public class MZmineProjectImpl implements MZmineProject {
 	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-			treeModel.addObject(newFile);
+		    	treeModel.addObject(newFile);
 		    }
 		};
 		try {
 		    if (SwingUtilities.isEventDispatchThread())
-			swingCode.run();
+		    	swingCode.run();
 		    else
-			SwingUtilities.invokeAndWait(swingCode);
+		    	SwingUtilities.invokeAndWait(swingCode);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -153,14 +150,14 @@ public class MZmineProjectImpl implements MZmineProject {
 	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-			treeModel.removeObject(file);
+		    	treeModel.removeObject(file);
 		    }
 		};
 		try {
 		    if (SwingUtilities.isEventDispatchThread())
-			swingCode.run();
+		    	swingCode.run();
 		    else
-			SwingUtilities.invokeAndWait(swingCode);
+		    	SwingUtilities.invokeAndWait(swingCode);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -181,14 +178,14 @@ public class MZmineProjectImpl implements MZmineProject {
 	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-			treeModel.addObject(peakList);
+		    	treeModel.addObject(peakList);
 		    }
 		};
 		try {
 		    if (SwingUtilities.isEventDispatchThread())
-			swingCode.run();
+		    	swingCode.run();
 		    else
-			SwingUtilities.invokeAndWait(swingCode);
+		    	SwingUtilities.invokeAndWait(swingCode);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -198,14 +195,14 @@ public class MZmineProjectImpl implements MZmineProject {
 	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-			treeModel.removeObject(peakList);
+		    	treeModel.removeObject(peakList);
 		    }
 		};
 		try {
 		    if (SwingUtilities.isEventDispatchThread())
-			swingCode.run();
+		    	swingCode.run();
 		    else
-			SwingUtilities.invokeAndWait(swingCode);
+		    	SwingUtilities.invokeAndWait(swingCode);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
