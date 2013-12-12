@@ -194,10 +194,9 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
 
         if (qName.equals(RawDataElementName_2_5.JOB.getElementName()))
         {
-            jobName  = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
-            int min_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MIN_SCAN.getElementName()));
-            int max_scan = Integer.parseInt(attrs.getValue(RawDataElementName_2_5.JOB_MAX_SCAN.getElementName()));
-        	newRawDataFile.addJob(jobName, min_scan, max_scan, null);
+            jobName    = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
+            String raw = attrs.getValue(RawDataElementName_2_5.JOB_RAW_DATA_FILE.getElementName());
+        	newRawDataFile.addJob(jobName, raw, null);
         }
     }
 

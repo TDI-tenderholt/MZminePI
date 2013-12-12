@@ -44,8 +44,7 @@ enum RawDataElementName {
 	JOB_COUNT("num_jobs"),
 	JOB("job"),
 	JOB_NAME("name"),
-	JOB_MIN_SCAN("min_scan"),
-	JOB_MAX_SCAN("max_scan");
+	JOB_RAW_DATA_FILE("raw_data_file");
 
 	private String elementName;
 
