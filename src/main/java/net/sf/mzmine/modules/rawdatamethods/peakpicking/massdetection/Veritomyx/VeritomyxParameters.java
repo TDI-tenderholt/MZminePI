@@ -30,22 +30,10 @@ import net.sf.mzmine.util.ExitCode;
 
 public class VeritomyxParameters extends SimpleParameterSet
 {
-	public static final IntegerParameter first_scan = new IntegerParameter(
-			"Minimum Scan Number",
-			"Lower limit of scan range to centroid for new job.",
-			0);
-	public static final IntegerParameter last_scan = new IntegerParameter(
-			"Maximum Scan Number",
-			"Upper limit of scan range to centroid for new job.",
-			1);
-	public static final JobsComboParameter job_list = new JobsComboParameter(
-			"New or Pending Jobs (if any)",
-			"Launch a new job with given scan range or\n" +
-			"Await completion and retrieve results of a previously launched job.");
 
 	public VeritomyxParameters()
 	{
-		super(new UserParameter[] { first_scan, last_scan, job_list });
+		super(new UserParameter[] {});
 	}
 
 	public ExitCode showSetupDialog()
