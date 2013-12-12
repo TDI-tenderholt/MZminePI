@@ -25,8 +25,10 @@ package net.sf.mzmine.parameters.parametertypes;
 public class MSLevelParameter extends ComboParameter<Integer> {
 
 	public MSLevelParameter() {
-		super("MS level",
-				"MS level 1 means full scans, MS level 2 means MS/MS, etc.",
+		super("MS level (for complete files)",
+				"This parameter is ignored when specific scans have been selected.\n" +
+					"It is only used when processing all scans in a given raw data file.\n" +
+					"MS level 1 means full scans, MS level 2 means MS/MS, etc.",
 				new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 1);
 	}
 
