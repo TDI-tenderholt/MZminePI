@@ -78,7 +78,6 @@ public class JobsComboParameter implements UserParameter<String, JComboBox>
 			for (RemoteJobInfo job : raw.getJobs())
 			{
 				choices[++job_count] = job.getName()
-							+ "[" + job.getMinScan() + ".." + job.getMaxScan() + "]"
 							+ "    " + job.getStatus()
 							+ "    " + raw.getName();
 			}
