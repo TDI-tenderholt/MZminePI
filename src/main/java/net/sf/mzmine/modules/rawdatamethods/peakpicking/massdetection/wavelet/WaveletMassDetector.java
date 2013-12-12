@@ -50,7 +50,7 @@ public class WaveletMassDetector implements MassDetector {
     private static final int WAVELET_ESL = -5;
     private static final int WAVELET_ESR = 5;
 
-	public String getMassValuesJob(RawDataFile raw, int msLevel, ParameterSet parameters) { return null; }
+	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 	double noiseLevel = parameters.getParameter(
@@ -228,6 +228,6 @@ public class WaveletMassDetector implements MassDetector {
 	return WaveletMassDetectorParameters.class;
     }
 
-	public void getJobDone(String job) {}
+	public void finishMassValuesJob(String job) {}
 
 }

@@ -33,10 +33,9 @@ public interface MassDetector extends MZmineModule {
 	/**
 	 * Returns the job id for getting mass values
 	 * @param dataFile 
-	 * @param msLevel 
 	 * @param parameterSet 
 	 */
-	public String getMassValuesJob(RawDataFile dataFile, int msLevel, ParameterSet parameterSet);
+	public String startMassValuesJob(RawDataFile dataFile, ParameterSet parameterSet);
 
 	/**
 	 * Returns mass and intensity values detected in given scan
@@ -47,6 +46,6 @@ public interface MassDetector extends MZmineModule {
 	 * Mark the job done
 	 * @param parameterSet 
 	 */
-	public void getJobDone(String job);
+	public void finishMassValuesJob(String job);
 
 }
