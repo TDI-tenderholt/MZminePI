@@ -73,7 +73,6 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
     private TreeMap<Integer, Integer> dataPointsLengths;
     private StreamCopy copyMachine;
     private ArrayList<StorableMassList> massLists;
-    private String jobName;
 
     private boolean canceled = false;
 
@@ -162,9 +161,8 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String lName, String qName,
-            Attributes attrs) throws SAXException {
-
+    public void startElement(String namespaceURI, String lName, String qName, Attributes attrs) throws SAXException
+    {
         if (canceled)
             throw new SAXException("Parsing canceled");
 
@@ -194,9 +192,9 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements
 
         if (qName.equals(RawDataElementName_2_5.JOB.getElementName()))
         {
-            jobName    = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
-            String raw = attrs.getValue(RawDataElementName_2_5.JOB_RAW_DATA_FILE.getElementName());
-        	newRawDataFile.addJob(jobName, raw, null);
+            String jobName    = attrs.getValue(RawDataElementName_2_5.JOB_NAME.getElementName());
+            String targetName = attrs.getValue(RawDataElementName_2_5.JOB_TARGET_NAME.getElementName());
+        	newRawDataFile.addJob(jobName, newRawDataFile, targetName, null);
         }
     }
 

@@ -33,18 +33,25 @@ public interface MassDetector extends MZmineModule {
 	/**
 	 * Returns the job id for getting mass values
 	 * @param dataFile 
-	 * @param parameterSet 
+	 * @param targetName
+	 * @param parameterSet
+	 * @return
 	 */
-	public String startMassValuesJob(RawDataFile dataFile, ParameterSet parameterSet);
+	public String startMassValuesJob(RawDataFile dataFile, String targetName, ParameterSet parameterSet);
 
 	/**
 	 * Returns mass and intensity values detected in given scan
+	 * 
+	 * @param san
+	 * @param job
+	 * @param parameters
+	 * @return
 	 */	
 	public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters);
 
 	/**
 	 * Mark the job done
-	 * @param parameterSet 
+	 * @param job 
 	 */
 	public void finishMassValuesJob(String job);
 

@@ -27,7 +27,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
 
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,8 +37,10 @@ import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.PeakListRow;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.main.MZmineCore;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionParameters;
 import net.sf.mzmine.modules.visualization.infovisualizer.InfoVisualizerModule;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTableModule;
 import net.sf.mzmine.modules.visualization.peaksummary.PeakSummaryVisualizerModule;
@@ -59,7 +60,8 @@ import net.sf.mzmine.util.GUIUtils;
 /**
  * This class handles pop-up menus and double click events in the project tree
  */
-public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListener {
+public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListener
+{
 
     private ProjectTree tree;
     private JPopupMenu dataFilePopupMenu,
@@ -73,8 +75,8 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
     /**
      * Constructor
      */
-    public ProjectTreeMouseHandler(ProjectTree tree) {
-	
+    public ProjectTreeMouseHandler(ProjectTree tree)
+    {
 		this.tree = tree;
 	
 		dataFilePopupMenu = new JPopupMenu();
@@ -105,8 +107,8 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		GUIUtils.addMenuItem(peakListRowPopupMenu, "Show peak summary", this, "SHOW_PEAK_SUMMARY");
     }
 
-    public void actionPerformed(ActionEvent e) {
-    	System.out.println("actionPerformed " + e);
+    public void actionPerformed(ActionEvent e)
+    {
 		String command = e.getActionCommand();
 	
 		// Actions for raw data files
@@ -156,10 +158,8 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 	
 		else if (command.equals("RETRIEVE_JOB"))
 		{
-		    for (RemoteJobInfo job : getObjList(RemoteJobInfo.class))
-		    {
-		    	System.out.println(job.getName());
-		    }
+		    for (RemoteJob job : getObjList(RemoteJob.class))
+		    	startJob(job);
 		}
 	
 		// Actions for scans
@@ -231,34 +231,24 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		}
     }
 
-    public void mousePressed(MouseEvent e) {
-	
-    	if (e.getButton() == MouseEvent.BUTTON1) System.out.println("button 1");
-    	if (e.getButton() == MouseEvent.BUTTON2) System.out.println("button 2");
-    	if (e.getButton() == MouseEvent.BUTTON3) System.out.println("button 3");
+    public void mousePressed(MouseEvent e)
+    {
+    	Object clickedObject = getClickedObject(e.getX(), e.getY());
 
-    	if (e.getButton() == MouseEvent.BUTTON3)
-    		rightClickObj = getClickedObject(e);	// save object in case nothing else is selected
+    	if (e.getButton() == MouseEvent.BUTTON3)	// right click
+    		rightClickObj = clickedObject;	// save object in case nothing else is selected
 
-		if (e.isPopupTrigger())
-		{
-			System.out.println("isPopupTrigger");
-		    handlePopupTriggerEvent(e);
-		}
+    	else if (e.isPopupTrigger())
+		    handlePopupTriggerEvent(e, clickedObject);
 	
-		if ((e.getClickCount() == 2) && (e.getButton() == MouseEvent.BUTTON1))
-		{
-			System.out.println("getClickCount");
-		    handleDoubleClickEvent(e);
-		}
+		else if ((e.getClickCount() == 2) && (e.getButton() == MouseEvent.BUTTON1))	// left click
+		    handleDoubleClickEvent(clickedObject);
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e)
+    {
 		if (e.isPopupTrigger())
-		{
-			System.out.println("mouseReleased isPopupTrigger");
-		    handlePopupTriggerEvent(e);
-		}
+		    handlePopupTriggerEvent(e, getClickedObject(e.getX(), e.getY()));
     }
 
     /**
@@ -286,59 +276,51 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
      * @param e
      * @return
      */
-    private Object getClickedObject(MouseEvent e)
+    private Object getClickedObject(int x, int y)
     {
-		TreePath clickedPath = tree.getPathForLocation(e.getX(), e.getY());
+		TreePath clickedPath = tree.getPathForLocation(x, y);
 		if (clickedPath == null)
 		    return null;
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) clickedPath.getLastPathComponent();
-		Object clickedObject = node.getUserObject();
-		return clickedObject;
+		return node.getUserObject();
     }
 
-    private void handlePopupTriggerEvent(MouseEvent e) {
+    private void handlePopupTriggerEvent(MouseEvent e, Object clickedObject)
+    {
     	Component c = e.getComponent();
     	int       x = e.getX();
     	int       y = e.getY();
-		Object clickedObject = getClickedObject(e);
-		System.out.println("clicked obj " + clickedObject.getClass() + " " + clickedObject);
 
 		if      (clickedObject instanceof RawDataFile)    dataFilePopupMenu.show(c, x, y);
-		else if (clickedObject instanceof RemoteJobInfo)       jobPopupMenu.show(c, x, y);
+		else if (clickedObject instanceof RemoteJob)       jobPopupMenu.show(c, x, y);
 		else if (clickedObject instanceof Scan)               scanPopupMenu.show(c, x, y);
 		else if (clickedObject instanceof MassList)       massListPopupMenu.show(c, x, y);
 		else if (clickedObject instanceof PeakList)       peakListPopupMenu.show(c, x, y);
 		else if (clickedObject instanceof PeakListRow) peakListRowPopupMenu.show(c, x, y);
     }
 
-    private void handleDoubleClickEvent(MouseEvent e) {
-		TreePath clickedPath = tree.getPathForLocation(e.getX(), e.getY());
-		if (clickedPath == null)
-		    return;
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) clickedPath.getLastPathComponent();
-		Object clickedObject = node.getUserObject();
-	
+    private void handleDoubleClickEvent(Object clickedObject)
+    {
 		if (clickedObject instanceof RawDataFile) {
 		    RawDataFile clickedFile = (RawDataFile) clickedObject;
 		    TICVisualizerModule.setupNewTICVisualizer(clickedFile);
 		}
 	
-		if (clickedObject instanceof PeakList) {
+		else if (clickedObject instanceof PeakList) {
 		    PeakList clickedPeakList = (PeakList) clickedObject;
 		    PeakListTableModule.showNewPeakListVisualizerWindow(clickedPeakList);
 		}
 		
-		if (clickedObject instanceof RemoteJobInfo) {
-			RemoteJobInfo job = (RemoteJobInfo) clickedObject;
-		    System.out.println(job.getName());
+		else if (clickedObject instanceof RemoteJob) {
+			startJob((RemoteJob) clickedObject);
 		}
 		
-		if (clickedObject instanceof Scan) {
+		else if (clickedObject instanceof Scan) {
 		    Scan clickedScan = (Scan) clickedObject;
 		    SpectraVisualizerModule.showNewSpectrumWindow(clickedScan.getDataFile(), clickedScan.getScanNumber());
 		}
 	
-		if (clickedObject instanceof MassList) {
+		else if (clickedObject instanceof MassList) {
 		    MassList clickedMassList = (MassList) clickedObject;
 		    Scan clickedScan = clickedMassList.getScan();
 		    SpectraVisualizerWindow window = SpectraVisualizerModule.showNewSpectrumWindow(clickedScan.getDataFile(),clickedScan.getScanNumber());
@@ -346,10 +328,24 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		    window.addDataSet(dataset, Color.green);
 		}
 	
-		if (clickedObject instanceof PeakListRow) {
+		else if (clickedObject instanceof PeakListRow) {
 		    PeakListRow clickedPeak = (PeakListRow) clickedObject;
 		    PeakSummaryVisualizerModule.showNewPeakSummaryWindow(clickedPeak);
 		}
     }
 
+    /**
+     * Retrieve the given job from remote server
+     * 
+     * @param job
+     */
+    private void startJob(RemoteJob job)
+    {
+    	MassDetectionModule     module     = MZmineCore.getModuleInstance(MassDetectionModule.class);
+    	MassDetectionParameters parameters = (MassDetectionParameters) MZmineCore.getConfiguration().getModuleParameters(MassDetectionModule.class);
+    	parameters.setVeritomyxJob(job);
+    	ArrayList<Task> tasks = new ArrayList<Task>();
+    	module.runModule(parameters, tasks);
+    	MZmineCore.getTaskController().addTasks(tasks.toArray(new Task[0]));
+    }
 }

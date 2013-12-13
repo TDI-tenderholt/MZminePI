@@ -35,7 +35,7 @@ import net.sf.mzmine.util.SortingProperty;
 
 public class RecursiveMassDetector implements MassDetector {
 
-	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters) { return null; }
+	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 
 	public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 

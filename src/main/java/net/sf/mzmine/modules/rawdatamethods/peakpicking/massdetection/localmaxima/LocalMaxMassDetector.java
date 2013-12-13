@@ -34,7 +34,7 @@ import net.sf.mzmine.parameters.ParameterSet;
  */
 public class LocalMaxMassDetector implements MassDetector {
 
-	public String startMassValuesJob(RawDataFile raw, ParameterSet parameters) { return null; }
+	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
 

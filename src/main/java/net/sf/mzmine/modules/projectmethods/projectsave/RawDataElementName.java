@@ -44,7 +44,7 @@ enum RawDataElementName {
 	JOB_COUNT("num_jobs"),
 	JOB("job"),
 	JOB_NAME("name"),
-	JOB_RAW_DATA_FILE("raw_data_file");
+	JOB_TARGET_NAME("target_name");
 
 	private String elementName;
 

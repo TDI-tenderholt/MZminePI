@@ -49,6 +49,7 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 	public RawDataFilesParameter(int minCount, int maxCount) {
 		this.minCount = minCount;
 		this.maxCount = maxCount;
+		value = new RawDataFile[0];
 	}
 
 	public RawDataFile[] getValue() {

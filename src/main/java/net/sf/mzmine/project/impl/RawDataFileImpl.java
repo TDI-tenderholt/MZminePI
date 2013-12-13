@@ -40,8 +40,9 @@ import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.RawDataFileWriter;
 import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.Range;
@@ -74,7 +75,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     private final TreeMap<Integer, Integer> dataPointsLengths;
 
     // Remote job information
-    private ArrayList<RemoteJobInfo> jobs_info = null;
+    private ArrayList<RemoteJob> jobs_info = null;
 
     // Temporary file for scan data storage
     private File dataPointsFileName;
@@ -98,7 +99,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
 		scans                    = new Hashtable<Integer, StorableScan>();
 		dataPointsOffsets        = new TreeMap<Integer, Long>();
 		dataPointsLengths        = new TreeMap<Integer, Integer>();
-		jobs_info                = new ArrayList<RemoteJobInfo>();
+		jobs_info                = new ArrayList<RemoteJob>();
     }
 
     /**
@@ -403,10 +404,11 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     /**
      * Add a remote job descriptor to the data file
      */
-    public synchronized void addJob(String name, String raw, VeritomyxSaaS vtmx)
+    public synchronized void addJob(String name, RawDataFile raw, String targetName, VeritomyxSaaS vtmx)
     {
-    	RemoteJobInfo job = new RemoteJobInfo(name, raw, vtmx);
+    	RemoteJob job = new RemoteJob(name, raw, targetName, vtmx);
     	this.jobs_info.add(job);
+    	MZmineCore.getCurrentProject().addJob(job);
     }
     
     /**
@@ -414,7 +416,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
      */
     public synchronized void removeJob(String name)
     {
-    	for (RemoteJobInfo job : jobs_info)
+    	for (RemoteJob job : jobs_info)
     	{
     		if (job.getName().equals(name))
     		{
@@ -424,7 +426,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     	}
     }
 
-    public ArrayList<RemoteJobInfo> getJobs()
+    public ArrayList<RemoteJob> getJobs()
     {
     	return jobs_info;
     }

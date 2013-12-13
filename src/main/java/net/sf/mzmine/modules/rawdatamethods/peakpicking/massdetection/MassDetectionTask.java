@@ -112,7 +112,7 @@ public class MassDetectionTask extends AbstractTask {
 		totalScans += 1;	// add one for the job finish call
 
 		// start the job
-		String job = detector.startMassValuesJob(dataFile, massDetector.getParameterSet());
+		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet());
 
 		// Process scans one by one
 		for (Scan scan : scans)

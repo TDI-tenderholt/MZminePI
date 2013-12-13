@@ -29,6 +29,7 @@ import javax.swing.tree.TreePath;
 
 import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.desktop.impl.MainWindow;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTree;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
@@ -83,9 +84,9 @@ public class MZmineProjectImpl implements MZmineProject {
 		};
 		try {
 		    if (SwingUtilities.isEventDispatchThread())
-			swingThreadCode.run();
+		    	swingThreadCode.run();
 		    else
-			SwingUtilities.invokeAndWait(swingThreadCode);
+		    	SwingUtilities.invokeAndWait(swingThreadCode);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -165,6 +166,41 @@ public class MZmineProjectImpl implements MZmineProject {
 		// Close the data file, which also removed the temporary data
 		file.close();
     }
+
+    public void addJob(final RemoteJob job)
+    {	
+		Runnable swingCode = new Runnable() {
+		    public void run() {
+		    	treeModel.addObject(job);
+		    }
+		};
+		try {
+		    if (SwingUtilities.isEventDispatchThread())
+		    	swingCode.run();
+		    else
+		    	SwingUtilities.invokeAndWait(swingCode);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+    }
+
+    public void removeJob(final RemoteJob job)
+    {
+		Runnable swingCode = new Runnable() {
+		    public void run() {
+		    	treeModel.removeObject(job);
+		    }
+		};
+		try {
+		    if (SwingUtilities.isEventDispatchThread())
+		    	swingCode.run();
+		    else
+		    	SwingUtilities.invokeAndWait(swingCode);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+   }
+
 
     public RawDataFile[] getDataFiles() {
     	return treeModel.getDataFiles();

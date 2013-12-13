@@ -35,7 +35,7 @@ import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.PeakListRow;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.util.RawDataFileUtils;
@@ -92,7 +92,7 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 			label.setIcon(hasMassList ? fileWithMassListIcon : fileIcon);
 		}
 
-		if (embeddedObject instanceof RemoteJobInfo) {
+		if (embeddedObject instanceof RemoteJob) {
 			label.setFont(smallerFont);
 			label.setIcon(cloudIcon);
 		}

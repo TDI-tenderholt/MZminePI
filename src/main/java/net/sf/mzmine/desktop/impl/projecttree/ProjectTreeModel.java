@@ -33,7 +33,7 @@ import net.sf.mzmine.data.PeakList;
 import net.sf.mzmine.data.PeakListRow;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.project.MZmineProject;
 
 /**
@@ -106,13 +106,19 @@ public class ProjectTreeModel extends DefaultTreeModel {
 				}
 			}
 
-			ArrayList<RemoteJobInfo> jobs = dataFile.getJobs();
+			ArrayList<RemoteJob> jobs = dataFile.getJobs();
 			int i = 0;
-			for (RemoteJobInfo job : jobs) {
+			for (RemoteJob job : jobs) {
 				DefaultMutableTreeNode jobNode = new DefaultMutableTreeNode(job);
 				treeObjects.put(job, jobNode);
 				insertNodeInto(jobNode, newNode, i++);
 			}
+		}
+
+		else if (object instanceof RemoteJob) {
+			RemoteJob job = (RemoteJob) object;
+			final DefaultMutableTreeNode rawNode = treeObjects.get(job.getRawDataFile());
+			insertNodeInto(newNode, rawNode, 0);
 		}
 
 		else if (object instanceof MassList) {

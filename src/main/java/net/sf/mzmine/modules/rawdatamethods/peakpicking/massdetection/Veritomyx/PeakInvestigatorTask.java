@@ -56,6 +56,7 @@ public class PeakInvestigatorTask
 {
 	private Logger logger;
 	private String job_id = null;	// name of the job and the scans tar file
+	private String targetName;
 	private String intputFilename;
 	private String outputFilename;
 	private int    status;
@@ -67,7 +68,7 @@ public class PeakInvestigatorTask
 	private TarOutputStream tarfile = null;
 	private RawDataFile rawDataFile = null;
 
-	public PeakInvestigatorTask(RawDataFile raw, ParameterSet parameters)
+	public PeakInvestigatorTask(RawDataFile raw, String name, ParameterSet parameters)
 	{
 		logger = Logger.getLogger(this.getClass().getName());
 		logger.info("Initializing PeakInvestigator™ Task");
@@ -88,6 +89,7 @@ public class PeakInvestigatorTask
 
 		// save the raw data file
 		rawDataFile = raw;
+		targetName  = name;
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
@@ -106,7 +108,6 @@ public class PeakInvestigatorTask
 			if (status == VeritomyxSaaS.UNDEFINED)
 			{
 				logger.info("Preparing to launch new job, " + job_id);
-				rawDataFile.addJob(job_id, raw.getName(), vtmx);	// record this job start
 				try {
 					tarfile = new TarOutputStream(new BufferedOutputStream(new FileOutputStream(intputFilename)));
 				} catch (FileNotFoundException e) {
@@ -290,6 +291,7 @@ public class PeakInvestigatorTask
 		}
 
 		// job was started - record it
+		rawDataFile.addJob(job_id, rawDataFile, targetName, vtmx);	// record this job start
 		logger.info(vtmx.getPageData().split(" ",2)[1]);
 		File f = new File(intputFilename);
 		f.delete();			// remove the local copy of the tar file

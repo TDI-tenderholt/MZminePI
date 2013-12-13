@@ -36,7 +36,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import net.sf.mzmine.data.MassList;
 import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJobInfo;
+import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.project.impl.RawDataFileImpl;
 import net.sf.mzmine.project.impl.StorableMassList;
 import net.sf.mzmine.project.impl.StorableScan;
@@ -202,14 +202,14 @@ class RawDataFileSaveHandler {
 		}
 
 		// JOBS
-		ArrayList<RemoteJobInfo> jobs = rawDataFile.getJobs();
+		ArrayList<RemoteJob> jobs = rawDataFile.getJobs();
 		hd.startElement("", "", RawDataElementName.JOB_COUNT.getElementName(), atts);
 		hd.characters(String.valueOf(jobs.size()).toCharArray(), 0, String.valueOf(jobs.size()).length());
 		hd.endElement("", "", RawDataElementName.JOB_COUNT.getElementName());
-		for (RemoteJobInfo job : jobs)
+		for (RemoteJob job : jobs)
 		{
 			atts.addAttribute("", "", RawDataElementName.JOB_NAME.getElementName(), "CDATA", job.getName());
-			atts.addAttribute("", "", RawDataElementName.JOB_RAW_DATA_FILE.getElementName(), "CDATA", job.getRawDataFile());
+			atts.addAttribute("", "", RawDataElementName.JOB_TARGET_NAME.getElementName(), "CDATA", job.getTargetName());
 		    hd.startElement("", "", RawDataElementName.JOB.getElementName(), atts);
 		    String s = String.valueOf(job.getStatus());
 		    hd.characters(s.toCharArray(), 0, s.length());
