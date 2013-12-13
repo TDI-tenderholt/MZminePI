@@ -17,33 +17,18 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data.impl;
+package net.sf.mzmine.data;
 
-import net.sf.mzmine.data.JobInfo;
-import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
+import javax.annotation.Nonnull;
 
 /**
  * This defines a Veritomyx job
  */
-public class RemoteJobInfo implements JobInfo
+public interface RemoteJobInfo
 {
-	private String name, raw;
-	private VeritomyxSaaS vtmx;
-	
-	public RemoteJobInfo(String name, String raw, VeritomyxSaaS vtmx)
-	{
-		this.name = name;
-		this.raw  = raw;
-//		if (vtmx != null)
-			this.vtmx = vtmx;
-//		else
-//			this.vtmx = new VeritomyxSaaS(username, password, pid, name);
-
-	}
-
-    public String getName()        { return name; }
-    public String getRawDataFile() { return raw; }
-    public int    getStatus()      { return vtmx.getStatus(); }
-
-    public String toString()       { return name; }
+    @Nonnull public String      getName();
+    @Nonnull public String      toString();
+    @Nonnull public RawDataFile getRawDataFile();
+    @Nonnull public String      getTargetName();
+    @Nonnull public int         getStatus();
 }
