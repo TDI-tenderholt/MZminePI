@@ -33,11 +33,9 @@ import net.sf.mzmine.util.ExitCode;
 
 public class ProjectLoaderParameters extends SimpleParameterSet {
 
-	private static final FileFilter filters[] = new FileFilter[] { new FileNameExtensionFilter(
-			"MZmine projects", "mzmine") };
+	private static final FileFilter filters[] = new FileFilter[] { new FileNameExtensionFilter("MZmine projects", "mzmine") };
 
-	public static final FileNameParameter projectFile = new FileNameParameter(
-			"Project file", "File name of project to be loaded");
+	public static final FileNameParameter projectFile = new FileNameParameter("Project file", "File name of project to be loaded");
 
 	public ProjectLoaderParameters() {
 		super(new Parameter[] { projectFile });
@@ -59,8 +57,7 @@ public class ProjectLoaderParameters extends SimpleParameterSet {
 
 		chooser.setMultiSelectionEnabled(false);
 
-		int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop()
-				.getMainFrame());
+		int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
 		if (returnVal != JFileChooser.APPROVE_OPTION)
 			return ExitCode.CANCEL;
 

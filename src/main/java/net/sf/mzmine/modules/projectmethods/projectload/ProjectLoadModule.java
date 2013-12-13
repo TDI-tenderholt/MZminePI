@@ -41,32 +41,23 @@ public class ProjectLoadModule implements MZmineProcessingModule {
     private static final String MODULE_DESCRIPTION = "This module opens an existing " + MZmineCore.MZmineName + " project. The current workspace will be discarded.";
 
     @Override
-    public @Nonnull String getName() {
-	return MODULE_NAME;
-    }
+    public @Nonnull String getName() { return MODULE_NAME; }
 
     @Override
-    public @Nonnull String getDescription() {
-	return MODULE_DESCRIPTION;
-    }
+    public @Nonnull String getDescription() { return MODULE_DESCRIPTION; }
 
     @Override
     @Nonnull
-    public ExitCode runModule(@Nonnull ParameterSet parameters,
-	    @Nonnull Collection<Task> tasks) {
-	ProjectOpeningTask newTask = new ProjectOpeningTask(parameters);
-	tasks.add(newTask);
-	return ExitCode.OK;
+    public ExitCode runModule(@Nonnull ParameterSet parameters, @Nonnull Collection<Task> tasks) {
+		ProjectOpeningTask newTask = new ProjectOpeningTask(parameters);
+		tasks.add(newTask);
+		return ExitCode.OK;
     }
 
     @Override
-    public @Nonnull MZmineModuleCategory getModuleCategory() {
-	return MZmineModuleCategory.PROJECTIO;
-    }
+    public @Nonnull MZmineModuleCategory getModuleCategory() { return MZmineModuleCategory.PROJECTIO; }
 
     @Override
-    public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
-	return ProjectLoaderParameters.class;
-    }
+    public @Nonnull Class<? extends ParameterSet> getParameterSetClass() { return ProjectLoaderParameters.class; }
 
 }

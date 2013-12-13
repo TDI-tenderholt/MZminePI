@@ -36,32 +36,23 @@ public class ProjectSaveModule implements MZmineProcessingModule {
     private static final String MODULE_DESCRIPTION = "This module saves the current " + MZmineCore.MZmineName + " project.";
 
     @Override
-    public @Nonnull String getName() {
-	return MODULE_NAME;
-    }
+    public @Nonnull String getName() { return MODULE_NAME; }
 
     @Override
-    public @Nonnull String getDescription() {
-	return MODULE_DESCRIPTION;
-    }
+    public @Nonnull String getDescription() { return MODULE_DESCRIPTION; }
 
     @Override
     @Nonnull
-    public ExitCode runModule(@Nonnull ParameterSet parameters,
-	    @Nonnull Collection<Task> tasks) {
+    public ExitCode runModule(@Nonnull ParameterSet parameters, @Nonnull Collection<Task> tasks) {
 	ProjectSavingTask newTask = new ProjectSavingTask(parameters);
 	tasks.add(newTask);
 	return ExitCode.OK;
     }
 
     @Override
-    public @Nonnull MZmineModuleCategory getModuleCategory() {
-	return MZmineModuleCategory.PROJECTIO;
-    }
+    public @Nonnull MZmineModuleCategory getModuleCategory() { return MZmineModuleCategory.PROJECTIO; }
 
     @Override
-    public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
-	return ProjectSaveParameters.class;
-    }
+    public @Nonnull Class<? extends ParameterSet> getParameterSetClass() { return ProjectSaveParameters.class; }
 
 }
