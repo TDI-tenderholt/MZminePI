@@ -40,33 +40,32 @@ import net.sf.opensftp.SftpUtilFactory;
  */
 public class VeritomyxSaaS
 {
+	// return codes from web pages
 	public  static final int EXCEPTION  = -2;
 	public  static final int ERROR      = -1;
 	public  static final int UNDEFINED  =  0;
 	public  static final int RUNNING    =  1;
 	public  static final int DONE       =  2;
+	private int    web_result = UNDEFINED;
+	private String web_str    = null;
 
-	private static final int JOB_INIT   = 123;
-	public  static final int JOB_RUN    = 234;
-	public  static final int JOB_STATUS = 345;
-	public  static final int JOB_DONE   = 456;
+	// page actions
+	private static final String JOB_INIT   = "JOB";
+	private static final String JOB_RUN    = "RUN";
+	private static final String JOB_STATUS = "STATUS";
+	private static final String JOB_DONE   = "DONE";
 
 	private Logger logger;
-
 	private String username;
 	private String password;
 	private int    pid;
 	private String job_id = null;	// name of the job and the scans tar file
+	private String dir = null;
 
 	private static final String host = "secure.veritomyx.com";
 	private String         sftp_user = null;
 	private String         sftp_pw   = null;
 	private SftpUtil       sftp      = null;
-
-	private String dir = null;
-
-	private int    web_result = UNDEFINED;
-	private String web_str    = null;
 
 	/**
 	 * Constructor
@@ -74,9 +73,9 @@ public class VeritomyxSaaS
 	 * @param email
 	 * @param passwd
 	 * @param projectID
-	 * @param job_str
+	 * @param existingJobName
 	 */
-	public VeritomyxSaaS(String email, String passwd, int projectID, String job_str)
+	public VeritomyxSaaS(String email, String passwd, int projectID, String existingJobName)
 	{
 		logger   = Logger.getLogger(this.getClass().getName());
 		username = email;
@@ -98,10 +97,10 @@ public class VeritomyxSaaS
 		sftp_pw     = sa[4];
 
 		// see if we were given a job ID
-		if ((job_str != null) && (job_str.startsWith("job-") == true))
+		if ((existingJobName != null) && (existingJobName.startsWith("job-") == true))
 		{
 			// check this job ID
-			job_id = job_str;
+			job_id = existingJobName;
 			int existing_job_status = getPage(JOB_STATUS);
 			if ((existing_job_status != RUNNING) && (existing_job_status != DONE))
 			{
@@ -130,10 +129,12 @@ public class VeritomyxSaaS
 	 * 
 	 * @return
 	 */
-	public int    getProjectID() { return pid; }
-	public String getJobID()     { return job_id; }
-	public int    getStatus()    { return getPage(JOB_STATUS); }
-	public String getPageData()  { return web_str; }
+	public int    getProjectID()  { return pid; }
+	public String getJobID()      { return job_id; }
+	public int    getPageStatus() { return getPage(JOB_STATUS); }
+	public int    getPageRun()    { return getPage(JOB_RUN); }
+	public int    getPageDone()   { return getPage(JOB_DONE); }
+	public String getPageStr()    { return web_str; }
 
 	/**
 	 * Get the first line of a web page from the Veritomyx server
@@ -142,16 +143,11 @@ public class VeritomyxSaaS
 	 * @param action
 	 * @return int
 	 */
-	public int getPage(int action)
+	private int getPage(String action)
 	{
 		web_result = UNDEFINED;
 		web_str    = "";
-		String act = null;
-		if      (action == JOB_INIT)   { act = "JOB"; }
-		else if (action == JOB_RUN)    { act = "RUN"; }
-		else if (action == JOB_STATUS) { act = "STATUS"; }
-		else if (action == JOB_DONE)   { act = "DONE"; }
-		else
+		if ((action != JOB_INIT) && (action != JOB_RUN) && (action != JOB_STATUS) && (action != JOB_DONE))
 		{
 			web_result = ERROR;
 			web_str = "Invalid action";
@@ -168,7 +164,7 @@ public class VeritomyxSaaS
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + pid +
-					"&Action="  + act;
+					"&Action="  + action;
 			if (action != JOB_INIT)	// need job_id for these commands
 			{
 				if (job_id == null)
