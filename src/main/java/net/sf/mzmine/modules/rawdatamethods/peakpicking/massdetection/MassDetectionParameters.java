@@ -116,7 +116,17 @@ public class MassDetectionParameters extends SimpleParameterSet {
     }
 
     /**
-     * Setup parameters based on the given job
+     * Allow setting the name externally
+     * 
+     * @param n
+     */
+    public void setName(String n)
+    {
+    	name.setValue(n);
+    }
+
+    /**
+     * Setup parameters based on the given raw file and job or, if no job, open a dialog
      * 
      * @param raw
      * @param job
@@ -134,5 +144,8 @@ public class MassDetectionParameters extends SimpleParameterSet {
     	RawDataFile[] newValue = new RawDataFile[1];
     	newValue[0] = raw;
 		dataFiles.setValue(newValue);
+
+		if (job == null)	// bring up the dialog if all parameters were not set
+			this.showSetupDialog();
     }
 }
