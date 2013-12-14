@@ -80,11 +80,12 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		this.tree = tree;
 	
 		dataFilePopupMenu = new JPopupMenu();
-		GUIUtils.addMenuItem(dataFilePopupMenu, "Show TIC",           this, "SHOW_TIC");
-		GUIUtils.addMenuItem(dataFilePopupMenu, "Show mass spectrum", this, "SHOW_SPECTRUM");
-		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 2D visualizer", this, "SHOW_2D");
-		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 3D visualizer", this, "SHOW_3D");
-		GUIUtils.addMenuItem(dataFilePopupMenu, "Remove",             this, "REMOVE_FILE");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Show TIC",            this, "SHOW_TIC");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Show mass spectrum",  this, "SHOW_SPECTRUM");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 2D visualizer",  this, "SHOW_2D");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Show 3D visualizer",  this, "SHOW_3D");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Peak/mass detection", this, "MASS_DETECTION");
+		GUIUtils.addMenuItem(dataFilePopupMenu, "Remove",              this, "REMOVE_FILE");
 	
 		jobPopupMenu = new JPopupMenu();
 		GUIUtils.addMenuItem(jobPopupMenu,      "Retrieve job", this, "RETRIEVE_JOB");
@@ -131,10 +132,15 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		    for (RawDataFile file : getObjList(RawDataFile.class))
 		    	TwoDVisualizerModule.show2DVisualizerSetupDialog(file);
 		}
-	
+		
 		else if (command.equals("SHOW_3D")) {
 		    for (RawDataFile file : getObjList(RawDataFile.class))
 		    	ThreeDVisualizerModule.setupNew3DVisualizer(file);
+		}
+		
+		else if (command.equals("MASS_DETECTION")) {
+		    RawDataFile file = (RawDataFile) rightClickObj;
+		    startJob(file, null);
 		}
 	
 		else if (command.equals("REMOVE_FILE")) {
@@ -159,7 +165,7 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		else if (command.equals("RETRIEVE_JOB"))
 		{
 		    for (RemoteJob job : getObjList(RemoteJob.class))
-		    	startJob(job);
+		    	startJob(job.getRawDataFile(), job);
 		}
 	
 		// Actions for scans
@@ -312,7 +318,8 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		}
 		
 		else if (clickedObject instanceof RemoteJob) {
-			startJob((RemoteJob) clickedObject);
+			RemoteJob job = (RemoteJob) clickedObject;
+			startJob(job.getRawDataFile(), job);
 		}
 		
 		else if (clickedObject instanceof Scan) {
@@ -337,13 +344,16 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
     /**
      * Retrieve the given job from remote server
      * 
+     * @param raw
      * @param job
      */
-    private void startJob(RemoteJob job)
+    private void startJob(RawDataFile raw, RemoteJob job)
     {
     	MassDetectionModule     module     = MZmineCore.getModuleInstance(MassDetectionModule.class);
     	MassDetectionParameters parameters = (MassDetectionParameters) MZmineCore.getConfiguration().getModuleParameters(MassDetectionModule.class);
-    	parameters.setVeritomyxJob(job);
+    	parameters.setJobParams(raw, job);
+    	if (job == null)
+    		parameters.showSetupDialog();
     	ArrayList<Task> tasks = new ArrayList<Task>();
     	module.runModule(parameters, tasks);
     	MZmineCore.getTaskController().addTasks(tasks.toArray(new Task[0]));

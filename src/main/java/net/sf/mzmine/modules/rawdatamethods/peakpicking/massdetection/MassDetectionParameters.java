@@ -118,17 +118,21 @@ public class MassDetectionParameters extends SimpleParameterSet {
     /**
      * Setup parameters based on the given job
      * 
+     * @param raw
      * @param job
      */
-    public void setVeritomyxJob(RemoteJob job)
+    public void setJobParams(RawDataFile raw, RemoteJob job)
     {
+		if (job != null)	// set Veritomyx parameters
+		{
+			raw = job.getRawDataFile();
+			massDetector.setValueToVeritomxy();
+			// encode the job into the name field so it can be detected as a retrieval job
+			name.setValue("|" + job.getName() + "[" + job.getTargetName() + "]");
+		}
+
     	RawDataFile[] newValue = new RawDataFile[1];
-    	newValue[0] = job.getRawDataFile();
+    	newValue[0] = raw;
 		dataFiles.setValue(newValue);
-
-		massDetector.setValueToVeritomxy();
-
-		// encode the job into the name field so it can be detected as a retrieval job
-		name.setValue("|" + job.getName() + "[" + job.getTargetName() + "]");
     }
 }
