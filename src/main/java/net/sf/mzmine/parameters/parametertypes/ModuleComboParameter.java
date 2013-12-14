@@ -24,6 +24,7 @@ import java.util.Collection;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.modules.MZmineProcessingStep;
 import net.sf.mzmine.modules.impl.MZmineProcessingStepImpl;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.Veritomyx;
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.UserParameter;
@@ -125,13 +126,11 @@ public class ModuleComboParameter<ModuleType extends MZmineModule> implements
 		    ModuleType module = modulesWithParams[i].getModule();
 		    ParameterSet params = modulesWithParams[i].getParameterSet();
 		    params = params.cloneParameter();
-		    newModules[i] = new MZmineProcessingStepImpl<ModuleType>(module,
-			    params);
+		    newModules[i] = new MZmineProcessingStepImpl<ModuleType>(module, params);
 		    if (value == modulesWithParams[i])
-			newValue = newModules[i];
+		    	newValue = newModules[i];
 		}
-		ModuleComboParameter<ModuleType> copy = new ModuleComboParameter<ModuleType>(
-			name, description, newModules);
+		ModuleComboParameter<ModuleType> copy = new ModuleComboParameter<ModuleType>(name, description, newModules);
 		copy.setValue(newValue);
 		return copy;
     }
@@ -142,6 +141,19 @@ public class ModuleComboParameter<ModuleType extends MZmineModule> implements
 		if (index < 0)
 		    return;
 		this.value = modulesWithParams[index];
+    }
+
+    /**
+     * Set the module to Veritomyx's PeakInvestigator™
+     */
+    public void setValueToVeritomxy()
+    {
+	    for (int i = 0; i < modulesWithParams.length; i++)
+	    {
+	    	ModuleType mod = modulesWithParams[i].getModule();
+	    	if (mod.getClass() == Veritomyx.class)
+	    		value = modulesWithParams[i];
+	    }
     }
 
     @Override
