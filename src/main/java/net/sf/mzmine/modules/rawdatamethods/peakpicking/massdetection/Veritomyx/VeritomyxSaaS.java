@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2013 The Veritomyx
+ * Copyright 2013-2014 The Veritomyx
  * 
  * This file is part of MZmine 2.
  * 
@@ -37,7 +37,6 @@ import net.sf.opensftp.SftpUtilFactory;
  * This class is used to access the Veritomyx SaaS servers
  * 
  * @author dschmidt
- *
  */
 public class VeritomyxSaaS
 {
@@ -69,10 +68,17 @@ public class VeritomyxSaaS
 	private int    web_result = UNDEFINED;
 	private String web_str    = null;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param email
+	 * @param passwd
+	 * @param projectID
+	 * @param job_str
+	 */
 	public VeritomyxSaaS(String email, String passwd, int projectID, String job_str)
 	{
-		logger = Logger.getLogger(this.getClass().getName());
-
+		logger   = Logger.getLogger(this.getClass().getName());
 		username = email;
 		password = passwd;
 		pid      = projectID;
@@ -94,12 +100,12 @@ public class VeritomyxSaaS
 		// see if we were given a job ID
 		if ((job_str != null) && (job_str.startsWith("job-") == true))
 		{
-			String jobID = job_str.substring(0, job_str.indexOf('['));	// extract job ID from beginning of string
-			job_id = jobID;	// check this job ID
+			// check this job ID
+			job_id = job_str;
 			int existing_job_status = getPage(JOB_STATUS);
 			if ((existing_job_status != RUNNING) && (existing_job_status != DONE))
 			{
-				MZmineCore.getDesktop().displayErrorMessage("Error", "Job, " + jobID + ", not found", logger);
+				MZmineCore.getDesktop().displayErrorMessage("Error", "Job, " + job_id + ", not found", logger);
 				job_id = null;	// not a valid job
 				return;
 			}
@@ -119,10 +125,15 @@ public class VeritomyxSaaS
 		}
 	}
 
-	public int    getProjectID() { return pid;        }
-	public String getJobID()     { return job_id;     }
+	/**
+	 * Provide access to some private data
+	 * 
+	 * @return
+	 */
+	public int    getProjectID() { return pid; }
+	public String getJobID()     { return job_id; }
 	public int    getStatus()    { return getPage(JOB_STATUS); }
-	public String getPageData()  { return web_str;    }
+	public String getPageData()  { return web_str; }
 
 	/**
 	 * Get the first line of a web page from the Veritomyx server

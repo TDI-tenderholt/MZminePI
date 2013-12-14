@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2013 The Veritomyx
+ * Copyright 2013-2014 The Veritomyx
  * 
  * This file is part of MZmine 2.
  * 
@@ -81,7 +81,7 @@ public class Veritomyx implements MassDetector
 	{
 		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
-		return (job == null) ? null : job.getMassValues(scan);
+		return (job == null) ? null : job.processScan(scan);
 	}
 
 	/**

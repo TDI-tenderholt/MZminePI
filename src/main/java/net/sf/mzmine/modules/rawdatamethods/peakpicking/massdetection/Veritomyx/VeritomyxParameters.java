@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2013 The Veritomyx
+ * Copyright 2013-2014 The Veritomyx
  * 
  * This file is part of MZmine 2.
  * 
