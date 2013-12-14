@@ -118,7 +118,8 @@ public class ProjectTreeModel extends DefaultTreeModel {
 		else if (object instanceof RemoteJob) {
 			RemoteJob job = (RemoteJob) object;
 			final DefaultMutableTreeNode rawNode = treeObjects.get(job.getRawDataFile());
-			insertNodeInto(newNode, rawNode, 0);
+			if (rawNode != null)
+				insertNodeInto(newNode, rawNode, 0);
 		}
 
 		else if (object instanceof MassList) {
