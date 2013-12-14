@@ -59,7 +59,7 @@ public final class MZmineCore
 {
 	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
 	public static final String MZmineShortName = "MZminePI";
-	public static final String MZmineVersion   = "2.10-i0.20";
+	public static final String MZmineVersion   = "2.10.21";
 	public static final String ReqVtmxVersion  = "1.15";	// Required Veritomyx CLI version (see VTMXweb:interface/version.inc.php)
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
