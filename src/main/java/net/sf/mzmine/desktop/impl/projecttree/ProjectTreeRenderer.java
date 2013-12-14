@@ -44,7 +44,7 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 
 	private static final Icon projectIcon          = new ImageIcon("icons/projecticon.png");
 	private static final Icon dataFileIcon         = new ImageIcon("icons/xicicon.png");
-	private static final Icon cloudIcon            = new ImageIcon("icons/cloud.png");
+	private static final Icon cloudIcon            = new ImageIcon("icons/cloud_work.png");
 	private static final Icon spectrumIcon         = new ImageIcon("icons/spectrumicon.png");
 	private static final Icon peakListsIcon        = new ImageIcon("icons/peaklistsicon.png");
 	private static final Icon peakIcon             = new ImageIcon("icons/peakicon.png");
