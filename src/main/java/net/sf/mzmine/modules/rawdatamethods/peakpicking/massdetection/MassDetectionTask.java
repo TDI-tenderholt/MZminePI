@@ -39,7 +39,7 @@ public class MassDetectionTask extends AbstractTask {
     private RawDataFile dataFile;
 
     // scan counter
-    private int processedScans = 0, totalScans = 0;
+    private int step = 0, totalSteps = 0;
     private int msLevel;
 
     // User parameters
@@ -49,16 +49,16 @@ public class MassDetectionTask extends AbstractTask {
     private MZmineProcessingStep<MassDetector> massDetector;
 
     /**
-     * @param dataFile
+     * @param rawDataFile
      * @param parameters
      */
     @SuppressWarnings("unchecked")
-    public MassDetectionTask(RawDataFile dataFile, ParameterSet parameters)
+    public MassDetectionTask(RawDataFile rawDataFile, ParameterSet parameters)
     {
-		this.dataFile     = dataFile;
-		this.massDetector = parameters.getParameter(MassDetectionParameters.massDetector).getValue();
-		this.msLevel      = parameters.getParameter(MassDetectionParameters.msLevel).getValue();
-		this.name         = parameters.getParameter(MassDetectionParameters.name).getValue();
+		dataFile     = rawDataFile;
+		massDetector = parameters.getParameter(MassDetectionParameters.massDetector).getValue();
+		msLevel      = parameters.getParameter(MassDetectionParameters.msLevel).getValue();
+		name         = parameters.getParameter(MassDetectionParameters.name).getValue();
     }
 
     /**
@@ -72,9 +72,9 @@ public class MassDetectionTask extends AbstractTask {
      * @see net.sf.mzmine.taskcontrol.Task#getFinishedPercentage()
      */
     public double getFinishedPercentage() {
-		if (totalScans == 0)
+		if (totalSteps == 0)
 		    return 0;
-		return (double) processedScans / totalScans;
+		return (double) step / totalSteps;
     }
 
     public RawDataFile getDataFile() {
@@ -89,49 +89,55 @@ public class MassDetectionTask extends AbstractTask {
 		setStatus(TaskStatus.PROCESSING);
 	    MassDetector detector = massDetector.getModule();
 		logger.info("Started " + detector.getName() + " mass detector on " + dataFile);
+		
+		int scanNumbers[] = dataFile.getScanNumbers();	// all the scans in this file
+		totalSteps = scanNumbers.length + 1;			// add one for the job finish call
 
 		// get the selected scans for this data file
-		ArrayList<Scan> scans = new ArrayList<Scan>();
+		ArrayList<Scan> selectedScans = new ArrayList<Scan>();
 		MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
-		Scan selectedScans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
-		for (Scan scan : selectedScans)
+		Scan scans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
+		for (Scan scan : scans)	// for all selected scans
 		{
-			if (scan.getDataFile().equals(dataFile))
-				scans.add(scan);
-			totalScans = scans.size();
+			if (scan.getDataFile().equals(dataFile))	// if this scan is in this raw data file
+				selectedScans.add(scan);
 		}
 
 		// if there are no selected scans for this data file, get all of the msLevel ones
-		if (totalScans == 0)
+		if (selectedScans.size() == 0)
 		{
-			int scanNumbers[] = dataFile.getScanNumbers(msLevel);
-			totalScans = scanNumbers.length;
-			for (int i = 0; i < totalScans; i++)
-				scans.add(dataFile.getScan(scanNumbers[i]));
+			int msScanNumbers[] = dataFile.getScanNumbers(msLevel);
+			for (int i = 0; i < msScanNumbers.length; i++)
+				selectedScans.add(dataFile.getScan(msScanNumbers[i]));
 		}
-		totalScans += 1;	// add one for the job finish call
 
 		// start the job
 		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet());
+		name       = detector.filterTargetName(name);	// get the target name, the detector may change it
 
-		// Process scans one by one
-		for (Scan scan : scans)
+		// Process all scans one by one
+		for (int i = 0; i < scanNumbers.length; i++)
 		{
 		    if (isCanceled())
 		    	return;
 
-		    DataPoint mzPeaks[] = detector.getMassValues(scan, job, massDetector.getParameterSet());
+		    Scan scan = dataFile.getScan(scanNumbers[i]);
+    		boolean selected = selectedScans.remove(scan);
+
+		    // give the detector all scans but tell it which ones to process
+		    // some detectors run a second pass where the selected list is incorrect but they know which scans to process
+		    DataPoint mzPeaks[] = detector.getMassValues(scan, selected, job, massDetector.getParameterSet());
 		    if (mzPeaks != null)
 		    {
 		    	SimpleMassList newMassList = new SimpleMassList(name, scan, mzPeaks);
 			    scan.addMassList(newMassList);	// Add new mass list to the scan
 		    }
-		    processedScans++;
+		    step++;
 		}
 
 		// finish the job
 		detector.finishMassValuesJob(job);
-	    processedScans++;
+	    step++;
 
 		setStatus(TaskStatus.FINISHED);
 		logger.info("Finished " + detector.getName() + " mass detector on " + dataFile);

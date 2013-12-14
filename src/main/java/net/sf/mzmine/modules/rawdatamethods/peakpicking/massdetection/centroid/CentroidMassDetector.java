@@ -30,37 +30,35 @@ import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetect
 import net.sf.mzmine.parameters.ParameterSet;
 
 public class CentroidMassDetector implements MassDetector {
-
+	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 
-    public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
+    public DataPoint[] getMassValues(Scan scan, boolean selected, String job, ParameterSet parameters) {
+    	if (!selected)	// only process selected scans
+    		return null;
 
-	double noiseLevel = parameters.getParameter(
-		CentroidMassDetectorParameters.noiseLevel).getValue();
-
-	ArrayList<DataPoint> mzPeaks = new ArrayList<DataPoint>();
-
-	DataPoint dataPoints[] = scan.getDataPoints();
-
-	// Find possible mzPeaks
-	for (int j = 0; j < dataPoints.length; j++) {
-
-	    // Is intensity above the noise level?
-	    if (dataPoints[j].getIntensity() >= noiseLevel) {
-		// Yes, then mark this index as mzPeak
-		mzPeaks.add(dataPoints[j]);
-	    }
-	}
-	return mzPeaks.toArray(new DataPoint[0]);
+		double noiseLevel = parameters.getParameter(CentroidMassDetectorParameters.noiseLevel).getValue();
+	
+		ArrayList<DataPoint> mzPeaks = new ArrayList<DataPoint>();
+	
+		DataPoint dataPoints[] = scan.getDataPoints();
+	
+		// Find possible mzPeaks
+		for (int j = 0; j < dataPoints.length; j++) {
+		    // Is intensity above the noise level?
+		    if (dataPoints[j].getIntensity() >= noiseLevel) {
+				// Yes, then mark this index as mzPeak
+				mzPeaks.add(dataPoints[j]);
+		    }
+		}
+		return mzPeaks.toArray(new DataPoint[0]);
     }
 
-    public @Nonnull String getName() {
-	return "Centroid";
-    }
+    public @Nonnull String getName() { return "Centroid"; }
 
     @Override
     public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
-	return CentroidMassDetectorParameters.class;
+    	return CentroidMassDetectorParameters.class;
     }
 
 	public void finishMassValuesJob(String job) {}

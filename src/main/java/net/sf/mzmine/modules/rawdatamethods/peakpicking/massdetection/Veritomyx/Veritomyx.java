@@ -52,6 +52,32 @@ public class Veritomyx implements MassDetector
 	public Class<? extends ParameterSet> getParameterSetClass() { return VeritomyxParameters.class; }
 
 	/**
+	 * Return target name and filter out possible job name from "|job[target]"
+	 * 
+	 * @param compoundName
+	 * @return
+	 */
+	public String filterTargetName(String compoundName)
+	{
+		if (compoundName.startsWith("|job-"))
+			return compoundName.substring(compoundName.indexOf('[') + 1, compoundName.indexOf(']'));
+		return compoundName;
+	}
+
+	/**
+	 * Return job name and filter out target name from "|job[target]"
+	 * 
+	 * @param compoundName
+	 * @return
+	 */
+	private String filterJobName(String compoundName)
+	{
+		if (compoundName.startsWith("|job-"))
+			return compoundName.substring(1, compoundName.indexOf('['));
+		return null;
+	}
+
+	/**
 	 * Create a new job task from the given parameters
 	 * 
 	 * @param raw
@@ -59,9 +85,9 @@ public class Veritomyx implements MassDetector
 	 * @param parameters
 	 * @return
 	 */
-	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters)
+	public String startMassValuesJob(RawDataFile raw, String name, ParameterSet parameters)
 	{
-		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, targetName, parameters);
+		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters);
 		String job_name = job.getName();
 		if (job_name != null)
 			jobs.add(job);
@@ -72,16 +98,33 @@ public class Veritomyx implements MassDetector
 	 * Compute the peaks list for the given scan
 	 * 
 	 * @param scan
+	 * @param selected
 	 * @param jobName
 	 * @param parameters
 	 * @return
 	 * @throws FileNotFoundException 
 	 */
-	public DataPoint[] getMassValues(Scan scan, String jobName, ParameterSet parameters)
+	public DataPoint[] getMassValues(Scan scan, boolean selected, String jobName, ParameterSet parameters)
 	{
 		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
-		return (job == null) ? null : job.processScan(scan);
+		return (job == null) ? null : job.processScan(scan, selected);
+	}
+
+	/**
+	 * Mark the job done
+	 * 
+	 * @param parameters
+	 * @return
+	 */
+	public void finishMassValuesJob(String job_name)
+	{
+		PeakInvestigatorTask job = getJobFromName(job_name);
+		if (job != null)
+		{
+			job.finish();
+			jobs.remove(job);
+		}
 	}
 
 	/**
@@ -99,22 +142,6 @@ public class Veritomyx implements MassDetector
 				return job;
 		}
 		return null;
-	}
-
-	/**
-	 * Mark the job done
-	 * 
-	 * @param parameters
-	 * @return
-	 */
-	public void finishMassValuesJob(String job_name)
-	{
-		PeakInvestigatorTask job = getJobFromName(job_name);
-		if (job != null)
-		{
-			job.finish();
-			jobs.remove(job);
-		}
 	}
 
 }

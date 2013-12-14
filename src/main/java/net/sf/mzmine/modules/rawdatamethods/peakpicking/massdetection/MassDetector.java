@@ -25,11 +25,16 @@ import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
 
-/**
- * 
- */
 public interface MassDetector extends MZmineModule {
-	
+
+	/**
+	 * The detector can change the target name
+	 * 
+	 * @param targetName
+	 * @return
+	 */
+	public String filterTargetName(String targetName);
+
 	/**
 	 * Returns the job id for getting mass values
 	 * @param dataFile 
@@ -43,11 +48,12 @@ public interface MassDetector extends MZmineModule {
 	 * Returns mass and intensity values detected in given scan
 	 * 
 	 * @param san
+	 * @param selected
 	 * @param job
 	 * @param parameters
 	 * @return
 	 */	
-	public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters);
+	public DataPoint[] getMassValues(Scan scan, boolean selected, String job, ParameterSet parameters);
 
 	/**
 	 * Mark the job done

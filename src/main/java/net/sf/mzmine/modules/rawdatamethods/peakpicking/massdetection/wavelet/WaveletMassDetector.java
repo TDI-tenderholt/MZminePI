@@ -50,25 +50,28 @@ public class WaveletMassDetector implements MassDetector {
     private static final int WAVELET_ESL = -5;
     private static final int WAVELET_ESR = 5;
 
+	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 
-    public DataPoint[] getMassValues(Scan scan, String job, ParameterSet parameters) {
-	double noiseLevel = parameters.getParameter(
-		WaveletMassDetectorParameters.noiseLevel).getValue();
-	int scaleLevel = parameters.getParameter(
-		WaveletMassDetectorParameters.scaleLevel).getValue();
-	double waveletWindow = parameters.getParameter(
-		WaveletMassDetectorParameters.waveletWindow).getValue();
-
-	DataPoint originalDataPoints[] = scan.getDataPoints();
-
-	DataPoint waveletDataPoints[] = performCWT(originalDataPoints,
-		waveletWindow, scaleLevel);
-
-	DataPoint mzPeaks[] = getMzPeaks(noiseLevel, originalDataPoints,
-		waveletDataPoints);
-
-	return mzPeaks;
+    public DataPoint[] getMassValues(Scan scan, boolean selected, String job, ParameterSet parameters) {
+    	if (!selected)	// only process selected scans
+    		return null;
+    	double noiseLevel = parameters.getParameter(
+			WaveletMassDetectorParameters.noiseLevel).getValue();
+		int scaleLevel = parameters.getParameter(
+			WaveletMassDetectorParameters.scaleLevel).getValue();
+		double waveletWindow = parameters.getParameter(
+			WaveletMassDetectorParameters.waveletWindow).getValue();
+	
+		DataPoint originalDataPoints[] = scan.getDataPoints();
+	
+		DataPoint waveletDataPoints[] = performCWT(originalDataPoints,
+			waveletWindow, scaleLevel);
+	
+		DataPoint mzPeaks[] = getMzPeaks(noiseLevel, originalDataPoints,
+			waveletDataPoints);
+	
+		return mzPeaks;
     }
 
     /**
