@@ -40,6 +40,7 @@ import net.sf.mzmine.desktop.impl.projecttree.ProjectTree;
  */
 public class MainPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JDesktopPane desktopPane;
 	private JSplitPane split;
 	private ProjectTree projectTree;

@@ -38,6 +38,7 @@ import net.sf.mzmine.parameters.dialogs.ParameterSetupDialogWithScanPreview;
  */
 public class MassDetectorSetupDialog extends ParameterSetupDialogWithScanPreview {
 
+	private static final long serialVersionUID = 1L;
 	private MassDetector massDetector;
 	private ParameterSet parameters;
 
@@ -45,7 +46,7 @@ public class MassDetectorSetupDialog extends ParameterSetupDialogWithScanPreview
 	 * @param parameters
 	 * @param massDetectorTypeNumber
 	 */
-	public MassDetectorSetupDialog(Class massDetectorClass, ParameterSet parameters) {
+	public MassDetectorSetupDialog(Class<?> massDetectorClass, ParameterSet parameters) {
 
 		super(parameters);
 

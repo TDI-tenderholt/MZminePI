@@ -42,6 +42,7 @@ import net.sf.mzmine.util.GUIUtils;
  */
 public class WindowsMenu extends JMenu implements ActionListener, MenuListener {
 
+	private static final long serialVersionUID = 1L;
 	private JDesktopPane desktopPane;
 
 	private JMenuItem cascadeItem, tileItem;
@@ -170,6 +171,7 @@ public class WindowsMenu extends JMenu implements ActionListener, MenuListener {
 
 	class FrameMenuItem extends JRadioButtonMenuItem {
 
+		private static final long serialVersionUID = 1L;
 		private JInternalFrame frame;
 
 		FrameMenuItem(JInternalFrame frame, ActionListener listener) {

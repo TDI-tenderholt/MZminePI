@@ -36,7 +36,8 @@ import net.sf.mzmine.parameters.dialogs.ParameterSetupDialogWithScanPreview;
  */
 public class ScanFilterSetupDialog extends ParameterSetupDialogWithScanPreview {
 
-    private ParameterSet filterParameters;
+	private static final long serialVersionUID = 1L;
+	private ParameterSet filterParameters;
     private ScanFilter rawDataFilter;
 
     /**

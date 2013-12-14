@@ -38,7 +38,8 @@ import net.sf.mzmine.util.Range;
 public class DataSetFilterSetupDialog extends
 	ParameterSetupDialogWithChromatogramPreview {
 
-    private ParameterSet filterParameters;
+	private static final long serialVersionUID = 1L;
+	private ParameterSet filterParameters;
     private RawDataSetFilter rawDataFilter;
 
     /**

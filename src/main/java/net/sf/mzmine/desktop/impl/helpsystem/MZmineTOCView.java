@@ -40,6 +40,7 @@ import javax.help.TreeItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MZmineTOCView extends TOCView {
+	private static final long serialVersionUID = 1L;
 
     private MZmineHelpMap hm;
     private HelpSet hs;

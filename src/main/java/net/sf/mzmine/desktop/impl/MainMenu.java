@@ -54,7 +54,8 @@ import net.sf.mzmine.util.GUIUtils;
  */
 public class MainMenu extends JMenuBar implements ActionListener {
 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+	private static final long serialVersionUID = 1L;
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
     private JMenu projectMenu, rawDataMenu, peakListMenu, visualizationMenu,
 	    helpMenu, rawDataFilteringMenu, peakDetectionMenu, gapFillingMenu,

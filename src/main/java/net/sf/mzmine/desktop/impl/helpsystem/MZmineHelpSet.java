@@ -23,6 +23,7 @@ package net.sf.mzmine.desktop.impl.helpsystem;
 import javax.help.HelpSet;
 
 public class MZmineHelpSet extends HelpSet {
+	private static final long serialVersionUID = 1L;
 
 	public MZmineHelpSet() {
 		super();

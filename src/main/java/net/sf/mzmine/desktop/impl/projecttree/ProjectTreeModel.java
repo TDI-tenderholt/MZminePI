@@ -41,6 +41,7 @@ import net.sf.mzmine.project.MZmineProject;
  */
 public class ProjectTreeModel extends DefaultTreeModel {
 
+	private static final long serialVersionUID = 1L;
 	public static final String dataFilesNodeName = "Raw data files";
 	public static final String peakListsNodeName = "Peak lists";
 

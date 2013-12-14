@@ -61,7 +61,9 @@ import net.sf.mzmine.util.TextUtils;
  */
 public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowListener
 {
-    static final String aboutHelpID = "net/sf/mzmine/desktop/help/AboutMZmine.html";
+	private static final long serialVersionUID = 1L;
+
+	static final String aboutHelpID = "net/sf/mzmine/desktop/help/AboutMZmine.html";
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
