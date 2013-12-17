@@ -48,5 +48,5 @@ public class RemoteJob implements RemoteJobInfo
     public String      toString()       { return jobID; }
     public RawDataFile getRawDataFile() { return rawDataFile; }
     public String      getTargetName()  { return targetName; }
-    public int         getStatus()      { return (vtmx != null) ? vtmx.getPageStatus() : VeritomyxSaaS.UNDEFINED; }
+    public int         getStatus()      { return (vtmx != null) ? vtmx.getPageStatus() : VeritomyxSaaS.W_UNDEFINED; }
 }
