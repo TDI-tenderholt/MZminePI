@@ -104,7 +104,7 @@ public class PeakInvestigatorTask
 		while (true)
 		{
 			int status = vtmx.init(username, password, pid, pickup_job);
-			if (status == VeritomyxSaaS.W_DONE)
+			if (status > 0)
 				break;
 
 			MZmineCore.getDesktop().displayErrorMessage("Error", vtmx.getPageStr(), logger);
@@ -118,7 +118,7 @@ public class PeakInvestigatorTask
 			pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
 		}
 
-		if (vtmx.getPageStatus() != VeritomyxSaaS.W_DONE)
+		if (!launch && (vtmx.getPageStatus() <= 0))
 		{
 			MZmineCore.getDesktop().displayErrorMessage("Error", vtmx.getPageStr(), logger);
 			return;
