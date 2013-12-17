@@ -421,7 +421,8 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     		if (job.getName().equals(name))
     		{
     			jobs_info.remove(job);
-    			break;
+    	    	MZmineCore.getCurrentProject().removeJob(job);
+    	    	break;
     		}
     	}
     }
