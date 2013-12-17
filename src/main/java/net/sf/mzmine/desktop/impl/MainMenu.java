@@ -195,7 +195,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		this.add(helpMenu);
 
-		showAbout = new JMenuItem("About " + programName + "...");
+		showAbout = new JMenuItem("About " + programName + " " + MZmineCore.MZmineVersion + "...");
 		showAbout.addActionListener(this);
 		addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
     }
