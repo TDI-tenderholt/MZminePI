@@ -189,7 +189,7 @@ public class VeritomyxSaaS
 		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
-			String page = "http://" + host + "/interface/vtmx_sftp_job.php" + 
+			String page = "https://" + host + "/interface/vtmx_sftp_job.php" + 
 					"?Version=" + reqVersion +	// online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
@@ -266,14 +266,22 @@ public class VeritomyxSaaS
 		SftpResult result = sftp.cd(session, dir);	// cd into the v_project directory
 		if (!result.getSuccessFlag())
 		{
-			result = sftp.mkdir(session, "/batches");
+			result = sftp.mkdir(session, dir);
+			if (!result.getSuccessFlag())
+			{
+				web_result = W_ERROR_SFTP;
+				web_str    = "Cannot create remote directory, " + dir;
+				return null;
+			}
+			result = sftp.cd(session, dir);
+			result = sftp.mkdir(session, "batches");
 			if (!result.getSuccessFlag())
 			{
 				web_result = W_ERROR_SFTP;
 				web_str    = "Cannot create remote directory, " + dir + "/batches";
 				return null;
 			}
-			result = sftp.mkdir(session, "/results");
+			result = sftp.mkdir(session, "results");
 			if (!result.getSuccessFlag())
 			{
 				web_result = W_ERROR_SFTP;
