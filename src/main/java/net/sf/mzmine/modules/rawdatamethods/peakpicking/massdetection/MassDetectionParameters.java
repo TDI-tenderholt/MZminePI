@@ -130,9 +130,11 @@ public class MassDetectionParameters extends SimpleParameterSet {
      * 
      * @param raw
      * @param job
+     * @return 
      */
-    public void setJobParams(RawDataFile raw, RemoteJob job)
+    public ExitCode setJobParams(RawDataFile raw, RemoteJob job)
     {
+		ExitCode ret = ExitCode.OK;
 		if (job != null)	// set Veritomyx parameters
 		{
 			raw = job.getRawDataFile();
@@ -146,6 +148,7 @@ public class MassDetectionParameters extends SimpleParameterSet {
 		dataFiles.setValue(newValue);
 
 		if (job == null)	// bring up the dialog if all parameters were not set
-			this.showSetupDialog();
+			ret = this.showSetupDialog();
+		return ret;
     }
 }

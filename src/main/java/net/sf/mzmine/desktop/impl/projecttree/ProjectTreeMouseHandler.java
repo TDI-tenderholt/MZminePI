@@ -349,12 +349,15 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
      */
     private void startJob(RawDataFile raw, RemoteJob job)
     {
-    	ArrayList<Task>         tasks      = new ArrayList<Task>();
     	MassDetectionModule     module     = MZmineCore.getModuleInstance(MassDetectionModule.class);
     	MassDetectionParameters parameters = (MassDetectionParameters) MZmineCore.getConfiguration().getModuleParameters(MassDetectionModule.class);
-    	parameters.setJobParams(raw, job);	// set params for this job
-    	module.runModule(parameters, tasks);
-    	MZmineCore.getTaskController().addTasks(tasks.toArray(new Task[0]));
-    	parameters.setName("");		// clear name field
+    	ExitCode exitCode = parameters.setJobParams(raw, job);	// set params for this job
+	    if (exitCode == ExitCode.OK) {
+			ParameterSet parametersCopy = parameters.cloneParameter();
+			ArrayList<Task> tasks = new ArrayList<Task>();
+			module.runModule(parametersCopy, tasks);
+			MZmineCore.getTaskController().addTasks(tasks.toArray(new Task[0]));
+	    	parameters.setName("");		// clear name field
+	    }
     }
 }
