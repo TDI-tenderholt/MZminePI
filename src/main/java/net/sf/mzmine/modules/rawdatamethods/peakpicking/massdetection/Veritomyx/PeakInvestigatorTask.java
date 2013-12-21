@@ -108,7 +108,7 @@ public class PeakInvestigatorTask
 				break;
 
 			MZmineCore.getDesktop().displayErrorMessage("Error", vtmx.getPageStr(), logger);
-			if (status != VeritomyxSaaS.W_ERROR_LOGIN)
+			if ((status != VeritomyxSaaS.W_ERROR_LOGIN) && (status != VeritomyxSaaS.W_ERROR_PID))
 				return;
 
 			if (preferences.showSetupDialog() != ExitCode.OK)
