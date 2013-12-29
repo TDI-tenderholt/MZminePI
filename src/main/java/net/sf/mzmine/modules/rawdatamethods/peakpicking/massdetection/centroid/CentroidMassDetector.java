@@ -30,6 +30,8 @@ import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetect
 import net.sf.mzmine.parameters.ParameterSet;
 
 public class CentroidMassDetector implements MassDetector {
+	@Override
+	public String getDescription(String job, String str) { return str;}
 	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 
@@ -62,5 +64,4 @@ public class CentroidMassDetector implements MassDetector {
     }
 
 	public void finishMassValuesJob(String job) {}
-
 }

@@ -50,6 +50,8 @@ public class WaveletMassDetector implements MassDetector {
     private static final int WAVELET_ESL = -5;
     private static final int WAVELET_ESR = 5;
 
+	@Override
+	public String getDescription(String job, String str) { return str;}
 	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }
 

@@ -33,6 +33,8 @@ import net.sf.mzmine.parameters.ParameterSet;
  * This class detects all local maxima in a given scan.
  */
 public class LocalMaxMassDetector implements MassDetector {
+	@Override
+	public String getDescription(String job, String str) { return str;}
 
 	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }

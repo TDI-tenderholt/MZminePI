@@ -36,6 +36,15 @@ public interface MassDetector extends MZmineModule {
 	public String filterTargetName(String targetName);
 
 	/**
+	 * Return the description of this task
+	 * 
+	 * @param
+	 * @param
+	 * @return
+	 */
+	public String getDescription(String job, String str);
+
+	/**
 	 * Returns the job id for getting mass values
 	 * @param dataFile 
 	 * @param targetName

@@ -41,18 +41,22 @@ public class Veritomyx implements MassDetector
 		jobs = new ArrayList<PeakInvestigatorTask>();
 	}
 
-	/**
-	 * Return the name of this module
-	 * 
-	 * @return
-	 */
 	public String getName() { return "PeakInvestigator™"; }
+
+	public String getDescription(String target, String str)
+	{
+		String job = filterJobName(target);
+		target = filterTargetName(target);
+		if (job == null)
+			return "Preparing scans and transmitting to " + this.getName() + " - " + str;
+		return "Retrieving peaks, " + target + ", from " + this.getName() + " - " + job;
+	}
 
 	@Override
 	public Class<? extends ParameterSet> getParameterSetClass() { return VeritomyxParameters.class; }
 
 	/**
-	 * Return target name and filter out possible job name from "|job[target]"
+	 * Return target name and filter out possible job name from "|job-########-#####[target]"
 	 * 
 	 * @param compoundName
 	 * @return

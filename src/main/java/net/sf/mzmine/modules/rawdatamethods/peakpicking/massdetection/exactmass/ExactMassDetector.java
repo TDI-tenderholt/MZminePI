@@ -34,6 +34,8 @@ import net.sf.mzmine.util.SortingDirection;
 import net.sf.mzmine.util.SortingProperty;
 
 public class ExactMassDetector implements MassDetector {
+	@Override
+	public String getDescription(String job, String str) { return str;}
 
 	public String filterTargetName(String name) { return name; }
 	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters) { return null; }

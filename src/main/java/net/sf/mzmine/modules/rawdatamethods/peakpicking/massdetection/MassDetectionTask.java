@@ -65,7 +65,7 @@ public class MassDetectionTask extends AbstractTask {
      * @see net.sf.mzmine.taskcontrol.Task#getTaskDescription()
      */
     public String getTaskDescription() {
-    	return "Detecting masses in " + dataFile;
+    	return massDetector.getModule().getDescription(name, "Detecting masses in " + dataFile);
     }
 
     /**
