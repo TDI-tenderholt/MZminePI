@@ -214,7 +214,7 @@ public class VeritomyxSaaS
 			uc = (HttpURLConnection)url.openConnection();
 			uc.setUseCaches(false);
 			uc.setRequestMethod("POST");
-			uc.setReadTimeout(15 * 1000);	// give it 15 seconds to respond
+			uc.setReadTimeout(120 * 1000);	// give it 120 seconds to respond
 			System.setProperty("java.net.preferIPv4Stack", "true");	// without this we get exception in getInputStream
 			uc.connect();
 
