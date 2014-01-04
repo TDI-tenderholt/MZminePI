@@ -172,6 +172,7 @@ public class VeritomyxSaaS
 	 * Puts first line of results into web_results String
 	 * 
 	 * @param action
+	 * @param count
 	 * @return int
 	 */
 	private int getPage(String action, int count)
