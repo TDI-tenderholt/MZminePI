@@ -28,7 +28,7 @@
 </td></tr></table>    </blockquote>
 	 
 <h2>Method Parameters</h2>
-<p>The only parameters required for using this module are the Veritomyx SaaS credentials that you can enter into the project preferences. </p>
+<p>The only parameters required for using this module are the Veritomyx SaaS credentials that you can enter into the project preferences. The other parameters set in this dialog box define the MZmine behavior and are explained in other locations in the MZmine documentation. </p>
 <blockquote>
   <dl>
     <dt><strong>Veritomyx Username</strong> (from MZmine Prefrences) </dt>
@@ -37,7 +37,7 @@
     <dd>Password for access to Veritomyx SaaS.</dd>
     <dt><strong>Veritomyx Project Number</strong> (from MZmine Prefrences) </dt>
     <dd>Veritomyx project number under which this job is to be run.
-      Your Veritomyx login must have access to this project.
+      This number is intended as an aid for tracking multiple projects and users and it is assigned along with your login credentials. A single login can have access to one or more projects. Your Veritomyx login must have access to the project number you enter here.
       Setting this to zero will use your default project.</dd>
   </dl>
   <p><img src="Preferences.png"></p>
@@ -49,9 +49,13 @@
 <ol>
   <li>Load a raw data file. Once you select the file or a set of scans (as shown) you are prepared to execute the process either by right-clicking on the raw data file as in the first figure or by selecting the menu as shown in the second figure.<br><br><img src="step01_MenuSelection.png"><br><br><img src="step02_PopupMenu.png"><br><br></li>
   <li>Once you have executed the Peaks/mass detection module, the following dialog will appear.<br><br><img src="step03_MassDetectorDialog.png"><br><br></li>
-  <li>Select PeakInvestigator in the pulldown box and give the mass list a name. The selection of MS level is only applicable when you have selected the whole raw data file for processing. In this example we provided a set of scans (which may, but doesn't have to, include scans of different MS level) to process so the MS level is ignored. While the job is being prepared to launch, the following task window will appear.<br>
-    <br><img src="step04_LaunchTaskask.png"><br><br></li>
-  <li>Once the job is launched, you will see the job appear under the raw data file. At this point, the job has been sent to the Veritomyx servers for processing which can take some time depending on the number of scans submitted. Optionally, you can save the MZminePI project and come back later. When you load the saved project, it will bring you back to this same point.<br><br><img src="step05_JobLaunched.png"><br><br></li>
+  <li>Select PeakInvestigator in the pulldown box and give the mass list a name. The selection of MS level is only applicable when you have selected the whole raw data file for processing. In this example we provided a set of scans (which may, but doesn't have to, include scans of different MS level) to process so the MS level is ignored. MS level is defined in the other MZmine documentation. Basically, an MS scan is MS level 1, whereas a tandem MS scan is MS level 2, etc.</li>
+  <li>While the job is being prepared to launch, the following task window will appear.<br>
+    <br>
+    <img src="step04_LaunchTaskask.png"><br>
+  </li>
+  <li>Once the job is launched, the entry in the &quot;Tasks in progress...&quot; box will disappear and you will see the job appear under the raw data file. At this point, the job has been sent to the Veritomyx servers for processing which can take some time depending on the number of scans submitted. At this point you can optionally save the MZminePI project and come back later. When you load the saved project, it will bring you back to this same point. <em>Be careful not to close MZminePI without saving the project because any unsaved work will be lost, including the info about the running job which will make it very difficult to retrieve that data later.</em> <br>
+  <br><img src="step05_JobLaunched.png"><br><br></li>
   <li>Now right click on the job to download the results from the Veritomyx servers. If the job is not complete yet, this will wait for the job to finish and then download and install the resulting peaks files.<br><br><img src="step06_Retrieve.png"><br><br></li>
   <li>Once the job results are downloaded, the peaks lists are loaded under each of the scans originally selected.<br>
     <br><img src="step07_Finsihed.png"><br><br></li>
