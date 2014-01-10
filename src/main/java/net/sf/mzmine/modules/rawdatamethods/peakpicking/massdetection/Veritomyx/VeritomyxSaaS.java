@@ -209,13 +209,13 @@ public class VeritomyxSaaS
 						"&Count="   + count +
 						"&Force="   + "1";
 			}
-			// logger.finest("dgshack: " + page);
+			//logger.finest("dgshack: " + page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
 			uc.setUseCaches(false);
 			uc.setRequestMethod("POST");
-			uc.setReadTimeout(120 * 1000);	// give it 120 seconds to respond
+			uc.setReadTimeout(240 * 1000);	// give it 4 minutes to respond
 			System.setProperty("java.net.preferIPv4Stack", "true");	// without this we get exception in getInputStream
 			uc.connect();
 
@@ -224,7 +224,7 @@ public class VeritomyxSaaS
 			String decodedString;
 			while ((decodedString = in.readLine()) != null)
 			{
-				// logger.finest("dgshack: " + decodedString);
+				//logger.finest("dgshack: " + decodedString);
 				if (web_result == W_UNDEFINED)
 				{
 					web_str = decodedString;
@@ -243,7 +243,7 @@ public class VeritomyxSaaS
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
-		// logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
+		//logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
 		return web_result;
 	}
 
@@ -274,6 +274,7 @@ public class VeritomyxSaaS
 				web_str    = "Cannot create remote directory, " + dir;
 				return null;
 			}
+			sftp.chmod(session, 0770, dir);
 			result = sftp.cd(session, dir);
 			result = sftp.mkdir(session, "batches");
 			if (!result.getSuccessFlag())
@@ -289,6 +290,8 @@ public class VeritomyxSaaS
 				web_str    = "Cannot create remote directory, " + dir + "/results";
 				return null;
 			}
+			sftp.chmod(session, 0770, "batches");
+			sftp.chmod(session, 0770, "results");
 		}
 		return session;
 	}
@@ -311,7 +314,7 @@ public class VeritomyxSaaS
 	public boolean putFile(String fname)
 	{
 		SftpResult result;
-		logger.info("Put " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		logger.info("Transmit " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
 			return false;
@@ -353,7 +356,7 @@ public class VeritomyxSaaS
 	public boolean getFile(String fname)
 	{
 		SftpResult result;
-		logger.info("Get " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		logger.info("Retrieve " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
 			return false;
