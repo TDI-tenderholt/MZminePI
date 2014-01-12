@@ -39,17 +39,29 @@ public class Veritomyx implements MassDetector
 		logger = Logger.getLogger(this.getClass().getName());
 		logger.finest("Initializing Veritomyx " + this.getName());
 		jobs = new ArrayList<PeakInvestigatorTask>();
+		debug("constructor", "");
 	}
 
 	public String getName() { return "PeakInvestigator™"; }
 
-	public String getDescription(String target, String str)
+	public String getDescription(String orig, String str)
 	{
-		String job = filterJobName(target);
-		target = filterTargetName(target);
-		if (job == null)
-			return "Preparing scans and transmitting to " + this.getName() + " - " + str;
-		return "Retrieving peaks, " + target + ", from " + this.getName() + " - " + job;
+		String jobName = filterJobName(orig);
+		String target  = filterTargetName(orig);
+		String desc = "target: " + target + "; ";
+		PeakInvestigatorTask job = null;
+		if (jobName == null)
+		{
+			desc = "Preparing and transmitting scans to/from " + this.getName() + " - " + str;
+		}
+		else
+		{
+			job = getJobFromName(jobName);
+			String word = (job == null) ? "Processing results" : job.getDescription();
+			desc = jobName + " " + word + " from " + this.getName();
+		}
+		debug("getDescription", desc);
+		return(desc);
 	}
 
 	@Override
@@ -93,8 +105,12 @@ public class Veritomyx implements MassDetector
 	{
 		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters);
 		String job_name = job.getName();
+		debug("startMassValuesJob", filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDescription() : "nojob"));
 		if (job_name != null)
+		{
 			jobs.add(job);
+			job.start();
+		}
 		return job_name;
 	}
 
@@ -112,7 +128,12 @@ public class Veritomyx implements MassDetector
 	{
 		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
-		return (job == null) ? null : job.processScan(scan, selected);
+		debug("getMassValues", jobName + " - " + ((job != null) ? job.getDescription() : "nojob"));
+		if (job != null)
+		{
+			return job.processScan(scan, selected);
+		}
+		return null;
 	}
 
 	/**
@@ -124,6 +145,7 @@ public class Veritomyx implements MassDetector
 	public void finishMassValuesJob(String job_name)
 	{
 		PeakInvestigatorTask job = getJobFromName(job_name);
+		debug("finishMassValuesJobs", job_name + " - " + ((job != null) ? job.getDescription() : "nojob"));
 		if (job != null)
 		{
 			job.finish();
@@ -146,6 +168,11 @@ public class Veritomyx implements MassDetector
 				return job;
 		}
 		return null;
+	}
+
+	private void debug(String func, String s)
+	{
+		//System.out.println("dgshack: V " + func + " [" + jobs.size() + "] " + s);
 	}
 
 }
