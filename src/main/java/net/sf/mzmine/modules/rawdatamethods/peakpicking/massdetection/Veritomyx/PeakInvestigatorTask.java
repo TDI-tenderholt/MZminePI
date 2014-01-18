@@ -70,7 +70,7 @@ public class PeakInvestigatorTask
 	private TarOutputStream tarfile;
 	private RawDataFile     rawDataFile;
 
-	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters)
+	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
 		logger  = Logger.getLogger(this.getClass().getName());
 		logger.info("Initializing PeakInvestigator™ Task");
@@ -103,10 +103,10 @@ public class PeakInvestigatorTask
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		vtmx = new VeritomyxSaaS(MZmineCore.ReqVtmxVersion, MZmineCore.VtmxTest);
+		vtmx = new VeritomyxSaaS(MZmineCore.ReqVtmxVersion, MZmineCore.VtmxLive);
 		while (true)
 		{
-			int status = vtmx.init(username, password, pid, pickup_job);
+			int status = vtmx.init(username, password, pid, pickup_job, scanCount);
 			if (status > 0)
 				break;
 
@@ -288,7 +288,20 @@ public class PeakInvestigatorTask
 			MZmineCore.getDesktop().displayErrorMessage("Error", vtmx.getPageStr(), logger);
 			return;
 		}
-		logger.info(vtmx.getPageStr().split(" ",2)[1]);
+		
+		// check to see if the results were complete.
+		// this will be shown in the string returned from the status call to the web.
+		String results = vtmx.getPageStr();
+		logger.info(results.split(" ",2)[1]);		// log the entire response
+		results = results.substring(results.indexOf("(") + 1, results.indexOf(")"));	// extract the scan counts
+		int valid = Integer.parseInt(results.substring(0, results.indexOf(" ")));
+		int scans = Integer.parseInt(results.substring(results.lastIndexOf(" ") + 1));
+		if (valid < scans)
+		{
+			MZmineCore.getDesktop().displayErrorMessage("Error", "Only " + valid + " of " + scans + " scans were successful.\n" +
+																"The valid results will be loaded now.\n" + 
+																"You were only charged for valid results.", logger);
+		}
 
 		// read the results tar file and extract all the peak list files
 		logger.info("Reading centroided data from " + outputFilename);

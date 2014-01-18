@@ -60,9 +60,9 @@ public final class MZmineCore
 	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
 	public static final String MZmineShortName = "MZminePI";
 
-	public static final boolean VtmxTest       = false;		// live or test server
-	public static final String  ReqVtmxVersion = "1.20"    + (VtmxTest ? "t" : "");	// Required Veritomyx CLI version (see VTMXweb:interface/version.inc.php)
-	public static final String  MZmineVersion  = "2.10.32" + (VtmxTest ? "t" : "");
+	public static final boolean VtmxLive       = true;		// live or test server
+	public static final String  ReqVtmxVersion = "1.22"    + (VtmxLive ? "" : "t");	// Required Veritomyx CLI version (see VTMXweb:interface/version.inc.php)
+	public static final String  MZmineVersion  = "2.10.34" + (VtmxLive ? "" : "t");
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 

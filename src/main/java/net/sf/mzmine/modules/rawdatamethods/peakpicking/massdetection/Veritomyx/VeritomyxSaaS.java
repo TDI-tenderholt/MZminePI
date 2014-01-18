@@ -83,14 +83,14 @@ public class VeritomyxSaaS
 	 * Constructor
 	 * 
 	 * @param reqVersion
-	 * @param test
+	 * @param live
 	 */
-	public VeritomyxSaaS(String requiredVersion, boolean test)
+	public VeritomyxSaaS(String requiredVersion, boolean live)
 	{
 		logger     = Logger.getLogger(this.getClass().getName());
 		jobID      = null;
 		dir        = null;
-		host       = test ? "test.veritomyx.com" : "secure.veritomyx.com";
+		host       = live ? "secure.veritomyx.com" : "test.veritomyx.com";
 		sftp_user  = null;
 		sftp_pw    = null;
 		sftp       = null;
@@ -106,17 +106,22 @@ public class VeritomyxSaaS
 	 * @param passwd
 	 * @param projectID
 	 * @param existingJobName
+	 * @param scanCount
 	 * @return
 	 */
-	public int init(String email, String passwd, int projectID, String existingJobName)
+	public int init(String email, String passwd, int projectID, String existingJobName, int scanCount)
 	{
 		username   = email;
 		password   = passwd;
 		pid        = projectID;
+		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("job-") == true));
+
+		if (pickup)
+			scanCount = 0;	// job pickup has no scan cost
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		if (getPage(JOB_INIT, 0) != W_DONE)
+		if (getPage(JOB_INIT, scanCount) != W_DONE)
 		{
 			jobID = null;
 			return web_result;
@@ -128,7 +133,7 @@ public class VeritomyxSaaS
 		sftp_pw     = sa[4];
 
 		// see if we were given a job ID
-		if ((existingJobName != null) && (existingJobName.startsWith("job-") == true))
+		if (pickup)
 		{
 			// check this job ID
 			jobID = existingJobName;
@@ -195,7 +200,8 @@ public class VeritomyxSaaS
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Project=" + pid +
-					"&Action="  + action;
+					"&Action="  + action +
+					"&Count="   + count;
 			if (action != JOB_INIT)	// need job_id for these commands
 			{
 				if (jobID == null)
@@ -206,7 +212,6 @@ public class VeritomyxSaaS
 				}
 				page += "&Command=" + "ckm" +	// Centroid Set
 						"&Job="     + URLEncoder.encode(jobID, "UTF-8") +
-						"&Count="   + count +
 						"&Force="   + "1";
 			}
 			//logger.finest("dgshack: " + page);

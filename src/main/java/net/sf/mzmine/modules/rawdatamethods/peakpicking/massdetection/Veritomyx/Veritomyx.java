@@ -99,11 +99,12 @@ public class Veritomyx implements MassDetector
 	 * @param raw
 	 * @param targetName
 	 * @param parameters
+	 * @param scanCount
 	 * @return
 	 */
-	public String startMassValuesJob(RawDataFile raw, String name, ParameterSet parameters)
+	public String startMassValuesJob(RawDataFile raw, String name, ParameterSet parameters, int scanCount)
 	{
-		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters);
+		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters, scanCount);
 		String job_name = job.getName();
 		debug("startMassValuesJob", filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDescription() : "nojob"));
 		if (job_name != null)

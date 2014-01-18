@@ -112,7 +112,7 @@ public class MassDetectionTask extends AbstractTask {
 		}
 
 		// start the job
-		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet());
+		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet(), selectedScans.size());
 		name       = detector.filterTargetName(name);	// get the target name, the detector may change it
 	    step += 1;
 
