@@ -62,7 +62,7 @@ public final class MZmineCore
 
 	public static final boolean VtmxLive       = true;		// live or test server
 	public static final String  ReqVtmxVersion = "1.22"    + (VtmxLive ? "" : "t");	// Required Veritomyx CLI version (see VTMXweb:interface/version.inc.php)
-	public static final String  MZmineVersion  = "2.10.34" + (VtmxLive ? "" : "t");
+	public static final String  MZmineVersion  = "2.10.35" + (VtmxLive ? "" : "t");
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 
