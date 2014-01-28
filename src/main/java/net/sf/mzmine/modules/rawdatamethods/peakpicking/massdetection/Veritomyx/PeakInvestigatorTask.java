@@ -300,7 +300,7 @@ public class PeakInvestigatorTask
 		{
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Only " + valid + " of " + scans + " scans were successful.\n" +
 																"The valid results will be loaded now.\n" + 
-																"You were only charged for valid results.", logger);
+																"You have been credited for the incomplete scans.", logger);
 		}
 
 		// read the results tar file and extract all the peak list files
