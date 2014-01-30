@@ -291,7 +291,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
     ExitCode exitMZmine() {
 	
 		int selectedValue = JOptionPane.showInternalConfirmDialog(
-			this.getContentPane(), "Are you sure you want to exit?",
+			this.getContentPane(), "Unsaved data, if any, will be lost.\n" + "Are you sure you want to exit?",
 			"Exiting...", JOptionPane.YES_NO_OPTION,
 			JOptionPane.WARNING_MESSAGE);
 	
