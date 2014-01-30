@@ -394,6 +394,8 @@ public class PeakInvestigatorTask
 		vtmx.getPageDone();
 		rawDataFile.removeJob(jobID);
 		desc = "retrieve finished";
+		MZmineCore.getDesktop().displayMessage("Warning", "PeakInvestigator results successfully downloaded.\n" + 
+											"All your job files will now be deleted from the Veritomyx servers.", logger);
 	}
 
 	private void debug(String func, String s)
