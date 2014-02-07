@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="/cygdrive/c/Users/dschmidt"
-BINARY_DIR="$DIR/work/MZminePI"
+BINARY_DIR="$DIR/work/veritomyx/MZminePI"
 SOURCE_DIR="$DIR/workspace/MZminePI"
 WEB_DIR="$DIR/Dropbox/Work/Veritomyx/VTMX/interface/MZminePI"
 WEB_DIR="$SOURCE_DIR"
@@ -43,4 +43,4 @@ else
 	echo "$OUT (`cat $OUT | wc -c` bytes)"
 fi
 
-sleep 10
+sleep 3
