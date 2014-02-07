@@ -43,9 +43,9 @@ public class MassDetectionParameters extends SimpleParameterSet {
 	    new CentroidMassDetector(),
 	    new ExactMassDetector(),
 	    new LocalMaxMassDetector(),
+	    new Veritomyx(),
 	    new RecursiveMassDetector(),
-	    new WaveletMassDetector(),
-	    new Veritomyx()
+	    new WaveletMassDetector()
 	};
 
     public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
@@ -105,7 +105,7 @@ public class MassDetectionParameters extends SimpleParameterSet {
 		}
 	
 		if (!centroidData && massDetectorName.startsWith("Centroid")) {
-		    String msg = "None one of the selected files contain centroided data points at MS level "
+		    String msg = "None of the selected files contain centroided data points at MS level "
 			    + selectedMSLevel
 			    + ". The selected mass detector could give unexpected results.";
 		    MZmineCore.getDesktop().displayMessage(msg);
