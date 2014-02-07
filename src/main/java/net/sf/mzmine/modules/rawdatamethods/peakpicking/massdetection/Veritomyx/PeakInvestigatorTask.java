@@ -69,6 +69,7 @@ public class PeakInvestigatorTask
 	private int             pid;
 	private TarOutputStream tarfile;
 	private RawDataFile     rawDataFile;
+	private int             errors;
 
 	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
@@ -268,6 +269,7 @@ public class PeakInvestigatorTask
 	 */
 	private void startRetrieve()
 	{
+		errors = 0;
 		desc = "waiting for results";
 		int status;
 		logger.info("Waiting for previously launched job, " + jobID + ", to finish");
@@ -329,6 +331,7 @@ public class PeakInvestigatorTask
 			} catch (Exception e1) {
 				logger.info(e1.getMessage());
 				MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse results file", logger);
+				errors++;
 				e1.printStackTrace();
 			} finally {
 				try { tis.close(); } catch (Exception e) {}
@@ -390,13 +393,16 @@ public class PeakInvestigatorTask
 	 */
 	private void finishRetrieve()
 	{
-		desc = "finishing retrieve";
-		vtmx.getPageDone();
-		rawDataFile.removeJob(jobID);
-		desc = "retrieve finished";
-		MZmineCore.getDesktop().displayMessage("Warning", "PeakInvestigator results successfully downloaded.\n" + 
-											"All your job files will now be deleted from the Veritomyx servers.\n" +
-											"Remember to save your project before closing MZminePI.", logger);
+		if (errors == 0)
+		{			
+			desc = "finishing retrieve";
+			vtmx.getPageDone();
+			rawDataFile.removeJob(jobID);
+			desc = "retrieve finished";
+			MZmineCore.getDesktop().displayMessage("Warning", "PeakInvestigator results successfully downloaded.\n" + 
+												"All your job files will now be deleted from the Veritomyx servers.\n" +
+												"Remember to save your project before closing MZminePI.", logger);
+		}
 	}
 
 	private void debug(String func, String s)
