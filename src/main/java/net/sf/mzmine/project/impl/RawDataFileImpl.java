@@ -412,7 +412,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
     
     /**
-     * Remove a remote job descriptor to the data file
+     * Remove a remote job descriptor from the data file
      */
     public synchronized void removeJob(String name)
     {
