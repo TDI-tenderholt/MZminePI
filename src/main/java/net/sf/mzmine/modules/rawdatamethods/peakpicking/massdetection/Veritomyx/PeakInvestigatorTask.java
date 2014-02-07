@@ -127,7 +127,7 @@ public class PeakInvestigatorTask
 			return;
 		}
 
-		jobID          = vtmx.getJobID();		
+		jobID          = vtmx.getJobID();
 		intputFilename = jobID + ".scans.tar";
 		outputFilename = jobID + ".vcent.tar";
 		debug("constructor", "end");
