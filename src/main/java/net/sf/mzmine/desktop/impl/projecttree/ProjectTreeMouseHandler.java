@@ -89,7 +89,7 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 	
 		jobPopupMenu = new JPopupMenu();
 		GUIUtils.addMenuItem(jobPopupMenu,      "Retrieve job", this, "RETRIEVE_JOB");
-	
+
 		scanPopupMenu = new JPopupMenu();
 		GUIUtils.addMenuItem(scanPopupMenu,     "Show scan", this, "SHOW_SCAN");
 	
