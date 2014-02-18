@@ -62,9 +62,9 @@ public class MZminePreferences extends SimpleParameterSet {
 			"Veritomyx Password",
 			"Password for Veritomyx SaaS.");
 	public static final IntegerParameter vtmxProject = new IntegerParameter(
-			"Veritomyx Project Number",
-			"Project to which jobs will be assigned within the Veritomyx system.\n" +
-				"Setting this to zero or any invalid number defaults to your primary project.",
+			"Veritomyx Account Number",
+			"Veritomyx account to which jobs will be assigned within the Veritomyx system.\n" +
+				"Setting this to zero or any invalid number defaults to your primary account.",
 			0);
 
     public MZminePreferences() {
