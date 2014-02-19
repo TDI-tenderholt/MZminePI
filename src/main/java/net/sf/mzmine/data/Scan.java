@@ -168,11 +168,12 @@ public interface Scan {
     public String exportFilename(@Nonnull String massListName);
     
 	/**
-	 * Export the scan or mass list to a text file in two column tab-delimited format
+	 * Export the scan or mass list to a text file in two column tab-delimited format.
+	 * Return the number of datapoints in the scan or mass list.
 	 * 
 	 * @param String massListName or if empty to export scan data points
 	 * @param String filename to export to, if empty, filename will be generated from scan information
-	 * @return 1 if exported, 0 if requested mass list not found not found
+	 * @return number of points, 0 if requested mass list not found not found
 	 */
     public int exportToFile(@Nonnull String massListName, @Nonnull String filename);
 }

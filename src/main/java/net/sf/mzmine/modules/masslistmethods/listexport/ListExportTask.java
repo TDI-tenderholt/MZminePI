@@ -100,7 +100,7 @@ public class ListExportTask extends AbstractTask
 				scan.exportToFile("", "");
 
 			if (dumpPeaks)
-				scansWithMassList += scan.exportToFile(massListName, "");
+				scansWithMassList += (scan.exportToFile(massListName, "") > 0) ? 1 : 0;
 
 			processedScans++;
 		}

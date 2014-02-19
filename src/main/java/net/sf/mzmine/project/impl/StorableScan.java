@@ -451,11 +451,12 @@ public class StorableScan implements Scan {
 	}
 
 	/**
-	 * Export the scan or mass list to a text file in two column tab-delimited format
+	 * Export the scan or mass list to a text file in two column tab-delimited format.
+	 * Return the number of datapoints in the scan or mass list.
 	 * 
 	 * @param massListName		// if empty, export scan data points
 	 * @param filename			// if empty, filename will be generated from scan information
-	 * @return					// 1 if exported, 0 if requested mass list not found not found
+	 * @return					// number of points, 0 if requested mass list not found not found
 	 */
 	public int exportToFile(String massListName, String filename)
 	{
@@ -481,7 +482,7 @@ public class StorableScan implements Scan {
 		        FileChecksum chksum = new FileChecksum(filename);
 				chksum.hash_file();
 				chksum.append_txt(false);
-				exported = 1;
+				exported = num;
 			}
 			catch (Exception ex)
 			{
@@ -512,7 +513,7 @@ public class StorableScan implements Scan {
 	                FileChecksum chksum = new FileChecksum(filename);
 					chksum.hash_file();
 					chksum.append_txt(false);
-					exported = 1;
+					exported = num;
 	            }
 				catch (Exception ex)
 				{
