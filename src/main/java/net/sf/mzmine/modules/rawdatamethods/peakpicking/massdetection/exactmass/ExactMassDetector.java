@@ -38,7 +38,7 @@ public class ExactMassDetector implements MassDetector {
 	public String getDescription(String job, String str) { return str;}
 
 	public String filterTargetName(String name) { return name; }
-	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters, int scanCount) { return null; }
+	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters, int scanCount, int pts) { return null; }
 
     /**
      * @see net.sf.mzmine.modules.peakpicking.threestep.massdetection.MassDetector#getMassValues(net.sf.mzmine.data.Scan)

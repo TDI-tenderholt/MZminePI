@@ -53,7 +53,7 @@ public class WaveletMassDetector implements MassDetector {
 	@Override
 	public String getDescription(String job, String str) { return str;}
 	public String filterTargetName(String name) { return name; }
-	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters, int scanCount) { return null; }
+	public String startMassValuesJob(RawDataFile raw, String targetName, ParameterSet parameters, int scanCount, int pts) { return null; }
 
     public DataPoint[] getMassValues(Scan scan, boolean selected, String job, ParameterSet parameters) {
     	if (!selected)	// only process selected scans
