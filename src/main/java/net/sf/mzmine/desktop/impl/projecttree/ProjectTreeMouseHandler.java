@@ -88,7 +88,8 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		GUIUtils.addMenuItem(dataFilePopupMenu, "Remove",              this, "REMOVE_FILE");
 	
 		jobPopupMenu = new JPopupMenu();
-		GUIUtils.addMenuItem(jobPopupMenu,      "Retrieve job", this, "RETRIEVE_JOB");
+		GUIUtils.addMenuItem(jobPopupMenu,      "Retrieve job results",                    this, "RETRIEVE_JOB");
+		GUIUtils.addMenuItem(jobPopupMenu,      "Remove job without picking up results",   this, "REMOVE_JOB");
 
 		scanPopupMenu = new JPopupMenu();
 		GUIUtils.addMenuItem(scanPopupMenu,     "Show scan", this, "SHOW_SCAN");
@@ -166,6 +167,11 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		{
 		    for (RemoteJob job : getObjList(RemoteJob.class))
 		    	startJob(job.getRawDataFile(), job);
+		}
+		else if (command.equals("REMOVE_JOB"))
+		{
+		    for (RemoteJob job : getObjList(RemoteJob.class))
+		    	job.getRawDataFile().removeJob(job.getName());
 		}
 	
 		// Actions for scans
