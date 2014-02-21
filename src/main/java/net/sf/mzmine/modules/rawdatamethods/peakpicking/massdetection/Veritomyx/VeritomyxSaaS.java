@@ -41,10 +41,11 @@ public class VeritomyxSaaS
 {
 	// return codes from web pages
 	public  static final int W_UNDEFINED =  0;
-	public  static final int W_RUNNING   =  1;
-	public  static final int W_DONE      =  2;
+	public  static final int W_INFO      =  1;
+	public  static final int W_RUNNING   =  2;
+	public  static final int W_DONE      =  3;
 	public  static final int W_EXCEPTION = -99;
-	public  static final int W_ERROR             = -1;	// these are pulled from vtmx_sftp_job.php
+	public  static final int W_ERROR             = -1;	// these are pulled from vtmxAPI.php
 	public  static final int W_ERROR_API         = -3;
 	public  static final int W_ERROR_LOGIN       = -3;
 	public  static final int W_ERROR_PID         = -4;
@@ -58,7 +59,7 @@ public class VeritomyxSaaS
 	public  static final int W_ERROR_ACTION      = -12;
 
 	// page actions
-	private static final String JOB_INIT   = "JOB";
+	private static final String JOB_INIT   = "INIT";
 	private static final String JOB_RUN    = "RUN";
 	private static final String JOB_STATUS = "STATUS";
 	private static final String JOB_DONE   = "DONE";
@@ -111,41 +112,39 @@ public class VeritomyxSaaS
 	 */
 	public int init(String email, String passwd, int projectID, String existingJobName, int scanCount)
 	{
-		username   = email;
-		password   = passwd;
-		pid        = projectID;
+		jobID    = null;	// if jobID is set, this is a valid job
+		username = email;
+		password = passwd;
+		pid      = projectID;
 		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("job-") == true));
-
-		if (pickup)
-			scanCount = 0;	// job pickup has no scan cost
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		if (getPage(JOB_INIT, scanCount) != W_DONE)
+		if (!pickup)
 		{
-			jobID = null;
-			return web_result;
+			if (getPage(JOB_INIT, scanCount) != W_INFO)
+				return web_result;
 		}
-		String sa[] = web_str.split(" ");
-		pid         = Integer.parseInt(sa[1]);
-		jobID       = sa[2];	// new job ID
-		sftp_user   = sa[3];
-		sftp_pw     = sa[4];
-
-		// see if we were given a job ID
-		if (pickup)
+		else
 		{
 			// check this job ID
 			jobID = existingJobName;
-			int existing_job_status = getPage(JOB_STATUS, 0);
-			if ((existing_job_status != W_RUNNING) && (existing_job_status != W_DONE))
+			if (getPage(JOB_INIT, 0) != W_INFO)
 			{
-				jobID = null;	// not a valid job
+				jobID = null;
 				return web_result;
 			}
+			scanCount = 0;	// job pickup has no scan cost
 		}
 
-		if (jobID != null)
+		// got a valid result from JOB_INIT, parse it
+		String sa[] = web_str.split(" ");
+		pid         = Integer.parseInt(sa[1]);
+		jobID       = sa[2];
+		sftp_user   = sa[3];
+		sftp_pw     = sa[4];
+
+		if (jobID != null)	// we have a valid job
 		{
 			sftp = SftpUtilFactory.getSftpUtil();
 			SftpSession session = openSession();	// open to verify we can
@@ -167,9 +166,9 @@ public class VeritomyxSaaS
 	 * @return
 	 */
 	public String getJobID()            { return jobID; }
-	public int    getPageStatus()       { return getPage(JOB_STATUS, 0); }
+	public int    getPageStatus()       { return getPage(JOB_STATUS,     0); }
 	public int    getPageRun(int count) { return getPage(JOB_RUN,    count); }
-	public int    getPageDone()         { return getPage(JOB_DONE,   0); }
+	public int    getPageDone()         { return getPage(JOB_DONE,       0); }
 	public String getPageStr()          { return web_str; }
 
 	/**
@@ -195,24 +194,26 @@ public class VeritomyxSaaS
 		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
-			String page = "https://" + host + "/interface/vtmx_sftp_job.php" + 
+			String page = "https://" + host + "/interface/vtmxAPI.php" + 
 					"?Version=" + reqVersion +	// online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
-					"&Project=" + pid +
-					"&Action="  + action +
-					"&Count="   + count;
-			if (action != JOB_INIT)	// need job_id for these commands
+					"&Action="  + action;
+			if ((action == JOB_INIT) && (jobID == null))	// new job request
 			{
-				if (jobID == null)
-				{
-					web_result = W_ERROR_JOB_TYPE;
-					web_str    = "Job ID, " + jobID + ", not defined";
-					return web_result;
-				}
-				page += "&Command=" + "ckm" +	// Centroid Set
-						"&Job="     + URLEncoder.encode(jobID, "UTF-8") +
-						"&Force="   + "1";
+				page += "&Project=" + pid +
+						"&Command=" + "ckm" +	// Centroid Set
+						"&Count="   + count;
+			}
+			else if (jobID != null)	// all the rest require a jobID
+			{
+				page += "&Job=" + URLEncoder.encode(jobID, "UTF-8");
+			}
+			else
+			{
+				web_result = W_ERROR_JOB_TYPE;
+				web_str    = "Job ID, " + jobID + ", not defined";
+				return web_result;
 			}
 			//logger.finest("dgshack: " + page);
 
@@ -233,11 +234,11 @@ public class VeritomyxSaaS
 				if (web_result == W_UNDEFINED)
 				{
 					web_str = decodedString;
-					if      (web_str.startsWith("Done"))      web_result = W_DONE;
-					else if (web_str.startsWith("Undefined")) web_result = W_UNDEFINED;
-					else if (web_str.startsWith("Running"))   web_result = W_RUNNING;
-					else if (web_str.startsWith("Error"))     web_result = - Integer.parseInt(web_str.substring(6, web_str.indexOf(":"))); // "ERROR-#"
-					else                                      web_result = W_EXCEPTION;
+					if      (web_str.startsWith("Info:"))    web_result = W_INFO;
+					else if (web_str.startsWith("Running:")) web_result = W_RUNNING;
+					else if (web_str.startsWith("Done:"))    web_result = W_DONE;
+					else if (web_str.startsWith("Error-"))   web_result = - Integer.parseInt(web_str.substring(6, web_str.indexOf(":"))); // "ERROR-#"
+					else                                     web_result = W_EXCEPTION;
 				}
 			}
 		}
