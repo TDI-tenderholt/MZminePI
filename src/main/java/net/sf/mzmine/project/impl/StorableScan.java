@@ -472,10 +472,12 @@ public class StorableScan implements Scan {
 				BufferedWriter fd = openFile(filename);
 				DataPoint pts[] = getDataPoints();
 				int num = pts.length;
-				fd.write("# MS Level: "      + getMSLevel()    + "\n");
-				fd.write("# Scan: "          + getScanNumber() + "\n");
-				fd.write("# Mass List: "     + massListName    + "\n");
-				fd.write("# Data Points: "   + num             + "\n");
+				fd.write("# Scan Number: "      + getScanNumber()   + "\n");
+				fd.write("# Scan MS Level: "    + getMSLevel()      + "\n");
+				fd.write("# Scan Data Points: " + num               + "\n");
+				fd.write("# Scan Mass Range: "  + mzRange.getSize() + "\n");
+				fd.write("# Scan Min Mass: "    + mzRange.getMin()  + "\n");
+				fd.write("# Scan Max Mass: "    + mzRange.getMax()  + "\n\n");
 		        for (int p = 0; p < num; p++)
 		        	fd.write(pts[p].getMZ() + "\t" + pts[p].getIntensity() + "\n");
 		        fd.close();
