@@ -33,6 +33,7 @@ public class Veritomyx implements MassDetector
 {
 	private Logger logger;	
 	private ArrayList<PeakInvestigatorTask> jobs;
+	private String desc;
 
 	public Veritomyx()
 	{
@@ -48,7 +49,7 @@ public class Veritomyx implements MassDetector
 	{
 		String jobName = filterJobName(orig);
 		String target  = filterTargetName(orig);
-		String desc = "target: " + target + "; ";
+		desc = "target: " + target + "; ";
 		PeakInvestigatorTask job = null;
 		if (jobName == null)
 		{
@@ -57,10 +58,10 @@ public class Veritomyx implements MassDetector
 		else
 		{
 			job = getJobFromName(jobName);
-			String word = (job == null) ? "Processing results" : job.getDescription();
+			String word = (job == null) ? "Processing results" : job.getDesc();
 			desc = jobName + " " + word + " from " + this.getName();
 		}
-		debug("getDescription", desc);
+		//debug("getDescription", desc);
 		return(desc);
 	}
 
@@ -102,11 +103,11 @@ public class Veritomyx implements MassDetector
 	 * @param scanCount
 	 * @return
 	 */
-	public String startMassValuesJob(RawDataFile raw, String name, ParameterSet parameters, int scanCount, int scanPoints)
+	public String startMassValuesJob(RawDataFile raw, String name, ParameterSet parameters, int scanCount)
 	{
-		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters, scanCount, scanPoints);
+		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters, scanCount);
 		String job_name = job.getName();
-		debug("startMassValuesJob", filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDescription() : "nojob"));
+		debug("startMassValuesJob", filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job_name != null)
 		{
 			jobs.add(job);
@@ -129,7 +130,7 @@ public class Veritomyx implements MassDetector
 	{
 		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
-		debug("getMassValues", jobName + " - " + ((job != null) ? job.getDescription() : "nojob"));
+		debug("getMassValues", jobName + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job != null)
 		{
 			return job.processScan(scan, selected);
@@ -146,7 +147,7 @@ public class Veritomyx implements MassDetector
 	public void finishMassValuesJob(String job_name)
 	{
 		PeakInvestigatorTask job = getJobFromName(job_name);
-		debug("finishMassValuesJobs", job_name + " - " + ((job != null) ? job.getDescription() : "nojob"));
+		debug("finishMassValuesJobs", job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job != null)
 		{
 			job.finish();
