@@ -92,7 +92,6 @@ public class MassDetectionTask extends AbstractTask {
 		
 		int scanNumbers[] = dataFile.getScanNumbers();	// all the scans in this file
 		totalSteps = scanNumbers.length + 2;			// add one for the job start & finish calls
-		int totalPoints = 0;
 
 		// get the selected scans for this data file
 		ArrayList<Scan> selectedScans = new ArrayList<Scan>();
@@ -101,10 +100,7 @@ public class MassDetectionTask extends AbstractTask {
 		for (Scan scan : scans)	// for all selected scans
 		{
 			if (scan.getDataFile().equals(dataFile))	// if this scan is in this raw data file
-			{
-				totalPoints += scan.getNumberOfDataPoints();
 				selectedScans.add(scan);
-			}
 		}
 
 		// if there are no selected scans for this data file, get all of the msLevel ones
@@ -112,15 +108,11 @@ public class MassDetectionTask extends AbstractTask {
 		{
 			int msScanNumbers[] = dataFile.getScanNumbers(msLevel);
 			for (int i = 0; i < msScanNumbers.length; i++)
-			{
-				Scan scan = dataFile.getScan(msScanNumbers[i]);
-				totalPoints += scan.getNumberOfDataPoints();
-				selectedScans.add(scan);
-			}
+				selectedScans.add(dataFile.getScan(msScanNumbers[i]));
 		}
 
 		// start the job
-		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet(), selectedScans.size(), totalPoints);
+		String job = detector.startMassValuesJob(dataFile, name, massDetector.getParameterSet(), selectedScans.size());
 		name       = detector.filterTargetName(name);	// get the target name, the detector may change it
 	    step += 1;
 

@@ -52,7 +52,7 @@ public interface MassDetector extends MZmineModule {
 	 * @param scanCount
 	 * @return
 	 */
-	public String startMassValuesJob(RawDataFile dataFile, String targetName, ParameterSet parameterSet, int scanCount, int scanPoints);
+	public String startMassValuesJob(RawDataFile dataFile, String targetName, ParameterSet parameterSet, int scanCount);
 
 	/**
 	 * Returns mass and intensity values detected in given scan
