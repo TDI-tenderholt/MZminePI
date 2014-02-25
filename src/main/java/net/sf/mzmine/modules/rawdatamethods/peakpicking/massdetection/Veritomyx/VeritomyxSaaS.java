@@ -269,8 +269,8 @@ public class VeritomyxSaaS
 			web_str    = "Cannot connect to SFTP server " + sftp_user + "@" + host;
 			return null;
 		}
-		dir = "projects/" + pid;
-		SftpResult result = sftp.cd(session, dir);	// cd into the v_project directory
+		dir = "accounts/" + pid;
+		SftpResult result = sftp.cd(session, dir);	// cd into the account directory
 		if (!result.getSuccessFlag())
 		{
 			result = sftp.mkdir(session, dir);
