@@ -65,7 +65,7 @@ public class VeritomyxSaaS
 	private static final String JOB_STATUS = "STATUS";
 	private static final String JOB_DONE   = "DONE";
 
-	private Logger logger;
+	private Logger log;
 	private String username;
 	private String password;
 	private int    pid;
@@ -89,8 +89,8 @@ public class VeritomyxSaaS
 	 */
 	public VeritomyxSaaS(String requiredVersion, boolean live)
 	{
-		logger     = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(Level.INFO);
+		log        = Logger.getLogger(this.getClass().getName());
+		log.setLevel(Level.INFO);
 		jobID      = null;
 		dir        = null;
 		host       = live ? "secure.veritomyx.com" : "test.veritomyx.com";
@@ -322,7 +322,7 @@ public class VeritomyxSaaS
 	public boolean putFile(String fname)
 	{
 		SftpResult result;
-		logger.info("Transmit " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		log.info("Transmit " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
 			return false;
@@ -364,7 +364,7 @@ public class VeritomyxSaaS
 	public boolean getFile(String fname)
 	{
 		SftpResult result;
-		logger.info("Retrieve " + sftp_user + "@" + host + ":" + dir + "/" + fname);
+		log.info("Retrieve " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
 			return false;
