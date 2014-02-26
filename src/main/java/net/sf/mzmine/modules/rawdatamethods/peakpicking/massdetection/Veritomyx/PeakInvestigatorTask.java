@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -75,6 +76,7 @@ public class PeakInvestigatorTask
 	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
 		logger  = Logger.getLogger(this.getClass().getName());
+		logger.setLevel(Level.INFO);
 		logger.info("Initializing PeakInvestigator™ Task");
 		jobID   = null;
 		tarfile = null;

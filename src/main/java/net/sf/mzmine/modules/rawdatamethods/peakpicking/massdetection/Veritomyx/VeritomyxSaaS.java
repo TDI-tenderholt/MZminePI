@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.opensftp.SftpException;
@@ -89,6 +90,7 @@ public class VeritomyxSaaS
 	public VeritomyxSaaS(String requiredVersion, boolean live)
 	{
 		logger     = Logger.getLogger(this.getClass().getName());
+		logger.setLevel(Level.INFO);
 		jobID      = null;
 		dir        = null;
 		host       = live ? "secure.veritomyx.com" : "test.veritomyx.com";

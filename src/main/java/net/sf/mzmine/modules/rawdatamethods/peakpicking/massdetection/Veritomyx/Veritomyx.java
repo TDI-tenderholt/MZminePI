@@ -21,6 +21,7 @@ package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.mzmine.data.DataPoint;
@@ -38,7 +39,8 @@ public class Veritomyx implements MassDetector
 	public Veritomyx()
 	{
 		logger = Logger.getLogger(this.getClass().getName());
-		logger.finest("Initializing Veritomyx " + this.getName());
+		logger.setLevel(Level.INFO);
+		logger.info("Initializing Veritomyx " + this.getName());
 		jobs = new ArrayList<PeakInvestigatorTask>();
 		debug("constructor", "");
 	}
