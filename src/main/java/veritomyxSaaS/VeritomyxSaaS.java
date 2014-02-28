@@ -17,21 +17,22 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx;
+package veritomyxSaaS;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
 import net.sf.opensftp.SftpUtil;
 import net.sf.opensftp.SftpUtilFactory;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * This class is used to access the Veritomyx SaaS servers
@@ -68,7 +69,7 @@ public class VeritomyxSaaS
 	private Logger log;
 	private String username;
 	private String password;
-	private int    pid;
+	private int    aid;
 	private String jobID;				// name of the job and the scans tar file
 	private String dir;
 
@@ -90,7 +91,8 @@ public class VeritomyxSaaS
 	public VeritomyxSaaS(String requiredVersion, boolean live)
 	{
 		log        = Logger.getLogger(this.getClass().getName());
-		log.setLevel(Level.INFO);
+		log.setLevel(Level.DEBUG);
+		log.info(this.getClass().getName());
 		jobID      = null;
 		dir        = null;
 		host       = live ? "secure.veritomyx.com" : "test.veritomyx.com";
@@ -107,17 +109,17 @@ public class VeritomyxSaaS
 	 *  
 	 * @param email
 	 * @param passwd
-	 * @param projectID
+	 * @param account
 	 * @param existingJobName
 	 * @param scanCount
 	 * @return
 	 */
-	public int init(String email, String passwd, int projectID, String existingJobName, int scanCount)
+	public int init(String email, String passwd, int account, String existingJobName, int scanCount)
 	{
 		jobID    = null;	// if jobID is set, this is a valid job
 		username = email;
 		password = passwd;
-		pid      = projectID;
+		aid      = account;
 		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("job-") == true));
 
 		// make sure we have access to the Veritomyx Server
@@ -141,7 +143,7 @@ public class VeritomyxSaaS
 
 		// got a valid result from JOB_INIT, parse it
 		String sa[] = web_str.split(" ");
-		pid         = Integer.parseInt(sa[1]);
+		aid         = Integer.parseInt(sa[1]);
 		jobID       = sa[2];
 		sftp_user   = sa[3];
 		sftp_pw     = sa[4];
@@ -203,7 +205,7 @@ public class VeritomyxSaaS
 					"&Action="  + action;
 			if ((action == JOB_INIT) && (jobID == null))	// new job request
 			{
-				page += "&Project=" + pid +
+				page += "&Project=" + aid +
 						"&Command=" + "ckm" +	// Centroid Set
 						"&Count="   + count;
 			}
@@ -217,7 +219,7 @@ public class VeritomyxSaaS
 				web_str    = "Job ID, " + jobID + ", not defined";
 				return web_result;
 			}
-			//logger.finest("dgshack: " + page);
+			log.debug(page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
@@ -232,7 +234,7 @@ public class VeritomyxSaaS
 			String decodedString;
 			while ((decodedString = in.readLine()) != null)
 			{
-				//logger.finest("dgshack: " + decodedString);
+				log.debug(decodedString);
 				if (web_result == W_UNDEFINED)
 				{
 					web_str = decodedString;
@@ -251,7 +253,7 @@ public class VeritomyxSaaS
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
-		//logger.finest("dgshack: Web results: [" + web_result + "] '" + web_str + "'");
+		log.debug("Web results: [" + web_result + "] '" + web_str + "'");
 		return web_result;
 	}
 
@@ -271,7 +273,7 @@ public class VeritomyxSaaS
 			web_str    = "Cannot connect to SFTP server " + sftp_user + "@" + host;
 			return null;
 		}
-		dir = "accounts/" + pid;
+		dir = "accounts/" + aid;
 		SftpResult result = sftp.cd(session, dir);	// cd into the account directory
 		if (!result.getSuccessFlag())
 		{
