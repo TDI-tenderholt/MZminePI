@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
+import veritomyxSaaS.VeritomyxSaaS;
 import net.sf.mzmine.data.impl.RemoteJob;
-import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 import net.sf.mzmine.util.Range;
 
 public interface RawDataFile {

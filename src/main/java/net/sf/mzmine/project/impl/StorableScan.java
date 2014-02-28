@@ -46,7 +46,7 @@ import net.sf.mzmine.util.ScanUtils;
 
 import org.apache.commons.io.FilenameUtils;
 
-import FileChecksum.FileChecksum;
+import veritomyxSaaS.FileChecksum;
 
 /**
  * Implementation of the Scan interface which stores raw data points in a

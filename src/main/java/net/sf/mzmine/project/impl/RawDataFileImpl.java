@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import veritomyxSaaS.VeritomyxSaaS;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.RawDataFileWriter;
@@ -43,7 +44,6 @@ import net.sf.mzmine.data.Scan;
 import net.sf.mzmine.data.impl.RemoteJob;
 import net.sf.mzmine.data.impl.SimpleDataPoint;
 import net.sf.mzmine.main.MZmineCore;
-import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.Veritomyx.VeritomyxSaaS;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.Range;
 

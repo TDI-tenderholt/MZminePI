@@ -47,7 +47,8 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import FileChecksum.FileChecksum;
+import veritomyxSaaS.FileChecksum;
+import veritomyxSaaS.VeritomyxSaaS;
 
 /**
  * This class is used to run a set of scans through the Veritomyx SaaS servers
