@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
@@ -91,7 +92,7 @@ public class VeritomyxSaaS
 	public VeritomyxSaaS(String requiredVersion, boolean live)
 	{
 		log        = Logger.getLogger(this.getClass().getName());
-		log.setLevel(Level.DEBUG);
+		log.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.DEBUG);
 		log.info(this.getClass().getName());
 		jobID      = null;
 		dir        = null;
