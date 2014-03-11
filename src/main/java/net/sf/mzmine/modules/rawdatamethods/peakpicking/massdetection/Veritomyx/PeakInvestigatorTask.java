@@ -77,12 +77,11 @@ public class PeakInvestigatorTask
 	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
 		logger  = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(Level.INFO);
+		logger.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.FINEST);
 		logger.info("Initializing PeakInvestigator™ Task");
 		jobID   = null;
 		tarfile = null;
 		desc    = "initializing";
-		debug("constructor", "begin");
 
 		// pickup all the parameters
 		MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
@@ -137,7 +136,6 @@ public class PeakInvestigatorTask
 		jobID          = vtmx.getJobID();
 		intputFilename = jobID + ".scans.tar";
 		outputFilename = jobID + ".vcent.tar";
-		debug("constructor", "end");
 	}
 	
 	public String getDesc() { return desc; }
@@ -155,7 +153,7 @@ public class PeakInvestigatorTask
 	 */
 	public void start()
 	{
-		debug("start", "");
+		logger.finest("PeakInvestigatorTask - start");
 		if (launch) startLaunch();
 		else        startRetrieve();
 	}
@@ -170,7 +168,7 @@ public class PeakInvestigatorTask
 	public DataPoint[] processScan(Scan scan, boolean selected)
 	{
 		int scan_num = scan.getScanNumber();
-		debug("processScan", "scan " + scan_num);
+		logger.finest("PeakInvestigatorTask - processScan " + scan_num);
 		DataPoint[] peaks;
 		if (launch) peaks = selected ? processScanLaunch(scan_num, scan) : null;
 		else        peaks = processScanRetrieve(scan_num);		// ignore selected flag on retrieval
@@ -182,7 +180,7 @@ public class PeakInvestigatorTask
 	 */
 	public void finish()
 	{
-		debug("finish", "");
+		logger.finest("PeakInvestigatorTask - finish");
 		if (launch) finishLaunch();
 		else        finishRetrieve();
 	}
@@ -195,7 +193,7 @@ public class PeakInvestigatorTask
 		try {
 			tarfile = new TarOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(intputFilename))));
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.finest(e.getMessage());
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot create scans bundle file", logger);
 			jobID = null;
 		}
@@ -232,7 +230,7 @@ public class PeakInvestigatorTask
 			tarfile.flush();
 			scanCnt += 1;		// count this scan
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.finest(e.getMessage());
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot write to scans bundle file", logger);
 		}
 		desc = "scan " + scan_num + " exported";
@@ -248,7 +246,7 @@ public class PeakInvestigatorTask
 		try {
 			tarfile.close();
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.finest(e.getMessage());
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot close scans bundle file.", logger);
 		}
 		vtmx.putFile(intputFilename);
@@ -263,7 +261,7 @@ public class PeakInvestigatorTask
 
 		// job was started - record it
 		rawDataFile.addJob(jobID, rawDataFile, targetName, vtmx);	// record this job start
-		logger.info(vtmx.getPageStr().split(" ",2)[1]);
+		logger.finest(vtmx.getPageStr().split(" ",2)[1]);
 		File f = new File(intputFilename);
 		f.delete();			// remove the local copy of the tar file
 		desc = "launch finished";
@@ -300,7 +298,7 @@ public class PeakInvestigatorTask
 		// check to see if the results were complete.
 		// this will be shown in the string returned from the status call to the web.
 		String results = vtmx.getPageStr();
-		logger.info(results.split(" ",2)[1]);		// log the entire response
+		logger.finest(results.split(" ",2)[1]);		// log the entire response
 		results = results.substring(results.indexOf("(") + 1, results.indexOf(")"));	// extract the scan counts
 		int valid = Integer.parseInt(results.substring(0, results.indexOf(" ")));
 		int scans = Integer.parseInt(results.substring(results.lastIndexOf(" ") + 1));
@@ -335,7 +333,7 @@ public class PeakInvestigatorTask
 				File f = new File(outputFilename);
 				f.delete();			// remove the local copy of the results tar file
 			} catch (Exception e1) {
-				logger.info(e1.getMessage());
+				logger.finest(e1.getMessage());
 				MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse results file", logger);
 				errors++;
 				e1.printStackTrace();
@@ -389,7 +387,7 @@ public class PeakInvestigatorTask
 		catch (FileNotFoundException e) { /* expect some scans might not be included in original processing */ }
 		catch (Exception e)
 		{
-			logger.info(e.getMessage());
+			logger.finest(e.getMessage());
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse peaks file, " + pfilename, logger);
 		}
 
@@ -412,11 +410,6 @@ public class PeakInvestigatorTask
 		MZmineCore.getDesktop().displayMessage("Warning", "PeakInvestigator results successfully downloaded.\n" + 
 											"All your job files will now be deleted from the Veritomyx servers.\n" +
 											"Remember to save your project before closing MZminePI.", logger);
-	}
-
-	private void debug(String func, String s)
-	{
-		//System.out.println("dgshack: PI " + func + " " + jobID + (launch ? " launch" : " retrieve") + " - " + s);
 	}
 
 }

@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import net.sf.mzmine.data.DataPoint;
 import net.sf.mzmine.data.RawDataFile;
 import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetector;
 import net.sf.mzmine.parameters.ParameterSet;
 
@@ -39,10 +40,9 @@ public class Veritomyx implements MassDetector
 	public Veritomyx()
 	{
 		logger = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(Level.INFO);
+		logger.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.FINEST);
 		logger.info("Initializing Veritomyx " + this.getName());
 		jobs = new ArrayList<PeakInvestigatorTask>();
-		debug("constructor", "");
 	}
 
 	public String getName() { return "PeakInvestigator™"; }
@@ -109,7 +109,7 @@ public class Veritomyx implements MassDetector
 	{
 		PeakInvestigatorTask job = new PeakInvestigatorTask(raw, filterJobName(name), filterTargetName(name), parameters, scanCount);
 		String job_name = job.getName();
-		debug("startMassValuesJob", filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
+		logger.finest("startMassValuesJob " + filterJobName(name) + " - " + job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job_name != null)
 		{
 			jobs.add(job);
@@ -132,7 +132,7 @@ public class Veritomyx implements MassDetector
 	{
 		// get the thread-safe job from jobs list using the jobName
 		PeakInvestigatorTask job = getJobFromName(jobName);
-		debug("getMassValues", jobName + " - " + ((job != null) ? job.getDesc() : "nojob"));
+		logger.finest("getMassValues " + jobName + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job != null)
 		{
 			return job.processScan(scan, selected);
@@ -149,7 +149,7 @@ public class Veritomyx implements MassDetector
 	public void finishMassValuesJob(String job_name)
 	{
 		PeakInvestigatorTask job = getJobFromName(job_name);
-		debug("finishMassValuesJobs", job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
+		logger.finest("finishMassValuesJobs " + job_name + " - " + ((job != null) ? job.getDesc() : "nojob"));
 		if (job != null)
 		{
 			job.finish();
@@ -172,11 +172,6 @@ public class Veritomyx implements MassDetector
 				return job;
 		}
 		return null;
-	}
-
-	private void debug(String func, String s)
-	{
-		//System.out.println("dgshack: V " + func + " [" + jobs.size() + "] " + s);
 	}
 
 }
