@@ -206,7 +206,7 @@ public class VeritomyxSaaS
 					"&Action="  + action;
 			if ((action == JOB_INIT) && (jobID == null))	// new job request
 			{
-				page += "&Project=" + aid +
+				page += "&Account=" + aid +
 						"&Command=" + "ckm" +	// Centroid Set
 						"&Count="   + count;
 			}
