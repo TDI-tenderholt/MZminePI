@@ -11,12 +11,16 @@ rem files (parsed raw data) will be placed. Default is %TEMP%, which
 rem represents the system temporary directory.
 set TMP_FILE_DIRECTORY=%TEMP%
 
-rem Set R environment variables.
-set R_HOME=C:\Program Files\R\R-2.15.3
+rem Set R environment variables. Choose Version 3.0, 2.15 or your version.
+rem set R_HOME=C:\Program Files\R\R-2.15.3
+rem set R_LIBS_USER=%USERPROFILE%\Documents\R\win-library\2.15
+set R_HOME=C:\Program Files\R\R-3.0.3
+set R_LIBS_USER=%USERPROFILE%\Documents\R\win-library\3.0
+
+rem Set remaining R environment variables.
 set R_SHARE_DIR=%R_HOME%\share 
 set R_INCLUDE_DIR=%R_HOME%\include
 set R_DOC_DIR=%R_HOME%\doc
-set R_LIBS_USER=%USERPROFILE%\Documents\R\win-library\2.15
 
 rem Include R DLLs in PATH.
 set PATH=%PATH%;%R_HOME%\bin\x64
