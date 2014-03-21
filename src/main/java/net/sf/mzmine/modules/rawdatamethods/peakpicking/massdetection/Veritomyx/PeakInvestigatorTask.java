@@ -107,7 +107,7 @@ public class PeakInvestigatorTask
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		vtmx = new VeritomyxSaaS(MZmineCore.ReqVtmxVersion, MZmineCore.VtmxLive);
+		vtmx = new VeritomyxSaaS(MZmineCore.VtmxLive);
 		while (true)
 		{
 			int status = vtmx.init(username, password, pid, pickup_job, scanCount);

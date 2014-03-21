@@ -25,7 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import net.sf.mzmine.main.MZmineCore;
 import net.sf.opensftp.SftpException;
 import net.sf.opensftp.SftpResult;
 import net.sf.opensftp.SftpSession;
@@ -42,13 +41,16 @@ import org.apache.log4j.Logger;
  */
 public class VeritomyxSaaS
 {
+	// Required CLI version (see https://secure.veritomyx.com/interface/API.php)
+	public static final String reqVeritomyxCLIVersion = "1.25";
+
 	// return codes from web pages
 	public  static final int W_UNDEFINED =  0;
 	public  static final int W_INFO      =  1;
 	public  static final int W_RUNNING   =  2;
 	public  static final int W_DONE      =  3;
 	public  static final int W_EXCEPTION = -99;
-	public  static final int W_ERROR             = -1;	// these are pulled from vtmxAPI.php
+	public  static final int W_ERROR             = -1;	// these are pulled from API.php
 	public  static final int W_ERROR_API         = -3;
 	public  static final int W_ERROR_LOGIN       = -3;
 	public  static final int W_ERROR_PID         = -4;
@@ -74,7 +76,6 @@ public class VeritomyxSaaS
 	private String jobID;				// name of the job and the scans tar file
 	private String dir;
 
-	private String    reqVersion;		// online CLI version that matches this interface
 	private String    host;
 	private String    sftp_user;
 	private String    sftp_pw;
@@ -89,10 +90,10 @@ public class VeritomyxSaaS
 	 * @param reqVersion
 	 * @param live
 	 */
-	public VeritomyxSaaS(String requiredVersion, boolean live)
+	public VeritomyxSaaS(boolean live)
 	{
 		log        = Logger.getLogger(this.getClass().getName());
-		log.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.DEBUG);
+		log.setLevel(live ? Level.INFO : Level.DEBUG);
 		log.info(this.getClass().getName());
 		jobID      = null;
 		dir        = null;
@@ -102,7 +103,6 @@ public class VeritomyxSaaS
 		sftp       = null;
 		web_result = W_UNDEFINED;
 		web_str    = null;
-		reqVersion = requiredVersion;
 	}
 
 	/**
@@ -199,8 +199,8 @@ public class VeritomyxSaaS
 		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
-			String page = "https://" + host + "/interface/vtmxAPI.php" + 
-					"?Version=" + reqVersion +	// online CLI version that matches this interface
+			String page = "https://" + host + "/interface/API.php" + 
+					"?Version=" + reqVeritomyxCLIVersion +	// online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
 					"&Action="  + action;
