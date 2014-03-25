@@ -367,7 +367,7 @@ public class PeakInvestigatorTask
 			File centfile = new File(pfilename);
 			FileChecksum fchksum = new FileChecksum(centfile);
 			if (!fchksum.verify(false))
-				throw new IOException("Invalid checksum in centroided file " + pfilename);
+				throw new IOException("Invalid checksum");
 	
 			List<String> lines = fchksum.getFileStrings();
 			mzPeaks = new ArrayList<DataPoint>();
@@ -388,7 +388,7 @@ public class PeakInvestigatorTask
 		catch (Exception e)
 		{
 			logger.finest(e.getMessage());
-			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse peaks file, " + pfilename, logger);
+			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot parse peaks file, " + pfilename + " (" + e.getMessage() + ")", logger);
 		}
 
 		desc = "scan " + scan_num + " parsed";
