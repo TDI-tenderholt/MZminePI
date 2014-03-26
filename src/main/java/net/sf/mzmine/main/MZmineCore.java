@@ -94,7 +94,7 @@ public final class MZmineCore
 			e.printStackTrace();
 		}
 
-		logger.info("Starting " + MZmineName + " " + MZmineVersion);
+		logger.info("Starting " + MZmineName + " " + MZmineVersion + " built " + MZmineDate);
 		logger.info("CWD is " + new File(".").getAbsolutePath());
 
 		// Remove old temporary files, if we find any
