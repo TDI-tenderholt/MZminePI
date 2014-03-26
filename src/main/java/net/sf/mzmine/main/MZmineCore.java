@@ -62,6 +62,7 @@ public final class MZmineCore
 
 	public static final boolean VtmxLive       = true;		// live or test server (also affects debug level)
 	public static final String  MZmineVersion  = "2.10.37" + (VtmxLive ? "" : "test");
+	public static final String  MZmineDate     = "2014-03-25";	// Java has no compile time variable
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 
@@ -209,7 +210,7 @@ public final class MZmineCore
 			desktop.getMainFrame().setVisible(true);
 
 			// show the welcome message
-			desktop.setStatusBarText("Welcome to " + MZmineName + " " + MZmineVersion);
+			desktop.setStatusBarText("Welcome to " + MZmineName + " " + MZmineVersion + " built " + MZmineDate);
 
 			// register shutdown hook only if we have GUI - we don't want to
 			// save configuration on exit if we only run a batch

@@ -249,10 +249,12 @@ public class PeakInvestigatorTask
 			logger.finest(e.getMessage());
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Cannot close scans bundle file.", logger);
 		}
+		logger.info("Transmit scans bundle, " + intputFilename + ", to SFTP server...");
 		vtmx.putFile(intputFilename);
 
 		//####################################################################
 		// start for remote job
+		logger.info("Launch job, " + jobID + ", on cloud server...");
 		if (vtmx.getPageRun(scanCnt) < VeritomyxSaaS.W_RUNNING)
 		{
 			MZmineCore.getDesktop().displayErrorMessage("Error", "Failed to launch " + jobID, logger);
@@ -260,6 +262,7 @@ public class PeakInvestigatorTask
 		}
 
 		// job was started - record it
+		logger.info("Job, " + jobID + ", launched");
 		rawDataFile.addJob(jobID, rawDataFile, targetName, vtmx);	// record this job start
 		logger.finest(vtmx.getPageStr().split(" ",2)[1]);
 		File f = new File(intputFilename);
@@ -274,22 +277,25 @@ public class PeakInvestigatorTask
 	private void startRetrieve()
 	{
 		errors = 0;
-		desc = "waiting for results";
+		desc = "checking for results";
 		int status;
-		logger.info("Waiting for previously launched job, " + jobID + ", to finish");
+		logger.info("Checking previously launched job, " + jobID);
 
 		// see if remote job is complete
 		if ((status = vtmx.getPageStatus()) == VeritomyxSaaS.W_RUNNING)
 		{
 			desc = "Remote job not complete";
+			logger.info("Remote job, " + jobID + ", not complete");
 			MZmineCore.getDesktop().displayMessage("Warning", "Remote job not complete. Please try again later.", logger);
 			errors++;
 			return;
 		}
 		desc = "downloading results";
+		logger.info("Downloading job, " + jobID + ", results...");
 		if (status != VeritomyxSaaS.W_DONE)
 		{
 			desc = "Error";
+			logger.info(vtmx.getPageStr());
 			MZmineCore.getDesktop().displayErrorMessage("Error", vtmx.getPageStr(), logger);
 			errors++;
 			return;
@@ -310,7 +316,7 @@ public class PeakInvestigatorTask
 		}
 
 		// read the results tar file and extract all the peak list files
-		logger.info("Reading centroided data from " + outputFilename);
+		logger.info("Reading centroided data, " + outputFilename + ", from SFTP drop...");
 		vtmx.getFile(outputFilename);
 		{
 			TarInputStream tis = null;
@@ -323,7 +329,7 @@ public class PeakInvestigatorTask
 				while ((tf = tis.getNextEntry()) != null)
 				{
 					if (tf.isDirectory()) continue;
-					System.out.println(tf.getName() + " - " + tf.getSize() + " bytes");
+					logger.info("Reading peaks data to " + tf.getName() + " - " + tf.getSize() + " bytes");
 					outputStream = new FileOutputStream(tf.getName());
 					while ((bytesRead = tis.read(buf, 0, 1024)) > -1)
 						outputStream.write(buf, 0, bytesRead);
@@ -362,6 +368,7 @@ public class PeakInvestigatorTask
 		// read in the peaks for this scan
 		// convert filename to expected peak file name
 		String pfilename = "scan_" + String.format("%04d", scan_num) + ".vcent.txt";
+		logger.info("Parsing peaks data from " + pfilename);
 		try
 		{
 			File centfile = new File(pfilename);
@@ -404,6 +411,7 @@ public class PeakInvestigatorTask
 			return;
 
 		desc = "finishing retrieve";
+		logger.info("Finishing retrieval of job " + jobID);
 		vtmx.getPageDone();
 		rawDataFile.removeJob(jobID);
 		desc = "retrieve finished";
