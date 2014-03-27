@@ -60,9 +60,9 @@ public final class MZmineCore
 	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
 	public static final String MZmineShortName = "MZminePI";
 
-	public static final boolean VtmxLive       = true;		// live or test server (also affects debug level)
-	public static final String  MZmineVersion  = "2.10.37" + (VtmxLive ? "" : "test");
-	public static final String  MZmineDate     = "2014-03-25";	// Java has no compile time variable
+	public static       boolean VtmxLive       = true;			// live or test server (also affects debug level)
+	public static       String  MZmineVersion  = "2.10.37";
+	public static final String  MZmineDate     = "2014-03-26";	// Java has no compile time variable
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 
@@ -83,6 +83,21 @@ public final class MZmineCore
 		// problems with conversion of numbers etc. (e.g. decimal separator may
 		// be . or , depending on the locale)
 		Locale.setDefault(new Locale("en", "US"));
+
+		// find the single argument if it exists while still picking up the -t option
+		String param = null;
+		if (args.length > 0)
+		{
+			if (args[0].equals("-t"))
+			{
+				VtmxLive       = false;
+				MZmineVersion += "test";
+				if (args.length > 1)
+					param = args[1];
+			}
+			else
+				param = args[0];
+		}
 
 		// Configure the logging properties before we start logging
 		try {
@@ -148,7 +163,7 @@ public final class MZmineCore
 		}
 
 		// If we have no arguments, run in GUI mode, otherwise run in batch mode
-		if (args.length == 0) {
+		if (param == null) {
 
 			// Create the Swing GUI in the event-dispatching thread, as is
 			// generally recommended
@@ -178,7 +193,6 @@ public final class MZmineCore
 
 					}
 				};
-
 			};
 
 			try {
@@ -218,10 +232,9 @@ public final class MZmineCore
 			Runtime.getRuntime().addShutdownHook(shutDownHook);
 		}
 
-		// if arguments were specified (= running without GUI), run the batch
-		// mode
-		if (args.length > 0) {
-			File batchFile = new File(args[0]);
+		// if arguments were specified (= running without GUI), run the batch mode
+		if (param != null) {
+			File batchFile = new File(param);
 			if ((!batchFile.exists()) || (!batchFile.canRead())) {
 				logger.severe("Cannot read batch file " + batchFile);
 				System.exit(1);
