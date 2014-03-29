@@ -250,7 +250,7 @@ public class VeritomyxSaaS
 		catch (Exception e)
 		{
 			web_result = W_EXCEPTION;
-			web_str    = "Web exception - " + e.getMessage();
+			web_str    = "Web exception - Server not found!";
 		}
 		try { in.close();      } catch (Exception e) { }
 		try { uc.disconnect(); } catch (Exception e) { }
