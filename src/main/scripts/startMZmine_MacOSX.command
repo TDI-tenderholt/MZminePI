@@ -5,7 +5,7 @@
 # *    Current may be used for the version number for R_HOME.
 # ***************************************************************************
 export R_HOME=/Library/Frameworks/R.framework/Versions/Current/Resources
-export R_USER_LIBS=${HOME}/Library/R/2.15/library
+export R_USER_LIBS=${HOME}/Library/R/3.0/library
 
 # ***************************************************************************
 
