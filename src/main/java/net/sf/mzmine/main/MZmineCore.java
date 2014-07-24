@@ -60,9 +60,9 @@ public final class MZmineCore
 	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
 	public static final String MZmineShortName = "MZminePI";
 
-	public static       boolean VtmxLive       = true;			// live or test server (also affects debug level)
-	public static       String  MZmineVersion  = "2.10.37";
-	public static final String  MZmineDate     = "2014-03-28";	// Java has no compile time variable
+	public static       boolean VtmxDebug      = false;
+	public static       String  MZmineVersion  = "2.10.38";
+	public static final String  MZmineDate     = "2014-07-21";	// Java has no compile time variable
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 
@@ -84,14 +84,14 @@ public final class MZmineCore
 		// be . or , depending on the locale)
 		Locale.setDefault(new Locale("en", "US"));
 
-		// find the single argument if it exists while still picking up the -t option
+		// find the single argument if it exists while still picking up the -d option
 		String param = null;
 		if (args.length > 0)
 		{
-			if (args[0].equals("-t"))
+			if (args[0].equals("-d"))
 			{
-				VtmxLive       = false;
-				MZmineVersion += "test";
+				VtmxDebug = true;
+				MZmineVersion += "d";
 				if (args.length > 1)
 					param = args[1];
 			}

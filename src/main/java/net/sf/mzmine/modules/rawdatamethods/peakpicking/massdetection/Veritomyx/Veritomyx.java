@@ -1,7 +1,7 @@
 /*
- * Copyright 2013-2014 The Veritomyx
+ * Copyright 2013-2014 Veritomyx
  * 
- * This file is part of MZmine 2.
+ * This file is part of MZminePI.
  * 
  * MZmine 2 is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -40,7 +40,7 @@ public class Veritomyx implements MassDetector
 	public Veritomyx()
 	{
 		logger = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.FINEST);
+		logger.setLevel(MZmineCore.VtmxDebug ? Level.INFO : Level.FINEST);
 		logger.info("Initializing Veritomyx " + this.getName());
 		jobs = new ArrayList<PeakInvestigatorTask>();
 	}
