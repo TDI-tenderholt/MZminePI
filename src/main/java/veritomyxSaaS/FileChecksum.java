@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013-2014 Veritomyx
+ */
+
 package veritomyxSaaS;
 
 import java.io.BufferedReader;
