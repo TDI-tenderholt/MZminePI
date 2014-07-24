@@ -1,7 +1,7 @@
 /*
- * Copyright 2013-2014 The Veritomyx
+ * Copyright 2013-2014 Veritomyx
  * 
- * This file is part of MZmine 2.
+ * This file is part of MZminePI.
  * 
  * MZmine 2 is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -67,6 +67,7 @@ public class PeakInvestigatorTask
 	private String          intputFilename;
 	private String          outputFilename;
 	private VeritomyxSaaS   vtmx;
+	private String          server;
 	private String          username;
 	private String          password;
 	private int             pid;
@@ -77,7 +78,7 @@ public class PeakInvestigatorTask
 	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
 		logger  = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(MZmineCore.VtmxLive ? Level.INFO : Level.FINEST);
+		logger.setLevel(MZmineCore.VtmxDebug ? Level.INFO : Level.FINEST);
 		logger.info("Initializing PeakInvestigator™ Task");
 		jobID   = null;
 		tarfile = null;
@@ -85,6 +86,7 @@ public class PeakInvestigatorTask
 
 		// pickup all the parameters
 		MZminePreferences preferences = MZmineCore.getConfiguration().getPreferences();
+		server   = preferences.getParameter(MZminePreferences.vtmxServer).getValue();
 		username = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
 		password = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
 		pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
@@ -93,6 +95,7 @@ public class PeakInvestigatorTask
 		{
 			if (preferences.showSetupDialog() != ExitCode.OK)
 				return;
+			server   = preferences.getParameter(MZminePreferences.vtmxServer).getValue();
 			username = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
 			password = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
 			pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
@@ -107,7 +110,7 @@ public class PeakInvestigatorTask
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		vtmx = new VeritomyxSaaS(MZmineCore.VtmxLive);
+		vtmx = new VeritomyxSaaS(MZmineCore.VtmxDebug, server);
 		while (true)
 		{
 			int status = vtmx.init(username, password, pid, pickup_job, scanCount);
