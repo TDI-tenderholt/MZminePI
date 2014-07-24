@@ -1,7 +1,7 @@
 /*
- * Copyright 2013-2013 The Veritomyx
+ * Copyright 2013-2014 Veritomyx
  * 
- * This file is part of MZmine 2.
+ * This file is part of MZminePI.
  * 
  * MZmine 2 is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
