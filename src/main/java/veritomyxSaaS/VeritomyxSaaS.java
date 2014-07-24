@@ -1,20 +1,5 @@
 /*
- * Copyright 2013-2014 The Veritomyx
- * 
- * This file is part of MZmine 2.
- * 
- * MZmine 2 is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- * 
- * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * MZmine 2; if not, write to the Free Software Foundation, Inc., 51 Franklin St,
- * Fifth Floor, Boston, MA 02110-1301 USA
+ * Copyright 2013-2014 Veritomyx
  */
 
 package veritomyxSaaS;
@@ -42,7 +27,7 @@ import org.apache.log4j.Logger;
 public class VeritomyxSaaS
 {
 	// Required CLI version (see https://secure.veritomyx.com/interface/API.php)
-	public static final String reqVeritomyxCLIVersion = "1.25";
+	public static final String reqVeritomyxCLIVersion = "2.00";
 
 	// return codes from web pages
 	public  static final int W_UNDEFINED =  0;
@@ -67,7 +52,7 @@ public class VeritomyxSaaS
 	private static final String JOB_INIT   = "INIT";
 	private static final String JOB_RUN    = "RUN";
 	private static final String JOB_STATUS = "STATUS";
-	private static final String JOB_DONE   = "DONE";
+	private static final String JOB_DELETE = "DELETE";
 
 	private Logger log;
 	private String username;
@@ -88,16 +73,16 @@ public class VeritomyxSaaS
 	 * Constructor
 	 * 
 	 * @param reqVersion
-	 * @param live
+	 * @param debug
 	 */
-	public VeritomyxSaaS(boolean live)
+	public VeritomyxSaaS(boolean debug, String server)
 	{
 		log        = Logger.getLogger(this.getClass().getName());
-		log.setLevel(live ? Level.INFO : Level.DEBUG);
+		log.setLevel(debug ? Level.INFO : Level.DEBUG);
 		log.info(this.getClass().getName());
 		jobID      = null;
 		dir        = null;
-		host       = live ? "secure.veritomyx.com" : "test.veritomyx.com";
+		host       = server;
 		sftp_user  = null;
 		sftp_pw    = null;
 		sftp       = null;
@@ -143,9 +128,9 @@ public class VeritomyxSaaS
 		}
 
 		// got a valid result from JOB_INIT, parse it
-		String sa[] = web_str.split(" ");
-		aid         = Integer.parseInt(sa[1]);
-		jobID       = sa[2];
+		String sa[] = web_str.split("\\|");
+		jobID       = sa[1];
+		aid         = Integer.parseInt(sa[2]);
 		sftp_user   = sa[3];
 		sftp_pw     = sa[4];
 
@@ -173,7 +158,7 @@ public class VeritomyxSaaS
 	public String getJobID()            { return jobID; }
 	public int    getPageStatus()       { return getPage(JOB_STATUS,     0); }
 	public int    getPageRun(int count) { return getPage(JOB_RUN,    count); }
-	public int    getPageDone()         { return getPage(JOB_DONE,       0); }
+	public int    getPageDone()         { return getPage(JOB_DELETE,       0); }
 	public String getPageStr()          { return web_str; }
 
 	/**
@@ -188,7 +173,7 @@ public class VeritomyxSaaS
 	{
 		web_result = W_UNDEFINED;
 		web_str    = "";
-		if ((action != JOB_INIT) && (action != JOB_RUN) && (action != JOB_STATUS) && (action != JOB_DONE))
+		if ((action != JOB_INIT) && (action != JOB_RUN) && (action != JOB_STATUS) && (action != JOB_DELETE))
 		{
 			web_result = W_ERROR_ACTION;
 			web_str    = "Invalid action";
@@ -199,7 +184,7 @@ public class VeritomyxSaaS
 		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
-			String page = "https://" + host + "/interface/API.php" + 
+			String page = "https://" + host + "/api" + 
 					"?Version=" + reqVeritomyxCLIVersion +	// online CLI version that matches this interface
 					"&User="    + URLEncoder.encode(username, "UTF-8") +
 					"&Code="    + URLEncoder.encode(password, "UTF-8") +
@@ -208,7 +193,9 @@ public class VeritomyxSaaS
 			{
 				page += "&Account=" + aid +
 						"&Command=" + "ckm" +	// Centroid Set
-						"&Count="   + count;
+						"&Count="   + count +
+						"&MinMass=" + 0.00 +
+						"&MaxMass=" + 1.00;
 			}
 			else if (jobID != null)	// all the rest require a jobID
 			{
