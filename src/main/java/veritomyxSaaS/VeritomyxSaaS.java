@@ -60,6 +60,8 @@ public class VeritomyxSaaS
 	private int    aid;
 	private String jobID;				// name of the job and the scans tar file
 	private String dir;
+	private String quality;
+	private String pi_version;
 
 	private String    host;
 	private String    sftp_user;
@@ -133,9 +135,16 @@ public class VeritomyxSaaS
 		aid         = Integer.parseInt(sa[2]);
 		sftp_user   = sa[3];
 		sftp_pw     = sa[4];
+		String qos  = sa[6];
+		String ver  = sa[7];
 
 		if (jobID != null)	// we have a valid job
 		{
+			String qos_array[] = qos.split(",");
+			String ver_array[] = ver.split(",");
+			quality    = qos_array[0].substring(0, qos_array[0].indexOf("="));		// just accept the first choice QoS
+			pi_version = ver_array[0];												// just accept the first choice PI version
+			
 			sftp = SftpUtilFactory.getSftpUtil();
 			SftpSession session = openSession();	// open to verify we can
 			if (session == null)
@@ -158,7 +167,7 @@ public class VeritomyxSaaS
 	public String getJobID()            { return jobID; }
 	public int    getPageStatus()       { return getPage(JOB_STATUS,     0); }
 	public int    getPageRun(int count) { return getPage(JOB_RUN,    count); }
-	public int    getPageDone()         { return getPage(JOB_DELETE,       0); }
+	public int    getPageDone()         { return getPage(JOB_DELETE,     0); }
 	public String getPageStr()          { return web_str; }
 
 	/**
@@ -184,22 +193,30 @@ public class VeritomyxSaaS
 		HttpURLConnection uc = null;
 		try {
 			// build the URL with parameters
-			String page = "https://" + host + "/api" + 
-					"?Version=" + reqVeritomyxCLIVersion +	// online CLI version that matches this interface
-					"&User="    + URLEncoder.encode(username, "UTF-8") +
-					"&Code="    + URLEncoder.encode(password, "UTF-8") +
-					"&Action="  + action;
+			String page = "https://" + host + "/api" 
+					+ "?Version=" + reqVeritomyxCLIVersion	// online CLI version that matches this interface
+					+ "&User="    + URLEncoder.encode(username, "UTF-8")
+					+ "&Code="    + URLEncoder.encode(password, "UTF-8")
+					+ "&Action="  + action;
 			if ((action == JOB_INIT) && (jobID == null))	// new job request
 			{
-				page += "&Account=" + aid +
-						"&Command=" + "ckm" +	// Centroid Set
-						"&Count="   + count +
-						"&MinMass=" + 0.00 +
-						"&MaxMass=" + 1.00;
+				page += "&Account=" + aid
+					  + "&Command=" + "ckm"		// Centroid Set
+					  + "&Count="   + count
+					  + "&MinMass=" + 0.00
+					  + "&MaxMass=" + 1.00;
+			}
+			else if ((action == JOB_RUN) && (jobID != null))	// run job request
+			{
+				page += "&Job=" + jobID
+					  + "&ArchiveType=tar"
+					  + "&CalibrationScans=0"
+					  + "&QoS=" + quality
+					  + "&PIVersion=" + pi_version;
 			}
 			else if (jobID != null)	// all the rest require a jobID
 			{
-				page += "&Job=" + URLEncoder.encode(jobID, "UTF-8");
+				page += "&Job=" + jobID;
 			}
 			else
 			{
@@ -247,9 +264,9 @@ public class VeritomyxSaaS
 	}
 
 	/**
-	 * Open the SFTP session
+	 * Open the SFTP session and cd into the account/aid directory
 	 * 
-	 * @return boolean
+	 * @return SftpSession
 	 */
 	private SftpSession openSession()
 	{
@@ -266,31 +283,9 @@ public class VeritomyxSaaS
 		SftpResult result = sftp.cd(session, dir);	// cd into the account directory
 		if (!result.getSuccessFlag())
 		{
-			result = sftp.mkdir(session, dir);
-			if (!result.getSuccessFlag())
-			{
-				web_result = W_ERROR_SFTP;
-				web_str    = "Cannot create remote directory, " + dir;
-				return null;
-			}
-			sftp.chmod(session, 0770, dir);
-			result = sftp.cd(session, dir);
-			result = sftp.mkdir(session, "batches");
-			if (!result.getSuccessFlag())
-			{
-				web_result = W_ERROR_SFTP;
-				web_str    = "Cannot create remote directory, " + dir + "/batches";
-				return null;
-			}
-			result = sftp.mkdir(session, "results");
-			if (!result.getSuccessFlag())
-			{
-				web_result = W_ERROR_SFTP;
-				web_str    = "Cannot create remote directory, " + dir + "/results";
-				return null;
-			}
-			sftp.chmod(session, 0770, "batches");
-			sftp.chmod(session, 0770, "results");
+			web_result = W_ERROR_SFTP;
+			web_str    = "Cannot find remote directory, " + dir;
+			return null;
 		}
 		return session;
 	}
@@ -309,6 +304,7 @@ public class VeritomyxSaaS
 	 * Transfer the given file to SFTP drop
 	 * 
 	 * @param fname
+	 * @return boolean
 	 */
 	public boolean putFile(String fname)
 	{
@@ -318,11 +314,9 @@ public class VeritomyxSaaS
 		if (session == null)
 			return false;
 
-		sftp.cd(session, "batches");
 		try { sftp.rm(session, fname); } catch (Exception e) {}
 		try { sftp.rm(session, fname + ".filepart"); } catch (Exception e) {}
 		result = sftp.put(session, fname, fname + ".filepart");
-		sftp.cd(session, "..");
 		if (!result.getSuccessFlag())
 		{
 			closeSession(session);
@@ -332,9 +326,7 @@ public class VeritomyxSaaS
 		}
 		else
 		{
-			sftp.cd(session, "batches");
 			result = sftp.rename(session, fname + ".filepart", fname); //rename a remote file
-			sftp.cd(session, "..");
 			if (!result.getSuccessFlag())
 			{
 				closeSession(session);
@@ -351,6 +343,7 @@ public class VeritomyxSaaS
 	 * Transfer the given file from SFTP drop
 	 * 
 	 * @param fname
+	 * @return boolean
 	 */
 	public boolean getFile(String fname)
 	{
@@ -360,18 +353,15 @@ public class VeritomyxSaaS
 		if (session == null)
 			return false;
 
-		sftp.cd(session, "results");
 		result = sftp.get(session, fname);
 		if (!result.getSuccessFlag())
 		{
-			sftp.cd(session, "..");
 			closeSession(session);
 			web_result = W_ERROR_SFTP;
 			web_str    = "Cannot read file: " + fname;
 			return false;
 		}
 		sftp.rm(session, fname);
-		sftp.cd(session, "..");
 		closeSession(session);
 		return true;
 	}
