@@ -64,14 +64,14 @@ public class MZminePreferences extends SimpleParameterSet {
 	public static final PasswordParameter vtmxPassword = new PasswordParameter(
 			"Veritomyx Password",
 			"Password for Veritomyx SaaS.");
-	public static final IntegerParameter vtmxProject = new IntegerParameter(
+	public static final IntegerParameter vtmxAccount = new IntegerParameter(
 			"Veritomyx Account Number",
 			"Veritomyx account to which jobs will be assigned within the Veritomyx system.",
 			0);
 
     public MZminePreferences() {
 	super(new Parameter[] { mzFormat, rtFormat, intensityFormat,
-		numOfThreads, proxySettings, windowState, vtmxServer, vtmxUsername, vtmxPassword, vtmxProject });
+		numOfThreads, proxySettings, windowState, vtmxServer, vtmxUsername, vtmxPassword, vtmxAccount });
     }
 
     public ExitCode showSetupDialog() {

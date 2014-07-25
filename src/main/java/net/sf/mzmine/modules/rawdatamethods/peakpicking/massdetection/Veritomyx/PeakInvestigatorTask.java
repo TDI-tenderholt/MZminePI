@@ -70,7 +70,7 @@ public class PeakInvestigatorTask
 	private String          server;
 	private String          username;
 	private String          password;
-	private int             pid;
+	private int             aid;
 	private TarOutputStream tarfile;
 	private RawDataFile     rawDataFile;
 	private int             errors;
@@ -89,7 +89,7 @@ public class PeakInvestigatorTask
 		server   = preferences.getParameter(MZminePreferences.vtmxServer).getValue();
 		username = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
 		password = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
-		pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
+		aid      = preferences.getParameter(MZminePreferences.vtmxAccount).getValue();
 		
 		if ((username == null) || username.isEmpty() || (password == null) || password.isEmpty())
 		{
@@ -98,7 +98,7 @@ public class PeakInvestigatorTask
 			server   = preferences.getParameter(MZminePreferences.vtmxServer).getValue();
 			username = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
 			password = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
-			pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
+			aid      = preferences.getParameter(MZminePreferences.vtmxAccount).getValue();
 		}
 
 		// save the raw data file
@@ -113,7 +113,7 @@ public class PeakInvestigatorTask
 		vtmx = new VeritomyxSaaS(MZmineCore.VtmxDebug, server);
 		while (true)
 		{
-			int status = vtmx.init(username, password, pid, pickup_job, scanCount);
+			int status = vtmx.init(username, password, aid, pickup_job, scanCount);
 			if (status > 0)
 				break;
 
@@ -126,7 +126,7 @@ public class PeakInvestigatorTask
 				return;
 			username = preferences.getParameter(MZminePreferences.vtmxUsername).getValue();
 			password = preferences.getParameter(MZminePreferences.vtmxPassword).getValue();
-			pid      = preferences.getParameter(MZminePreferences.vtmxProject).getValue();
+			aid      = preferences.getParameter(MZminePreferences.vtmxAccount).getValue();
 		}
 
 		if (!launch && (vtmx.getPageStatus() <= 0))
