@@ -306,16 +306,12 @@ public class PeakInvestigatorTask
 		
 		// check to see if the results were complete.
 		// this will be shown in the string returned from the status call to the web.
-		String results = vtmx.getPageStr();
-		logger.finest(results.split(" ",2)[1]);		// log the entire response
-		results = results.substring(results.indexOf("(") + 1, results.indexOf(")"));	// extract the scan counts
-		int valid = Integer.parseInt(results.substring(0, results.indexOf(" ")));
-		int scans = Integer.parseInt(results.substring(results.lastIndexOf(" ") + 1));
-		if (valid < scans)
+		if (vtmx.get_scans_done() < vtmx.get_scans_in())
 		{
-			MZmineCore.getDesktop().displayErrorMessage("Error", "Only " + valid + " of " + scans + " scans were successful.\n" +
-																"The valid results will be loaded now.\n" + 
-																"You have been credited for the incomplete scans.", logger);
+			MZmineCore.getDesktop().displayErrorMessage("Error",
+					"Only " + vtmx.get_scans_done() + " of " + vtmx.get_scans_in() + " scans were successful.\n" +
+					"The valid results will be loaded now.\n" + 
+					"You have been credited for the incomplete scans.", logger);
 		}
 
 		// read the results tar file and extract all the peak list files

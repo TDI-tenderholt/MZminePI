@@ -71,14 +71,14 @@ public class Veritomyx implements MassDetector
 	public Class<? extends ParameterSet> getParameterSetClass() { return VeritomyxParameters.class; }
 
 	/**
-	 * Return target name and filter out possible job name from "|job-########-#####[target]"
+	 * Return target name and filter out possible job name from "|vpi-########-#####[target]"
 	 * 
 	 * @param compoundName
 	 * @return
 	 */
 	public String filterTargetName(String compoundName)
 	{
-		if (compoundName.startsWith("|job-"))
+		if (compoundName.startsWith("|vpi-"))
 			return compoundName.substring(compoundName.indexOf('[') + 1, compoundName.indexOf(']'));
 		return compoundName;
 	}
@@ -91,7 +91,7 @@ public class Veritomyx implements MassDetector
 	 */
 	private String filterJobName(String compoundName)
 	{
-		if (compoundName.startsWith("|job-"))
+		if (compoundName.startsWith("|vpi-"))
 			return compoundName.substring(1, compoundName.indexOf('['));
 		return null;
 	}

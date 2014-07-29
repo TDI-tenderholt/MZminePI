@@ -34,6 +34,7 @@ public class VeritomyxSaaS
 	public  static final int W_INFO      =  1;
 	public  static final int W_RUNNING   =  2;
 	public  static final int W_DONE      =  3;
+	public  static final int W_DELETED   =  4;
 	public  static final int W_EXCEPTION = -99;
 	public  static final int W_ERROR             = -1;	// these are pulled from API.php
 	public  static final int W_ERROR_API         = -3;
@@ -62,6 +63,8 @@ public class VeritomyxSaaS
 	private String dir;
 	private String quality;
 	private String pi_version;
+	private int    scans_in;
+	private int    scans_done;
 
 	private String    host;
 	private String    sftp_user;
@@ -108,54 +111,61 @@ public class VeritomyxSaaS
 		username = email;
 		password = passwd;
 		aid      = account;
-		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("job-") == true));
+		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("vpi-") == true));
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
 		if (!pickup)
 		{
-			if (getPage(JOB_INIT, scanCount) != W_INFO)
+			if (getPage(JOB_INIT, scanCount, 0.0, 1.0) != W_INFO)
 				return web_result;
+
+			// got a valid result from JOB_INIT, parse it
+			String sa[] = web_str.split("\\|");
+			jobID       = sa[1];
+			aid         = Integer.parseInt(sa[2]);
+			sftp_user   = sa[3];
+			sftp_pw     = sa[4];
+			String qos  = sa[6];
+			String ver  = sa[7];
+
+			if (jobID == null)	// no valid job
+				return web_result;
+
+			String qos_array[] = qos.split(",");
+			String ver_array[] = ver.split(",");
+			quality    = qos_array[0].substring(0, qos_array[0].indexOf("="));		// just accept the first choice QoS
+			pi_version = ver_array[0];												// just accept the first choice PI version
 		}
 		else
 		{
 			// check this job ID
 			jobID = existingJobName;
-			if (getPage(JOB_INIT, 0) != W_INFO)
-			{
-				jobID = null;
+			if (getPageStatus() != W_DONE)
 				return web_result;
-			}
-			scanCount = 0;	// job pickup has no scan cost
+
+			// got a valid result from JOB_INIT, parse it
+			String sa[]        = web_str.split("\\|");
+			jobID              = sa[1];
+			aid                = Integer.parseInt(sa[2]);
+			sftp_user          = sa[3];
+			sftp_pw            = sa[4];
+			scans_in           = Integer.parseInt(sa[5]);
+			scans_done         = Integer.parseInt(sa[6]);
+			float cost         = Float.parseFloat(sa[7]);
+			String result_file = sa[8];
 		}
 
-		// got a valid result from JOB_INIT, parse it
-		String sa[] = web_str.split("\\|");
-		jobID       = sa[1];
-		aid         = Integer.parseInt(sa[2]);
-		sftp_user   = sa[3];
-		sftp_pw     = sa[4];
-		String qos  = sa[6];
-		String ver  = sa[7];
-
-		if (jobID != null)	// we have a valid job
+		sftp = SftpUtilFactory.getSftpUtil();
+		SftpSession session = openSession();	// open to verify we can
+		if (session == null)
 		{
-			String qos_array[] = qos.split(",");
-			String ver_array[] = ver.split(",");
-			quality    = qos_array[0].substring(0, qos_array[0].indexOf("="));		// just accept the first choice QoS
-			pi_version = ver_array[0];												// just accept the first choice PI version
-			
-			sftp = SftpUtilFactory.getSftpUtil();
-			SftpSession session = openSession();	// open to verify we can
-			if (session == null)
-			{
-				jobID      = null;
-				web_str    = "SFTP access not available";
-				web_result = W_ERROR_SFTP;
-				return web_result;
-			}
-			closeSession(session);
+			jobID      = null;
+			web_str    = "SFTP access not available";
+			web_result = W_ERROR_SFTP;
+			return web_result;
 		}
+		closeSession(session);
 		return web_result;
 	}
 
@@ -165,10 +175,12 @@ public class VeritomyxSaaS
 	 * @return
 	 */
 	public String getJobID()            { return jobID; }
-	public int    getPageStatus()       { return getPage(JOB_STATUS,     0); }
-	public int    getPageRun(int count) { return getPage(JOB_RUN,    count); }
-	public int    getPageDone()         { return getPage(JOB_DELETE,     0); }
+	public int    getPageRun(int count) { return getPage(JOB_RUN,    count, 0.0, 0.0); }
+	public int    getPageStatus()       { return getPage(JOB_STATUS,     0, 0.0, 0.0); }
+	public int    getPageDone()         { return getPage(JOB_DELETE,     0, 0.0, 0.0); }
 	public String getPageStr()          { return web_str; }
+	public int    get_scans_in()        { return scans_in; }
+	public int    get_scans_done()      { return scans_done; }
 
 	/**
 	 * Get the first line of a web page from the Veritomyx server
@@ -176,9 +188,11 @@ public class VeritomyxSaaS
 	 * 
 	 * @param action
 	 * @param count
+	 * @param minm
+	 * @param maxm
 	 * @return int
 	 */
-	private int getPage(String action, int count)
+	private int getPage(String action, int count, double minm, double maxm)
 	{
 		web_result = W_UNDEFINED;
 		web_str    = "";
@@ -203,8 +217,8 @@ public class VeritomyxSaaS
 				page += "&Account=" + aid
 					  + "&Command=" + "ckm"		// Centroid Set
 					  + "&Count="   + count
-					  + "&MinMass=" + 0.00
-					  + "&MaxMass=" + 1.00;
+					  + "&MinMass=" + minm
+					  + "&MaxMass=" + maxm;
 			}
 			else if ((action == JOB_RUN) && (jobID != null))	// run job request
 			{
@@ -246,6 +260,7 @@ public class VeritomyxSaaS
 					if      (web_str.startsWith("Info:"))    web_result = W_INFO;
 					else if (web_str.startsWith("Running:")) web_result = W_RUNNING;
 					else if (web_str.startsWith("Done:"))    web_result = W_DONE;
+					else if (web_str.startsWith("Deleted:")) web_result = W_DELETED;
 					else if (web_str.startsWith("Error-"))   web_result = - Integer.parseInt(web_str.substring(6, web_str.indexOf(":"))); // "ERROR-#"
 					else                                     web_result = W_EXCEPTION;
 				}
