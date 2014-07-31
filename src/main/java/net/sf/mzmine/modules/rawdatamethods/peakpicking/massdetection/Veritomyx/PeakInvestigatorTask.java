@@ -316,7 +316,7 @@ public class PeakInvestigatorTask
 
 		// read the results tar file and extract all the peak list files
 		logger.info("Reading centroided data, " + outputFilename + ", from SFTP drop...");
-		vtmx.getFile(outputFilename);
+		if (vtmx.getFile(outputFilename))
 		{
 			TarInputStream tis = null;
 			FileOutputStream outputStream = null;

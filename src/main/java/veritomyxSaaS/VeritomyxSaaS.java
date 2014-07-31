@@ -5,6 +5,7 @@
 package veritomyxSaaS;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -318,12 +319,14 @@ public class VeritomyxSaaS
 	/**
 	 * Transfer the given file to SFTP drop
 	 * 
-	 * @param fname
+	 * @param path
 	 * @return boolean
 	 */
-	public boolean putFile(String fname)
+	public boolean putFile(String path)
 	{
 		SftpResult result;
+		File f = new File(path);
+		String fname = f.getName();
 		log.info("Transmit " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
@@ -331,7 +334,7 @@ public class VeritomyxSaaS
 
 		try { sftp.rm(session, fname); } catch (Exception e) {}
 		try { sftp.rm(session, fname + ".filepart"); } catch (Exception e) {}
-		result = sftp.put(session, fname, fname + ".filepart");
+		result = sftp.put(session, path, fname + ".filepart");
 		if (!result.getSuccessFlag())
 		{
 			closeSession(session);
@@ -357,18 +360,20 @@ public class VeritomyxSaaS
 	/**
 	 * Transfer the given file from SFTP drop
 	 * 
-	 * @param fname
+	 * @param path
 	 * @return boolean
 	 */
-	public boolean getFile(String fname)
+	public boolean getFile(String path)
 	{
 		SftpResult result;
+		File f = new File(path);
+		String fname = f.getName();
 		log.info("Retrieve " + sftp_user + "@" + host + ":" + dir + "/" + fname);
 		SftpSession session = openSession();
 		if (session == null)
 			return false;
 
-		result = sftp.get(session, fname);
+		result = sftp.get(session, fname, path);
 		if (!result.getSuccessFlag())
 		{
 			closeSession(session);
