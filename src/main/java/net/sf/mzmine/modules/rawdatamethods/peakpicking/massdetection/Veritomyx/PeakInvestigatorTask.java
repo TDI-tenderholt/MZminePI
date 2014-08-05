@@ -217,7 +217,7 @@ public class PeakInvestigatorTask
 		// Export all scans to remote processor
 		try {
 			// export the scan to a file
-			String filename = "scan_" + String.format("%04d", scan_num) + ".txt";
+			String filename = jobID + "_scan_" + String.format("%04d", scan_num) + ".txt";
 			scan.exportToFile("", filename);
 
 			// put the exported scan into the tar file
@@ -366,7 +366,7 @@ public class PeakInvestigatorTask
 
 		// read in the peaks for this scan
 		// convert filename to expected peak file name
-		String pfilename = "scan_" + String.format("%04d", scan_num) + ".vcent.txt";
+		String pfilename = jobID + "_scan_" + String.format("%04d", scan_num) + ".vcent.txt";
 		logger.info("Parsing peaks data from " + pfilename);
 		try
 		{
