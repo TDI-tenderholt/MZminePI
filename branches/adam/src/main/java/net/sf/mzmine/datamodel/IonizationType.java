@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -17,18 +17,18 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data;
+package net.sf.mzmine.datamodel;
 
 public enum IonizationType {
 
-    NO_IONIZATION("No ionization", "", 0, Polarity.Neutral), //
-    POSITIVE_HYDROGEN("[M+H]+", "H", 1.00728, Polarity.Positive), //
-    NEGATIVE_HYDROGEN("[M-H]-", "H-1", -1.00728, Polarity.Negative), //
-    POTASSIUM("[M+K]+", "K", 38.96316, Polarity.Positive), //
-    SODIUM("[M+Na]+", "Na", 22.98922, Polarity.Positive), //
-    AMMONIUM("[M+NH4]+", "NH4", 18.03383, Polarity.Positive), //
-    CARBONATE("[M+CO3]-", "CO3", 59.98529, Polarity.Negative), //
-    PHOSPHATE("[M+H2PO4]-", "H2PO4", 96.96962, Polarity.Negative);
+    NO_IONIZATION("No ionization", "", 0, Polarity.NEUTRAL), //
+    POSITIVE_HYDROGEN("[M+H]+", "H", 1.00728, Polarity.POSITIVE), //
+    NEGATIVE_HYDROGEN("[M-H]-", "H-1", -1.00728, Polarity.NEGATIVE), //
+    POTASSIUM("[M+K]+", "K", 38.96316, Polarity.POSITIVE), //
+    SODIUM("[M+Na]+", "Na", 22.98922, Polarity.POSITIVE), //
+    AMMONIUM("[M+NH4]+", "NH4", 18.03383, Polarity.POSITIVE), //
+    CARBONATE("[M+CO3]-", "CO3", 59.98529, Polarity.NEGATIVE), //
+    PHOSPHATE("[M+H2PO4]-", "H2PO4", 96.96962, Polarity.NEGATIVE);
 
     private final String name, adductFormula;
     private final Polarity polarity;

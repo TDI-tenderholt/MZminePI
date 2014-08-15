@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -18,7 +18,9 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data;
+package net.sf.mzmine.datamodel;
+
+import javax.annotation.Nonnull;
 
 import net.sf.mzmine.util.Range;
 
@@ -27,192 +29,200 @@ import net.sf.mzmine.util.Range;
  */
 public interface PeakList {
 
-    /**
-     * @return Short descriptive name for the peak list
-     */
-    public String getName();
+	public interface PeakListAppliedMethod {
 
-    /**
-     * Change the name of this peak list
-     */
-    public void setName(String name);
+		@Nonnull
+		public String getDescription();
 
-    /**
-     * Returns number of raw data files participating in the peak list
-     */
-    public int getNumberOfRawDataFiles();
+		@Nonnull
+		public String getParameters();
 
-    /**
-     * Returns all raw data files participating in the peak list
-     */
-    public RawDataFile[] getRawDataFiles();
+	}
 
-    /**
-     * Returns true if this peak list contains given file
-     */
-    public boolean hasRawDataFile(RawDataFile file);
+	/**
+	 * @return Short descriptive name for the peak list
+	 */
+	public String getName();
 
-    /**
-     * Returns a raw data file
-     * 
-     * @param position
-     *            Position of the raw data file in the matrix (running numbering
-     *            from left 0,1,2,...)
-     */
-    public RawDataFile getRawDataFile(int position);
+	/**
+	 * Change the name of this peak list
+	 */
+	public void setName(String name);
 
-    /**
-     * Returns number of rows in the alignment result
-     */
-    public int getNumberOfRows();
+	/**
+	 * Returns number of raw data files participating in the peak list
+	 */
+	public int getNumberOfRawDataFiles();
 
-    /**
-     * Returns the peak of a given raw data file on a give row of the peak list
-     * 
-     * @param row
-     *            Row of the peak list
-     * @param rawDataFile
-     *            Raw data file where the peak is detected/estimated
-     */
-    public ChromatographicPeak getPeak(int row, RawDataFile rawDataFile);
+	/**
+	 * Returns all raw data files participating in the peak list
+	 */
+	public RawDataFile[] getRawDataFiles();
 
-    /**
-     * Returns all peaks for a raw data file
-     */
-    public ChromatographicPeak[] getPeaks(RawDataFile rawDataFile);
+	/**
+	 * Returns true if this peak list contains given file
+	 */
+	public boolean hasRawDataFile(RawDataFile file);
 
-    /**
-     * Returns all peaks on one row
-     */
-    public PeakListRow getRow(int row);
+	/**
+	 * Returns a raw data file
+	 * 
+	 * @param position
+	 *            Position of the raw data file in the matrix (running numbering
+	 *            from left 0,1,2,...)
+	 */
+	public RawDataFile getRawDataFile(int position);
 
-    /**
-     * Returns all peak list rows
-     */
-    public PeakListRow[] getRows();
+	/**
+	 * Returns number of rows in the alignment result
+	 */
+	public int getNumberOfRows();
 
-    /**
-     * Returns all rows with average retention time within given range
-     * 
-     * @param startRT
-     *            Start of the retention time range
-     * @param endRT
-     *            End of the retention time range
-     */
-    public PeakListRow[] getRowsInsideScanRange(Range rtRange);
+	/**
+	 * Returns the peak of a given raw data file on a give row of the peak list
+	 * 
+	 * @param row
+	 *            Row of the peak list
+	 * @param rawDataFile
+	 *            Raw data file where the peak is detected/estimated
+	 */
+	public Feature getPeak(int row, RawDataFile rawDataFile);
 
-    /**
-     * Returns all rows with average m/z within given range
-     * 
-     * @param startMZ
-     *            Start of the m/z range
-     * @param endMZ
-     *            End of the m/z range
-     */
-    public PeakListRow[] getRowsInsideMZRange(Range mzRange);
+	/**
+	 * Returns all peaks for a raw data file
+	 */
+	public Feature[] getPeaks(RawDataFile rawDataFile);
 
-    /**
-     * Returns all rows with average m/z and retention time within given range
-     * 
-     * @param startRT
-     *            Start of the retention time range
-     * @param endRT
-     *            End of the retention time range
-     * @param startMZ
-     *            Start of the m/z range
-     * @param endMZ
-     *            End of the m/z range
-     */
-    public PeakListRow[] getRowsInsideScanAndMZRange(Range rtRange,
-	    Range mzRange);
+	/**
+	 * Returns all peaks on one row
+	 */
+	public PeakListRow getRow(int row);
 
-    /**
-     * Returns all peaks overlapping with a retention time range
-     * 
-     * @param startRT
-     *            Start of the retention time range
-     * @param endRT
-     *            End of the retention time range
-     */
-    public ChromatographicPeak[] getPeaksInsideScanRange(RawDataFile file,
-	    Range rtRange);
+	/**
+	 * Returns all peak list rows
+	 */
+	public PeakListRow[] getRows();
 
-    /**
-     * Returns all peaks in a given m/z range
-     * 
-     * @param startMZ
-     *            Start of the m/z range
-     * @param endMZ
-     *            End of the m/z range
-     */
-    public ChromatographicPeak[] getPeaksInsideMZRange(RawDataFile file,
-	    Range mzRange);
+	/**
+	 * Returns all rows with average retention time within given range
+	 * 
+	 * @param startRT
+	 *            Start of the retention time range
+	 * @param endRT
+	 *            End of the retention time range
+	 */
+	public PeakListRow[] getRowsInsideScanRange(Range rtRange);
 
-    /**
-     * Returns all peaks in a given m/z & retention time ranges
-     * 
-     * @param startRT
-     *            Start of the retention time range
-     * @param endRT
-     *            End of the retention time range
-     * @param startMZ
-     *            Start of the m/z range
-     * @param endMZ
-     *            End of the m/z range
-     */
-    public ChromatographicPeak[] getPeaksInsideScanAndMZRange(RawDataFile file,
-	    Range rtRange, Range mzRange);
+	/**
+	 * Returns all rows with average m/z within given range
+	 * 
+	 * @param startMZ
+	 *            Start of the m/z range
+	 * @param endMZ
+	 *            End of the m/z range
+	 */
+	public PeakListRow[] getRowsInsideMZRange(Range mzRange);
 
-    /**
-     * Returns maximum raw data point intensity among all peaks in this peak
-     * list
-     * 
-     * @return Maximum intensity
-     */
-    public double getDataPointMaxIntensity();
+	/**
+	 * Returns all rows with average m/z and retention time within given range
+	 * 
+	 * @param startRT
+	 *            Start of the retention time range
+	 * @param endRT
+	 *            End of the retention time range
+	 * @param startMZ
+	 *            Start of the m/z range
+	 * @param endMZ
+	 *            End of the m/z range
+	 */
+	public PeakListRow[] getRowsInsideScanAndMZRange(Range rtRange,
+			Range mzRange);
 
-    /**
-     * Add a new row to the peak list
-     */
-    public void addRow(PeakListRow row);
+	/**
+	 * Returns all peaks overlapping with a retention time range
+	 * 
+	 * @param startRT
+	 *            Start of the retention time range
+	 * @param endRT
+	 *            End of the retention time range
+	 */
+	public Feature[] getPeaksInsideScanRange(RawDataFile file, Range rtRange);
 
-    /**
-     * Removes a row from this peak list
-     * 
-     */
-    public void removeRow(int row);
+	/**
+	 * Returns all peaks in a given m/z range
+	 * 
+	 * @param startMZ
+	 *            Start of the m/z range
+	 * @param endMZ
+	 *            End of the m/z range
+	 */
+	public Feature[] getPeaksInsideMZRange(RawDataFile file, Range mzRange);
 
-    /**
-     * Removes a row from this peak list
-     * 
-     */
-    public void removeRow(PeakListRow row);
+	/**
+	 * Returns all peaks in a given m/z & retention time ranges
+	 * 
+	 * @param startRT
+	 *            Start of the retention time range
+	 * @param endRT
+	 *            End of the retention time range
+	 * @param startMZ
+	 *            Start of the m/z range
+	 * @param endMZ
+	 *            End of the m/z range
+	 */
+	public Feature[] getPeaksInsideScanAndMZRange(RawDataFile file,
+			Range rtRange, Range mzRange);
 
-    /**
-     * Returns a row number of given peak
-     */
-    public int getPeakRowNum(ChromatographicPeak peak);
+	/**
+	 * Returns maximum raw data point intensity among all peaks in this peak
+	 * list
+	 * 
+	 * @return Maximum intensity
+	 */
+	public double getDataPointMaxIntensity();
 
-    /**
-     * Returns a row containing given peak
-     */
-    public PeakListRow getPeakRow(ChromatographicPeak peak);
+	/**
+	 * Add a new row to the peak list
+	 */
+	public void addRow(PeakListRow row);
 
-    public void addDescriptionOfAppliedTask(PeakListAppliedMethod appliedMethod);
+	/**
+	 * Removes a row from this peak list
+	 * 
+	 */
+	public void removeRow(int row);
 
-    /**
-     * Returns all tasks (descriptions) applied to this peak list
-     */
-    public PeakListAppliedMethod[] getAppliedMethods();
+	/**
+	 * Removes a row from this peak list
+	 * 
+	 */
+	public void removeRow(PeakListRow row);
 
-    /**
-     * Returns the whole m/z range of the peak list
-     */
-    public Range getRowsMZRange();
+	/**
+	 * Returns a row number of given peak
+	 */
+	public int getPeakRowNum(Feature peak);
 
-    /**
-     * Returns the whole retention time range of the peak list
-     */
-    public Range getRowsRTRange();
+	/**
+	 * Returns a row containing given peak
+	 */
+	public PeakListRow getPeakRow(Feature peak);
+
+	public void addDescriptionOfAppliedTask(PeakListAppliedMethod appliedMethod);
+
+	/**
+	 * Returns all tasks (descriptions) applied to this peak list
+	 */
+	public PeakListAppliedMethod[] getAppliedMethods();
+
+	/**
+	 * Returns the whole m/z range of the peak list
+	 */
+	public Range getRowsMZRange();
+
+	/**
+	 * Returns the whole retention time range of the peak list
+	 */
+	public Range getRowsRTRange();
 
 }

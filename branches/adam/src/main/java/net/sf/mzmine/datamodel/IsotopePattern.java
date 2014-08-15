@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -17,43 +17,39 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data;
+package net.sf.mzmine.datamodel;
 
 import javax.annotation.Nonnull;
 
 /**
  * This interface defines an isotope pattern which can be attached to a peak
  */
-public interface IsotopePattern {
+public interface IsotopePattern extends Spectrum {
 
-    /**
-     * Returns the isotope pattern status.
-     */
-    @Nonnull
-    public IsotopePatternStatus getStatus();
+	public enum IsotopePatternStatus {
 
-    /**
-     * Returns the number of isotopes in this pattern
-     */
-    public int getNumberOfIsotopes();
+		/**
+		 * Isotope pattern was detected by isotope grouper
+		 */
+		DETECTED,
 
-    /**
-     * Returns an array of m/z values and intensities of the isotopes. The size
-     * of the array is same as returned by getNumberOfIsotopes()
-     */
-    @Nonnull
-    public DataPoint[] getDataPoints();
+		/**
+		 * Isotope pattern was predicted by Isotope pattern calculator
+		 */
+		PREDICTED;
 
-    /**
-     * Returns the highest (in terms of intensity) isotope of this pattern.
-     */
-    @Nonnull
-    public DataPoint getHighestIsotope();
+	}
 
-    /**
-     * Returns a description of this isotope pattern (formula, etc.)
-     */
-    @Nonnull
-    public String getDescription();
+	/**
+	 * Returns the isotope pattern status.
+	 */
+	@Nonnull
+	public IsotopePatternStatus getStatus();
+
+	/**
+	 * Returns a description of this isotope pattern (formula, etc.)
+	 */
+	@Nonnull
+	public String getDescription();
 
 }
