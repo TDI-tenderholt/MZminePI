@@ -19,8 +19,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -446,6 +446,16 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xeustechnologies</groupId>
+			<artifactId>jtar</artifactId>
+			<version>1.1</version>
+		</dependency>
 	</dependencies>
 
 </project>
