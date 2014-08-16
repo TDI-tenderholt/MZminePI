@@ -46,14 +46,17 @@ public class MZmineProjectImpl implements MZmineProject {
 
     private Hashtable<UserParameter, Hashtable<RawDataFile, Object>> projectParametersAndValues;
 
-    private ProjectTreeModel treeModel;
-
+    private PeakListTreeModel peakListTreeModel;
+    private RawDataTreeModel rawDataTreeModel;
+    
     private File projectFile;
 
     public MZmineProjectImpl() {
 	
-		this.treeModel = new ProjectTreeModel(this);
-		projectParametersAndValues = new Hashtable<UserParameter, Hashtable<RawDataFile, Object>>();
+    	this.peakListTreeModel = new PeakListTreeModel(this);
+    	this.rawDataTreeModel = new RawDataTreeModel(this);
+    	
+    	projectParametersAndValues = new Hashtable<UserParameter, Hashtable<RawDataFile, Object>>();
     }
 
     public void activateProject() {
