@@ -72,18 +72,10 @@ public class MZmineProjectImpl implements MZmineProject {
 				// Update the name of the project in the window title
 				mainWindow.updateTitle();
 		
-				ProjectTree projectTree = mainWindow.getMainPanel().getProjectTree();
-				projectTree.setModel(treeModel);
-		
-				// Expand the rows Raw data files and Peak lists items by
-				// default
-				int childCount = treeModel.getChildCount(treeModel.getRoot());
-				for (int i = 0; i < childCount; i++) {
-				    TreeNode node = (TreeNode) treeModel.getChild(treeModel.getRoot(), i);
-				    TreeNode pathToRoot[] = treeModel.getPathToRoot(node);
-				    TreePath path = new TreePath(pathToRoot);
-				    projectTree.expandPath(path);
-				}
+				ProjectTree peakListTree = mainWindow.getMainPanel().getPeakListTree();
+				peakListTree.setModel(peakListTreeModel);
+				ProjectTree rawDataTree = mainWindow.getMainPanel().getRawDataTree();
+				rawDataTree.setModel(rawDataTreeModel);
 		    }
 		};
 		try {
@@ -136,9 +128,11 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void addFile(final RawDataFile newFile) {
 	
+    	assert newFile != null;
+    	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.addObject(newFile);
+		    	rawDataTreeModel.addObject(newFile);
 		    }
 		};
 		try {
@@ -153,9 +147,11 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void removeFile(final RawDataFile file) {
 	
+    	assert file != null;
+    	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.removeObject(file);
+		    	rawDataTreeModel.removeObject(file);
 		    }
 		};
 		try {
@@ -175,7 +171,7 @@ public class MZmineProjectImpl implements MZmineProject {
     {	
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.addObject(job);
+		    	rawDataTreeModel.addObject(job);
 		    }
 		};
 		try {
@@ -192,7 +188,7 @@ public class MZmineProjectImpl implements MZmineProject {
     {
 		Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.removeObject(job);
+		    	rawDataTreeModel.removeObject(job);
 		    }
 		};
 		try {
@@ -207,18 +203,20 @@ public class MZmineProjectImpl implements MZmineProject {
 
 
     public RawDataFile[] getDataFiles() {
-    	return treeModel.getDataFiles();
+    	return rawDataTreeModel.getDataFiles();
     }
 
     public PeakList[] getPeakLists() {
-    	return treeModel.getPeakLists();
+    	return peakListTreeModel.getPeakLists();
     }
 
     public void addPeakList(final PeakList peakList) {
 	
-		Runnable swingCode = new Runnable() {
+    	assert peakList != null;
+    	
+    	Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.addObject(peakList);
+		    	peakListTreeModel.addObject(peakList);
 		    }
 		};
 		try {
@@ -233,9 +231,11 @@ public class MZmineProjectImpl implements MZmineProject {
 
     public void removePeakList(final PeakList peakList) {
 	
-		Runnable swingCode = new Runnable() {
+    	assert peakList != null;
+    	
+    	Runnable swingCode = new Runnable() {
 		    public void run() {
-		    	treeModel.removeObject(peakList);
+		    	peakListTreeModel.removeObject(peakList);
 		    }
 		};
 		try {
@@ -265,7 +265,7 @@ public class MZmineProjectImpl implements MZmineProject {
     public void setProjectFile(File file) {
 		projectFile = file;
 		// Notify the tree model to update the name of the project
-		treeModel.notifyObjectChanged(this, false);
+		// treeModel.notifyObjectChanged(this, false);
     }
 
     public void removeProjectFile() {
@@ -284,11 +284,16 @@ public class MZmineProjectImpl implements MZmineProject {
 
     @Override
     public void notifyObjectChanged(Object object, boolean structureChanged) {
-    	treeModel.notifyObjectChanged(object, structureChanged);
+    	peakListTreeModel.notifyObjectChanged(object, structureChanged);
+    	rawDataTreeModel.notifyObjectChanged(object, structureChanged);
+    }
+    
+    public PeakListTreeModel getPeakListTreeModel() {
+    	return peakListTreeModel;
     }
 
-    public ProjectTreeModel getTreeModel() {
-    	return treeModel;
+    public RawDataTreeModel getRawDataTreeModel() {
+   		return rawDataTreeModel;
     }
 
 }
