@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.threed;
 
 import java.rmi.RemoteException;
 
-import net.sf.mzmine.data.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.util.Range;
 import visad.CellImpl;
 import visad.ConstantMap;
@@ -29,11 +29,11 @@ import visad.Data;
 import visad.DataReference;
 import visad.DataReferenceImpl;
 import visad.Display;
+import visad.DisplayImpl;
 import visad.GriddedSet;
 import visad.MathType;
 import visad.VisADException;
 import visad.bom.PickManipulationRendererJ3D;
-import visad.java3d.DisplayImplJ3D;
 
 /**
  * This class represents a 3D boxes which are displayed when user shift+clicks
@@ -41,8 +41,8 @@ import visad.java3d.DisplayImplJ3D;
  */
 public class ThreeDPeakCells extends CellImpl {
 
-    private final DisplayImplJ3D display;
-    private ChromatographicPeak[] peaks;
+    private final DisplayImpl display;
+    private Feature[] peaks;
     private DataReference[] references;
     private final MathType pointTupleType;
     private final PickManipulationRendererJ3D picker;
@@ -54,7 +54,7 @@ public class ThreeDPeakCells extends CellImpl {
      * @param pointType    the point tuple type.
      * @param pickRenderer pick renderer.
      */
-    public ThreeDPeakCells(final DisplayImplJ3D display3D,
+    public ThreeDPeakCells(final DisplayImpl display3D,
                            final MathType pointType,
                            final PickManipulationRendererJ3D pickRenderer) {
 
@@ -73,7 +73,7 @@ public class ThreeDPeakCells extends CellImpl {
      * @throws VisADException  if there are VisAD problems.
      * @throws RemoteException if there are VisAD problems.
      */
-    public void setPeaks(final ChromatographicPeak[] thePeaks) throws VisADException,
+    public void setPeaks(final Feature[] thePeaks) throws VisADException,
                                                                       RemoteException {
         synchronized (display) {
 
@@ -134,7 +134,7 @@ public class ThreeDPeakCells extends CellImpl {
      * @return the bounding box as a gridded set.
      * @throws VisADException if there are VisAD problems.
      */
-    private Data createPeakBox(final ChromatographicPeak peak) throws VisADException {
+    private Data createPeakBox(final Feature peak) throws VisADException {
 
         // Get the extents.
         final Range rtRange = peak.getRawDataPointsRTRange();

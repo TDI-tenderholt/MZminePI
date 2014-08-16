@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -28,9 +28,10 @@ import net.sf.mzmine.util.interpolatinglookuppaintscale.InterpolatingLookupPaint
  */
 enum TwoDPaletteType {
 
-    PALETTE_GRAY20, PALETTE_GRAY5, PALETTE_GRAY1, PALETTE_RAINBOW;
+    PALETTE_GRAY20, PALETTE_GRAY5, PALETTE_GRAY1, PALETTE_RAINBOW, PALETTE_LOG;
 
     private InterpolatingLookupPaintScale rainbowScale;
+    private InterpolatingLookupPaintScale logScale;
 
     TwoDPaletteType() {
         rainbowScale = new InterpolatingLookupPaintScale();
@@ -40,6 +41,14 @@ enum TwoDPaletteType {
         rainbowScale.add(0.25, Color.yellow);
         rainbowScale.add(0.5, Color.blue);
         rainbowScale.add(1, Color.cyan);
+        logScale = new InterpolatingLookupPaintScale();
+        //logScale.add(0, Color.cyan.darker());
+        //logScale.add(0.5, Color.white);
+        //logScale.add(1, Color.magenta.darker());
+        logScale.add(0, Color.cyan.darker());
+        logScale.add(0.333, Color.white);
+        logScale.add(0.666, Color.magenta.darker());
+        logScale.add(1, Color.blue);
     }
 
     /**
@@ -71,6 +80,9 @@ enum TwoDPaletteType {
 
         case PALETTE_RAINBOW:
             return (Color) rainbowScale.getPaint(intensity);
+
+        case PALETTE_LOG:
+            return (Color) logScale.getPaint(intensity);
 
         }
 

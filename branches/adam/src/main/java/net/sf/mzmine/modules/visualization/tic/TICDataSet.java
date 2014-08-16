@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -34,9 +34,9 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.taskcontrol.Task;
 import net.sf.mzmine.taskcontrol.TaskEvent;
@@ -365,7 +365,7 @@ public class TICDataSet extends AbstractXYZDataset implements Task {
 
             // Determine base peak value.
             final DataPoint basePeak =
-                    scan.getMZRange().isWithin(mzRange) ? scan.getBasePeak() : ScanUtils.findBasePeak(scan, mzRange);
+                    scan.getMZRange().isWithin(mzRange) ? scan.getHighestDataPoint() : ScanUtils.findBasePeak(scan, mzRange);
             if (basePeak != null) {
 
                 basePeakValues[index] = basePeak.getMZ();

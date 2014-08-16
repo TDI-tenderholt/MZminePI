@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -23,10 +23,10 @@ import java.lang.ref.SoftReference;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.taskcontrol.Task;
 import net.sf.mzmine.taskcontrol.TaskEvent;
@@ -91,7 +91,7 @@ class TwoDDataSet extends AbstractXYDataset implements Task {
 				return;
 
 			Scan scan = rawDataFile.getScan(scanNumbers[index]);
-			DataPoint scanBasePeak = scan.getBasePeak();
+			DataPoint scanBasePeak = scan.getHighestDataPoint();
 			retentionTimes[index] = scan.getRetentionTime();
 			basePeaks[index] = (scanBasePeak == null ? 0 : scanBasePeak
 					.getIntensity());

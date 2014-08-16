@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -39,10 +39,14 @@ class TwoDToolBar extends JToolBar {
 	static final Icon axesIcon = new ImageIcon("icons/axesicon.png");
 	static final Icon centroidIcon = new ImageIcon("icons/centroidicon.png");
 	static final Icon continuousIcon = new ImageIcon("icons/continuousicon.png");
-	static final Icon tooltipsIcon = new ImageIcon("icons/tooltips2dploticon.png");
-	static final Icon notooltipsIcon = new ImageIcon("icons/notooltips2dploticon.png");
+	static final Icon tooltipsIcon = new ImageIcon(
+			"icons/tooltips2dploticon.png");
+	static final Icon notooltipsIcon = new ImageIcon(
+			"icons/notooltips2dploticon.png");
+	static final Icon logScaleIcon = new ImageIcon("icons/logicon.png");
 
-	private JButton centroidContinuousButton, toggleContinuousModeButton, toggleTooltipButton;
+	private JButton centroidContinuousButton, toggleContinuousModeButton,
+			toggleTooltipButton;
 
 	TwoDToolBar(TwoDVisualizerWindow masterFrame) {
 
@@ -58,8 +62,8 @@ class TwoDToolBar extends JToolBar {
 
 		addSeparator();
 
-		toggleContinuousModeButton = GUIUtils.addButton(this, null, dataPointsIcon, masterFrame,
-				"SHOW_DATA_POINTS",
+		toggleContinuousModeButton = GUIUtils.addButton(this, null,
+				dataPointsIcon, masterFrame, "SHOW_DATA_POINTS",
 		"Toggle displaying of data points in continuous mode");
 
 		addSeparator();      
@@ -69,13 +73,20 @@ class TwoDToolBar extends JToolBar {
 
 		addSeparator();
 
-		centroidContinuousButton = GUIUtils.addButton(this, null, centroidIcon, masterFrame, "SWITCH_PLOTMODE",
+		centroidContinuousButton = GUIUtils.addButton(this, null, centroidIcon,
+				masterFrame, "SWITCH_PLOTMODE",
 		"Switch between continuous and centroided mode");
 
 		addSeparator();
 
-		toggleTooltipButton = GUIUtils.addButton(this, null, tooltipsIcon, masterFrame, "SWITCH_TOOLTIPS",
+		toggleTooltipButton = GUIUtils.addButton(this, null, tooltipsIcon,
+				masterFrame, "SWITCH_TOOLTIPS",
 		"Toggle displaying of tool tips on the peaks");
+
+		addSeparator();
+
+		GUIUtils.addButton(this, null, logScaleIcon, masterFrame,
+				"SWITCH_LOG_SCALE", "Set Log Scale");
 
 	}
 

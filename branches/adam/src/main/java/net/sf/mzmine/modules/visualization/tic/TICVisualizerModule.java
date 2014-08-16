@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -25,8 +25,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
@@ -67,7 +67,7 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 		TICVisualizerParameters.MZ_RANGE).getValue();
 	final PlotType plotType = parameters.getParameter(
 		TICVisualizerParameters.PLOT_TYPE).getValue();
-	final ChromatographicPeak[] selectionPeaks = parameters.getParameter(
+		final Feature[] selectionPeaks = parameters.getParameter(
 		TICVisualizerParameters.PEAKS).getValue();
 
 	if (dataFiles == null || dataFiles.length == 0) {
@@ -88,11 +88,11 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 
 	    if (weHaveData) {
 
-		MZmineCore.getDesktop().addInternalFrame(
-			new TICVisualizerWindow(dataFiles, plotType, msLevel,
-				rtRange, mzRange, selectionPeaks,
+				TICVisualizerWindow window = new TICVisualizerWindow(dataFiles,
+						plotType, msLevel, rtRange, mzRange, selectionPeaks,
 				((TICVisualizerParameters) parameters)
-					.getPeakLabelMap()));
+								.getPeakLabelMap());
+				window.setVisible(true);
 
 	    } else {
 
@@ -113,21 +113,24 @@ public class TICVisualizerModule implements MZmineProcessingModule {
     public static void setupNewTICVisualizer(final RawDataFile[] dataFiles) {
 
 	setupNewTICVisualizer(MZmineCore.getCurrentProject().getDataFiles(),
-		dataFiles, new ChromatographicPeak[0],
-		new ChromatographicPeak[0], null, null, null);
+				dataFiles, new Feature[0],
+				new Feature[0], null, null, null);
     }
 
     public static void setupNewTICVisualizer(final RawDataFile[] allFiles,
 	    final RawDataFile[] selectedFiles,
-	    final ChromatographicPeak[] allPeaks,
-	    final ChromatographicPeak[] selectedPeaks,
-	    final Map<ChromatographicPeak, String> peakLabels,
+			final Feature[] allPeaks,
+			final Feature[] selectedPeaks,
+			final Map<Feature, String> peakLabels,
 	    final Range rtRange, final Range mzRange) {
 
 	assert allFiles != null;
 
-	final TICVisualizerModule myInstance = MZmineCore.getModuleInstance(TICVisualizerModule.class);
-	final TICVisualizerParameters myParameters = (TICVisualizerParameters) MZmineCore.getConfiguration().getModuleParameters(TICVisualizerModule.class);
+		final TICVisualizerModule myInstance = MZmineCore
+				.getModuleInstance(TICVisualizerModule.class);
+		final TICVisualizerParameters myParameters = (TICVisualizerParameters) MZmineCore
+				.getConfiguration().getModuleParameters(
+						TICVisualizerModule.class);
 	myParameters.getParameter(TICVisualizerParameters.MS_LEVEL).setValue(1);
 	myParameters.getParameter(TICVisualizerParameters.PLOT_TYPE).setValue(
 		PlotType.BASEPEAK);
@@ -160,14 +163,14 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 
     public static void showNewTICVisualizerWindow(
 	    final RawDataFile[] dataFiles,
-	    final ChromatographicPeak[] selectionPeaks,
-	    final Map<ChromatographicPeak, String> peakLabels,
+			final Feature[] selectionPeaks,
+			final Map<Feature, String> peakLabels,
 	    final int msLevel, final PlotType plotType, final Range rtRange,
 	    final Range mzRange) {
 
-	MZmineCore.getDesktop().addInternalFrame(
-		new TICVisualizerWindow(dataFiles, plotType, msLevel, rtRange,
-			mzRange, selectionPeaks, peakLabels));
+		TICVisualizerWindow window = new TICVisualizerWindow(dataFiles,
+				plotType, msLevel, rtRange, mzRange, selectionPeaks, peakLabels);
+		window.setVisible(true);
     }
 
     @Override

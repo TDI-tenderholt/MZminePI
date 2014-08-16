@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -30,8 +30,8 @@ import java.text.NumberFormat;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.Range;
 
@@ -220,6 +220,12 @@ class TwoDPlot extends ChartPanel {
 			this.peakDataRenderer.setBaseToolTipGenerator(toolTipGenerator);
 		} else {
 			this.peakDataRenderer.setBaseToolTipGenerator(null);
+		}
+	}
+
+	public void setLogScale(boolean logscale) {
+		if (plot != null) {
+			plot.setLogScale(logscale);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -31,7 +31,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFile;
 
 /**
  * A pop-up menu to select chromatograms for export.

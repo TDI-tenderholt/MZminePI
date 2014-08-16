@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -19,37 +19,11 @@
 
 package net.sf.mzmine.modules.peaklistmethods.identification.mascot;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Vector;
-
-import net.sf.mzmine.main.MZmineCore;
-import net.sf.mzmine.parameters.Parameter;
-import net.sf.mzmine.parameters.ParameterSet;
-import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
-import net.sf.mzmine.parameters.parametertypes.BooleanParameter;
-import net.sf.mzmine.parameters.parametertypes.ComboParameter;
-import net.sf.mzmine.parameters.parametertypes.MultiChoiceParameter;
-import net.sf.mzmine.parameters.parametertypes.PeakListsParameter;
-import net.sf.mzmine.parameters.parametertypes.StringParameter;
-
-import org.w3c.dom.Element;
-
-import com.compomics.mslims.util.http.forms.HTTPForm;
-import com.compomics.mslims.util.http.forms.inputs.InputInterface;
-import com.compomics.mslims.util.http.forms.inputs.RadioInput;
-import com.compomics.mslims.util.http.forms.inputs.SelectInput;
-import com.compomics.mslims.util.http.forms.inputs.TextFieldInput;
 
 public class MascotParameters extends SimpleParameterSet {
 
-	public static final PeakListsParameter peakLists = new PeakListsParameter();
+	/*public static final PeakListsParameter peakLists = new PeakListsParameter();
 
 	ArrayList<Parameter> para = new ArrayList<Parameter>();
 	HTTPForm iForm = null;
@@ -186,7 +160,7 @@ public class MascotParameters extends SimpleParameterSet {
 		 * iForm.getInputByName("CHARGE").setValue(Integer.toString(charge)); }
 		 * 
 		 * return iForm.getSubmissionString();
-		 */
+		 
 		return null;
 	}
 
@@ -218,5 +192,5 @@ public class MascotParameters extends SimpleParameterSet {
 	public ParameterSet cloneParameter() {
 		return this;
 	}
-
+*/
 }

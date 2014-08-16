@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -37,9 +37,9 @@ import javax.swing.event.RowSorterEvent;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTableParameters;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTablePopupMenu;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTableWindow;

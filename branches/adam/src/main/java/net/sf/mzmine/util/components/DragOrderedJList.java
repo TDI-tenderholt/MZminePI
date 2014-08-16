@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -19,6 +19,7 @@
 
 package net.sf.mzmine.util.components;
 
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -33,23 +34,34 @@ import javax.swing.ListModel;
  */
 public class DragOrderedJList extends JList<Object> {
 
+    private Component referent;
     private int dragFrom;
 
     /**
      * Create the list.
      */
-    public DragOrderedJList() {
+    public DragOrderedJList(Component ref) {
 
         // Initialize.
         super(new DefaultListModel());
         dragFrom = -1;
 
+        referent = ref;
+        
         // Add mouse button pressed listener.
         addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(final MouseEvent e) {
                 dragFrom = getSelectedIndex();
+                // Dispatch event to "referent" component
+                referent.dispatchEvent(e);
+            }
+
+            @Override
+            public void mouseReleased(final MouseEvent e) {
+                // Dispatch event to "referent" component
+                referent.dispatchEvent(e);
             }
         });
 
@@ -88,8 +100,9 @@ public class DragOrderedJList extends JList<Object> {
         super.setModel(model);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public void setListData(final Vector<?> listData) {
+    public void setListData(final Vector listData) {
         final DefaultListModel model = new DefaultListModel();
         for (final Object element : listData) {
             model.addElement(element);

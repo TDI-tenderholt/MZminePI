@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -34,12 +34,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.SimplePeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.peaklistmethods.identification.dbsearch.OnlineDBSearchModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.formulaprediction.FormulaPredictionModule;
@@ -228,7 +228,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
                                 .values().length)
                                 / DataFileColumnType.values().length);
 
-                final ChromatographicPeak clickedPeak = peakList.getRow(
+                final Feature clickedPeak = peakList.getRow(
                         table.convertRowIndexToModel(clickedRow)).getPeak(
                         clickedDataFile);
 
@@ -302,18 +302,18 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
         if (showXICItem.equals(src) && allClickedPeakListRows.length != 0) {
 
             // Map peaks to their identity labels.
-            final Map<ChromatographicPeak, String> labelsMap = new HashMap<ChromatographicPeak, String>(
+            final Map<Feature, String> labelsMap = new HashMap<Feature, String>(
                     allClickedPeakListRows.length);
 
             final RawDataFile selectedDataFile = clickedDataFile == null ? allClickedPeakListRows[0]
                     .getBestPeak().getDataFile() : clickedDataFile;
 
             Range mzRange = null;
-            final List<ChromatographicPeak> selectedPeaks = new ArrayList<ChromatographicPeak>(
+            final List<Feature> selectedPeaks = new ArrayList<Feature>(
                     allClickedPeakListRows.length);
             for (final PeakListRow row : allClickedPeakListRows) {
 
-                for (final ChromatographicPeak peak : row.getPeaks()) {
+                for (final Feature peak : row.getPeaks()) {
                     if (mzRange == null) {
                         mzRange = peak.getRawDataPointsMZRange();
                     } else {
@@ -321,7 +321,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
                     }
                 }
 
-                final ChromatographicPeak filePeak = row
+                final Feature filePeak = row
                         .getPeak(selectedDataFile);
                 if (filePeak != null) {
 
@@ -338,7 +338,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
 
             TICVisualizerModule.showNewTICVisualizerWindow(
                     new RawDataFile[] { selectedDataFile }, selectedPeaks
-                            .toArray(new ChromatographicPeak[selectedPeaks
+                            .toArray(new Feature[selectedPeaks
                                     .size()]), labelsMap, 1, PlotType.BASEPEAK,
                     selectedDataFile.getDataRTRange(1), mzRange);
         }
@@ -346,23 +346,23 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
         if (showXICSetupItem.equals(src) && allClickedPeakListRows.length != 0) {
 
             // Map peaks to their identity labels.
-            final Map<ChromatographicPeak, String> labelsMap = new HashMap<ChromatographicPeak, String>(
+            final Map<Feature, String> labelsMap = new HashMap<Feature, String>(
                     allClickedPeakListRows.length);
 
             final RawDataFile[] selectedDataFiles = clickedDataFile == null ? peakList
                     .getRawDataFiles() : new RawDataFile[] { clickedDataFile };
 
             Range mzRange = null;
-            final ArrayList<ChromatographicPeak> allClickedPeaks = new ArrayList<ChromatographicPeak>(
+            final ArrayList<Feature> allClickedPeaks = new ArrayList<Feature>(
                     allClickedPeakListRows.length);
-            final ArrayList<ChromatographicPeak> selectedClickedPeaks = new ArrayList<ChromatographicPeak>(
+            final ArrayList<Feature> selectedClickedPeaks = new ArrayList<Feature>(
                     allClickedPeakListRows.length);
             for (final PeakListRow row : allClickedPeakListRows) {
 
                 // Label the peak with the row's preferred identity.
                 final PeakIdentity identity = row.getPreferredPeakIdentity();
 
-                for (final ChromatographicPeak peak : row.getPeaks()) {
+                for (final Feature peak : row.getPeaks()) {
 
                     allClickedPeaks.add(peak);
                     if (peak.getDataFile() == clickedDataFile) {
@@ -386,17 +386,17 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
                             MZmineCore.getCurrentProject().getDataFiles(),
                             selectedDataFiles,
                             allClickedPeaks
-                                    .toArray(new ChromatographicPeak[allClickedPeaks
+                                    .toArray(new Feature[allClickedPeaks
                                             .size()]),
                             selectedClickedPeaks
-                                    .toArray(new ChromatographicPeak[selectedClickedPeaks
+                                    .toArray(new Feature[selectedClickedPeaks
                                             .size()]), labelsMap,
                             selectedDataFiles[0].getDataRTRange(1), mzRange);
         }
 
         if (show2DItem.equals(src)) {
 
-            final ChromatographicPeak showPeak = getSelectedPeak();
+            final Feature showPeak = getSelectedPeak();
             if (showPeak != null) {
 
                 TwoDVisualizerModule.show2DVisualizerSetupDialog(
@@ -407,7 +407,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
 
         if (show3DItem.equals(src)) {
 
-            final ChromatographicPeak showPeak = getSelectedPeak();
+            final Feature showPeak = getSelectedPeak();
             if (showPeak != null) {
 
                 ThreeDVisualizerModule.setupNew3DVisualizer(
@@ -424,7 +424,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
 
         if (showSpectrumItem.equals(src)) {
 
-            final ChromatographicPeak showPeak = getSelectedPeak();
+            final Feature showPeak = getSelectedPeak();
             if (showPeak != null) {
 
                 SpectraVisualizerModule.showNewSpectrumWindow(
@@ -435,7 +435,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
 
         if (showMSMSItem.equals(src)) {
 
-            final ChromatographicPeak showPeak = getSelectedPeak();
+            final Feature showPeak = getSelectedPeak();
             if (showPeak != null) {
 
                 final int scanNumber = showPeak
@@ -456,7 +456,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
 
         if (showIsotopePatternItem.equals(src)) {
 
-            final ChromatographicPeak showPeak = getSelectedPeak();
+            final Feature showPeak = getSelectedPeak();
             if (showPeak != null && showPeak.getIsotopePattern() != null) {
 
                 SpectraVisualizerModule.showNewSpectrumWindow(
@@ -575,7 +575,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
      *            the peak.
      * @return The peak's m/z range.
      */
-    private static Range getPeakMZRange(final ChromatographicPeak peak) {
+    private static Range getPeakMZRange(final Feature peak) {
 
         final Range peakMZRange = peak.getRawDataPointsMZRange();
 
@@ -599,7 +599,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
      *            the peak.
      * @return The peak's RT range.
      */
-    private static Range getPeakRTRange(final ChromatographicPeak peak) {
+    private static Range getPeakRTRange(final Feature peak) {
 
         final Range range = peak.getRawDataPointsRTRange();
         return new Range(Math.max(0.0, range.getMin() - range.getSize()),
@@ -611,7 +611,7 @@ public class PeakListTablePopupMenu extends JPopupMenu implements
      * 
      * @return the peak.
      */
-    private ChromatographicPeak getSelectedPeak() {
+    private Feature getSelectedPeak() {
 
         return clickedDataFile != null ? clickedPeakListRow
                 .getPeak(clickedDataFile) : clickedPeakListRow.getBestPeak();

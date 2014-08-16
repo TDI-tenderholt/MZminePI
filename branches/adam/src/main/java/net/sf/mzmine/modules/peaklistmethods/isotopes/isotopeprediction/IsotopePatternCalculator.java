@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -23,12 +23,12 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.IsotopePatternStatus;
-import net.sf.mzmine.data.Polarity;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
-import net.sf.mzmine.data.impl.SimpleIsotopePattern;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.Polarity;
+import net.sf.mzmine.datamodel.IsotopePattern.IsotopePatternStatus;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.impl.SimpleIsotopePattern;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -130,7 +130,7 @@ public class IsotopePatternCalculator implements MZmineModule {
     public static IsotopePattern normalizeIsotopePattern(
 	    IsotopePattern pattern, double normalizedValue) {
 
-	DataPoint highestIsotope = pattern.getHighestIsotope();
+	DataPoint highestIsotope = pattern.getHighestDataPoint();
 	DataPoint dataPoints[] = pattern.getDataPoints();
 
 	double maxIntensity = highestIsotope.getIntensity();

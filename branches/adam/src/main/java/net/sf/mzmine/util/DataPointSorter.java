@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,7 +21,7 @@ package net.sf.mzmine.util;
 
 import java.util.Comparator;
 
-import net.sf.mzmine.data.DataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
 
 /**
  * This class implements Comparator class to provide a comparison between two
@@ -71,11 +71,10 @@ public class DataPointSorter implements Comparator<DataPoint> {
 				return result;
 			else
 				return -result;
-
-		}
-
-		// We should never get here, so throw exception
+		default:
+			// We should never get here, so throw an exception
 		throw (new IllegalStateException());
+		}
 
 	}
 }
