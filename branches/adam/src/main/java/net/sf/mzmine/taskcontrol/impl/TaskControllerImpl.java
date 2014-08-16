@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
 
 import net.sf.mzmine.desktop.preferences.MZminePreferences;
 import net.sf.mzmine.desktop.preferences.NumOfThreadsParameter;
@@ -52,7 +50,6 @@ public class TaskControllerImpl implements TaskController, Runnable {
     private Thread taskControllerThread;
 
     private TaskQueue taskQueue;
-    private TaskProgressWindow taskWindow;
 
     /**
      * This vector contains references to all running threads of NORMAL
@@ -76,11 +73,9 @@ public class TaskControllerImpl implements TaskController, Runnable {
 	taskControllerThread.setPriority(Thread.MIN_PRIORITY);
 	taskControllerThread.start();
 
-	// Create the task progress window
-	taskWindow = new TaskProgressWindow();
     }
 
-    TaskQueue getTaskQueue() {
+	public TaskQueue getTaskQueue() {
 	return taskQueue;
     }
 
@@ -111,24 +106,6 @@ public class TaskControllerImpl implements TaskController, Runnable {
 	// Wake up the task controller thread
 	synchronized (this) {
 	    this.notifyAll();
-	}
-
-	// Show the task list component, if we have GUI
-	if (MZmineCore.getDesktop().getMainFrame() != null) {
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    if (taskWindow.getParent() == null) {
-
-			MZmineCore.getDesktop().addInternalFrame(taskWindow);
-
-			// This is a bug fix for MZmine bug #3489524
-			// The taskWindow was created before the DesktopSetup
-			// was executed, so we need to update the UI here
-			SwingUtilities.updateComponentTreeUI(taskWindow);
-		    }
-		    taskWindow.setVisible(true);
-		}
-	    });
 	}
 
     }
@@ -165,13 +142,6 @@ public class TaskControllerImpl implements TaskController, Runnable {
 
 	    // Check if all tasks in the queue are finished
 	    if (taskQueue.allTasksFinished()) {
-		if (MZmineCore.getDesktop().getMainFrame() != null) {
-		    SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-			    taskWindow.setVisible(false);
-			}
-		    });
-		}
 		taskQueue.clear();
 		continue;
 	    }

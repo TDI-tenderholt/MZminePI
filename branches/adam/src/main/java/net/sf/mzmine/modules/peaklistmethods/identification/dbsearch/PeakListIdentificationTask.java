@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,12 +24,12 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.IonizationType;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IonizationType;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineProcessingStep;
 import net.sf.mzmine.modules.peaklistmethods.isotopes.isotopepatternscore.IsotopePatternScoreCalculator;
@@ -178,7 +178,7 @@ public class PeakListIdentificationTask extends AbstractTask {
 	currentRow = row;
 
 	// Determine peak charge.
-	final ChromatographicPeak bestPeak = row.getBestPeak();
+	final Feature bestPeak = row.getBestPeak();
 	int charge = bestPeak.getCharge();
 	if (charge <= 0) {
 	    charge = 1;
@@ -230,7 +230,7 @@ public class PeakListIdentificationTask extends AbstractTask {
 
 	    // Notify the GUI about the change in the project
 	    MZmineCore.getCurrentProject().notifyObjectChanged(row, false);
-	    MZmineCore.getDesktop().getMainFrame().repaint();
+	    MZmineCore.getDesktop().getMainWindow().repaint();
 	}
     }
 }

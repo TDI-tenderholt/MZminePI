@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,11 +24,10 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.event.TreeModelListener;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
@@ -41,23 +40,8 @@ public class HeadLessDesktop implements Desktop {
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Override
-    public JFrame getMainFrame() {
+    public JFrame getMainWindow() {
 	return null;
-    }
-
-    @Override
-    public void addInternalFrame(JInternalFrame frame) {
-	throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public JInternalFrame[] getInternalFrames() {
-	throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public JInternalFrame getSelectedFrame() {
-	throw new UnsupportedOperationException();
     }
 
     @Override
@@ -113,16 +97,6 @@ public class HeadLessDesktop implements Desktop {
     }
 
     @Override
-    public void addProjectTreeListener(TreeModelListener listener) {
-	throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void removeProjectTreeListener(TreeModelListener listener) {
-	throw new UnsupportedOperationException();
-    }
-
-    @Override
     public @Nonnull
     Class<? extends ParameterSet> getParameterSetClass() {
 	return SimpleParameterSet.class;
@@ -140,5 +114,29 @@ public class HeadLessDesktop implements Desktop {
 	System.exit(0);
 	return ExitCode.OK;
     }
+
+	@Override
+	public void addRawDataTreeListener(TreeModelListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addPeakListTreeListener(TreeModelListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeRawDataTreeListener(TreeModelListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removePeakListTreeListener(TreeModelListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

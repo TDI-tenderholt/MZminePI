@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -32,11 +32,10 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JInternalFrame;
 import javax.xml.parsers.ParserConfigurationException;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.projectmethods.projectload.version_2_0.PeakListOpenHandler_2_0;
 import net.sf.mzmine.modules.projectmethods.projectload.version_2_0.RawDataFileOpenHandler_2_0;
@@ -53,6 +52,7 @@ import net.sf.mzmine.project.impl.MZmineProjectImpl;
 import net.sf.mzmine.taskcontrol.AbstractTask;
 import net.sf.mzmine.taskcontrol.TaskStatus;
 import net.sf.mzmine.util.ExceptionUtils;
+import net.sf.mzmine.util.GUIUtils;
 import net.sf.mzmine.util.StreamCopy;
 
 import org.xml.sax.SAXException;
@@ -175,14 +175,8 @@ public class ProjectOpeningTask extends AbstractTask {
             if (isCanceled())
                 return;
 
-            // Close all open frames related to previous project
-            JInternalFrame frames[] = MZmineCore.getDesktop()
-                    .getInternalFrames();
-            for (JInternalFrame frame : frames) {
-                // Use doDefailtCloseAction() instead of dispose() to protect
-                // the TaskProgressWindow from disposing
-                frame.doDefaultCloseAction();
-            }
+    		// Close all windows related to previous project
+    		GUIUtils.closeAllWindows();
 
             // Replace the current project with the new one
             ProjectManager projectManager = MZmineCore.getProjectManager();
