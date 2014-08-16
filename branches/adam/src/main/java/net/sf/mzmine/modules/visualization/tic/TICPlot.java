@@ -32,7 +32,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
