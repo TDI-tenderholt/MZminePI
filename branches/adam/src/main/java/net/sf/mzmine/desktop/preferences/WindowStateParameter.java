@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -65,8 +65,8 @@ public class WindowStateParameter implements Parameter<Object> {
 
 			// Only update the window state on startup
 			if (firstMZmineStartup
-					&& (MZmineCore.getDesktop().getMainFrame() != null)) {
-				JFrame mainFrame = MZmineCore.getDesktop().getMainFrame();
+					&& (MZmineCore.getDesktop().getMainWindow() != null)) {
+				JFrame mainFrame = MZmineCore.getDesktop().getMainWindow();
 				mainFrame.setLocation(posX, posY);
 			}
 		}
@@ -92,8 +92,8 @@ public class WindowStateParameter implements Parameter<Object> {
 
 			// Only update the window state on startup
 			if (firstMZmineStartup
-					&& (MZmineCore.getDesktop().getMainFrame() != null)) {
-				JFrame mainFrame = MZmineCore.getDesktop().getMainFrame();
+					&& (MZmineCore.getDesktop().getMainWindow() != null)) {
+				JFrame mainFrame = MZmineCore.getDesktop().getMainWindow();
 				mainFrame.setSize(width, height);
 				mainFrame.setExtendedState(newState);
 			}
@@ -109,7 +109,7 @@ public class WindowStateParameter implements Parameter<Object> {
 	public void saveValueToXML(Element xmlElement) {
 
 		// Get window properties
-		JFrame mainFrame = MZmineCore.getDesktop().getMainFrame();
+		JFrame mainFrame = MZmineCore.getDesktop().getMainWindow();
 		if (mainFrame == null)
 			return;
 

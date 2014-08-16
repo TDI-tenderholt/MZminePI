@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -27,20 +27,20 @@ import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.impl.SimplePeakList;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.Range;
 
-class InfoWindow extends JInternalFrame {
+class InfoWindow extends JFrame {
 
 	private NumberFormat rtFormat = MZmineCore.getConfiguration().getRTFormat();
 	private NumberFormat mzFormat = MZmineCore.getConfiguration().getMZFormat();
@@ -50,7 +50,7 @@ class InfoWindow extends JInternalFrame {
 
 	InfoWindow(PeakList peakList) {
 
-		super("Peak list information", true, true, true, true);
+		super("Peak list information");
 
 		// this.setTitle(peakList.getName() + " information");
 

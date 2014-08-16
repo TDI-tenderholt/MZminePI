@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -23,9 +23,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 
-import net.sf.mzmine.data.PeakList;
+import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.util.ExitCode;
 import net.sf.mzmine.util.dialogs.AxesSetupDialog;
 import net.sf.mzmine.util.interpolatinglookuppaintscale.InterpolatingLookupPaintScale;
@@ -33,7 +33,7 @@ import net.sf.mzmine.util.interpolatinglookuppaintscale.InterpolatingLookupPaint
 
 import org.jfree.data.xy.AbstractXYZDataset;
 
-public class RTMZAnalyzerWindow extends JInternalFrame implements
+public class RTMZAnalyzerWindow extends JFrame implements
 	ActionListener {
 
     private RTMZToolbar toolbar;
@@ -41,7 +41,7 @@ public class RTMZAnalyzerWindow extends JInternalFrame implements
 
     public RTMZAnalyzerWindow(AbstractXYZDataset dataset, PeakList peakList,
 	    InterpolatingLookupPaintScale paintScale) {
-	super(null, true, true, true, true);
+	super("");
 
 	toolbar = new RTMZToolbar(this);
 	add(toolbar, BorderLayout.EAST);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,8 +21,7 @@ package net.sf.mzmine.modules.visualization.peaksummary;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.main.MZmineCore;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
@@ -36,8 +35,7 @@ public class PeakSummaryVisualizerModule implements MZmineModule {
      * @see net.sf.mzmine.modules.MZmineModule#getName()
      */
     @Override
-    public @Nonnull
-    String getName() {
+	public @Nonnull String getName() {
 	return "Peak list row summary";
     }
 
@@ -46,12 +44,11 @@ public class PeakSummaryVisualizerModule implements MZmineModule {
      */
     public static void showNewPeakSummaryWindow(PeakListRow row) {
 	PeakSummaryWindow newWindow = new PeakSummaryWindow(row);
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+		newWindow.setVisible(true);
     }
 
     @Override
-    public @Nonnull
-    Class<? extends ParameterSet> getParameterSetClass() {
+	public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
 	return SimpleParameterSet.class;
     }
 

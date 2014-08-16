@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -36,7 +36,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.tic.TICPlot;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -118,13 +118,13 @@ public abstract class ParameterSetupDialogWithChromatogramPreview extends
 		updateMinimumSize();
 		pack();
 		parametersChanged();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 	    } else {
 		mainPanel.remove(ticPlot);
 		pnlPreviewFields.setVisible(false);
 		updateMinimumSize();
 		pack();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 	    }
 	}
 
@@ -226,7 +226,7 @@ public abstract class ParameterSetupDialogWithChromatogramPreview extends
 	updateMinimumSize();
 	pack();
 
-	setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+	setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 
     }
 

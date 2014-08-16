@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -57,7 +57,7 @@ public class ProjectLoaderParameters extends SimpleParameterSet {
 
 		chooser.setMultiSelectionEnabled(false);
 
-		int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
+		int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainWindow());
 		if (returnVal != JFileChooser.APPROVE_OPTION)
 			return ExitCode.CANCEL;
 

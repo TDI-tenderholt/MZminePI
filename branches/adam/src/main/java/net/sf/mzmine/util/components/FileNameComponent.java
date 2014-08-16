@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -82,7 +82,7 @@ public class FileNameComponent extends JPanel implements ActionListener {
 		}
 
 		int returnVal = fileChooser.showDialog(MZmineCore.getDesktop()
-				.getMainFrame(), "Select file");
+				.getMainWindow(), "Select file");
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String selectedPath = fileChooser.getSelectedFile()

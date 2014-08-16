@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,19 +21,19 @@ package net.sf.mzmine.modules.visualization.peaksummary;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.util.components.PeakSummaryComponent;
 
 /**
  * 
  */
-public class PeakSummaryWindow extends JInternalFrame {
+public class PeakSummaryWindow extends JFrame {
 
     public PeakSummaryWindow(PeakListRow row) {
 
-        super(row.toString(), true, true, true, true);
+        super(row.toString());
 
         setLayout(new BorderLayout());
 

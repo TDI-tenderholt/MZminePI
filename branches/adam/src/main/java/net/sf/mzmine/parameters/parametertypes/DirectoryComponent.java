@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -107,7 +107,7 @@ public class DirectoryComponent extends JPanel implements ActionListener {
         }
 
         // Open chooser.
-        if (chooser.showDialog(MZmineCore.getDesktop().getMainFrame(), TITLE) == JFileChooser.APPROVE_OPTION) {
+        if (chooser.showDialog(MZmineCore.getDesktop().getMainWindow(), TITLE) == JFileChooser.APPROVE_OPTION) {
 
             txtDirectory.setText(chooser.getSelectedFile().getPath());
         }

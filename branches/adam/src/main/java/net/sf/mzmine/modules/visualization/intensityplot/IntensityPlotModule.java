@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -23,8 +23,8 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
@@ -56,7 +56,7 @@ public class IntensityPlotModule implements MZmineProcessingModule {
     public ExitCode runModule(@Nonnull ParameterSet parameters,
 	    @Nonnull Collection<Task> tasks) {
 	IntensityPlotFrame newFrame = new IntensityPlotFrame(parameters);
-	MZmineCore.getDesktop().addInternalFrame(newFrame);
+	newFrame.setVisible(true);
 	return ExitCode.OK;
     }
 
@@ -96,7 +96,7 @@ public class IntensityPlotModule implements MZmineProcessingModule {
 	if (exitCode == ExitCode.OK) {
 	    IntensityPlotFrame newFrame = new IntensityPlotFrame(
 		    parameters.cloneParameter());
-	    MZmineCore.getDesktop().addInternalFrame(newFrame);
+	    newFrame.setVisible(true);
 	}
 
     }

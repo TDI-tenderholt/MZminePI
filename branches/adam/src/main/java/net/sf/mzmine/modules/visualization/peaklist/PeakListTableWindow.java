@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -25,18 +25,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable.PrintMode;
 
-import net.sf.mzmine.data.PeakList;
+import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.peaklist.table.PeakListTable;
 import net.sf.mzmine.modules.visualization.peaklist.table.PeakListTableColumnModel;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.util.ExitCode;
 
-public class PeakListTableWindow extends JInternalFrame implements
+public class PeakListTableWindow extends JFrame implements
 		ActionListener {
 
 	private JScrollPane scrollPane;
@@ -50,12 +50,9 @@ public class PeakListTableWindow extends JInternalFrame implements
 	 */
 	PeakListTableWindow(PeakList peakList, ParameterSet parameters) {
 
-		super(peakList.getName(), true, true, true, true);
+		super(peakList.getName());
 
 		this.parameters = parameters;
-
-		setResizable(true);
-		setIconifiable(true);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBackground(Color.white);

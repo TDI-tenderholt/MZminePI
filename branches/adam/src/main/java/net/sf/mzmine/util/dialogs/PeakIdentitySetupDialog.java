@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -33,9 +33,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.ExitCode;
@@ -69,7 +69,7 @@ public class PeakIdentitySetupDialog extends JDialog implements ActionListener {
 			PeakIdentity editIdentity) {
 
 		// Make dialog modal
-		super(MZmineCore.getDesktop().getMainFrame(), true);
+		super(MZmineCore.getDesktop().getMainWindow(), true);
 
 		this.peakListRow = peakListRow;
 
@@ -152,7 +152,7 @@ public class PeakIdentitySetupDialog extends JDialog implements ActionListener {
 		add(pnlAll);
 		setTitle("Compound Identity setup dialog");
 		pack();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 
 	}
 

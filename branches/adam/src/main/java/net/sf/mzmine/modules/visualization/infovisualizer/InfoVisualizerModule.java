@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,8 +21,7 @@ package net.sf.mzmine.modules.visualization.infovisualizer;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.main.MZmineCore;
+import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
@@ -38,7 +37,7 @@ public class InfoVisualizerModule implements MZmineModule {
 
     public static void showNewPeakListInfo(PeakList peakList) {
 	InfoWindow newWindow = new InfoWindow(peakList);
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+	newWindow.setVisible(true);
     }
 
     @Override

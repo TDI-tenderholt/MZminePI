@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -25,9 +25,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.spectra.SpectraVisualizerModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -37,7 +37,7 @@ import net.sf.mzmine.util.Range;
 /**
  * Neutral loss visualizer using JFreeChart library
  */
-public class NeutralLossVisualizerWindow extends JInternalFrame implements
+public class NeutralLossVisualizerWindow extends JFrame implements
         ActionListener {
 
     private NeutralLossToolBar toolBar;
@@ -50,7 +50,7 @@ public class NeutralLossVisualizerWindow extends JInternalFrame implements
     public NeutralLossVisualizerWindow(RawDataFile dataFile,
             ParameterSet parameters) {
 
-        super(dataFile.getName(), true, true, true, true);
+        super(dataFile.getName());
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBackground(Color.white);

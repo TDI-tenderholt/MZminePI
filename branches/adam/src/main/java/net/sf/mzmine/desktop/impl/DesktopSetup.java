@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -97,6 +97,10 @@ public class DesktopSetup {
 						"Error setting mac-specific properties", e);
 			}
 		}
+
+		// Let the OS decide the location of new windows. Otherwise, all windows
+		// would appear at the top left corner by default.
+		System.setProperty("java.awt.Window.locationByPlatform", "true");
 
 	}
 

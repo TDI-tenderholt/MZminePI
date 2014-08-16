@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.peaklist;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.PeakList;
+import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -40,7 +40,7 @@ public class PeakListTableModule implements MZmineModule {
 		.getModuleParameters(PeakListTableModule.class);
 	PeakListTableWindow window = new PeakListTableWindow(peakList,
 		parameters);
-	MZmineCore.getDesktop().addInternalFrame(window);
+		window.setVisible(true);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,23 +24,23 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.util.Range;
 
-public class HistogramWindow extends JInternalFrame {
+public class HistogramWindow extends JFrame {
 
     private HistogramChart histogram;
 
     public HistogramWindow(ParameterSet parameters) {
 
-        super(null, true, true, true, true);
+        super("");
         
         PeakList peakList = parameters.getParameter(HistogramParameters.peakList).getValue()[0];
         

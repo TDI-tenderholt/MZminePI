@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -333,7 +333,7 @@ public class TICPlot extends ChartPanel {
             final double yTick = yAxis.getTickUnit().getSize();
 
             // Set the range of these frames
-            for (final JInternalFrame frame : MZmineCore.getDesktop().getInternalFrames()) {
+            for (final Window frame : JFrame.getWindows()) {
                 if (frame instanceof TICVisualizerWindow) {
 
                     final TICVisualizerWindow ticFrame = (TICVisualizerWindow) frame;

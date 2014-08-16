@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -69,7 +69,7 @@ public class InterpolatingLookupPaintScaleSetupDialog extends JDialog implements
 
 	public InterpolatingLookupPaintScaleSetupDialog(
 			InterpolatingLookupPaintScale paintScale) {
-		super(MZmineCore.getDesktop().getMainFrame(), "Select colors for paint scale", true);
+		super(MZmineCore.getDesktop().getMainWindow(), "Select colors for paint scale", true);
 
 		// Build the form
 		initComponents();
@@ -145,7 +145,7 @@ public class InterpolatingLookupPaintScaleSetupDialog extends JDialog implements
 		panelControlsAndList.add(panelOKCancelButtons, BorderLayout.SOUTH);
 
 		pack();
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 		setResizable(false);
 
 	}

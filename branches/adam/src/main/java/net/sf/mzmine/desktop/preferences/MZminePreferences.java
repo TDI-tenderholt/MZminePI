@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -84,7 +84,7 @@ public class MZminePreferences extends SimpleParameterSet {
 	    updateSystemProxySettings();
 
 	    // Repaint windows to update number formats
-	    MZmineCore.getDesktop().getMainFrame().repaint();
+	    MZmineCore.getDesktop().getMainWindow().repaint();
 	}
 
 	return retVal;
@@ -105,9 +105,11 @@ public class MZminePreferences extends SimpleParameterSet {
 		    ProxySettings.proxyAddress).getValue();
 	    String port = proxyParams.getParameter(ProxySettings.proxyPort)
 		    .getValue();
+	    System.setProperty("http.proxySet", "true");
 	    System.setProperty("http.proxyHost", address);
 	    System.setProperty("http.proxyPort", port);
 	} else {
+	    System.clearProperty("http.proxySet");
 	    System.clearProperty("http.proxyHost");
 	    System.clearProperty("http.proxyPort");
 	}
