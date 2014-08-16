@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,6 +21,7 @@ package net.sf.mzmine.modules.visualization.spectra;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -29,16 +30,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.IsotopePatternStatus;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.IsotopePattern.IsotopePatternStatus;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.peaklistmethods.isotopes.isotopeprediction.IsotopePatternCalculator;
 import net.sf.mzmine.modules.visualization.spectra.datasets.IsotopesDataSet;
@@ -55,7 +56,7 @@ import org.jfree.data.xy.XYDataset;
 /**
  * Spectrum visualizer using JFreeChart library
  */
-public class SpectraVisualizerWindow extends JInternalFrame implements
+public class SpectraVisualizerWindow extends JFrame implements
 	ActionListener {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
@@ -82,7 +83,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
     public SpectraVisualizerWindow(RawDataFile dataFile) {
 
-	super(dataFile.getName(), true, true, true, true);
+	super(dataFile.getName());
 	this.dataFile = dataFile;
 
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -100,7 +101,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 	bottomPanel = new SpectraBottomPanel(this, dataFile);
 	add(bottomPanel, BorderLayout.SOUTH);
 
-	MZmineCore.getDesktop().addProjectTreeListener(bottomPanel);
+	MZmineCore.getDesktop().addPeakListTreeListener(bottomPanel);
 
 	pack();
 
@@ -108,7 +109,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
     public void dispose() {
 	super.dispose();
-	MZmineCore.getDesktop().removeProjectTreeListener(bottomPanel);
+	MZmineCore.getDesktop().removePeakListTreeListener(bottomPanel);
     }
 
     public void loadRawData(Scan scan) {
@@ -209,7 +210,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
 	subTitle += ", RT " + rtFormat.format(currentScan.getRetentionTime());
 
-	DataPoint basePeak = currentScan.getBasePeak();
+	DataPoint basePeak = currentScan.getHighestDataPoint();
 	if (basePeak != null) {
 	    subTitle += ", base peak: " + mzFormat.format(basePeak.getMZ())
 		    + " m/z ("
@@ -247,7 +248,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
     }
 
-    public void loadSinglePeak(ChromatographicPeak peak) {
+    public void loadSinglePeak(Feature peak) {
 
 	SinglePeakDataSet peakDataSet = new SinglePeakDataSet(
 		currentScan.getScanNumber(), peak);
@@ -261,7 +262,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
 	// We need to find a normalization factor for the new isotope
 	// pattern, to show meaningful intensity range
-	double mz = newPattern.getHighestIsotope().getMZ();
+	double mz = newPattern.getHighestDataPoint().getMZ();
 	Range searchMZRange = new Range(mz - 0.5, mz + 0.5);
 	ScanDataSet scanDataSet = spectrumPlot.getMainScanDataSet();
 	double normalizationFactor = scanDataSet
@@ -455,11 +456,10 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 	    double yTick = (double) yAxis.getTickUnit().getSize();
 
 	    // Get all frames of my class
-	    JInternalFrame spectraFrames[] = MZmineCore.getDesktop()
-		    .getInternalFrames();
+	    Window spectraFrames[] = JFrame.getWindows();
 
 	    // Set the range of these frames
-	    for (JInternalFrame frame : spectraFrames) {
+	    for (Window frame : spectraFrames) {
 		if (!(frame instanceof SpectraVisualizerWindow))
 		    continue;
 		SpectraVisualizerWindow spectraFrame = (SpectraVisualizerWindow) frame;

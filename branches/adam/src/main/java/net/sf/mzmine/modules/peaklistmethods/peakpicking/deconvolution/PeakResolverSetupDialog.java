@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -38,11 +38,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.tic.PeakDataSet;
 import net.sf.mzmine.modules.visualization.tic.TICPlot;
@@ -160,7 +160,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
 
                     comboPeakList.setSelectedIndex(0);
                 }
-                setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+                setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
             } else {
 
                 mainPanel.remove(pnlPlotXY);
@@ -195,7 +195,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
                 if (parameterSet.checkUserParameterValues(new ArrayList<String>(0))) {
 
                     // Load the intensities and RTs into array.
-                    final ChromatographicPeak previewPeak = previewRow.getPeaks()[0];
+                    final Feature previewPeak = previewRow.getPeaks()[0];
                     final RawDataFile dataFile = previewPeak.getDataFile();
                     final int[] scanNumbers = dataFile.getScanNumbers(1);
                     final int scanCount = scanNumbers.length;
@@ -210,7 +210,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
                     }
 
                     // Resolve peaks.
-                    ChromatographicPeak[] resolvedPeaks = {};
+                    Feature[] resolvedPeaks = {};
                     try {
                         resolvedPeaks = peakResolver
                                 .resolvePeaks(previewPeak, scanNumbers, retentionTimes, intensities, parameters);
@@ -310,6 +310,6 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
 
         updateMinimumSize();
         pack();
-        setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+        setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
     }
 }

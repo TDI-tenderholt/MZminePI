@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,6 +21,7 @@ package net.sf.mzmine.parameters.dialogs;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +56,7 @@ import net.sf.mzmine.util.components.HelpButton;
  * component can be obtained by calling getComponentForParameter(). Type of
  * component depends on parameter type:
  * 
- * 
+ * TODO: parameter setup dialog should show the name of the module in the title
  * 
  */
 public class ParameterSetupDialog extends JDialog implements ActionListener, DocumentListener {
@@ -87,7 +88,7 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
     public ParameterSetupDialog(ParameterSet parameters) {
 	
 		// Make dialog modal
-		super(MZmineCore.getDesktop().getMainFrame(),
+		super(MZmineCore.getDesktop().getMainWindow(),
 			"Please set the parameters", true);
 	
 		this.parameterSet = parameters;
@@ -100,7 +101,7 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
 		updateMinimumSize();
 		pack();
 	
-		setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+		setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -32,14 +32,14 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.parametertypes.MZTolerance;
@@ -58,7 +58,7 @@ import org.rosuda.JRI.Rengine;
  * A task to perform a CAMERA search.
  *
  * @author $Author: plusik $
- * @version $Revision: 3211 $
+ * @version $Revision: 3293 $
  */
 public class CameraSearchTask extends AbstractTask {
 
@@ -152,7 +152,7 @@ public class CameraSearchTask extends AbstractTask {
             }
 
             // Repaint the window to reflect the change in the peak list
-            MZmineCore.getDesktop().getMainFrame().repaint();
+            MZmineCore.getDesktop().getMainWindow().repaint();
         }
         catch (Throwable t) {
 
@@ -205,7 +205,7 @@ public class CameraSearchTask extends AbstractTask {
             rEngine.eval("colnames(peaks) <- columnHeadings", false);
 
             // Initialize.
-            final ChromatographicPeak[] peaks = peakList.getPeaks(rawFile);
+            final Feature[] peaks = peakList.getPeaks(rawFile);
             progress = 0.0;
 
             // Initialize scan map.
@@ -227,7 +227,7 @@ public class CameraSearchTask extends AbstractTask {
 
             // Add peaks.
             double progressInc = 1.0 / (double) peaks.length;
-            for (final ChromatographicPeak peak : peaks) {
+            for (final Feature peak : peaks) {
 
                 // Get peak data.
                 Range rtRange = null;
@@ -397,7 +397,7 @@ public class CameraSearchTask extends AbstractTask {
      * @param spectraExp the pseudo-spectra ids vector.
      * @param isotopeExp the isotopes vector.
      */
-    private void addPseudoSpectraIdentities(final ChromatographicPeak[] peaks,
+    private void addPseudoSpectraIdentities(final Feature[] peaks,
                                             final REXP spectraExp,
                                             final REXP isotopeExp) {
 
@@ -407,7 +407,7 @@ public class CameraSearchTask extends AbstractTask {
 
         // Add identities for each peak.
         int peakIndex = 0;
-        for (final ChromatographicPeak peak : peaks) {
+        for (final Feature peak : peaks) {
 
             // Create pseudo-spectrum identity
             final SimplePeakIdentity identity =  new SimplePeakIdentity(

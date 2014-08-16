@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -26,14 +26,14 @@ import java.util.logging.Logger;
 import jmprojection.PCA;
 import jmprojection.Preprocess;
 import jmprojection.ProjectionStatus;
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.MZmineProject;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.UserParameter;
-import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.taskcontrol.TaskEvent;
 import net.sf.mzmine.taskcontrol.TaskListener;
 import net.sf.mzmine.taskcontrol.TaskStatus;
@@ -73,7 +73,8 @@ public class PCADataset extends AbstractXYDataset implements
 
 	public PCADataset(ParameterSet parameters) {
 
-		this.peakList = parameters.getParameter(ProjectionPlotParameters.peakLists).getValue()[0];
+		this.peakList = parameters.getParameter(
+				ProjectionPlotParameters.peakLists).getValue()[0];
 		this.parameters = parameters;
 
 		this.xAxisPC = parameters.getParameter(
@@ -84,7 +85,6 @@ public class PCADataset extends AbstractXYDataset implements
                 coloringType = parameters.getParameter(
 				ProjectionPlotParameters.coloringType).getValue();
               
-                
 		selectedRawDataFiles = parameters.getParameter(
 				ProjectionPlotParameters.dataFiles).getValue();
 		selectedRows = parameters.getParameter(ProjectionPlotParameters.rows)
@@ -219,7 +219,7 @@ public class PCADataset extends AbstractXYDataset implements
 			PeakListRow peakListRow = selectedRows[rowIndex];
 			for (int fileIndex = 0; fileIndex < selectedRawDataFiles.length; fileIndex++) {
 				RawDataFile rawDataFile = selectedRawDataFiles[fileIndex];
-				ChromatographicPeak p = peakListRow.getPeak(rawDataFile);
+				Feature p = peakListRow.getPeak(rawDataFile);
 				if (p != null) {
 					if (useArea)
 						rawData[fileIndex][rowIndex] = p.getArea();
@@ -246,9 +246,9 @@ public class PCADataset extends AbstractXYDataset implements
 		component1Coords = result[xAxisPC - 1];
 		component2Coords = result[yAxisPC - 1];
 
-		ProjectionPlotWindow newFrame = new ProjectionPlotWindow(peakList, this,
-				parameters);
-		MZmineCore.getDesktop().addInternalFrame(newFrame);
+		ProjectionPlotWindow newFrame = new ProjectionPlotWindow(peakList,
+				this, parameters);
+		newFrame.setVisible(true);
 
 		status = TaskStatus.FINISHED;
 		logger.info("Finished computing projection plot.");

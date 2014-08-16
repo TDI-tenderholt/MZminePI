@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -53,12 +53,12 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.IonizationType;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IonizationType;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.parametertypes.RTTolerance;
@@ -68,8 +68,8 @@ import net.sf.mzmine.taskcontrol.TaskStatus;
 /**
  * Performs NIST MS Search.
  *
- * @author $Author$
- * @version $Revision$
+ * @author $Author: plusik $
+ * @version $Revision: 3293 $
  */
 public class NistMsSearchTask
         extends AbstractTask {
@@ -211,7 +211,7 @@ public class NistMsSearchTask
             }
 
             // Repaint the window to reflect the change in the peak list
-            MZmineCore.getDesktop().getMainFrame().repaint();
+            MZmineCore.getDesktop().getMainWindow().repaint();
         }
         catch (Throwable t) {
 
@@ -648,7 +648,7 @@ public class NistMsSearchTask
             writer.newLine();
 
             for (final PeakListRow row : neighbourRows) {
-                final ChromatographicPeak peak = row.getBestPeak();
+                final Feature peak = row.getBestPeak();
                 final int charge = peak.getCharge();
                 final double mass = (peak.getMZ() - ionType.getAddedMass()) *
                                     (charge == 0 ? 1.0 : (double) charge);

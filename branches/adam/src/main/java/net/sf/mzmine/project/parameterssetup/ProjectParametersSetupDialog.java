@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -36,14 +36,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.MZmineProject;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.parametertypes.ComboParameter;
 import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
 import net.sf.mzmine.parameters.parametertypes.StringParameter;
-import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.util.ExitCode;
 
 public class ProjectParametersSetupDialog extends JDialog implements
@@ -69,7 +69,7 @@ public class ProjectParametersSetupDialog extends JDialog implements
 	private Desktop desktop;
 
 	public ProjectParametersSetupDialog() {
-		super(MZmineCore.getDesktop().getMainFrame(), true);
+		super(MZmineCore.getDesktop().getMainWindow(), true);
 
 		parameterValues = new Hashtable<UserParameter, Object[]>();
 
@@ -83,7 +83,7 @@ public class ProjectParametersSetupDialog extends JDialog implements
 
 		setupTableModel();
 
-		setLocationRelativeTo(desktop.getMainFrame());
+		setLocationRelativeTo(desktop.getMainWindow());
 
 	}
 

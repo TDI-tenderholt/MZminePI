@@ -38,54 +38,38 @@ import net.sf.mzmine.util.ExitCode;
 public interface Desktop extends MZmineModule {
 
     /**
-     * Returns a reference to main application window.
-     * May return null if MZmine is running in headless (batch) mode.
+	 * Returns a reference to main application window. May return null if MZmine
+	 * is running in headless (batch) mode.
      * 
      * @return Main window frame
      */
-    public JFrame getMainFrame();
-
-    /**
-     * Adds a new internal frame (JInternalFrame) to the desktop pane
-     * 
-     * @param frame Internal frame to add
-     */
-    public void addInternalFrame(JInternalFrame frame);
-
-	/**
-	 * Returns all visible internal frames in the desktop pane
-	 * 
-	 * @return Array of all internal frames
-	 */
-    public JInternalFrame[] getInternalFrames();
-
-    /**
-     * Returns the currently selected frame or null if no frame is selected
-     * 
-     * @return Selected frame
-     */
-    public JInternalFrame getSelectedFrame();
+	public JFrame getMainWindow();
 
     /**
      * Displays a given text on the application status bar in black color
      * 
-     * @param text Text to show
+     * @param text
+     *            Text to show
      */
     public void setStatusBarText(String text);
 
     /**
      * Displays a given text on the application status bar in a given color
      * 
-     * @param text Text to show
-     * @param textColor Text color
+     * @param text
+     * 			  Text to show
+     * @param textColor
+     *            Text color
      */
     public void setStatusBarText(String text, Color textColor);
 
     /**
      * Displays a message box with a given text
      * 
-     * @param title Message box title
-     * @param msg Text to show
+     * @param title
+     *            Message box title
+     * @param msg
+     *            Text to show
      * @param log if not null logger
      */
     public void displayMessage(String msg);
@@ -95,8 +79,10 @@ public interface Desktop extends MZmineModule {
     /**
      * Displays an error message box with a given text
      * 
-     * @param title Message box title
-     * @param msg Text to show
+     * @param title
+     *            Message box title
+     * @param msg
+     *            Text to show
      * @param log if not null logger
      */
     public void displayErrorMessage(String msg);

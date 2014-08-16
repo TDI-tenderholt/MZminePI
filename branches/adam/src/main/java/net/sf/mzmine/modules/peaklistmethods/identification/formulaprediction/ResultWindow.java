@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -35,7 +35,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -47,12 +47,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.spectra.SpectraVisualizerModule;
 import net.sf.mzmine.modules.visualization.spectra.SpectraVisualizerWindow;
@@ -62,7 +62,7 @@ import net.sf.mzmine.util.ExceptionUtils;
 import net.sf.mzmine.util.GUIUtils;
 import net.sf.mzmine.util.components.PercentageCellRenderer;
 
-public class ResultWindow extends JInternalFrame implements ActionListener {
+public class ResultWindow extends JFrame implements ActionListener {
 
     private final JTable resultsTable;
     private final ResultTableModel resultsTableModel;
@@ -74,7 +74,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
     public ResultWindow(String title, PeakListRow peakListRow,
 	    double searchedMass, int charge, Task searchTask) {
 
-	super(title, true, true, true, true);
+	super(title);
 
 	this.title = title;
 	this.peakListRow = peakListRow;
@@ -150,7 +150,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 	    fileChooser.setApproveButtonText("Export");
 
 	    int result = fileChooser.showSaveDialog(MZmineCore.getDesktop()
-		    .getMainFrame());
+		    .getMainWindow());
 	    if (result != JFileChooser.APPROVE_OPTION)
 		return;
 	    File outputFile = fileChooser.getSelectedFile();
@@ -212,7 +212,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 		    false);
 
 	    // Repaint the window to reflect the change in the peak list
-	    MZmineCore.getDesktop().getMainFrame().repaint();
+	    MZmineCore.getDesktop().getMainWindow().repaint();
 
 	    dispose();
 	}
@@ -234,7 +234,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 	    if (predictedPattern == null)
 		return;
 
-	    ChromatographicPeak peak = peakListRow.getBestPeak();
+	    Feature peak = peakListRow.getBestPeak();
 
 	    RawDataFile dataFile = peak.getDataFile();
 	    int scanNumber = peak.getRepresentativeScanNumber();
@@ -245,7 +245,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 
 	if (command.equals("SHOW_MSMS")) {
 
-	    ChromatographicPeak bestPeak = peakListRow.getBestPeak();
+	    Feature bestPeak = peakListRow.getBestPeak();
 
 	    RawDataFile dataFile = bestPeak.getDataFile();
 	    int msmsScanNumber = bestPeak.getMostIntenseFragmentScanNumber();

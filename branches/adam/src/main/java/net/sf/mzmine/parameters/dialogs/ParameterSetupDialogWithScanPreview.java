@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -38,9 +38,9 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.spectra.SpectraPlot;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -94,7 +94,7 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 		String subTitle = "MS" + currentScan.getMSLevel() + ", RT "
 			+ rtFormat.format(currentScan.getRetentionTime());
 	
-		DataPoint basePeak = currentScan.getBasePeak();
+		DataPoint basePeak = currentScan.getHighestDataPoint();
 		if (basePeak != null) {
 		    subTitle += ", base peak: " + mzFormat.format(basePeak.getMZ())
 			    + " m/z ("
@@ -137,13 +137,13 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 				updateMinimumSize();
 				pack();
 				parametersChanged();
-				setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+				setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 		    } else {
 				mainPanel.remove(spectrumPlot);
 				pnlPreviewFields.setVisible(false);
 				updateMinimumSize();
 				pack();
-				setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+				setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
 		    }
 		}
 	
@@ -266,6 +266,6 @@ public abstract class ParameterSetupDialogWithScanPreview extends
 	updateMinimumSize();
 	pack();
 
-	setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+	setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
     }
 }
