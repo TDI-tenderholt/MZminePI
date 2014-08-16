@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -19,8 +19,10 @@
 
 package net.sf.mzmine.modules.rawdatamethods.filtering.datasetfilters;
 
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.RawDataFileWriter;
+import java.util.ArrayList;
+
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFileWriter;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineProcessingStep;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -37,7 +39,7 @@ class DataSetFilteringTask extends AbstractTask {
 
     // Raw Data Filter
     private MZmineProcessingStep<RawDataSetFilter> rawDataFilter;
-    private RawDataFile filteredRawDataFile;
+	private ArrayList<RawDataFile> filteredRawDataFiles;
 
     /**
      * @param dataFiles
@@ -48,6 +50,7 @@ class DataSetFilteringTask extends AbstractTask {
 
 	this.dataFiles = parameters.getParameter(
 		DataSetFiltersParameters.dataFiles).getValue();
+		this.filteredRawDataFiles = new ArrayList<RawDataFile>();
 
 	rawDataFilter = parameters
 		.getParameter(DataSetFiltersParameters.filter).getValue();
@@ -89,11 +92,12 @@ class DataSetFilteringTask extends AbstractTask {
 	    for (RawDataFile dataFile : dataFiles) {
 		RawDataFileWriter rawDataFileWriter = MZmineCore
 			.createNewFile(dataFile.getName() + " " + suffix);
-		filteredRawDataFile = rawDataFilter.getModule().filterDatafile(
-			dataFile, rawDataFileWriter,
+				RawDataFile filteredRawDataFile = rawDataFilter.getModule()
+						.filterDatafile(dataFile, rawDataFileWriter,
 			rawDataFilter.getParameterSet());
 		if (filteredRawDataFile != null) {
 		    MZmineCore.getCurrentProject().addFile(filteredRawDataFile);
+					filteredRawDataFiles.add(filteredRawDataFile);
 
 		    // Remove the original file if requested
 		    if (removeOriginal) {
@@ -113,8 +117,9 @@ class DataSetFilteringTask extends AbstractTask {
     }
 
     public Object[] getCreatedObjects() {
-	if (filteredRawDataFile == null)
+		if (filteredRawDataFiles == null)
 	    return null;
-	return new Object[] { filteredRawDataFile };
+		return filteredRawDataFiles.toArray();
+
     }
 }

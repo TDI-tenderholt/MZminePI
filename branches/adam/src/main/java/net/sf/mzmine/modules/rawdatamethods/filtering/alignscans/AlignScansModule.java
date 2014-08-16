@@ -17,7 +17,7 @@
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.modules.rawdatamethods.targetedpeakdetection;
+package net.sf.mzmine.modules.rawdatamethods.filtering.alignscans;
 
 import java.util.Collection;
 
@@ -27,23 +27,24 @@ import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
 import net.sf.mzmine.parameters.ParameterSet;
+import net.sf.mzmine.parameters.parametertypes.RawDataFilesParameter;
 import net.sf.mzmine.taskcontrol.Task;
 import net.sf.mzmine.util.ExitCode;
 
-public class TargetedPeakDetectionModule implements MZmineProcessingModule {
+public class AlignScansModule implements MZmineProcessingModule {
 
-    private static final String MODULE_NAME = "Targeted peak detection";
-    private static final String MODULE_DESCRIPTION = "Targeted peak detection"; // TODO
+    private static final String MODULE_NAME = "Align Scans (LC/MS or MS level 1)";
+    private static final String MODULE_DESCRIPTION = "This module align scans for small fluctuations correlating consecutive scans.";
+
+    public static final RawDataFilesParameter dataFiles = new RawDataFilesParameter();
 
     @Override
-    public @Nonnull
-    String getName() {
+    public @Nonnull String getName() {
 	return MODULE_NAME;
     }
 
     @Override
-    public @Nonnull
-    String getDescription() {
+    public @Nonnull String getDescription() {
 	return MODULE_DESCRIPTION;
     }
 
@@ -51,25 +52,27 @@ public class TargetedPeakDetectionModule implements MZmineProcessingModule {
     @Nonnull
     public ExitCode runModule(@Nonnull ParameterSet parameters,
 	    @Nonnull Collection<Task> tasks) {
+
 	RawDataFile[] dataFiles = parameters.getParameter(
-		TargetedPeakDetectionParameters.rawDataFile).getValue();
-	for (RawDataFile dataFile : dataFiles) {
-	    Task newTask = new TargetedPeakDetectionModuleTask(parameters,
-		    dataFile);
+		new RawDataFilesParameter()).getValue();
+
+	for (int i = 0; i < dataFiles.length; i++) {
+	    Task newTask = new AlignScansTask(dataFiles[i],
+		    parameters.cloneParameter());
 	    tasks.add(newTask);
 	}
+
 	return ExitCode.OK;
     }
 
     @Override
-    public @Nonnull
-    MZmineModuleCategory getModuleCategory() {
-	return MZmineModuleCategory.PEAKPICKING;
+    public @Nonnull MZmineModuleCategory getModuleCategory() {
+	return MZmineModuleCategory.RAWDATAFILTERING;
     }
 
     @Override
-    public @Nonnull
-    Class<? extends ParameterSet> getParameterSetClass() {
-	return TargetedPeakDetectionParameters.class;
+    public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
+	return AlignScansParameters.class;
     }
+
 }

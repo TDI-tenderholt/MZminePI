@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -28,10 +28,12 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import javax.annotation.Nonnull;
+
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.main.MZmineCore;
 
 import org.apache.axis.encoding.Base64;
@@ -353,6 +355,17 @@ public class ScanUtils {
 
     /**
      * Determines if the spectrum represented by given array of data points is
+     * centroided or continuous. The algorithm is based on the following
+     * assumption: centroided spectra have their data points unevenly
+     * distributed on the m/z scale, while continuous spectra have there data
+     * points quite regularly distributed. However, the density of the data
+     * points in continuous spectra may gradually change with increasing m/z
+     * value. Also, continuous spectra may contain areas with no data points, if
+     * zero-intensity data points were removed. We check the m/z distance
+     * between the each two data points, and if this distance is 2x bigger than
+     * the distance between the previous pair of data points, the spectrum
+     * should be centroided. In case we encounter a zero-intensity data point,
+     * the previous data point pair is ignored and checking starts again.
      */
     public static boolean isCentroided(DataPoint[] dataPoints) {
 
@@ -415,7 +428,7 @@ public class ScanUtils {
 
             if (mzRange.contains(scan.getPrecursorMZ())) {
 
-                DataPoint basePeak = scan.getBasePeak();
+		DataPoint basePeak = scan.getHighestDataPoint();
 
                 // If there is no peak in the scan, basePeak can be null
                 if (basePeak == null)
@@ -497,7 +510,8 @@ public class ScanUtils {
      * Find the highest data point in array
      * 
      */
-    public static DataPoint findTopDataPoint(DataPoint dataPoints[]) {
+    public static @Nonnull DataPoint findTopDataPoint(
+	    @Nonnull DataPoint dataPoints[]) {
 
         DataPoint topDP = null;
 
@@ -508,6 +522,30 @@ public class ScanUtils {
         }
 
         return topDP;
+    }
+
+    /**
+     * Find the m/z range of the data points in the array. We assume there is at
+     * least one data point, and the data points are sorted by m/z.
+     */
+    public static @Nonnull Range findMzRange(@Nonnull DataPoint dataPoints[]) {
+
+	assert dataPoints.length > 0;
+
+	double lowMz = dataPoints[0].getMZ();
+	double highMz = dataPoints[0].getMZ();
+	for (int i = 1; i < dataPoints.length; i++) {
+	    if (dataPoints[i].getMZ() < lowMz) {
+		lowMz = dataPoints[i].getMZ();
+		continue;
+	    }
+	    if (dataPoints[i].getMZ() > highMz)
+		highMz = dataPoints[i].getMZ();
+	}
+
+	final Range mzRange = new Range(lowMz, highMz);
+
+	return mzRange;
     }
 
     public static byte[] encodeDataPointsToBytes(DataPoint dataPoints[]) {
