@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -26,15 +26,15 @@ import static net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.De
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListAppliedMethod;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.SimplePeakList;
-import net.sf.mzmine.data.impl.SimplePeakListAppliedMethod;
-import net.sf.mzmine.data.impl.SimplePeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakList.PeakListAppliedMethod;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.SimplePeakList;
+import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
+import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineProcessingStep;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -184,11 +184,11 @@ public class DeconvolutionTask extends AbstractTask {
         int peakId = 1;
 
         // Process each chromatogram.
-        final ChromatographicPeak[] chromatograms = peakList.getPeaks(dataFile);
+        final Feature[] chromatograms = peakList.getPeaks(dataFile);
         final int chromatogramCount = chromatograms.length;
         for (int index = 0; !isCanceled() && index < chromatogramCount; index++) {
 
-            final ChromatographicPeak chromatogram = chromatograms[index];
+            final Feature chromatogram = chromatograms[index];
 
             // Load the intensities into array.
             final double[] intensities = new double[scanCount];
@@ -201,11 +201,11 @@ public class DeconvolutionTask extends AbstractTask {
             // Resolve peaks.
             final PeakResolver resolverModule = resolver.getModule();
             final ParameterSet resolverParams = resolver.getParameterSet();
-            final ChromatographicPeak[] peaks =
+            final Feature[] peaks =
                     resolverModule.resolvePeaks(chromatogram, scanNumbers, retentionTimes, intensities, resolverParams);
 
             // Add peaks to the new peak list.
-            for (final ChromatographicPeak peak : peaks) {
+            for (final Feature peak : peaks) {
 
                 final PeakListRow newRow = new SimplePeakListRow(peakId++);
                 newRow.addPeak(dataFile, peak);

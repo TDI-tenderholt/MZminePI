@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -34,16 +34,16 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListAppliedMethod;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.SimpleChromatographicPeak;
-import net.sf.mzmine.data.impl.SimplePeakList;
-import net.sf.mzmine.data.impl.SimplePeakListAppliedMethod;
-import net.sf.mzmine.data.impl.SimplePeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakList.PeakListAppliedMethod;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
+import net.sf.mzmine.datamodel.impl.SimplePeakList;
+import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
+import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.UserParameter;
@@ -207,13 +207,13 @@ public class RowsFilterTask extends AbstractTask {
                         // Calculate average duration and isotope pattern count.
                         int maxIsotopePatternSizeOnRow = 1;
                         double avgDuration = 0.0;
-                        final ChromatographicPeak[] peaks = row.getPeaks();
-                        for (final ChromatographicPeak p : peaks) {
+                        final Feature[] peaks = row.getPeaks();
+                        for (final Feature p : peaks) {
 
                                 final IsotopePattern pattern = p.getIsotopePattern();
-                                if (pattern != null && maxIsotopePatternSizeOnRow < pattern.getNumberOfIsotopes()) {
+                                if (pattern != null && maxIsotopePatternSizeOnRow < pattern.getNumberOfDataPoints()) {
 
-                                        maxIsotopePatternSizeOnRow = pattern.getNumberOfIsotopes();
+                                        maxIsotopePatternSizeOnRow = pattern.getNumberOfDataPoints();
                                 }
 
                                 avgDuration += p.getRawDataPointsRTRange().getSize();
@@ -255,9 +255,9 @@ public class RowsFilterTask extends AbstractTask {
                 PeakUtils.copyPeakListRowProperties(row, newRow);
 
                 // Copy the peaks.
-                for (final ChromatographicPeak peak : row.getPeaks()) {
+                for (final Feature peak : row.getPeaks()) {
 
-                        final ChromatographicPeak newPeak = new SimpleChromatographicPeak(peak);
+                        final Feature newPeak = new SimpleFeature(peak);
                         PeakUtils.copyPeakProperties(peak, newPeak);
                         newRow.addPeak(peak.getDataFile(), newPeak);
                 }

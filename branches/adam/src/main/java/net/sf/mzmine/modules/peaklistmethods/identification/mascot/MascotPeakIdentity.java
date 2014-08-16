@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -19,17 +19,11 @@
 
 package net.sf.mzmine.modules.peaklistmethods.identification.mascot;
 
-import java.util.HashMap;
-
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
-
-import com.compomics.mascotdatfile.util.interfaces.Modification;
-import com.compomics.mascotdatfile.util.mascot.PeptideHit;
-import com.compomics.mascotdatfile.util.mascot.ProteinHit;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 
 public class MascotPeakIdentity extends SimplePeakIdentity {
 
-    private static final String PROPERTY_PEPTIDE = "Peptide sequence";
+	 /*    private static final String PROPERTY_PEPTIDE = "Peptide sequence";
     private static final String PROPERTY_MASS = "Mass (Mr)";
     private static final String PROPERTY_DELTA = "Delta";
     private static final String PROPERTY_SCORE = "Score";
@@ -40,7 +34,6 @@ public class MascotPeakIdentity extends SimplePeakIdentity {
      * This class implements PeakIdentity and wrap the information of the peptide assigned to the chromatographic peak.
      *
      * @param peptide the peptide hit.
-     */
     @SuppressWarnings("unchecked")
     public MascotPeakIdentity(final PeptideHit peptide) {
 
@@ -79,4 +72,6 @@ public class MascotPeakIdentity extends SimplePeakIdentity {
         setPropertyValue(PROPERTY_MISSES, String.valueOf(peptide.getMissedCleavages()));
         setPropertyValue(PROPERTY_MODIFICATIONS, modSeqString);
     }
+       */
+  
 }

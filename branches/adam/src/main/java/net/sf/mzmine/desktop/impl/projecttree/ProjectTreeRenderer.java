@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -30,12 +30,12 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import net.sf.mzmine.data.MassList;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.util.RawDataFileUtils;
 
@@ -75,12 +75,12 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 			label.setFont(bigFont);
 		}
 
-		if (embeddedObject == ProjectTreeModel.dataFilesNodeName) {
+		if (embeddedObject == RawDataTreeModel.dataFilesNodeName) {
 			label.setIcon(dataFileIcon);
 			label.setFont(bigFont);
 		}
 
-		if (embeddedObject == ProjectTreeModel.peakListsNodeName) {
+		if (embeddedObject == PeakListTreeModel.peakListsNodeName) {
 			label.setFont(bigFont);
 			label.setIcon(peakListsIcon);
 		}

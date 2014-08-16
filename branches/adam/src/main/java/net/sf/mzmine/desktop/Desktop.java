@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,11 +24,10 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.event.TreeModelListener;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.util.ExitCode;
 
@@ -124,9 +123,14 @@ public interface Desktop extends MZmineModule {
      */
     public PeakList[] getSelectedPeakLists();
     
-    public void addProjectTreeListener(TreeModelListener listener);
+	public void addRawDataTreeListener(TreeModelListener listener);
+
+	public void addPeakListTreeListener(TreeModelListener listener);
+	
+	
+	public void removeRawDataTreeListener(TreeModelListener listener);
     
-    public void removeProjectTreeListener(TreeModelListener listener);
+	public void removePeakListTreeListener(TreeModelListener listener);
 
     @Nonnull
     public ExitCode exitMZmine();
