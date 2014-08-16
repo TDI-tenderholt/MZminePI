@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,12 +21,12 @@ package net.sf.mzmine.util;
 
 import java.util.Comparator;
 
-import net.sf.mzmine.data.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 
 /**
  * This is a helper class required for sorting peaks
  */
-public class PeakSorter implements Comparator<ChromatographicPeak> {
+public class PeakSorter implements Comparator<Feature> {
 
 	private SortingProperty property;
 	private SortingDirection direction;
@@ -36,7 +36,7 @@ public class PeakSorter implements Comparator<ChromatographicPeak> {
 		this.direction = direction;
 	}
 
-	public int compare(ChromatographicPeak peak1, ChromatographicPeak peak2) {
+	public int compare(Feature peak1, Feature peak2) {
 
 		Double peak1Value = getValue(peak1);
 		Double peak2Value = getValue(peak2);
@@ -48,16 +48,16 @@ public class PeakSorter implements Comparator<ChromatographicPeak> {
 
 	}
 
-	private double getValue(ChromatographicPeak peak) {
+	private double getValue(Feature peak) {
 		switch (property) {
 		case Area:
 			return peak.getArea();
 		case Height:
 			return peak.getHeight();
 		case MZ:
-			return peak.getMZ();
+			return peak.getMZ()+peak.getRT()/1000000.0;
 		case RT:
-			return peak.getRT();
+			return peak.getRT()+peak.getMZ()/1000000.0;
 		}
 
 		// We should never get here, so throw exception

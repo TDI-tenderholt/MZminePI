@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,13 +21,13 @@ package net.sf.mzmine.modules.rawdatamethods.targetedpeakdetection;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.PeakStatus;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleChromatographicPeak;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 
@@ -160,7 +160,10 @@ class Gap {
 
                                 // X axis interval length
                                 double rtDifference = bestPeakDataPoints.get(i + 1).getRT()
-                                        - bestPeakDataPoints.get(i).getRT();
+                                        - bestPeakDataPoints.get(i).getRT() * 60;
+                                
+                                // Convert the RT scale to seconds
+                                rtDifference *= 60d;
 
                                 // intensity at the beginning and end of the interval
                                 double intensityStart = bestPeakDataPoints.get(i).getIntensity();
@@ -178,9 +181,9 @@ class Gap {
                         int fragmentScan = ScanUtils.findBestFragmentScan(rawDataFile,
                                 finalRTRange, finalMZRange);
 
-                        SimpleChromatographicPeak newPeak = new SimpleChromatographicPeak(
+                        SimpleFeature newPeak = new SimpleFeature(
                                 rawDataFile, mz, rt, height, area, scanNumbers,
-                                finalDataPoint, PeakStatus.ESTIMATED, representativeScan,
+                                finalDataPoint, FeatureStatus.ESTIMATED, representativeScan,
                                 fragmentScan, finalRTRange, finalMZRange,
                                 finalIntensityRange);
 

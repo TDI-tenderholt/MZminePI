@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -22,10 +22,10 @@ package net.sf.mzmine.modules.visualization.spectra.renderers;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.visualization.spectra.datasets.IsotopesDataSet;
 import net.sf.mzmine.modules.visualization.spectra.datasets.PeakListDataSet;
@@ -55,13 +55,13 @@ class SpectraToolTipGenerator implements XYToolTipGenerator {
 
 			PeakListDataSet peakListDataSet = (PeakListDataSet) dataset;
 
-			ChromatographicPeak peak = peakListDataSet.getPeak(series, item);
+			Feature peak = peakListDataSet.getPeak(series, item);
 
 			PeakList peakList = peakListDataSet.getPeakList();
 			PeakListRow row = peakList.getPeakRow(peak);
 
 			String tooltip = "Peak: " + peak + "\nStatus: "
-					+ peak.getPeakStatus() + "\nPeak list row: " + row
+					+ peak.getFeatureStatus() + "\nPeak list row: " + row
 					+ "\nData point m/z: " + mzFormat.format(mzValue)
 					+ "\nData point intensity: "
 					+ intensityFormat.format(intValue);
@@ -76,7 +76,7 @@ class SpectraToolTipGenerator implements XYToolTipGenerator {
 
 			IsotopePattern pattern = isotopeDataSet.getIsotopePattern();
 			double relativeIntensity = intValue
-					/ pattern.getHighestIsotope().getIntensity() * 100;
+					/ pattern.getHighestDataPoint().getIntensity() * 100;
 
 			String tooltip = "Isotope pattern: " + pattern.getDescription()
 					+ "\nStatus: " + pattern.getStatus() + "\nData point m/z: "

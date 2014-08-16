@@ -5,20 +5,20 @@ import java.util.Hashtable;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakStatus;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.MathUtils;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
+import net.sf.mzmine.util.PeakUtils;
 
-public class ExtendedPeak implements ChromatographicPeak {
+public class ExtendedPeak implements Feature {
 
     // Data file of this chromatogram
     private RawDataFile dataFile;
@@ -119,8 +119,8 @@ public class ExtendedPeak implements ChromatographicPeak {
 	this.fragmentScan = scanNumber;
     }
 
-    public @Nonnull PeakStatus getPeakStatus() {
-	return PeakStatus.DETECTED;
+	public @Nonnull FeatureStatus getFeatureStatus() {
+		return FeatureStatus.DETECTED;
     }
 
     public double getRT() {
@@ -179,6 +179,7 @@ public class ExtendedPeak implements ChromatographicPeak {
 	for (int i = 0; i < allScanNumbers.length; i++) {
 
 	    DataPoint mzPeak = dataPointsMap.get(allScanNumbers[i]);
+			Scan aScan = dataFile.getScan(allScanNumbers[i]);
 
 	    // Replace the MzPeak instance with an instance of SimpleDataPoint,
 	    // to reduce the memory usage. After we finish this extended peak,
@@ -190,14 +191,16 @@ public class ExtendedPeak implements ChromatographicPeak {
 	    if (i == 0) {
 		rawDataPointsIntensityRange = new Range(mzPeak.getIntensity());
 		rawDataPointsMZRange = new Range(mzPeak.getMZ());
+				rawDataPointsRTRange = new Range(aScan.getRetentionTime());
 	    } else {
 		rawDataPointsIntensityRange.extendRange(mzPeak.getIntensity());
 		rawDataPointsMZRange.extendRange(mzPeak.getMZ());
+				rawDataPointsRTRange.extendRange(aScan.getRetentionTime());
 	    }
 
 	    if (height < mzPeak.getIntensity()) {
 		height = mzPeak.getIntensity();
-		rt = dataFile.getScan(allScanNumbers[i]).getRetentionTime();
+				rt = aScan.getRetentionTime();
 		representativeScan = allScanNumbers[i];
 	    }
 	}
@@ -241,4 +244,11 @@ public class ExtendedPeak implements ChromatographicPeak {
 	this.charge = charge;
     }
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return PeakUtils.peakToString(this);
+	}
 }
