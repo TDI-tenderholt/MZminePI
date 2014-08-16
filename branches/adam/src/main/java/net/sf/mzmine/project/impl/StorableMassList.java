@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.MassList;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.Scan;
 
 /**
  * Implementation of the Scan interface which stores raw data points in a

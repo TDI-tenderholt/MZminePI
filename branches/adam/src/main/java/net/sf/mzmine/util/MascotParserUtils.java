@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.modules.peaklistmethods.identification.mascot.data.IonSignificance;
 import net.sf.mzmine.modules.peaklistmethods.identification.mascot.data.ModificationPeptide;
 import net.sf.mzmine.modules.peaklistmethods.identification.mascot.data.Peptide;

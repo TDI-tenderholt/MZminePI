@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -30,9 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import net.sf.mzmine.data.MassList;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.main.MZmineCore;
 
 public class MassListComponent extends JPanel implements ActionListener {

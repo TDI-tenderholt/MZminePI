@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -19,8 +19,8 @@
 
 package net.sf.mzmine.modules.visualization.scatterplot.scatterplotchart;
 
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakListRow;
 
 import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.data.xy.XYDataset;

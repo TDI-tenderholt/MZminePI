@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.RawDataFileWriter;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFileWriter;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;

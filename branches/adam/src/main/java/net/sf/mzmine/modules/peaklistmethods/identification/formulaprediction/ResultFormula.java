@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -21,8 +21,8 @@ package net.sf.mzmine.modules.peaklistmethods.identification.formulaprediction;
 
 import java.util.Map;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.IsotopePattern;
 
 import org.openscience.cdk.formula.MolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormula;
@@ -35,7 +35,7 @@ public class ResultFormula {
     private IsotopePattern predictedIsotopePattern;
     private Map<DataPoint, String> msmsAnnotation;
 
-    ResultFormula(MolecularFormula cdkFormula,
+    public ResultFormula(MolecularFormula cdkFormula,
 	    IsotopePattern predictedIsotopePattern, Double rdbeValue,
 	    Double isotopeScore, Double msmsScore,
 	    Map<DataPoint, String> msmsAnnotation) {

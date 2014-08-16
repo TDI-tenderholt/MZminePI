@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -45,8 +45,8 @@ import net.sf.mzmine.util.ExitCode;
 /**
  * An action to add custom adducts.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3103 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class AddAdductsAction extends AbstractAction {
 

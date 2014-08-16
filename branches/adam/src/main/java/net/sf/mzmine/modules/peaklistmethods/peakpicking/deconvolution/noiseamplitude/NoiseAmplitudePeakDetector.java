@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -29,7 +29,7 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.PeakResolver;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.ResolvedPeak;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -48,8 +48,8 @@ public class NoiseAmplitudePeakDetector implements PeakResolver {
     }
 
     @Override
-    public ChromatographicPeak[] resolvePeaks(
-	    final ChromatographicPeak chromatogram, final int[] scanNumbers,
+    public Feature[] resolvePeaks(
+	    final Feature chromatogram, final int[] scanNumbers,
 	    final double[] retentionTimes, final double[] intensities,
 	    ParameterSet parameters) {
 

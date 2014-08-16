@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -36,8 +36,8 @@ import net.sf.mzmine.parameters.parametertypes.PercentParameter;
 /**
  * Parameters for a <code>CameraSearchTask</code>.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3185 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class CameraSearchParameters extends SimpleParameterSet {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  *
  * This file is part of MZmine 2.
  *
@@ -44,8 +44,8 @@ import com.Ostermiller.util.CSVPrinter;
 /**
  * An action to handle exporting adducts to a file.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3104 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 
 public class ExportAdductsAction extends AbstractAction {

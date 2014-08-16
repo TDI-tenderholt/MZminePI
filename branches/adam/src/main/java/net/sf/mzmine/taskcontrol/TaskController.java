@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -19,6 +19,8 @@
 
 package net.sf.mzmine.taskcontrol;
 
+import net.sf.mzmine.taskcontrol.impl.TaskQueue;
+
 /**
  * 
  */
@@ -36,4 +38,6 @@ public interface TaskController {
 
 	public void addTaskControlListener(TaskControlListener listener);
 
+	public TaskQueue getTaskQueue();
+	
 }

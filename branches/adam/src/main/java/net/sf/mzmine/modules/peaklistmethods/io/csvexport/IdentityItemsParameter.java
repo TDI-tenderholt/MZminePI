@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -24,9 +24,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.parametertypes.MultiChoiceComponent;
 import net.sf.mzmine.parameters.parametertypes.MultiChoiceParameter;

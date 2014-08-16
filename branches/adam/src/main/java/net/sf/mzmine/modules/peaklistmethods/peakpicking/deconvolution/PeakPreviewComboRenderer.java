@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -30,8 +30,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.components.PeakXICComponent;
 
@@ -46,7 +46,7 @@ public class PeakPreviewComboRenderer extends JPanel implements
         PeakListRow row = (PeakListRow) value;
 		if(row == null)
 			return new JPanel();
-        ChromatographicPeak peak = row.getPeaks()[0];
+        Feature peak = row.getPeaks()[0];
 
         String labelText = "#" + row.getID() + " "
                 + MZmineCore.getConfiguration().getMZFormat().format(row.getAverageMZ()) + " m/z ";
