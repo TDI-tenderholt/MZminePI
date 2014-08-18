@@ -23,10 +23,9 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
@@ -209,8 +208,8 @@ public class ResolvedPeak implements Feature {
 	return fragmentScan;
     }
 
-    public @Nonnull PeakStatus getFeatureStatus() {
-	return PeakStatus.DETECTED;
+    public @Nonnull FeatureStatus getFeatureStatus() {
+	return FeatureStatus.DETECTED;
     }
 
     public double getRT() {

@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.PeakListRow;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
 import net.sf.mzmine.main.MZmineCore;
@@ -132,12 +132,12 @@ public class MsMsPeakPickingTask extends AbstractTask {
 			
 			assert maxPoint != null;
 
-			SimpleChromatographicPeak c = new SimpleChromatographicPeak(
+			SimpleFeature c = new SimpleFeature(
 					dataFile, scan.getPrecursorMZ(),
 					bestScan.getRetentionTime(), maxPoint.getIntensity(),
 					maxPoint.getIntensity(),
 					new int[] { bestScan.getScanNumber() },
-					new DataPoint[] { maxPoint }, PeakStatus.DETECTED,
+					new DataPoint[] { maxPoint }, FeatureStatus.DETECTED,
 					bestScan.getScanNumber(), scan.getScanNumber(), new Range(
 							bestScan.getRetentionTime()), new Range(
 							scan.getPrecursorMZ()), new Range(

@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.main.MZmineCore;
@@ -143,8 +142,8 @@ public class Chromatogram implements Feature {
     }
 
     public @Nonnull
-    PeakStatus getFeatureStatus() {
-	return PeakStatus.DETECTED;
+    FeatureStatus getFeatureStatus() {
+	return FeatureStatus.DETECTED;
     }
 
     public double getRT() {

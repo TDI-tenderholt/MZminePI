@@ -25,8 +25,8 @@ import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
 
 public class PeakListTableModel extends AbstractTableModel {
 
@@ -101,7 +101,7 @@ public class PeakListTableModel extends AbstractTableModel {
 
             if (peak == null) {
                 if (dataFileColumn == DataFileColumnType.STATUS)
-                    return PeakStatus.UNKNOWN;
+                    return FeatureStatus.UNKNOWN;
                 else
                     return null;
             }

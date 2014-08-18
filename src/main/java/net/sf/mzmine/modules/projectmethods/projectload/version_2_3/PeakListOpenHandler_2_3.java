@@ -35,10 +35,10 @@ import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePatternStatus;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimpleIsotopePattern;
 import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
@@ -360,9 +360,9 @@ public class PeakListOpenHandler_2_3 extends DefaultHandler implements
 				}
 			}
 
-			PeakStatus status = PeakStatus.valueOf(peakStatus);
+			FeatureStatus status = FeatureStatus.valueOf(peakStatus);
 
-			SimpleChromatographicPeak peak = new SimpleChromatographicPeak(
+			SimpleFeature peak = new SimpleFeature(
 					dataFile, mass, rt, height, area, scanNumbers, mzPeaks,
 					status, representativeScan, fragmentScan, peakRTRange,
 					peakMZRange, peakIntensityRange);

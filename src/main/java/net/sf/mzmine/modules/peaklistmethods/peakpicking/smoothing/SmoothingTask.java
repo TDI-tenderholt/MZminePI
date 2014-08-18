@@ -32,7 +32,7 @@ import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
@@ -195,7 +195,7 @@ public class SmoothingTask extends AbstractTask {
 
                                 // Create a new peak.
                                 newRow.addPeak(dataFile,
-                                               new SimpleChromatographicPeak(
+                                               new SimpleFeature(
                                                        dataFile,
                                                        maxDataPoint.getMZ(),
                                                        peak.getRT(),

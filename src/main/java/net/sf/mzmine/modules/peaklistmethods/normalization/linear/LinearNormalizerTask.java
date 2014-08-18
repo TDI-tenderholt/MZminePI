@@ -28,7 +28,7 @@ import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
 import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
@@ -206,7 +206,7 @@ class LinearNormalizerTask extends AbstractTask {
 						.getPeak(file);
 				if (originalPeak != null) {
 
-					SimpleChromatographicPeak normalizedPeak = new SimpleChromatographicPeak(
+					SimpleFeature normalizedPeak = new SimpleFeature(
 							originalPeak);
 					PeakUtils.copyPeakProperties(originalPeak, normalizedPeak);
 

@@ -24,10 +24,9 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.util.PeakUtils;
@@ -41,7 +40,7 @@ public class GaussianPeakModel implements Feature {
     private double rt, height, mz, area;
     private int[] scanNumbers;
     private RawDataFile rawDataFile;
-    private PeakStatus status;
+    private FeatureStatus status;
     private int representativeScan = -1, fragmentScan = -1;
     private Range rawDataPointsIntensityRange, rawDataPointsMZRange,
 	    rawDataPointsRTRange;
@@ -145,7 +144,7 @@ public class GaussianPeakModel implements Feature {
 	return dataPointsMap.get(scanNumber);
     }
 
-    public @Nonnull PeakStatus getFeatureStatus() {
+    public @Nonnull FeatureStatus getFeatureStatus() {
 	return status;
     }
 

@@ -20,11 +20,11 @@
 package net.sf.mzmine.modules.visualization.peaklist.table;
 
 import net.sf.mzmine.datamodel.Feature;
-import net.sf.mzmine.datamodel.PeakStatus;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
 
 public enum DataFileColumnType {
 
-    STATUS("Status", PeakStatus.class), 
+    STATUS("Status", FeatureStatus.class), 
     PEAKSHAPE("Peak shape", Feature.class),
     MZ("m/z", Double.class), 
     RT("Ret.time", Double.class),

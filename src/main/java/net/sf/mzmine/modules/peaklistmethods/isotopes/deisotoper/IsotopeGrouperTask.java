@@ -30,7 +30,7 @@ import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimpleIsotopePattern;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
@@ -218,7 +218,7 @@ class IsotopeGrouperTask extends AbstractTask {
 						SortingDirection.Ascending));
 			}
 
-			Feature newPeak = new SimpleChromatographicPeak(
+			Feature newPeak = new SimpleFeature(
 					originalPeaks[0]);
 			newPeak.setIsotopePattern(newPattern);
 			newPeak.setCharge(bestFitCharge);

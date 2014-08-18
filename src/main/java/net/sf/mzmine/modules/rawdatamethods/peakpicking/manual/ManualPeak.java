@@ -23,10 +23,9 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.util.CollectionUtils;
@@ -70,8 +69,8 @@ class ManualPeak implements Feature {
     /**
      * This peak is always a result of manual peak detection, therefore MANUAL
      */
-    public @Nonnull PeakStatus getFeatureStatus() {
-	return PeakStatus.MANUAL;
+    public @Nonnull FeatureStatus getFeatureStatus() {
+	return FeatureStatus.MANUAL;
     }
 
     /**

@@ -29,10 +29,34 @@ import net.sf.mzmine.util.Range;
  */
 public interface Feature {
 
+	public enum FeatureStatus {
+
+		/**
+		 * Peak was not found
+		 */
+		UNKNOWN,
+
+		/**
+		 * Peak was found in primary peak picking
+		 */
+		DETECTED,
+
+		/**
+		 * Peak was estimated in secondary peak picking
+		 */
+		ESTIMATED,
+
+		/**
+		 * Peak was defined manually
+		 */
+		MANUAL
+
+	}
+
     /**
      * This method returns the status of the peak
      */
-    public @Nonnull PeakStatus getFeatureStatus();
+	public @Nonnull FeatureStatus getFeatureStatus();
 
     /**
      * This method returns raw M/Z value of the peak

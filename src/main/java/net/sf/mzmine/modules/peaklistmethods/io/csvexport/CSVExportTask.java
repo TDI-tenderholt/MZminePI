@@ -26,8 +26,8 @@ import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Feature.FeatureStatus;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.taskcontrol.AbstractTask;
 import net.sf.mzmine.taskcontrol.TaskStatus;
@@ -192,7 +192,7 @@ class CSVExportTask extends AbstractTask {
 		case ROW_PEAK_NUMBER:
 		    int numDetected = 0;
 		    for (Feature p : peakListRow.getPeaks()) {
-			if (p.getFeatureStatus() == PeakStatus.DETECTED) {
+			if (p.getFeatureStatus() == FeatureStatus.DETECTED) {
 			    numDetected++;
 			}
 		    }
@@ -253,7 +253,7 @@ class CSVExportTask extends AbstractTask {
 		    } else {
 			switch (dataFileElements[i]) {
 			case PEAK_STATUS:
-			    line.append(PeakStatus.UNKNOWN + fieldSeparator);
+			    line.append(FeatureStatus.UNKNOWN + fieldSeparator);
 			    break;
 			default:
 			    line.append("0" + fieldSeparator);

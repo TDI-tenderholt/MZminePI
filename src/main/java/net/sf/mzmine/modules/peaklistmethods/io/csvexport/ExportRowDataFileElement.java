@@ -25,8 +25,9 @@ public enum ExportRowDataFileElement {
     PEAK_MZ("Export peak m/z", false),
     PEAK_RT("Export peak retention time", false),
     PEAK_HEIGHT("Export peak height", false),
-    PEAK_AREA("Export peak area", false);
-    
+    PEAK_AREA("Export peak area", false),
+    PEAK_CHARGE("Export peak charge", false),
+    PEAK_DURATION("Export peak duration time", false);
   
     private final String name;
     private final boolean common;

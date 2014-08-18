@@ -5,10 +5,9 @@ import java.util.Hashtable;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.PeakStatus;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
@@ -17,6 +16,7 @@ import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.MathUtils;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
+import net.sf.mzmine.util.PeakUtils;
 
 public class ExtendedPeak implements Feature {
 
@@ -119,8 +119,8 @@ public class ExtendedPeak implements Feature {
 	this.fragmentScan = scanNumber;
     }
 
-    public @Nonnull PeakStatus getFeatureStatus() {
-	return PeakStatus.DETECTED;
+	public @Nonnull FeatureStatus getFeatureStatus() {
+		return FeatureStatus.DETECTED;
     }
 
     public double getRT() {

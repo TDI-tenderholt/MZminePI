@@ -40,7 +40,7 @@ import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
-import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
 import net.sf.mzmine.datamodel.impl.SimplePeakListRow;
@@ -257,7 +257,7 @@ public class RowsFilterTask extends AbstractTask {
                 // Copy the peaks.
                 for (final Feature peak : row.getPeaks()) {
 
-                        final Feature newPeak = new SimpleChromatographicPeak(peak);
+                        final Feature newPeak = new SimpleFeature(peak);
                         PeakUtils.copyPeakProperties(peak, newPeak);
                         newRow.addPeak(peak.getDataFile(), newPeak);
                 }
