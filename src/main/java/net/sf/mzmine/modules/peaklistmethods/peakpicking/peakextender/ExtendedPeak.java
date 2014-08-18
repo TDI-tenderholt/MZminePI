@@ -119,7 +119,7 @@ public class ExtendedPeak implements Feature {
 	this.fragmentScan = scanNumber;
     }
 
-    public @Nonnull PeakStatus getPeakStatus() {
+    public @Nonnull PeakStatus getFeatureStatus() {
 	return PeakStatus.DETECTED;
     }
 

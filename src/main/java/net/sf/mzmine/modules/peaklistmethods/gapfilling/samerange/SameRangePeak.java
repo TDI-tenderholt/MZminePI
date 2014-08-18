@@ -71,7 +71,7 @@ class SameRangePeak implements Feature {
      * This peak is always a result of manual peak detection, therefore MANUAL
      */
     public @Nonnull
-    PeakStatus getPeakStatus() {
+    PeakStatus getFeatureStatus() {
 	return PeakStatus.ESTIMATED;
     }
 

@@ -117,7 +117,7 @@ public class SimpleChromatographicPeak implements Feature {
 	    dataPointsPerScan[i] = p.getDataPoint(scanNumbers[i]);
 	}
 
-	this.peakStatus = p.getPeakStatus();
+	this.peakStatus = p.getFeatureStatus();
 
 	this.representativeScan = p.getRepresentativeScanNumber();
 	this.fragmentScanNumber = p.getMostIntenseFragmentScanNumber();
@@ -128,7 +128,7 @@ public class SimpleChromatographicPeak implements Feature {
      * This method returns the status of the peak
      */
     public @Nonnull
-    PeakStatus getPeakStatus() {
+    PeakStatus getFeatureStatus() {
 	return peakStatus;
     }
 

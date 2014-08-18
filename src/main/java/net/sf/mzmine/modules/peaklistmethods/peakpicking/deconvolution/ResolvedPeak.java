@@ -209,7 +209,7 @@ public class ResolvedPeak implements Feature {
 	return fragmentScan;
     }
 
-    public @Nonnull PeakStatus getPeakStatus() {
+    public @Nonnull PeakStatus getFeatureStatus() {
 	return PeakStatus.DETECTED;
     }
 

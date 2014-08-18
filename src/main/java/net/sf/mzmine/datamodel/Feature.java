@@ -32,7 +32,7 @@ public interface Feature {
     /**
      * This method returns the status of the peak
      */
-    public @Nonnull PeakStatus getPeakStatus();
+    public @Nonnull PeakStatus getFeatureStatus();
 
     /**
      * This method returns raw M/Z value of the peak

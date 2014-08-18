@@ -70,7 +70,7 @@ class ManualPeak implements Feature {
     /**
      * This peak is always a result of manual peak detection, therefore MANUAL
      */
-    public @Nonnull PeakStatus getPeakStatus() {
+    public @Nonnull PeakStatus getFeatureStatus() {
 	return PeakStatus.MANUAL;
     }
 

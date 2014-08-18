@@ -203,7 +203,7 @@ public class SmoothingTask extends AbstractTask {
                                                        area,
                                                        scanNumbers,
                                                        newDataPoints,
-                                                       peak.getPeakStatus(),
+                                                       peak.getFeatureStatus(),
                                                        maxScanNumber,
                                                        peak.getMostIntenseFragmentScanNumber(),
                                                        new Range(peak.getRawDataPointsRTRange()),

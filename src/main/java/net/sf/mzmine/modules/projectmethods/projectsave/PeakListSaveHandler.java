@@ -261,7 +261,7 @@ public class PeakListSaveHandler {
 		    PeakListElementName.AREA.getElementName(), "CDATA",
 		    String.valueOf(p.getArea()));
 	    atts.addAttribute("", "", PeakListElementName.STATUS
-		    .getElementName(), "CDATA", p.getPeakStatus().toString());
+		    .getElementName(), "CDATA", p.getFeatureStatus().toString());
 	    atts.addAttribute("", "",
 		    PeakListElementName.CHARGE.getElementName(), "CDATA",
 		    String.valueOf(p.getCharge()));

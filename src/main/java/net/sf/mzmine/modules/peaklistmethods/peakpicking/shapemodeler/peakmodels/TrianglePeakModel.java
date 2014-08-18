@@ -79,7 +79,7 @@ public class TrianglePeakModel implements Feature {
     }
 
     public @Nonnull
-    PeakStatus getPeakStatus() {
+    PeakStatus getFeatureStatus() {
 	return status;
     }
 
@@ -142,7 +142,7 @@ public class TrianglePeakModel implements Feature {
 		originalDetectedShape.getRawDataPointsRTRange());
 
 	dataPointsMap = new TreeMap<Integer, DataPoint>();
-	status = originalDetectedShape.getPeakStatus();
+	status = originalDetectedShape.getFeatureStatus();
 
 	rtRight = retentionTimes[retentionTimes.length - 1];
 	rtLeft = retentionTimes[0];

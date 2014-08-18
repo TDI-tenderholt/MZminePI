@@ -70,7 +70,7 @@ public class GaussianPeakModel implements Feature {
 		originalDetectedShape.getRawDataPointsMZRange());
 
 	dataPointsMap = new TreeMap<Integer, DataPoint>();
-	status = originalDetectedShape.getPeakStatus();
+	status = originalDetectedShape.getFeatureStatus();
 
 	// FWFM (Full Width at Half Maximum)
 	FWHM = calculateWidth(intensities, retentionTimes, resolution, rt, mz,
@@ -145,7 +145,7 @@ public class GaussianPeakModel implements Feature {
 	return dataPointsMap.get(scanNumber);
     }
 
-    public @Nonnull PeakStatus getPeakStatus() {
+    public @Nonnull PeakStatus getFeatureStatus() {
 	return status;
     }
 

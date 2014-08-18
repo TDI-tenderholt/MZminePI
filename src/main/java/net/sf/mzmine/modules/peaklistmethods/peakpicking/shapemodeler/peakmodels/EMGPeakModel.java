@@ -79,7 +79,7 @@ public class EMGPeakModel implements Feature {
 		originalDetectedShape.getRawDataPointsMZRange());
 
 	dataPointsMap = new TreeMap<Integer, DataPoint>();
-	status = originalDetectedShape.getPeakStatus();
+	status = originalDetectedShape.getFeatureStatus();
 
 	// Initialize EMG parameters base on intensities and retention times
 	initializEMGParameters(intensities, retentionTimes, rt, height);
@@ -152,7 +152,7 @@ public class EMGPeakModel implements Feature {
 	return dataPointsMap.get(scanNumber);
     }
 
-    public @Nonnull PeakStatus getPeakStatus() {
+    public @Nonnull PeakStatus getFeatureStatus() {
 	return status;
     }
 

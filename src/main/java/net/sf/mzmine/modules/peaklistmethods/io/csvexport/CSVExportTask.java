@@ -192,7 +192,7 @@ class CSVExportTask extends AbstractTask {
 		case ROW_PEAK_NUMBER:
 		    int numDetected = 0;
 		    for (Feature p : peakListRow.getPeaks()) {
-			if (p.getPeakStatus() == PeakStatus.DETECTED) {
+			if (p.getFeatureStatus() == PeakStatus.DETECTED) {
 			    numDetected++;
 			}
 		    }
@@ -235,7 +235,7 @@ class CSVExportTask extends AbstractTask {
 		    if (peak != null) {
 			switch (dataFileElements[i]) {
 			case PEAK_STATUS:
-			    line.append(peak.getPeakStatus() + fieldSeparator);
+			    line.append(peak.getFeatureStatus() + fieldSeparator);
 			    break;
 			case PEAK_MZ:
 			    line.append(peak.getMZ() + fieldSeparator);

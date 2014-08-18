@@ -56,7 +56,7 @@ class PeakToolTipGenerator implements XYToolTipGenerator {
         int scanNumber = dataPoint.getScanNumber();
 
         String toolTip = "Peak: " + peak + "\nStatus: "
-                + peak.getPeakStatus() + "\nPeak list row: " + row
+                + peak.getFeatureStatus() + "\nPeak list row: " + row
                 + "\nScan #" + scanNumber + "\nRetention time: "
                 + rtFormat.format(rtValue) + "\nm/z: "
                 + mzFormat.format(mzValue) + "\nIntensity: "

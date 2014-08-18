@@ -143,7 +143,7 @@ public class Chromatogram implements Feature {
     }
 
     public @Nonnull
-    PeakStatus getPeakStatus() {
+    PeakStatus getFeatureStatus() {
 	return PeakStatus.DETECTED;
     }
 

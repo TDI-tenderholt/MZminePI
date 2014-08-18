@@ -108,7 +108,7 @@ public class PeakListTableModel extends AbstractTableModel {
 
             switch (dataFileColumn) {
             case STATUS:
-                return peak.getPeakStatus();
+                return peak.getFeatureStatus();
             case PEAKSHAPE:
                 return peak;
             case MZ:
