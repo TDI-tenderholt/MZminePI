@@ -53,7 +53,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
@@ -648,7 +648,7 @@ public class NistMsSearchTask
             writer.newLine();
 
             for (final PeakListRow row : neighbourRows) {
-                final ChromatographicPeak peak = row.getBestPeak();
+                final Feature peak = row.getBestPeak();
                 final int charge = peak.getCharge();
                 final double mass = (peak.getMZ() - ionType.getAddedMass()) *
                                     (charge == 0 ? 1.0 : (double) charge);

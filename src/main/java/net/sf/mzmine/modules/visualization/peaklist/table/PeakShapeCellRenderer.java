@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import javax.swing.OverlayLayout;
 import javax.swing.table.TableCellRenderer;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -72,9 +72,9 @@ class PeakShapeCellRenderer implements TableCellRenderer {
 
 		newPanel.setBackground(bgColor);
 
-		if (value instanceof ChromatographicPeak) {
+		if (value instanceof Feature) {
 
-			ChromatographicPeak peak = (ChromatographicPeak) value;
+			Feature peak = (Feature) value;
 			double maxHeight = 0;
 
 			PeakShapeNormalization norm = parameters.getParameter(
@@ -107,7 +107,7 @@ class PeakShapeCellRenderer implements TableCellRenderer {
 			PeakListRow plRow = (PeakListRow) value;
 
 			RawDataFile[] dataFiles = peakList.getRawDataFiles();
-			ChromatographicPeak[] peaks = new ChromatographicPeak[dataFiles.length];
+			Feature[] peaks = new Feature[dataFiles.length];
 			for (int i = 0; i < dataFiles.length; i++) {
 				peaks[i] = plRow.getPeak(dataFiles[i]);
 			}

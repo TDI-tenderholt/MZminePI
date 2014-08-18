@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -211,9 +211,9 @@ public class DuplicateFilterTask extends AbstractTask {
                 PeakUtils.copyPeakListRowProperties(row, newRow);
 
                 // Copy the peaks.
-                for (final ChromatographicPeak peak : row.getPeaks()) {
+                for (final Feature peak : row.getPeaks()) {
 
-                    final ChromatographicPeak newPeak = new SimpleChromatographicPeak(peak);
+                    final Feature newPeak = new SimpleChromatographicPeak(peak);
                     PeakUtils.copyPeakProperties(peak, newPeak);
                     newRow.addPeak(peak.getDataFile(), newPeak);
                 }

@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.peaklistmethods.gapfilling.peakfinder;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -133,7 +133,7 @@ class PeakFinderTask extends AbstractTask {
 					PeakListRow sourceRow = peakList.getRow(row);
 					PeakListRow newRow = processedPeakList.getRow(row);
 
-					ChromatographicPeak sourcePeak = sourceRow
+					Feature sourcePeak = sourceRow
 							.getPeak(dataFile);
 
 					if (sourcePeak == null) {
@@ -227,8 +227,8 @@ class PeakFinderTask extends AbstractTask {
 				RegressionInfo info = new RegressionInfo();
 
 				for (PeakListRow row : peakList.getRows()) {
-					ChromatographicPeak peaki = row.getPeak(datafile1);
-					ChromatographicPeak peake = row.getPeak(datafile2);
+					Feature peaki = row.getPeak(datafile1);
+					Feature peake = row.getPeak(datafile2);
 					if (peaki != null && peake != null) {
 						info.addData(peake.getRT(), peaki.getRT());
 					}
@@ -250,7 +250,7 @@ class PeakFinderTask extends AbstractTask {
 					PeakListRow sourceRow = peakList.getRow(row);
 					PeakListRow newRow = processedPeakList.getRow(row);
 
-					ChromatographicPeak sourcePeak = sourceRow
+					Feature sourcePeak = sourceRow
 							.getPeak(datafile1);
 
 					if (sourcePeak == null) {

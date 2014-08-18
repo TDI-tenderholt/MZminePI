@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.PeakResolver;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.ResolvedPeak;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.centwave.CentWaveDetectorParameters.PeakIntegrationMethod;
@@ -81,7 +81,7 @@ public class CentWaveDetector implements PeakResolver {
     }
 
     @Override
-    public ChromatographicPeak[] resolvePeaks(final ChromatographicPeak chromatogram,
+    public Feature[] resolvePeaks(final Feature chromatogram,
                                               final int[] scanNumbers,
                                               final double[] retentionTimes,
                                               final double[] intensities,

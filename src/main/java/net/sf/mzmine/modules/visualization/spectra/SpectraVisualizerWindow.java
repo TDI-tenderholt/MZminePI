@@ -32,7 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.IsotopePatternStatus;
@@ -247,7 +247,7 @@ public class SpectraVisualizerWindow extends JInternalFrame implements
 
     }
 
-    public void loadSinglePeak(ChromatographicPeak peak) {
+    public void loadSinglePeak(Feature peak) {
 
 	SinglePeakDataSet peakDataSet = new SinglePeakDataSet(
 		currentScan.getScanNumber(), peak);

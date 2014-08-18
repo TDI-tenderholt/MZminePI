@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.peaklistmethods.dataanalysis.rtmzplots.cvplot;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -77,7 +77,7 @@ public class CVDataset extends AbstractXYZDataset implements RTMZDataset {
 			// Collect available peak intensities for selected files
 			Vector<Double> peakIntensities = new Vector<Double>(); 
 			for (int fileIndex=0; fileIndex<selectedFiles.length; fileIndex++) {
-				ChromatographicPeak p = row.getPeak(selectedFiles[fileIndex]);
+				Feature p = row.getPeak(selectedFiles[fileIndex]);
 				if (p!=null) {
 					if (measurementType == PeakMeasurementType.AREA)
 						peakIntensities.add(p.getArea());

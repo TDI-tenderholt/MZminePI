@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -195,7 +195,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
                 if (parameterSet.checkUserParameterValues(new ArrayList<String>(0))) {
 
                     // Load the intensities and RTs into array.
-                    final ChromatographicPeak previewPeak = previewRow.getPeaks()[0];
+                    final Feature previewPeak = previewRow.getPeaks()[0];
                     final RawDataFile dataFile = previewPeak.getDataFile();
                     final int[] scanNumbers = dataFile.getScanNumbers(1);
                     final int scanCount = scanNumbers.length;
@@ -210,7 +210,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
                     }
 
                     // Resolve peaks.
-                    ChromatographicPeak[] resolvedPeaks = {};
+                    Feature[] resolvedPeaks = {};
                     try {
                         resolvedPeaks = peakResolver
                                 .resolvePeaks(previewPeak, scanNumbers, retentionTimes, intensities, parameters);

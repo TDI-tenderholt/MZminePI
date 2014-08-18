@@ -39,7 +39,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -165,7 +165,7 @@ class TwoDBottomPanel extends JPanel implements TreeModelListener,
 		selectedPeakList.getRawDataFiles());
 
 	for (PeakListRow peakRow : selectedPeakList.getRows()) {
-	    ChromatographicPeak peak = peakRow.getPeak(dataFile);
+	    Feature peak = peakRow.getPeak(dataFile);
 	    if (peak == null)
 		continue;
 	    if (peak.getRawDataPointsIntensityRange().getMax() > intensity) {

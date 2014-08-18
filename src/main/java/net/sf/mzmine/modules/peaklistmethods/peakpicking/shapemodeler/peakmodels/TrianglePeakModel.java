@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakStatus;
@@ -32,7 +32,7 @@ import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.util.PeakUtils;
 import net.sf.mzmine.util.Range;
 
-public class TrianglePeakModel implements ChromatographicPeak {
+public class TrianglePeakModel implements Feature {
 
     // Model information
     private double rtRight = -1, rtLeft = -1;
@@ -123,7 +123,7 @@ public class TrianglePeakModel implements ChromatographicPeak {
 	this.isotopePattern = isotopePattern;
     }
 
-    public TrianglePeakModel(ChromatographicPeak originalDetectedShape,
+    public TrianglePeakModel(Feature originalDetectedShape,
 	    int[] scanNumbers, double[] intensities, double[] retentionTimes,
 	    double resolution) {
 

@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.scatterplot;
 
 import java.util.Vector;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -59,7 +59,7 @@ public class ScatterPlotAxisSelection {
 
 	public double getValue(PeakListRow row) {
 		if (file != null) {
-			ChromatographicPeak peak = row.getPeak(file);
+			Feature peak = row.getPeak(file);
 			if (peak == null)
 				return 0;
 			else
@@ -72,7 +72,7 @@ public class ScatterPlotAxisSelection {
 			Object fileValue = MZmineCore.getCurrentProject()
 					.getParameterValue(parameter, dataFile);
 			if (fileValue == parameterValue) {
-				ChromatographicPeak peak = row.getPeak(dataFile);
+				Feature peak = row.getPeak(dataFile);
 				if ((peak != null) && (peak.getArea() > 0)) {
 					totalArea += peak.getArea();
 					numOfFiles++;

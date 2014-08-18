@@ -25,7 +25,7 @@ import java.util.Vector;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakStatus;
@@ -42,7 +42,7 @@ import net.sf.mzmine.util.ScanUtils;
  * returns all scans in the data file MS level 1, which means the Chromatogram
  * always covers the whole retention time range.
  */
-public class Chromatogram implements ChromatographicPeak {
+public class Chromatogram implements Feature {
 
     // Data file of this chromatogram
     private RawDataFile dataFile;

@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.peaklist.table;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -97,7 +97,7 @@ public class PeakListTableModel extends AbstractTableModel {
 
             DataFileColumnType dataFileColumn = getDataFileColumn(col);
             RawDataFile file = getColumnDataFile(col);
-            ChromatographicPeak peak = peakListRow.getPeak(file);
+            Feature peak = peakListRow.getPeak(file);
 
             if (peak == null) {
                 if (dataFileColumn == DataFileColumnType.STATUS)

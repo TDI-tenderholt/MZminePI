@@ -24,7 +24,7 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakStatus;
@@ -33,7 +33,7 @@ import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.util.PeakUtils;
 import net.sf.mzmine.util.Range;
 
-public class GaussianPeakModel implements ChromatographicPeak {
+public class GaussianPeakModel implements Feature {
 
     private double FWHM, partC, part2C2;
 
@@ -54,7 +54,7 @@ public class GaussianPeakModel implements ChromatographicPeak {
 
     private static double CONST = 2.354820045;
 
-    public GaussianPeakModel(ChromatographicPeak originalDetectedShape,
+    public GaussianPeakModel(Feature originalDetectedShape,
 	    int[] scanNumbers, double[] intensities, double[] retentionTimes,
 	    double resolution) {
 

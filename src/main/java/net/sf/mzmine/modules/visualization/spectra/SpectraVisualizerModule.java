@@ -23,7 +23,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
@@ -80,7 +80,7 @@ public class SpectraVisualizerModule implements MZmineProcessingModule {
     }
 
     public static SpectraVisualizerWindow showNewSpectrumWindow(
-	    RawDataFile dataFile, int scanNumber, ChromatographicPeak peak) {
+	    RawDataFile dataFile, int scanNumber, Feature peak) {
 	return showNewSpectrumWindow(dataFile, scanNumber, peak, null, null);
     }
 
@@ -91,7 +91,7 @@ public class SpectraVisualizerModule implements MZmineProcessingModule {
     }
 
     public static SpectraVisualizerWindow showNewSpectrumWindow(
-	    RawDataFile dataFile, int scanNumber, ChromatographicPeak peak,
+	    RawDataFile dataFile, int scanNumber, Feature peak,
 	    IsotopePattern detectedPattern, IsotopePattern predictedPattern) {
 
 	Scan scan = dataFile.getScan(scanNumber);

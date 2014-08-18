@@ -37,7 +37,7 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakIdentity;
@@ -237,8 +237,8 @@ public class PeakListSaveHandler {
 	}
 
 	// <PEAK>
-	ChromatographicPeak[] peaks = row.getPeaks();
-	for (ChromatographicPeak p : peaks) {
+	Feature[] peaks = row.getPeaks();
+	for (Feature p : peaks) {
 	    if (canceled)
 		return;
 
@@ -312,7 +312,7 @@ public class PeakListSaveHandler {
      * @param dataFileID
      * @throws IOException
      */
-    private void fillPeakElement(ChromatographicPeak peak, TransformerHandler hd)
+    private void fillPeakElement(Feature peak, TransformerHandler hd)
 	    throws SAXException, IOException {
 	AttributesImpl atts = new AttributesImpl();
 

@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.masslistmethods.chromatogrambuilder;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.MassList;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -158,7 +158,7 @@ public class ChromatogramBuilderTask extends AbstractTask {
 				SortingDirection.Ascending));
 
 		// Add the chromatograms to the new peak list
-		for (ChromatographicPeak finishedPeak : chromatograms) {
+		for (Feature finishedPeak : chromatograms) {
 			SimplePeakListRow newRow = new SimplePeakListRow(newPeakID);
 			newPeakID++;
 			newRow.addPeak(dataFile, finishedPeak);

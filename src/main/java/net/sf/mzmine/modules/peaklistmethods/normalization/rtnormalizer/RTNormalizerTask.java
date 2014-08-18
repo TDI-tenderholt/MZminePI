@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.peaklistmethods.normalization.rtnormalizer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
@@ -124,7 +124,7 @@ class RTNormalizerTask extends AbstractTask {
 	    processedRows++;
 
 	    // Check that all peaks of this row have proper height
-	    for (ChromatographicPeak p : candidate.getPeaks()) {
+	    for (Feature p : candidate.getPeaks()) {
 		if (p.getHeight() < minHeight)
 		    continue standardIteration;
 	    }
@@ -148,7 +148,7 @@ class RTNormalizerTask extends AbstractTask {
 		    continue standardIteration;
 
 		// Check that all peaks of this row have proper height
-		for (ChromatographicPeak p : matchingRows[0].getPeaks()) {
+		for (Feature p : matchingRows[0].getPeaks()) {
 		    if (p.getHeight() < minHeight)
 			continue standardIteration;
 		}
@@ -344,7 +344,7 @@ class RTNormalizerTask extends AbstractTask {
 
 	// Set normalized retention time to all peaks in this row
 	for (RawDataFile file : originalRow.getRawDataFiles()) {
-	    ChromatographicPeak originalPeak = originalRow.getPeak(file);
+	    Feature originalPeak = originalRow.getPeak(file);
 	    if (originalPeak != null) {
 		SimpleChromatographicPeak normalizedPeak = new SimpleChromatographicPeak(
 			originalPeak);

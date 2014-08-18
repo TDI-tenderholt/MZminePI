@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.PeakResolver;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.ResolvedPeak;
@@ -47,8 +47,8 @@ public class BaselinePeakDetector implements PeakResolver {
 
 
     @Override
-    public ChromatographicPeak[] resolvePeaks(
-	    final ChromatographicPeak chromatogram, final int[] scanNumbers,
+    public Feature[] resolvePeaks(
+	    final Feature chromatogram, final int[] scanNumbers,
 	    final double[] retentionTimes, final double[] intensities,
 	    ParameterSet parameters) {
 

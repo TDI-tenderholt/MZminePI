@@ -47,7 +47,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -234,7 +234,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 	    if (predictedPattern == null)
 		return;
 
-	    ChromatographicPeak peak = peakListRow.getBestPeak();
+	    Feature peak = peakListRow.getBestPeak();
 
 	    RawDataFile dataFile = peak.getDataFile();
 	    int scanNumber = peak.getRepresentativeScanNumber();
@@ -245,7 +245,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 
 	if (command.equals("SHOW_MSMS")) {
 
-	    ChromatographicPeak bestPeak = peakListRow.getBestPeak();
+	    Feature bestPeak = peakListRow.getBestPeak();
 
 	    RawDataFile dataFile = bestPeak.getDataFile();
 	    int msmsScanNumber = bestPeak.getMostIntenseFragmentScanNumber();

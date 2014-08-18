@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.peaklistmethods.peakpicking.shapemodeler;
 import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
@@ -119,7 +119,7 @@ class ShapeModelerTask extends AbstractTask {
 			newRow = new SimplePeakListRow(newPeakID);
 
 			try {
-				for (ChromatographicPeak peak : row.getPeaks()) {
+				for (Feature peak : row.getPeaks()) {
 
 					// Load the intensities into array
 					dataFile = peak.getDataFile();
@@ -138,7 +138,7 @@ class ShapeModelerTask extends AbstractTask {
 							intensities[i] = 0;
 					}
 
-					ChromatographicPeak shapePeak = (ChromatographicPeak) shapeModelConstruct
+					Feature shapePeak = (Feature) shapeModelConstruct
 							.newInstance(peak, scanNumbers, intensities,
 									retentionTimes, resolution);
 

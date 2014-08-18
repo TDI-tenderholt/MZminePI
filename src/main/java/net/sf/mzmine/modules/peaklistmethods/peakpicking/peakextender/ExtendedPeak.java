@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakStatus;
@@ -18,7 +18,7 @@ import net.sf.mzmine.util.MathUtils;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 
-public class ExtendedPeak implements ChromatographicPeak {
+public class ExtendedPeak implements Feature {
 
     // Data file of this chromatogram
     private RawDataFile dataFile;

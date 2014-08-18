@@ -74,12 +74,12 @@ public interface PeakList {
      * @param rawDataFile
      *            Raw data file where the peak is detected/estimated
      */
-    public ChromatographicPeak getPeak(int row, RawDataFile rawDataFile);
+    public Feature getPeak(int row, RawDataFile rawDataFile);
 
     /**
      * Returns all peaks for a raw data file
      */
-    public ChromatographicPeak[] getPeaks(RawDataFile rawDataFile);
+    public Feature[] getPeaks(RawDataFile rawDataFile);
 
     /**
      * Returns all peaks on one row
@@ -134,7 +134,7 @@ public interface PeakList {
      * @param endRT
      *            End of the retention time range
      */
-    public ChromatographicPeak[] getPeaksInsideScanRange(RawDataFile file,
+    public Feature[] getPeaksInsideScanRange(RawDataFile file,
 	    Range rtRange);
 
     /**
@@ -145,7 +145,7 @@ public interface PeakList {
      * @param endMZ
      *            End of the m/z range
      */
-    public ChromatographicPeak[] getPeaksInsideMZRange(RawDataFile file,
+    public Feature[] getPeaksInsideMZRange(RawDataFile file,
 	    Range mzRange);
 
     /**
@@ -160,7 +160,7 @@ public interface PeakList {
      * @param endMZ
      *            End of the m/z range
      */
-    public ChromatographicPeak[] getPeaksInsideScanAndMZRange(RawDataFile file,
+    public Feature[] getPeaksInsideScanAndMZRange(RawDataFile file,
 	    Range rtRange, Range mzRange);
 
     /**
@@ -191,12 +191,12 @@ public interface PeakList {
     /**
      * Returns a row number of given peak
      */
-    public int getPeakRowNum(ChromatographicPeak peak);
+    public int getPeakRowNum(Feature peak);
 
     /**
      * Returns a row containing given peak
      */
-    public PeakListRow getPeakRow(ChromatographicPeak peak);
+    public PeakListRow getPeakRow(Feature peak);
 
     public void addDescriptionOfAppliedTask(PeakListAppliedMethod appliedMethod);
 

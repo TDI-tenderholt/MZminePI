@@ -27,7 +27,7 @@ import java.text.NumberFormat;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.main.MZmineCore;
@@ -388,7 +388,7 @@ public class ThreeDDisplay extends DisplayImplJ3D {
      *             if there are VisAD problems.
      */
     public void setPeaks(final PeakList peakList,
-            final ChromatographicPeak[] peaks, final boolean showCompoundName)
+            final Feature[] peaks, final boolean showCompoundName)
             throws RemoteException, VisADException {
 
         final int peakCount = peaks.length;

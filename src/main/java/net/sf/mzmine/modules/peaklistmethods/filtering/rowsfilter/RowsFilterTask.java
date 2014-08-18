@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
@@ -207,8 +207,8 @@ public class RowsFilterTask extends AbstractTask {
                         // Calculate average duration and isotope pattern count.
                         int maxIsotopePatternSizeOnRow = 1;
                         double avgDuration = 0.0;
-                        final ChromatographicPeak[] peaks = row.getPeaks();
-                        for (final ChromatographicPeak p : peaks) {
+                        final Feature[] peaks = row.getPeaks();
+                        for (final Feature p : peaks) {
 
                                 final IsotopePattern pattern = p.getIsotopePattern();
                                 if (pattern != null && maxIsotopePatternSizeOnRow < pattern.getNumberOfIsotopes()) {
@@ -255,9 +255,9 @@ public class RowsFilterTask extends AbstractTask {
                 PeakUtils.copyPeakListRowProperties(row, newRow);
 
                 // Copy the peaks.
-                for (final ChromatographicPeak peak : row.getPeaks()) {
+                for (final Feature peak : row.getPeaks()) {
 
-                        final ChromatographicPeak newPeak = new SimpleChromatographicPeak(peak);
+                        final Feature newPeak = new SimpleChromatographicPeak(peak);
                         PeakUtils.copyPeakProperties(peak, newPeak);
                         newRow.addPeak(peak.getDataFile(), newPeak);
                 }

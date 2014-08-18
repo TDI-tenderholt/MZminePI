@@ -26,7 +26,7 @@ package net.sf.mzmine.modules.peaklistmethods.peakpicking.smoothing;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
@@ -124,7 +124,7 @@ public class SmoothingTask extends AbstractTask {
                     final PeakListRow newRow = new SimplePeakListRow(peakID++);
 
                     // Process each peak.
-                    for (final ChromatographicPeak peak : row.getPeaks()) {
+                    for (final Feature peak : row.getPeaks()) {
 
                         if (!isCanceled()) {
 

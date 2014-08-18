@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.datamodel.IsotopePattern;
@@ -294,7 +294,7 @@ public class SingleRowPredictionTask extends AbstractTask {
 
         // MS/MS evaluation is slowest, so let's do it last
         Double msmsScore = null;
-        ChromatographicPeak bestPeak = peakListRow.getBestPeak();
+        Feature bestPeak = peakListRow.getBestPeak();
         RawDataFile dataFile = bestPeak.getDataFile();
         Map<DataPoint, String> msmsAnnotations = null;
         int msmsScanNumber = bestPeak.getMostIntenseFragmentScanNumber();

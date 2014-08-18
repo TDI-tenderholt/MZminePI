@@ -25,7 +25,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -40,7 +40,7 @@ import net.sf.mzmine.util.SortingProperty;
  */
 public class SimplePeakListRow implements PeakListRow {
 
-	private Hashtable<RawDataFile, ChromatographicPeak> peaks;
+	private Hashtable<RawDataFile, Feature> peaks;
 	private Vector<PeakIdentity> identities;
 	private PeakIdentity preferredIdentity;
 	private String comment;
@@ -55,7 +55,7 @@ public class SimplePeakListRow implements PeakListRow {
 
 	public SimplePeakListRow(int myID) {
 		this.myID = myID;
-		peaks = new Hashtable<RawDataFile, ChromatographicPeak>();
+		peaks = new Hashtable<RawDataFile, Feature>();
 		identities = new Vector<PeakIdentity>();
 	}
 
@@ -69,8 +69,8 @@ public class SimplePeakListRow implements PeakListRow {
 	/**
 	 * Return peaks assigned to this row
 	 */
-	public ChromatographicPeak[] getPeaks() {
-		return peaks.values().toArray(new ChromatographicPeak[0]);
+	public Feature[] getPeaks() {
+		return peaks.values().toArray(new Feature[0]);
 	}
 
 	public void removePeak(RawDataFile file) {
@@ -88,12 +88,12 @@ public class SimplePeakListRow implements PeakListRow {
 	/**
 	 * Returns peak for given raw data file
 	 */
-	public ChromatographicPeak getPeak(RawDataFile rawData) {
+	public Feature getPeak(RawDataFile rawData) {
 		return peaks.get(rawData);
 	}
 
 	public synchronized void addPeak(RawDataFile rawData,
-			ChromatographicPeak peak) {
+			Feature peak) {
 
 		if (peak == null)
 			throw new IllegalArgumentException(
@@ -125,9 +125,9 @@ public class SimplePeakListRow implements PeakListRow {
 
 	private synchronized void calculateAverageValues() {
 		double rtSum = 0, mzSum = 0, heightSum = 0, areaSum = 0;
-		Enumeration<ChromatographicPeak> peakEnum = peaks.elements();
+		Enumeration<Feature> peakEnum = peaks.elements();
 		while (peakEnum.hasMoreElements()) {
-			ChromatographicPeak p = peakEnum.nextElement();
+			Feature p = peakEnum.nextElement();
 			rtSum += p.getRT();
 			mzSum += p.getMZ();
 			heightSum += p.getHeight();
@@ -246,7 +246,7 @@ public class SimplePeakListRow implements PeakListRow {
 		return maxDataPointIntensity;
 	}
 
-	public boolean hasPeak(ChromatographicPeak peak) {
+	public boolean hasPeak(Feature peak) {
 		return peaks.containsValue(peak);
 	}
 
@@ -258,11 +258,11 @@ public class SimplePeakListRow implements PeakListRow {
 	 * Returns the highest isotope pattern of a peak in this row
 	 */
 	public IsotopePattern getBestIsotopePattern() {
-		ChromatographicPeak peaks[] = getPeaks();
+		Feature peaks[] = getPeaks();
 		Arrays.sort(peaks, new PeakSorter(SortingProperty.Height,
 				SortingDirection.Descending));
 
-		for (ChromatographicPeak peak : peaks) {
+		for (Feature peak : peaks) {
 			IsotopePattern ip = peak.getIsotopePattern();
 			if (ip != null)
 				return ip;
@@ -274,8 +274,8 @@ public class SimplePeakListRow implements PeakListRow {
 	/**
 	 * Returns the highest peak in this row
 	 */
-	public ChromatographicPeak getBestPeak() {
-		ChromatographicPeak peaks[] = getPeaks();
+	public Feature getBestPeak() {
+		Feature peaks[] = getPeaks();
 		Arrays.sort(peaks, new PeakSorter(SortingProperty.Height,
 				SortingDirection.Descending));
 		return peaks[0];

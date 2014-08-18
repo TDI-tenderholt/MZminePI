@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakStatus;
@@ -38,7 +38,7 @@ import net.sf.mzmine.util.ScanUtils;
 /**
  * This class represents a manually picked chromatographic peak.
  */
-class SameRangePeak implements ChromatographicPeak {
+class SameRangePeak implements Feature {
 
     private RawDataFile dataFile;
 
@@ -135,7 +135,7 @@ class SameRangePeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getDataFile()
+     * @see net.sf.mzmine.datamodel.Feature#getDataFile()
      */
     public @Nonnull
     RawDataFile getDataFile() {

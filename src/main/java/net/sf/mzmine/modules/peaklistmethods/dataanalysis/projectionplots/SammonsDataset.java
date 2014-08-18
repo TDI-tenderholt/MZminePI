@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import jmprojection.Preprocess;
 import jmprojection.ProjectionStatus;
 import jmprojection.Sammons;
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -216,7 +216,7 @@ public class SammonsDataset extends AbstractXYDataset implements
 			PeakListRow peakListRow = selectedRows[rowIndex];
 			for (int fileIndex = 0; fileIndex < selectedRawDataFiles.length; fileIndex++) {
 				RawDataFile rawDataFile = selectedRawDataFiles[fileIndex];
-				ChromatographicPeak p = peakListRow.getPeak(rawDataFile);
+				Feature p = peakListRow.getPeak(rawDataFile);
 				if (p != null) {
 					if (useArea)
 						rawData[fileIndex][rowIndex] = p.getArea();

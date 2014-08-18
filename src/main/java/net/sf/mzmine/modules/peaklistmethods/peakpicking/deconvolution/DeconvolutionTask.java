@@ -26,7 +26,7 @@ import static net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.De
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListAppliedMethod;
@@ -184,11 +184,11 @@ public class DeconvolutionTask extends AbstractTask {
         int peakId = 1;
 
         // Process each chromatogram.
-        final ChromatographicPeak[] chromatograms = peakList.getPeaks(dataFile);
+        final Feature[] chromatograms = peakList.getPeaks(dataFile);
         final int chromatogramCount = chromatograms.length;
         for (int index = 0; !isCanceled() && index < chromatogramCount; index++) {
 
-            final ChromatographicPeak chromatogram = chromatograms[index];
+            final Feature chromatogram = chromatograms[index];
 
             // Load the intensities into array.
             final double[] intensities = new double[scanCount];
@@ -201,11 +201,11 @@ public class DeconvolutionTask extends AbstractTask {
             // Resolve peaks.
             final PeakResolver resolverModule = resolver.getModule();
             final ParameterSet resolverParams = resolver.getParameterSet();
-            final ChromatographicPeak[] peaks =
+            final Feature[] peaks =
                     resolverModule.resolvePeaks(chromatogram, scanNumbers, retentionTimes, intensities, resolverParams);
 
             // Add peaks to the new peak list.
-            for (final ChromatographicPeak peak : peaks) {
+            for (final Feature peak : peaks) {
 
                 final PeakListRow newRow = new SimplePeakListRow(peakId++);
                 newRow.addPeak(dataFile, peak);

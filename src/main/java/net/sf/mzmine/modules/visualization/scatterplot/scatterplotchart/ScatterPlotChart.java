@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -245,11 +245,11 @@ public class ScatterPlotChart extends ChartPanel implements
                 return;
             }
 
-            ChromatographicPeak[] peaks = selectedRow.getPeaks();
+            Feature[] peaks = selectedRow.getPeaks();
             Range rtRange = peakList.getRowsRTRange();
             Range mzRange = null;
 
-            for (ChromatographicPeak p : peaks) {
+            for (Feature p : peaks) {
                 if (mzRange == null) {
                     mzRange = p.getRawDataPointsMZRange();
                 } else {
@@ -258,9 +258,9 @@ public class ScatterPlotChart extends ChartPanel implements
             }
 
             // Label best peak with preferred identity.
-            final ChromatographicPeak bestPeak = selectedRow.getBestPeak();
+            final Feature bestPeak = selectedRow.getBestPeak();
             final PeakIdentity peakIdentity = selectedRow.getPreferredPeakIdentity();
-            final Map<ChromatographicPeak, String> labelMap = new HashMap<ChromatographicPeak, String>(1);
+            final Map<Feature, String> labelMap = new HashMap<Feature, String>(1);
             if (bestPeak != null && peakIdentity != null) {
 
                 labelMap.put(bestPeak, peakIdentity.getName());

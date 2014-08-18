@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakIdentity;
@@ -178,7 +178,7 @@ public class PeakListIdentificationTask extends AbstractTask {
 	currentRow = row;
 
 	// Determine peak charge.
-	final ChromatographicPeak bestPeak = row.getBestPeak();
+	final Feature bestPeak = row.getBestPeak();
 	int charge = bestPeak.getCharge();
 	if (charge <= 0) {
 	    charge = 1;

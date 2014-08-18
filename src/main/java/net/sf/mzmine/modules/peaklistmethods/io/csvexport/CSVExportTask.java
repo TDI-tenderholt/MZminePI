@@ -22,7 +22,7 @@ package net.sf.mzmine.modules.peaklistmethods.io.csvexport;
 import java.io.File;
 import java.io.FileWriter;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -191,7 +191,7 @@ class CSVExportTask extends AbstractTask {
 		    break;
 		case ROW_PEAK_NUMBER:
 		    int numDetected = 0;
-		    for (ChromatographicPeak p : peakListRow.getPeaks()) {
+		    for (Feature p : peakListRow.getPeaks()) {
 			if (p.getPeakStatus() == PeakStatus.DETECTED) {
 			    numDetected++;
 			}
@@ -231,7 +231,7 @@ class CSVExportTask extends AbstractTask {
 	    length = dataFileElements.length;
 	    for (RawDataFile dataFile : rawDataFiles) {
 		for (int i = 0; i < length; i++) {
-		    ChromatographicPeak peak = peakListRow.getPeak(dataFile);
+		    Feature peak = peakListRow.getPeak(dataFile);
 		    if (peak != null) {
 			switch (dataFileElements[i]) {
 			case PEAK_STATUS:

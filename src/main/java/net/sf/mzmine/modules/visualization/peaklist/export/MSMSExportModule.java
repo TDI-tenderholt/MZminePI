@@ -25,7 +25,7 @@ import java.io.FileWriter;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.MassList;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -63,7 +63,7 @@ public class MSMSExportModule implements MZmineModule {
 	    return;
 
 	// Best peak always exists, because peak list row has at least one peak
-	ChromatographicPeak bestPeak = row.getBestPeak();
+	Feature bestPeak = row.getBestPeak();
 
 	// Get the MS/MS scan number
 	int msmsScanNumber = bestPeak.getMostIntenseFragmentScanNumber();

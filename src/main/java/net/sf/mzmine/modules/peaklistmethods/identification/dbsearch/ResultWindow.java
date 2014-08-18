@@ -38,7 +38,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -185,7 +185,7 @@ public class ResultWindow extends JInternalFrame implements ActionListener {
 			if (predictedPattern == null)
 				return;
 
-			ChromatographicPeak peak = peakListRow.getBestPeak();
+			Feature peak = peakListRow.getBestPeak();
 
 			RawDataFile dataFile = peak.getDataFile();
 			int scanNumber = peak.getRepresentativeScanNumber();

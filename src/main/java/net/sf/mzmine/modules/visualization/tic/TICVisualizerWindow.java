@@ -33,7 +33,7 @@ import java.util.Set;
 import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.main.MZmineCore;
@@ -76,8 +76,8 @@ public class TICVisualizerWindow extends JInternalFrame implements
      */
     public TICVisualizerWindow(RawDataFile dataFiles[], PlotType plotType,
                                int msLevel, Range rtRange, Range mzRange,
-                               ChromatographicPeak[] peaks,
-                               Map<ChromatographicPeak, String> peakLabels) {
+                               Feature[] peaks,
+                               Map<Feature, String> peakLabels) {
 
         super(null, true, true, true, true);
 
@@ -104,7 +104,7 @@ public class TICVisualizerWindow extends JInternalFrame implements
         // add all peaks
         if (peaks != null) {
 
-            for (ChromatographicPeak peak : peaks) {
+            for (Feature peak : peaks) {
 
                 if (peakLabels != null && peakLabels.containsKey(peak)) {
 

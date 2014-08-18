@@ -25,7 +25,7 @@ import java.io.FileWriter;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakListRow;
@@ -66,7 +66,7 @@ public class IsotopePatternExportModule implements MZmineModule {
 	    isotopes = pattern.getDataPoints();
 	} else {
 	    isotopes = new DataPoint[1];
-	    ChromatographicPeak bestPeak = row.getBestPeak();
+	    Feature bestPeak = row.getBestPeak();
 	    isotopes[0] = new SimpleDataPoint(bestPeak.getMZ(),
 		    bestPeak.getHeight());
 	}

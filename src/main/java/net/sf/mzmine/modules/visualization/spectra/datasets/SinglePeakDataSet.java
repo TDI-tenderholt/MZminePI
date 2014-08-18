@@ -19,7 +19,7 @@
 
 package net.sf.mzmine.modules.visualization.spectra.datasets;
 
-import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
 
 import org.jfree.data.xy.AbstractXYDataset;
@@ -34,7 +34,7 @@ public class SinglePeakDataSet extends AbstractXYDataset implements
 	private DataPoint dataPoint;
 	private String label;
 
-	public SinglePeakDataSet(int scanNumber, ChromatographicPeak peak) {
+	public SinglePeakDataSet(int scanNumber, Feature peak) {
 		this.label = peak.toString();
 		this.dataPoint = peak.getDataPoint(scanNumber);
 	}
