@@ -19,11 +19,15 @@
 
 package net.sf.mzmine.datamodel;
 
+/**
+ * Represents the polarity of ionization.
+ */
 public enum Polarity {
 
-    Positive(+1), //
-    Negative(-1), //
-    Neutral(0);
+    POSITIVE(+1), //
+    NEGATIVE(-1), //
+	NEUTRAL(0), //
+	UNKNOWN(0);
 
     private final int sign;
 
@@ -31,6 +35,10 @@ public enum Polarity {
 	this.sign = sign;
     }
 
+	/**
+	 * @return +1 for positive polarity, -1 for negative polarity, and 0 for
+	 *         neutral or unknown polarity.
+	 */
     public int getSign() {
 	return sign;
     }
