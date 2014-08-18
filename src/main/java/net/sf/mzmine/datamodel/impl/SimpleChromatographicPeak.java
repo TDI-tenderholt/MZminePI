@@ -17,17 +17,17 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data.impl;
+package net.sf.mzmine.datamodel.impl;
 
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakStatus;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakStatus;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.util.PeakUtils;
 import net.sf.mzmine.util.Range;
 
@@ -204,7 +204,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#getDataFile()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getDataFile()
      */
     public @Nonnull
     RawDataFile getDataFile() {
@@ -212,7 +212,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#setDataFile()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#setDataFile()
      */
     public void setDataFile(RawDataFile dataFile) {
 	this.dataFile = dataFile;
@@ -227,7 +227,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#getRawDataPointsIntensityRange()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getRawDataPointsIntensityRange()
      */
     public @Nonnull
     Range getRawDataPointsIntensityRange() {
@@ -235,7 +235,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#getRawDataPointsMZRange()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getRawDataPointsMZRange()
      */
     public @Nonnull
     Range getRawDataPointsMZRange() {
@@ -243,7 +243,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#getRawDataPointsRTRange()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getRawDataPointsRTRange()
      */
     public @Nonnull
     Range getRawDataPointsRTRange() {
@@ -251,7 +251,7 @@ public class SimpleChromatographicPeak implements ChromatographicPeak {
     }
 
     /**
-     * @see net.sf.mzmine.data.ChromatographicPeak#getRepresentativeScanNumber()
+     * @see net.sf.mzmine.datamodel.ChromatographicPeak#getRepresentativeScanNumber()
      */
     public int getRepresentativeScanNumber() {
 	return representativeScan;

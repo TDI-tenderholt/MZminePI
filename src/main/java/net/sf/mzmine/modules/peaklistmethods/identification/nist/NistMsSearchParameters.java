@@ -26,7 +26,7 @@ package net.sf.mzmine.modules.peaklistmethods.identification.nist;
 import java.io.File;
 import java.util.Collection;
 
-import net.sf.mzmine.data.IonizationType;
+import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
 import net.sf.mzmine.parameters.parametertypes.BooleanParameter;

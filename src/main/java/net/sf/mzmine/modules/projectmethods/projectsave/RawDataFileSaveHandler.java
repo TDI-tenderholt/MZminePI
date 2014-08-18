@@ -34,9 +34,9 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
-import net.sf.mzmine.data.MassList;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.project.impl.RawDataFileImpl;
 import net.sf.mzmine.project.impl.StorableMassList;
 import net.sf.mzmine.project.impl.StorableScan;

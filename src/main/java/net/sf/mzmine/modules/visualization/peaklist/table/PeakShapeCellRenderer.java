@@ -27,10 +27,10 @@ import javax.swing.JTable;
 import javax.swing.OverlayLayout;
 import javax.swing.table.TableCellRenderer;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.modules.visualization.peaklist.PeakListTableParameters;
 import net.sf.mzmine.modules.visualization.peaklist.PeakShapeNormalization;
 import net.sf.mzmine.parameters.ParameterSet;

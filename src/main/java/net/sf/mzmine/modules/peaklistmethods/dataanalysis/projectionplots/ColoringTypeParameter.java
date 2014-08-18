@@ -46,7 +46,7 @@ public class ColoringTypeParameter implements
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.Parameter#getName()
+	 * @see net.sf.mzmine.datamodel.Parameter#getName()
 	 */
 	@Override
 	public String getName() {
@@ -54,7 +54,7 @@ public class ColoringTypeParameter implements
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.Parameter#getDescription()
+	 * @see net.sf.mzmine.datamodel.Parameter#getDescription()
 	 */
 	@Override
 	public String getDescription() {

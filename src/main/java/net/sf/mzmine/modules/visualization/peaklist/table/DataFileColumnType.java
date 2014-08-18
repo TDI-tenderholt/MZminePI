@@ -19,8 +19,8 @@
 
 package net.sf.mzmine.modules.visualization.peaklist.table;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakStatus;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.PeakStatus;
 
 public enum DataFileColumnType {
 

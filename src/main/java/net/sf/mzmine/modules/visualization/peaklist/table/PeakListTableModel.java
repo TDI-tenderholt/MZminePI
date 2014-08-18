@@ -21,12 +21,12 @@ package net.sf.mzmine.modules.visualization.peaklist.table;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.PeakStatus;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.PeakStatus;
+import net.sf.mzmine.datamodel.RawDataFile;
 
 public class PeakListTableModel extends AbstractTableModel {
 

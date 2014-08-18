@@ -17,7 +17,7 @@
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data.impl;
+package net.sf.mzmine.datamodel.impl;
 
 import java.text.Format;
 import java.util.Arrays;
@@ -25,11 +25,11 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.IsotopePattern;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.PeakSorter;
 import net.sf.mzmine.util.SortingDirection;
@@ -60,7 +60,7 @@ public class SimplePeakListRow implements PeakListRow {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#getID()
+	 * @see net.sf.mzmine.datamodel.PeakListRow#getID()
 	 */
 	public int getID() {
 		return myID;
@@ -162,21 +162,21 @@ public class SimplePeakListRow implements PeakListRow {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#getComment()
+	 * @see net.sf.mzmine.datamodel.PeakListRow#getComment()
 	 */
 	public String getComment() {
 		return comment;
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#setComment(java.lang.String)
+	 * @see net.sf.mzmine.datamodel.PeakListRow#setComment(java.lang.String)
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#addCompoundIdentity(net.sf.mzmine.data.PeakIdentity)
+	 * @see net.sf.mzmine.datamodel.PeakListRow#addCompoundIdentity(net.sf.mzmine.datamodel.PeakIdentity)
 	 */
 	public synchronized void addPeakIdentity(PeakIdentity identity,
 			boolean preferred) {
@@ -195,7 +195,7 @@ public class SimplePeakListRow implements PeakListRow {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#addCompoundIdentity(net.sf.mzmine.data.PeakIdentity)
+	 * @see net.sf.mzmine.datamodel.PeakListRow#addCompoundIdentity(net.sf.mzmine.datamodel.PeakIdentity)
 	 */
 	public synchronized void removePeakIdentity(PeakIdentity identity) {
 		identities.remove(identity);
@@ -210,21 +210,21 @@ public class SimplePeakListRow implements PeakListRow {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#getPeakIdentities()
+	 * @see net.sf.mzmine.datamodel.PeakListRow#getPeakIdentities()
 	 */
 	public PeakIdentity[] getPeakIdentities() {
 		return identities.toArray(new PeakIdentity[0]);
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#getPreferredPeakIdentity()
+	 * @see net.sf.mzmine.datamodel.PeakListRow#getPreferredPeakIdentity()
 	 */
 	public PeakIdentity getPreferredPeakIdentity() {
 		return preferredIdentity;
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#setPreferredPeakIdentity(net.sf.mzmine.data.PeakIdentity)
+	 * @see net.sf.mzmine.datamodel.PeakListRow#setPreferredPeakIdentity(net.sf.mzmine.datamodel.PeakIdentity)
 	 */
 	public void setPreferredPeakIdentity(PeakIdentity identity) {
 
@@ -240,7 +240,7 @@ public class SimplePeakListRow implements PeakListRow {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakListRow#getDataPointMaxIntensity()
+	 * @see net.sf.mzmine.datamodel.PeakListRow#getDataPointMaxIntensity()
 	 */
 	public double getDataPointMaxIntensity() {
 		return maxDataPointIntensity;

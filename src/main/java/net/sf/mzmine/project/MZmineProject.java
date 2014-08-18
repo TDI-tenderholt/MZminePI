@@ -21,9 +21,9 @@ package net.sf.mzmine.project;
 
 import java.io.File;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.parameters.UserParameter;
 
 /**

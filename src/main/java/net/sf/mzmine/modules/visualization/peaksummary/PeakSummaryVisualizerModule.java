@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.peaksummary;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.PeakListRow;
+import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModule;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -42,7 +42,7 @@ public class PeakSummaryVisualizerModule implements MZmineModule {
     }
 
     /**
-     * @see net.sf.mzmine.modules.MZmineModule#setParameters(net.sf.mzmine.data.ParameterSet)
+     * @see net.sf.mzmine.modules.MZmineModule#setParameters(net.sf.mzmine.datamodel.ParameterSet)
      */
     public static void showNewPeakSummaryWindow(PeakListRow row) {
 	PeakSummaryWindow newWindow = new PeakSummaryWindow(row);

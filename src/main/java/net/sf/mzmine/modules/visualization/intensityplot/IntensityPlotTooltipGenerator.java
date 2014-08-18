@@ -21,8 +21,8 @@ package net.sf.mzmine.modules.visualization.intensityplot;
 
 import java.text.Format;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 
 import org.jfree.chart.labels.CategoryToolTipGenerator;

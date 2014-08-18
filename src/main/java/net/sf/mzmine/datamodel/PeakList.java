@@ -18,7 +18,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data;
+package net.sf.mzmine.datamodel;
 
 import net.sf.mzmine.util.Range;
 

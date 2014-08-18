@@ -24,8 +24,8 @@ import java.util.Collection;
 
 import javax.swing.JComboBox;
 
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.UserParameter;
 

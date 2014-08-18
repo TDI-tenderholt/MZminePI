@@ -27,9 +27,9 @@ import java.text.NumberFormat;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakIdentity;
-import net.sf.mzmine.data.PeakList;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.PeakIdentity;
+import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.main.MZmineCore;
 import visad.AxisScale;
 import visad.BaseColorControl;

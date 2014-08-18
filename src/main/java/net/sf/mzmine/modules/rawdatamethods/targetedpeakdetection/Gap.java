@@ -21,13 +21,13 @@ package net.sf.mzmine.modules.rawdatamethods.targetedpeakdetection;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.PeakStatus;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.SimpleChromatographicPeak;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.PeakStatus;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.SimpleChromatographicPeak;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 

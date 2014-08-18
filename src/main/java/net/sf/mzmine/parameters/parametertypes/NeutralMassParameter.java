@@ -21,7 +21,7 @@ package net.sf.mzmine.parameters.parametertypes;
 
 import java.util.Collection;
 
-import net.sf.mzmine.data.IonizationType;
+import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.parameters.UserParameter;
 
 import org.w3c.dom.Element;
@@ -41,7 +41,7 @@ public class NeutralMassParameter implements
     }
 
     /**
-     * @see net.sf.mzmine.data.Parameter#getName()
+     * @see net.sf.mzmine.datamodel.Parameter#getName()
      */
     @Override
     public String getName() {
@@ -49,7 +49,7 @@ public class NeutralMassParameter implements
     }
 
     /**
-     * @see net.sf.mzmine.data.Parameter#getDescription()
+     * @see net.sf.mzmine.datamodel.Parameter#getDescription()
      */
     @Override
     public String getDescription() {

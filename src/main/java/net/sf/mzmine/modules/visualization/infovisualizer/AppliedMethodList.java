@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
 
-import net.sf.mzmine.data.PeakListAppliedMethod;
+import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 
 public class AppliedMethodList extends JList {
 

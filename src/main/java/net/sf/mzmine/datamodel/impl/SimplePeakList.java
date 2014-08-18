@@ -17,7 +17,7 @@
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data.impl;
+package net.sf.mzmine.datamodel.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,11 +27,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.mzmine.data.ChromatographicPeak;
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.PeakListAppliedMethod;
-import net.sf.mzmine.data.PeakListRow;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakListAppliedMethod;
+import net.sf.mzmine.datamodel.PeakListRow;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.project.impl.MZmineProjectImpl;
@@ -209,7 +209,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#getPeaksInsideMZRange(double, double)
+	 * @see net.sf.mzmine.datamodel.PeakList#getPeaksInsideMZRange(double, double)
 	 */
 	public ChromatographicPeak[] getPeaksInsideMZRange(RawDataFile file,
 			Range mzRange) {
@@ -218,7 +218,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#getPeaksInsideScanAndMZRange(double,
+	 * @see net.sf.mzmine.datamodel.PeakList#getPeaksInsideScanAndMZRange(double,
 	 *      double, double, double)
 	 */
 	public ChromatographicPeak[] getPeaksInsideScanAndMZRange(RawDataFile file,
@@ -235,7 +235,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#removeRow(net.sf.mzmine.data.PeakListRow)
+	 * @see net.sf.mzmine.datamodel.PeakList#removeRow(net.sf.mzmine.datamodel.PeakListRow)
 	 */
 	public void removeRow(PeakListRow row) {
 		peakListRows.remove(row);
@@ -250,7 +250,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#removeRow(net.sf.mzmine.data.PeakListRow)
+	 * @see net.sf.mzmine.datamodel.PeakList#removeRow(net.sf.mzmine.datamodel.PeakListRow)
 	 */
 	public void removeRow(int rowNum) {
 		removeRow(peakListRows.get(rowNum));
@@ -275,7 +275,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#getPeakRowNum(net.sf.mzmine.data.ChromatographicPeak)
+	 * @see net.sf.mzmine.datamodel.PeakList#getPeakRowNum(net.sf.mzmine.datamodel.ChromatographicPeak)
 	 */
 	public int getPeakRowNum(ChromatographicPeak peak) {
 
@@ -290,7 +290,7 @@ public class SimplePeakList implements PeakList {
 	}
 
 	/**
-	 * @see net.sf.mzmine.data.PeakList#getDataPointMaxIntensity()
+	 * @see net.sf.mzmine.datamodel.PeakList#getDataPointMaxIntensity()
 	 */
 	public double getDataPointMaxIntensity() {
 		return maxDataPointIntensity;

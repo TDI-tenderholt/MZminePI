@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.peaklistmethods.identification.mascot;
 
 import java.util.HashMap;
 
-import net.sf.mzmine.data.impl.SimplePeakIdentity;
+import net.sf.mzmine.datamodel.impl.SimplePeakIdentity;
 
 import com.compomics.mascotdatfile.util.interfaces.Modification;
 import com.compomics.mascotdatfile.util.mascot.PeptideHit;

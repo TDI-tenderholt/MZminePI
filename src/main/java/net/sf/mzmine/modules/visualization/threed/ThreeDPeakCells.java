@@ -21,7 +21,7 @@ package net.sf.mzmine.modules.visualization.threed;
 
 import java.rmi.RemoteException;
 
-import net.sf.mzmine.data.ChromatographicPeak;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
 import net.sf.mzmine.util.Range;
 import visad.CellImpl;
 import visad.ConstantMap;

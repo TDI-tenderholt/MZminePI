@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.data.RawDataFileWriter;
+import net.sf.mzmine.datamodel.RawDataFileWriter;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.desktop.impl.HeadLessDesktop;
 import net.sf.mzmine.desktop.impl.MainWindow;

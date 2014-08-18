@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.data.IonizationType;
+import net.sf.mzmine.datamodel.IonizationType;
 
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.config.IsotopeFactory;

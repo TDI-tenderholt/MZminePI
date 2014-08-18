@@ -37,12 +37,12 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
 import veritomyxSaaS.VeritomyxSaaS;
-import net.sf.mzmine.data.DataPoint;
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.RawDataFileWriter;
-import net.sf.mzmine.data.Scan;
-import net.sf.mzmine.data.impl.RemoteJob;
-import net.sf.mzmine.data.impl.SimpleDataPoint;
+import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFileWriter;
+import net.sf.mzmine.datamodel.Scan;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
+import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.Range;
@@ -143,18 +143,18 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getNumOfScans()
+     * @see net.sf.mzmine.datamodel.RawDataFile#getNumOfScans()
      */
     public int getNumOfScans() { return scans.size(); }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getScan(int)
+     * @see net.sf.mzmine.datamodel.RawDataFile#getScan(int)
      */
     public @Nonnull
     Scan getScan(int scanNumber) { return scans.get(scanNumber); }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getScanNumbers(int)
+     * @see net.sf.mzmine.datamodel.RawDataFile#getScanNumbers(int)
      */
     public @Nonnull
     int[] getScanNumbers(int msLevel)
@@ -168,7 +168,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getScanNumbers(int, double, double)
+     * @see net.sf.mzmine.datamodel.RawDataFile#getScanNumbers(int, double, double)
      */
     public @Nonnull
     int[] getScanNumbers(int msLevel, @Nonnull Range rtRange)
@@ -193,7 +193,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getScanNumbers()
+     * @see net.sf.mzmine.datamodel.RawDataFile#getScanNumbers()
      */
     public @Nonnull
     int[] getScanNumbers()
@@ -211,7 +211,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getMSLevels()
+     * @see net.sf.mzmine.datamodel.RawDataFile#getMSLevels()
      */
     public @Nonnull
     int[] getMSLevels()
@@ -230,7 +230,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getDataMaxBasePeakIntensity()
+     * @see net.sf.mzmine.datamodel.RawDataFile#getDataMaxBasePeakIntensity()
      */
     public double getDataMaxBasePeakIntensity(int msLevel)
     {
@@ -269,7 +269,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFile#getDataMaxTotalIonCurrent()
+     * @see net.sf.mzmine.datamodel.RawDataFile#getDataMaxTotalIonCurrent()
      */
     public double getDataMaxTotalIonCurrent(int msLevel)
     {
@@ -433,7 +433,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
     }
 
     /**
-     * @see net.sf.mzmine.data.RawDataFileWriter#finishWriting()
+     * @see net.sf.mzmine.datamodel.RawDataFileWriter#finishWriting()
      */
     public synchronized RawDataFile finishWriting() throws IOException
     {

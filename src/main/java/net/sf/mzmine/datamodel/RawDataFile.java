@@ -17,14 +17,14 @@
  * Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-package net.sf.mzmine.data;
+package net.sf.mzmine.datamodel;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
 import veritomyxSaaS.VeritomyxSaaS;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.util.Range;
 
 public interface RawDataFile {

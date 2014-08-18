@@ -25,7 +25,7 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.mzmine.data.ChromatographicPeak;
+import net.sf.mzmine.datamodel.ChromatographicPeak;
 import net.sf.mzmine.main.MZmineCore;
 
 public class PeakSummaryTableModel extends AbstractTableModel {

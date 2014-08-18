@@ -21,7 +21,7 @@ package net.sf.mzmine.project.impl;
 
 import java.io.File;
 
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule;
 import net.sf.mzmine.modules.projectmethods.projectload.ProjectLoaderParameters;
