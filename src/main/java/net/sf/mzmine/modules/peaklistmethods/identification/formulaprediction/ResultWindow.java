@@ -47,8 +47,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;

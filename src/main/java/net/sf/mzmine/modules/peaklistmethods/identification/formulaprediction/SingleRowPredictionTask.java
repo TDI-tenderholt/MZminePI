@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IonizationType;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.MassList;
