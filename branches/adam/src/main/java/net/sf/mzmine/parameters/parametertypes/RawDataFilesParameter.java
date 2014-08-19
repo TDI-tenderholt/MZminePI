@@ -91,7 +91,7 @@ public class RawDataFilesParameter implements Parameter<RawDataFile[]> {
 				
 				// see if any scans are selected and select the associated raw data files
 				MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
-				Scan selectedScans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
+				Scan selectedScans[] = mainWindow.getMainPanel().getRawDataTree().getSelectedObjects(Scan.class);
 				for (RawDataFile raw : dataFiles)
 				{
 					for (Scan scan : selectedScans)

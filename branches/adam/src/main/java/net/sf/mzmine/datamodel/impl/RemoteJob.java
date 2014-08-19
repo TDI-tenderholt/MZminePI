@@ -20,8 +20,8 @@
 package net.sf.mzmine.datamodel.impl;
 
 import veritomyxSaaS.VeritomyxSaaS;
-import net.sf.mzmine.data.RemoteJobInfo;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.RemoteJobInfo;
+import net.sf.mzmine.datamodel.RawDataFile;
 
 /**
  * This defines a Veritomyx job

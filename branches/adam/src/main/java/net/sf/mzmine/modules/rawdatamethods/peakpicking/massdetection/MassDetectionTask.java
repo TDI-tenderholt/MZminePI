@@ -96,7 +96,7 @@ public class MassDetectionTask extends AbstractTask {
 		// get the selected scans for this data file
 		ArrayList<Scan> selectedScans = new ArrayList<Scan>();
 		MainWindow mainWindow = (MainWindow) MZmineCore.getDesktop();
-		Scan scans[] = mainWindow.getMainPanel().getProjectTree().getSelectedObjects(Scan.class);
+		Scan scans[] = mainWindow.getMainPanel().getRawDataTree().getSelectedObjects(Scan.class);
 		for (Scan scan : scans)	// for all selected scans
 		{
 			if (scan.getDataFile().equals(dataFile))	// if this scan is in this raw data file

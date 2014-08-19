@@ -22,6 +22,8 @@ package net.sf.mzmine.datamodel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.sf.mzmine.util.Range;
+
 /**
  * This class represent one spectrum of a raw data file.
  */
@@ -52,8 +54,35 @@ public interface Scan extends Spectrum {
 	 */
 	public double getRetentionTime();
 
-	// TODO: public Range getScanRange(); return the actual scanning range of
-	// the instrument
+    /**
+     * Returns the m/z range of thi
+     * 
+     * @return m/z range of this Sc
+     */
+    @Nonnull
+    public Range getMZRange();
+    
+    /**
+     * Returns the top intensity da
+     * data points in this Scan.
+     * 
+     * @return Base peak
+     */
+    @Nullable
+    public DataPoint getBasePeak();
+    
+    /**
+     * Returns the sum of intensiti
+     * 
+     * @return Total ion current
+     */
+    public double getTIC();
+    
+    /**
+     * 
+     * @return True if the scan dat
+     */
+    public boolean isCentroided();	
 
 	/**
 	 * 
@@ -82,6 +111,47 @@ public interface Scan extends Spectrum {
 	 */
 	public int[] getFragmentScanNumbers();
 
+    /**
+     * @return Number of m/z and intensity data points
+     */
+    public int getNumberOfDataPoints();
+    
+    /**
+     * Returns data points of this m/z table sorted in m/z order.
+     * 
+     * This method may need to read data from disk, therefore it may be quite
+     * slow. Modules should be aware of that and cache the data points if
+     * necessary.
+     * 
+     * @return Data points (m/z and intensity pairs) of this scan
+     */
+    @Nonnull
+    public DataPoint[] getDataPoints();
+    
+    /**
+     * Returns data points in given m/z range, sorted in m/z order.
+     * 
+     * This method may need to read data from disk, therefore it may be quite
+     * slow. Modules should be aware of that and cache the data points if
+     * necessary.
+     * 
+     * @return Data points (m/z and intensity pairs) of this MzDataTable
+     */
+    @Nonnull
+    public DataPoint[] getDataPointsByMass(@Nonnull Range mzRange);
+    
+    /**
+     * Returns data points over given intensity, sorted in m/z order.
+     * 
+     * This method may need to read data from disk, therefore it may be quite
+     * slow. Modules should be aware of that and cache the data points if
+     * necessary.
+     * 
+     * @return Data points (m/z and intensity pairs) of this MzDataTable
+     */
+    @Nonnull
+    public DataPoint[] getDataPointsOverIntensity(double intensity);
+    
 	@Nonnull
 	public MassList[] getMassLists();
 

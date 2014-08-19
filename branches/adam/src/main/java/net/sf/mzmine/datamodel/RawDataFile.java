@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import veritomyxSaaS.VeritomyxSaaS;
-import net.sf.mzmine.data.impl.RemoteJob;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.util.Range;
 
 public interface RawDataFile {

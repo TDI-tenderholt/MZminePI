@@ -21,6 +21,9 @@ package net.sf.mzmine.datamodel;
 
 import java.io.File;
 
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.parameters.UserParameter;
 
 /**
@@ -104,6 +107,9 @@ public interface MZmineProject {
 	 * Removes a RawDataFile from the project.
 	 */
 	public void removeFile(RawDataFile file);
+	
+	public void addJob(final RemoteJob job);
+	public void removeJob(final RemoteJob job);
 
 	/**
 	 * Returns all RawDataFiles of the project.
