@@ -46,7 +46,7 @@ import com.chemspider.www.MassSpecAPISoap;
 /**
  * Searches the ChemSpider database.
  * 
- * @version $Revision: 2851 $
+ * @version $Revision: 3271 $
  */
 public class ChemSpiderGateway implements DBGateway {
 
