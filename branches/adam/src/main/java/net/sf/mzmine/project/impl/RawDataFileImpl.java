@@ -248,7 +248,7 @@ public class RawDataFileImpl implements RawDataFile, RawDataFileWriter {
 		    if (scan.getMSLevel() != msLevel)
 			continue;
 	
-		    DataPoint scanBasePeak = scan.getBasePeak();
+		    DataPoint scanBasePeak = scan.getHighestDataPoint();
 		    if (scanBasePeak == null)
 			continue;
 	
