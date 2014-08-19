@@ -19,6 +19,7 @@
 
 package net.sf.mzmine.util;
 
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeSet;
@@ -29,9 +30,7 @@ import javax.annotation.Nonnull;
 
 import net.sf.mzmine.datamodel.IonizationType;
 
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.config.IsotopeFactory;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
+import org.openscience.cdk.config.Isotopes;
 import org.openscience.cdk.interfaces.IIsotope;
 
 public class FormulaUtils {
@@ -43,21 +42,20 @@ public class FormulaUtils {
      * library.
      */
     public static double getElementMass(String element) {
-        IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-        IsotopeFactory isotopeFac;
         try {
-            isotopeFac = IsotopeFactory.getInstance(builder);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-        IIsotope majorIsotope = isotopeFac.getMajorIsotope(element);
-        // If the isotope which such symbol does not exist, return 0
+	    Isotopes isotopeFactory = Isotopes.getInstance();
+	    IIsotope majorIsotope = isotopeFactory.getMajorIsotope(element);
+	    // If the isotope symbol does not exist, return 0
         if (majorIsotope == null) {
             return 0;
         }
         double mass = majorIsotope.getExactMass();
         return mass;
+	} catch (IOException e) {
+	    e.printStackTrace();
+	    return 0;
+	}
+
     }
 
     @Nonnull
