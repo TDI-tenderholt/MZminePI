@@ -26,6 +26,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -37,7 +38,6 @@ import net.sf.mzmine.modules.peaklistmethods.isotopes.isotopepatternscore.Isotop
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.parametertypes.MZTolerance;
 import net.sf.mzmine.parameters.parametertypes.RTTolerance;
-import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.taskcontrol.AbstractTask;
 import net.sf.mzmine.taskcontrol.TaskStatus;
 import net.sf.mzmine.util.PeakUtils;
@@ -53,10 +53,9 @@ class JoinAlignerTask extends AbstractTask {
     private int processedRows, totalRows;
 
     private String peakListName;
-    private double mzWeight;
     private MZTolerance mzTolerance;
     private RTTolerance rtTolerance;
-    private double rtWeight;
+	private double mzWeight, rtWeight;
     private boolean sameIDRequired, sameChargeRequired, compareIsotopePattern;
     private ParameterSet parameters;
 
@@ -77,6 +76,9 @@ class JoinAlignerTask extends AbstractTask {
                 .getParameter(JoinAlignerParameters.MZTolerance).getValue();
         rtTolerance = parameters
                 .getParameter(JoinAlignerParameters.RTTolerance).getValue();
+
+		mzWeight = parameters.getParameter(JoinAlignerParameters.MZWeight)
+				.getValue();
 
         rtWeight = parameters.getParameter(JoinAlignerParameters.RTWeight)
                 .getValue();
