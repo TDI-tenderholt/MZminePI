@@ -25,12 +25,14 @@ import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
-import net.sf.mzmine.datamodel.MZmineProject;
 
 /**
  * Drag and drop transfer handler for project JTree
@@ -40,7 +42,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 	public boolean canImport(TransferSupport info) {
 
 		ProjectTree projectTree = (ProjectTree) info.getComponent();
-		PeakListTreeModel treeModel = (PeakListTreeModel) projectTree.getModel();
+		TreeModel treeModel = projectTree.getModel();
 
 		// Get location where we are dropping
 		JTree.DropLocation dl = (JTree.DropLocation) info.getDropLocation();
@@ -57,7 +59,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		Object dropTargetObject = droppedLocationNode.getUserObject();
 
 		// If the target is "Raw data files" item, accept the drop
-		if (dropTargetObject == PeakListTreeModel.dataFilesNodeName)
+		if (dropTargetObject == RawDataTreeModel.dataFilesNodeName)
 			return true;
 
 		// If the target is last item AFTER "Raw data files" item, accept
@@ -86,7 +88,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		}
 
 		ProjectTree projectTree = (ProjectTree) info.getComponent();
-		PeakListTreeModel treeModel = (PeakListTreeModel) projectTree.getModel();
+		DefaultTreeModel treeModel = (DefaultTreeModel) projectTree.getModel();
 
 		MZmineProject project = MZmineCore.getCurrentProject();
 
@@ -101,7 +103,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		TreePath transferedPaths[] = projectTree.getSelectionPaths();
 
 		// Check if the drop target is among the project data files
-		if (droppedLocationObject == PeakListTreeModel.dataFilesNodeName) {
+		if (droppedLocationObject == RawDataTreeModel.dataFilesNodeName) {
 
 			for (TreePath path : transferedPaths) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path

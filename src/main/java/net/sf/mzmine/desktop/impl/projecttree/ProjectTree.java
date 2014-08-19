@@ -33,7 +33,6 @@ import javax.swing.tree.TreePath;
  * This class implements a selector of raw data files and peak lists
  */
 public class ProjectTree extends JTree {
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor
@@ -43,7 +42,8 @@ public class ProjectTree extends JTree {
 		ProjectTreeRenderer renderer = new ProjectTreeRenderer();
 		setCellRenderer(renderer);
 
-		DefaultTreeCellEditor editor = new DefaultTreeCellEditor(this, renderer, new ProjectTreeEditor(this));
+		DefaultTreeCellEditor editor = new DefaultTreeCellEditor(this,
+				renderer, new ProjectTreeEditor(this));
 		setCellEditor(editor);
 		setEditable(true);
 
@@ -87,7 +87,8 @@ public class ProjectTree extends JTree {
 			if (objectClass.isInstance(selectedObject))
 				selectedObjects.add((T) selectedObject);
 		}
-		return (T[]) selectedObjects.toArray((Object[]) Array.newInstance(objectClass, 0));
+		return (T[]) selectedObjects.toArray((Object[]) Array.newInstance(
+				objectClass, 0));
 	}
 
 }
