@@ -40,7 +40,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 	public boolean canImport(TransferSupport info) {
 
 		ProjectTree projectTree = (ProjectTree) info.getComponent();
-		ProjectTreeModel treeModel = (ProjectTreeModel) projectTree.getModel();
+		PeakListTreeModel treeModel = (PeakListTreeModel) projectTree.getModel();
 
 		// Get location where we are dropping
 		JTree.DropLocation dl = (JTree.DropLocation) info.getDropLocation();
@@ -57,7 +57,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		Object dropTargetObject = droppedLocationNode.getUserObject();
 
 		// If the target is "Raw data files" item, accept the drop
-		if (dropTargetObject == ProjectTreeModel.dataFilesNodeName)
+		if (dropTargetObject == PeakListTreeModel.dataFilesNodeName)
 			return true;
 
 		// If the target is last item AFTER "Raw data files" item, accept
@@ -67,7 +67,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 			return true;
 
 		// If the target is "Peak lists" item, accept the drop
-		if (dropTargetObject == ProjectTreeModel.peakListsNodeName)
+		if (dropTargetObject == PeakListTreeModel.peakListsNodeName)
 			return true;
 
 		// If the target is last item AFTER "Peak lists" item, accept the
@@ -86,7 +86,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		}
 
 		ProjectTree projectTree = (ProjectTree) info.getComponent();
-		ProjectTreeModel treeModel = (ProjectTreeModel) projectTree.getModel();
+		PeakListTreeModel treeModel = (PeakListTreeModel) projectTree.getModel();
 
 		MZmineProject project = MZmineCore.getCurrentProject();
 
@@ -101,7 +101,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		TreePath transferedPaths[] = projectTree.getSelectionPaths();
 
 		// Check if the drop target is among the project data files
-		if (droppedLocationObject == ProjectTreeModel.dataFilesNodeName) {
+		if (droppedLocationObject == PeakListTreeModel.dataFilesNodeName) {
 
 			for (TreePath path : transferedPaths) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
@@ -142,7 +142,7 @@ class ProjectTreeDnDHandler extends TransferHandler {
 		}
 
 		// Check if the drop target is among the project peak lists
-		if (droppedLocationObject == ProjectTreeModel.peakListsNodeName) {
+		if (droppedLocationObject == PeakListTreeModel.peakListsNodeName) {
 			for (TreePath path : transferedPaths) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
 						.getLastPathComponent();

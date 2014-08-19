@@ -28,18 +28,18 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.MassList;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.datamodel.impl.RemoteJob;
-import net.sf.mzmine.datamodel.MZmineProject;
 
 /**
  * Project tree model implementation
  */
-public class ProjectTreeModel extends DefaultTreeModel {
+public class PeakListTreeModel extends DefaultTreeModel {
 
 	private static final long serialVersionUID = 1L;
 	public static final String dataFilesNodeName = "Raw data files";
@@ -52,7 +52,7 @@ public class ProjectTreeModel extends DefaultTreeModel {
 
 	private DefaultMutableTreeNode rootNode;
 
-	public ProjectTreeModel(MZmineProject project) {
+	public PeakListTreeModel(MZmineProject project) {
 
 		super(new DefaultMutableTreeNode(project));
 

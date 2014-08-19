@@ -75,12 +75,12 @@ class ProjectTreeRenderer extends DefaultTreeCellRenderer {
 			label.setFont(bigFont);
 		}
 
-		if (embeddedObject == ProjectTreeModel.dataFilesNodeName) {
+		if (embeddedObject == PeakListTreeModel.dataFilesNodeName) {
 			label.setIcon(dataFileIcon);
 			label.setFont(bigFont);
 		}
 
-		if (embeddedObject == ProjectTreeModel.peakListsNodeName) {
+		if (embeddedObject == PeakListTreeModel.peakListsNodeName) {
 			label.setFont(bigFont);
 			label.setIcon(peakListsIcon);
 		}

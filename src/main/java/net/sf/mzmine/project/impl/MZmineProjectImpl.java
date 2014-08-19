@@ -32,7 +32,7 @@ import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.impl.RemoteJob;
 import net.sf.mzmine.desktop.impl.MainWindow;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTree;
-import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
+import net.sf.mzmine.desktop.impl.projecttree.PeakListTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.datamodel.MZmineProject;
@@ -45,13 +45,13 @@ public class MZmineProjectImpl implements MZmineProject {
 
     private Hashtable<UserParameter, Hashtable<RawDataFile, Object>> projectParametersAndValues;
 
-    private ProjectTreeModel treeModel;
+    private PeakListTreeModel treeModel;
 
     private File projectFile;
 
     public MZmineProjectImpl() {
 	
-		this.treeModel = new ProjectTreeModel(this);
+		this.treeModel = new PeakListTreeModel(this);
 		projectParametersAndValues = new Hashtable<UserParameter, Hashtable<RawDataFile, Object>>();
     }
 
@@ -283,7 +283,7 @@ public class MZmineProjectImpl implements MZmineProject {
     	treeModel.notifyObjectChanged(object, structureChanged);
     }
 
-    public ProjectTreeModel getTreeModel() {
+    public PeakListTreeModel getTreeModel() {
     	return treeModel;
     }
 

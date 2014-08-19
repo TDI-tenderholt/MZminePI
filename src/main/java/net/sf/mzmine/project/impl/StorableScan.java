@@ -38,7 +38,7 @@ import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.MassList;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
-import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
+import net.sf.mzmine.desktop.impl.projecttree.PeakListTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.masslistmethods.listexport.ListExportTask;
 import net.sf.mzmine.util.Range;
@@ -355,7 +355,7 @@ public class StorableScan implements Scan {
 
 		// Check if we are adding to the current project
 		if (Arrays.asList(project.getDataFiles()).contains(rawDataFile)) {
-			final ProjectTreeModel treeModel = project.getTreeModel();
+			final PeakListTreeModel treeModel = project.getTreeModel();
 			final MassList newMassList = storedMassList;
 			Runnable swingCode = new Runnable() {
 				@Override
@@ -391,7 +391,7 @@ public class StorableScan implements Scan {
 
 		// Check if we are using the current project
 		if (Arrays.asList(project.getDataFiles()).contains(rawDataFile)) {
-			final ProjectTreeModel treeModel = project.getTreeModel();
+			final PeakListTreeModel treeModel = project.getTreeModel();
 			Runnable swingCode = new Runnable() {
 				@Override
 				public void run() {

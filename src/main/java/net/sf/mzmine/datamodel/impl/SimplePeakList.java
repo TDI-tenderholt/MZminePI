@@ -31,7 +31,7 @@ import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
-import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
+import net.sf.mzmine.desktop.impl.projecttree.PeakListTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.project.impl.MZmineProjectImpl;
 import net.sf.mzmine.util.Range;
@@ -242,7 +242,7 @@ public class SimplePeakList implements PeakList {
 		// We have to update the project tree model
 		MZmineProjectImpl project = (MZmineProjectImpl) MZmineCore
 				.getCurrentProject();
-		ProjectTreeModel treeModel = project.getTreeModel();
+		PeakListTreeModel treeModel = project.getTreeModel();
 		treeModel.removeObject(row);
 
 		updateMaxIntensity();
