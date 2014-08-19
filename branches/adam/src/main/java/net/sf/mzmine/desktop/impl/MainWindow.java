@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The MZmine 2 Development Team
+ * Copyright 2006-2014 The MZmine 2 Development Team
  * 
  * This file is part of MZmine 2.
  * 
@@ -19,6 +19,7 @@
 
 package net.sf.mzmine.desktop.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -34,15 +35,14 @@ import javax.annotation.Nonnull;
 import javax.help.HelpBroker;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 
-import net.sf.mzmine.data.PeakList;
-import net.sf.mzmine.data.RawDataFile;
+import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.Desktop;
 import net.sf.mzmine.desktop.impl.helpsystem.HelpImpl;
 import net.sf.mzmine.desktop.impl.helpsystem.MZmineHelpSet;
@@ -68,6 +68,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     private MainPanel mainPanel;
+    private StatusBar statusBar;
 
     private MainMenu menuBar;
 
@@ -79,10 +80,6 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
 
     public HelpImpl getHelpImpl() {
     	return help;
-    }
-
-    public void addInternalFrame(JInternalFrame frame) {
-    	mainPanel.addInternalFrame(frame);
     }
 
     /**
@@ -166,11 +163,11 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
      * @see net.sf.mzmine.desktop.Desktop#getSelectedDataFiles()
      */
     public RawDataFile[] getSelectedDataFiles() {
-    	return mainPanel.getProjectTree().getSelectedObjects(RawDataFile.class);
+    	return mainPanel.getRawDataTree().getSelectedObjects(RawDataFile.class);
     }
 
     public PeakList[] getSelectedPeakLists() {
-    	return mainPanel.getProjectTree().getSelectedObjects(PeakList.class);
+    	return mainPanel.getPeakListTree().getSelectedObjects(PeakList.class);
     }
 
     public void initModule() {
@@ -189,9 +186,14 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
 		    logger.log(Level.WARNING, "Could not set application icon", e);
 		}
 	
+		setLayout(new BorderLayout());
+		
 		mainPanel = new MainPanel();
-		add(mainPanel);
+		add(mainPanel, BorderLayout.CENTER);
 	
+		statusBar = new StatusBar();
+		add(statusBar, BorderLayout.SOUTH);
+		
 		// Construct menu
 		menuBar = new MainMenu();
 		setJMenuBar(menuBar);
@@ -226,7 +228,7 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
     /**
      * @see net.sf.mzmine.desktop.Desktop#getMainFrame()
      */
-    public JFrame getMainFrame() {
+    public JFrame getMainWindow() {
     	return this;
     }
 
@@ -238,22 +240,14 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
 	
 		// If the request was caused by exception during MZmine startup, desktop
 		// may not be initialized yet
-		if ((mainPanel == null) || (mainPanel.getStatusBar() == null))
+		if ((mainPanel == null) || (statusBar == null))
 		    return;
 	
-		mainPanel.getStatusBar().setStatusText(text, textColor);
+		statusBar.setStatusText(text, textColor);
     }
 
     public MainPanel getMainPanel() {
     	return mainPanel;
-    }
-
-    public JInternalFrame[] getInternalFrames() {
-    	return mainPanel.getInternalFrames();
-    }
-
-    public JInternalFrame getSelectedFrame() {
-    	return mainPanel.getSelectedFrame();
     }
 
     public void showAboutDialog() {
@@ -269,14 +263,27 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
     }
 
     @Override
-    public void addProjectTreeListener(TreeModelListener listener) {
-		TreeModel model = getMainPanel().getProjectTree().getModel();
+	public void addRawDataTreeListener(TreeModelListener listener) {
+		TreeModel model = getMainPanel().getRawDataTree().getModel();
+		model.addTreeModelListener(listener);
+	}
+    
+	@Override
+	public void removeRawDataTreeListener(TreeModelListener listener) {
+		TreeModel model = getMainPanel().getRawDataTree().getModel();
+		model.removeTreeModelListener(listener);
+	}
+	
+	@Override
+	public void addPeakListTreeListener(TreeModelListener listener) {
+		TreeModel model = getMainPanel().getPeakListTree().getModel();
 		model.addTreeModelListener(listener);
     }
 
+
     @Override
-    public void removeProjectTreeListener(TreeModelListener listener) {
-		TreeModel model = getMainPanel().getProjectTree().getModel();
+	public void removePeakListTreeListener(TreeModelListener listener) {
+		TreeModel model = getMainPanel().getPeakListTree().getModel();    
 		model.removeTreeModelListener(listener);
     }
 
