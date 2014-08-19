@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.Feature;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.PeakIdentity;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;

@@ -35,7 +35,7 @@ import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.parametertypes.ComboParameter;
 import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
 import net.sf.mzmine.parameters.parametertypes.StringParameter;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

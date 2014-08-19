@@ -35,7 +35,7 @@ import net.sf.mzmine.desktop.impl.projecttree.ProjectTree;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.UserParameter;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 
 /**
  * This class represents a MZmine project. That includes raw data files, peak

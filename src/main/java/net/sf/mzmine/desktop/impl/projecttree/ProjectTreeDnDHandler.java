@@ -30,7 +30,7 @@ import javax.swing.tree.TreePath;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 
 /**
  * Drag and drop transfer handler for project JTree

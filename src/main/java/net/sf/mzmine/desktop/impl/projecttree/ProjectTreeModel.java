@@ -34,7 +34,7 @@ import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.datamodel.impl.RemoteJob;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 
 /**
  * Project tree model implementation

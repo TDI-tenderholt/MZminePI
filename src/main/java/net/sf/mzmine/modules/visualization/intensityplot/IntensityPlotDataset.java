@@ -31,7 +31,7 @@ import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.UserParameter;
 import net.sf.mzmine.parameters.parametertypes.DoubleParameter;
-import net.sf.mzmine.project.MZmineProject;
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.util.CollectionUtils;
 import net.sf.mzmine.util.MathUtils;
 

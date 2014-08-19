@@ -26,12 +26,12 @@ import javax.annotation.Nonnull;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.MZmineModuleCategory;
 import net.sf.mzmine.modules.MZmineProcessingModule;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.impl.SimpleParameterSet;
-import net.sf.mzmine.project.MZmineProject;
 import net.sf.mzmine.project.ProjectManager;
 import net.sf.mzmine.project.impl.MZmineProjectImpl;
 import net.sf.mzmine.taskcontrol.Task;
@@ -49,14 +49,12 @@ public class ProjectCloseModule implements MZmineProcessingModule {
     private static final String MODULE_DESCRIPTION = "Close project";
 
     @Override
-    public @Nonnull
-    String getName() {
+	public @Nonnull String getName() {
 	return MODULE_NAME;
     }
 
     @Override
-    public @Nonnull
-    String getDescription() {
+	public @Nonnull String getDescription() {
 	return MODULE_DESCRIPTION;
     }
 
@@ -97,14 +95,12 @@ public class ProjectCloseModule implements MZmineProcessingModule {
     }
 
     @Override
-    public @Nonnull
-    MZmineModuleCategory getModuleCategory() {
+	public @Nonnull MZmineModuleCategory getModuleCategory() {
 	return MZmineModuleCategory.PROJECTIO;
     }
 
     @Override
-    public @Nonnull
-    Class<? extends ParameterSet> getParameterSetClass() {
+	public @Nonnull Class<? extends ParameterSet> getParameterSetClass() {
 	return SimpleParameterSet.class;
     }
 
