@@ -21,7 +21,7 @@ package net.sf.mzmine.datamodel.impl;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.PeakListAppliedMethod;
+import net.sf.mzmine.datamodel.PeakList.PeakListAppliedMethod;
 import net.sf.mzmine.parameters.ParameterSet;
 
 public class SimplePeakListAppliedMethod implements PeakListAppliedMethod {

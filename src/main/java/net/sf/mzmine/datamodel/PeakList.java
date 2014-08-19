@@ -20,12 +20,24 @@
 
 package net.sf.mzmine.datamodel;
 
+import javax.annotation.Nonnull;
+
 import net.sf.mzmine.util.Range;
 
 /**
  * 
  */
 public interface PeakList {
+
+	public interface PeakListAppliedMethod {
+
+		@Nonnull
+		public String getDescription();
+
+		@Nonnull
+		public String getParameters();
+
+	}
 
     /**
      * @return Short descriptive name for the peak list

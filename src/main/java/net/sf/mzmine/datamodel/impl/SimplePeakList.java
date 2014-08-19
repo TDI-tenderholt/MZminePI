@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
-import net.sf.mzmine.datamodel.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.desktop.impl.projecttree.ProjectTreeModel;
