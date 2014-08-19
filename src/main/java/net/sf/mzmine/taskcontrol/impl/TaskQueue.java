@@ -22,6 +22,7 @@ package net.sf.mzmine.taskcontrol.impl;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.mzmine.taskcontrol.Task;
@@ -33,7 +34,7 @@ import net.sf.mzmine.util.components.LabeledProgressBar;
  * This class stores all tasks (as WrappedTasks) in the queue of task controller
  * and also provides data for TaskProgressWindow (as TableModel).
  */
-class TaskQueue extends AbstractTableModel {
+public class TaskQueue extends AbstractTableModel {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -61,7 +62,8 @@ class TaskQueue extends AbstractTableModel {
 		int numOfWaitingTasks = 0;
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING)
+					|| (status == TaskStatus.WAITING))
 				numOfWaitingTasks++;
 		}
 		return numOfWaitingTasks;
@@ -69,7 +71,8 @@ class TaskQueue extends AbstractTableModel {
 
 	synchronized void addWrappedTask(WrappedTask task) {
 
-		logger.finest("Adding task \"" + task + "\" to the task controller queue");
+		logger.finest("Adding task \"" + task
+				+ "\" to the task controller queue");
 
 		// If the queue is full, make a bigger queue
 		if (size == queue.length) {
@@ -83,14 +86,24 @@ class TaskQueue extends AbstractTableModel {
 
 		// Call fireTableDataChanged because we have a new row and order of rows
 		// may have changed
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 		fireTableDataChanged();
+			}
+		});
 
 	}
 
 	synchronized void clear() {
 		size = 0;
 		queue = new WrappedTask[DEFAULT_CAPACITY];
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 		fireTableDataChanged();
+	}
+		});
 	}
 
 	/**
@@ -102,7 +115,13 @@ class TaskQueue extends AbstractTableModel {
 
 		// We must not call fireTableDataChanged, because that would clear the
 		// selection in the task window
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 		fireTableRowsUpdated(0, size - 1);
+
+	}
+		});
 
 	}
 
@@ -113,13 +132,14 @@ class TaskQueue extends AbstractTableModel {
 	synchronized boolean allTasksFinished() {
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING)
+					|| (status == TaskStatus.WAITING))
 				return false;
 		}
 		return true;
 	}
 
-	synchronized WrappedTask[] getQueueSnapshot() {
+	public synchronized WrappedTask[] getQueueSnapshot() {
 		WrappedTask[] snapshot = new WrappedTask[size];
 		System.arraycopy(queue, 0, snapshot, 0, size);
 		return snapshot;
@@ -127,7 +147,8 @@ class TaskQueue extends AbstractTableModel {
 
 	/* TableModel implementation */
 
-	private static final String columns[] = { "Item", "Priority", "Status", "% done" };
+	private static final String columns[] = { "Item", "Priority", "Status",
+			"% done" };
 
 	/**
 	 * @see javax.swing.table.TableModel#getRowCount()

@@ -51,9 +51,11 @@ class WorkerThread extends Thread {
 
 		Task actualTask = wrappedTask.getActualTask();
 
-		logger.finest("Starting processing of task: " + actualTask.getTaskDescription());
+		logger.finest("Starting processing of task: "
+				+ actualTask.getTaskDescription());
 
 		try {
+
 			// Process the actual task
 			actualTask.run();
 
