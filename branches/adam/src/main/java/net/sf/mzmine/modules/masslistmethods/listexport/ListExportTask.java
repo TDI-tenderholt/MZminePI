@@ -21,8 +21,8 @@ package net.sf.mzmine.modules.masslistmethods.listexport;
 
 import java.util.logging.Logger;
 
-import net.sf.mzmine.data.RawDataFile;
-import net.sf.mzmine.data.Scan;
+import net.sf.mzmine.datamodel.RawDataFile;
+import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.taskcontrol.AbstractTask;
 import net.sf.mzmine.taskcontrol.TaskStatus;
