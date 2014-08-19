@@ -27,13 +27,13 @@ import jmprojection.Preprocess;
 import jmprojection.ProjectionStatus;
 import jmprojection.Sammons;
 import net.sf.mzmine.datamodel.Feature;
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.parameters.UserParameter;
-import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.taskcontrol.TaskEvent;
 import net.sf.mzmine.taskcontrol.TaskListener;
 import net.sf.mzmine.taskcontrol.TaskStatus;
@@ -73,7 +73,8 @@ public class SammonsDataset extends AbstractXYDataset implements
 
 	public SammonsDataset(ParameterSet parameters) {
 
-		this.peakList = parameters.getParameter(ProjectionPlotParameters.peakLists).getValue()[0];
+		this.peakList = parameters.getParameter(
+				ProjectionPlotParameters.peakLists).getValue()[0];
 		this.parameters = parameters;
 		this.xAxisDimension = parameters.getParameter(
 				ProjectionPlotParameters.xAxisComponent).getValue();
@@ -249,9 +250,9 @@ public class SammonsDataset extends AbstractXYDataset implements
 		component1Coords = result[xAxisDimension - 1];
 		component2Coords = result[yAxisDimension - 1];
 
-		ProjectionPlotWindow newFrame = new ProjectionPlotWindow(peakList, this,
-				parameters);
-		MZmineCore.getDesktop().addInternalFrame(newFrame);
+		ProjectionPlotWindow newFrame = new ProjectionPlotWindow(peakList,
+				this, parameters);
+		newFrame.setVisible(true);
 
 		setStatus(TaskStatus.FINISHED);
 		logger.info("Finished computing projection plot.");
