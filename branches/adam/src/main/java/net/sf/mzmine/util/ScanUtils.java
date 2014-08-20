@@ -373,36 +373,27 @@ public class ScanUtils {
         if (dataPoints.length <= 10)
             return true;
 
-        boolean centroid = false;
-        Range mzRange = null;
-        boolean hasZeroDP = false;
+        double previousMzDifference = 0, currentMzDifference;
+        
+    	for (int i = 1; i < dataPoints.length; i++) {
+    	    currentMzDifference = dataPoints[i].getMZ() - dataPoints[i - 1].getMZ();
+    	    // If there is a previous data point pair (previousMzDifference >
+    	    // 0), check our condition for centroided spectra
+    	    if ((previousMzDifference > 0) && (currentMzDifference > previousMzDifference * 2)) {
+               return true;
+    	    }
 
-        mzRange = new Range(dataPoints[0].getMZ());
-        for (DataPoint dp : dataPoints) {
-            mzRange.extendRange(dp.getMZ());
-            if (dp.getIntensity() == 0)
-                hasZeroDP = true;
-        }
+    	    // If we have a zero-intensity data point, ignore the next m/z
+    	    // distance. Otherwise, keep the current pair as
+    	    // previousMzDifference.
+    	    if (dataPoints[i].getIntensity() > 0)
+    	    	previousMzDifference = currentMzDifference;
+    	    else
+    	    	previousMzDifference = 0;
+    	
+    	}
 
-        // If the spectrum has no zero data points, it should be centroid
-//        if (!hasZeroDP)
-//            return true;
-
-        double massStep = mzRange.getSize() / dataPoints.length;
-        double tempdiff, diff = 0, previousMass = dataPoints[0].getMZ();
-        for (DataPoint dp : dataPoints) {
-            tempdiff = Math.abs(dp.getMZ() - previousMass);
-            previousMass = dp.getMZ();
-            if (dp.getIntensity() == 0)
-                continue;
-            if (tempdiff > (massStep * 1.5d)) {
-                centroid = true;
-                if (tempdiff > diff)
-                    diff = tempdiff;
-            }
-        }
-
-        return centroid;
+        return false;
 
     }
 
