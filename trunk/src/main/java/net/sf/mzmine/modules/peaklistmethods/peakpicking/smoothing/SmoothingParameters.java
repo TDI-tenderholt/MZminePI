@@ -34,7 +34,7 @@ import net.sf.mzmine.parameters.parametertypes.StringParameter;
  * Defines smoothing task parameters.
  * 
  * @author $Author: plusik $
- * @version $Revision: 2851 $
+ * @version $Revision: 3271 $
  */
 public class SmoothingParameters extends SimpleParameterSet {
 

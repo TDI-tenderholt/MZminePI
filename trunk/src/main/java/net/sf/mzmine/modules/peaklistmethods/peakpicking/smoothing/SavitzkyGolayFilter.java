@@ -30,7 +30,7 @@ import java.util.Map;
  * Utilities for the Savitzky-Golay smoother.
  *
  * @author $Author: plusik $
- * @version $Revision: 2728 $
+ * @version $Revision: 3271 $
  */
 public class SavitzkyGolayFilter {
 

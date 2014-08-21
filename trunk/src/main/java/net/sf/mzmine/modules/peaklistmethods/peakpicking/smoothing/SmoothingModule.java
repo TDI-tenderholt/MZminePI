@@ -37,7 +37,7 @@ import net.sf.mzmine.util.ExitCode;
 /**
  * Chromatographic smoothing.
  * 
- * @version $Revision: 3218 $
+ * @version $Revision: 3286 $
  */
 public class SmoothingModule implements MZmineProcessingModule {
 
