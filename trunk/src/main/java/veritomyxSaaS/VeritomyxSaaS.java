@@ -239,7 +239,6 @@ public class VeritomyxSaaS
 				web_str    = "Job ID, " + jobID + ", not defined";
 				return web_result;
 			}
-			log.debug(page);
 
 			URL url = new URL(page);
 			uc = (HttpURLConnection)url.openConnection();
