@@ -37,7 +37,7 @@ import net.sf.mzmine.taskcontrol.TaskStatus;
  * Exports a chromatogram to a CSV file.
  *
  * @author $Author: plusik $
- * @version $Revision: 2728 $
+ * @version $Revision: 3271 $
  */
 public class ExportChromatogramTask extends AbstractTask {
 

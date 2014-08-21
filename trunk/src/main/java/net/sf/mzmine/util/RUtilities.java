@@ -32,7 +32,7 @@ import org.rosuda.JRI.Rengine;
  * Utilities for interfacing with R.
  * 
  * @author $Author: plusik $
- * @version $Revision: 3211 $
+ * @version $Revision: 3271 $
  */
 public class RUtilities {
 

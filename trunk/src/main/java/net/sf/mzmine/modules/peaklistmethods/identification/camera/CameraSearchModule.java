@@ -38,7 +38,7 @@ import net.sf.mzmine.util.ExitCode;
  * Uses CAMERA to form pseudo-spectra.
  *
  * @author $Author: plusik $
- * @version $Revision: 3218 $
+ * @version $Revision: 3286 $
  */
 public class CameraSearchModule implements MZmineProcessingModule {
 

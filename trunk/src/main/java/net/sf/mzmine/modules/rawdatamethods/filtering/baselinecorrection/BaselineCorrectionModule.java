@@ -37,7 +37,7 @@ import net.sf.mzmine.util.ExitCode;
 /**
  * Baseline correction module.
  * 
- * @version $Revision: 3218 $
+ * @version $Revision: 3286 $
  */
 public class BaselineCorrectionModule implements MZmineProcessingModule {
 

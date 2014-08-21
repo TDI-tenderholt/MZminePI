@@ -42,6 +42,7 @@ import net.sf.mzmine.modules.peaklistmethods.identification.complexsearch.Comple
 import net.sf.mzmine.modules.peaklistmethods.identification.custom.CustomDBSearchModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.dbsearch.OnlineDBSearchModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.formulaprediction.FormulaPredictionModule;
+import net.sf.mzmine.modules.peaklistmethods.identification.formulapredictionpeaklist.FormulaPredictionPeakListModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.fragmentsearch.FragmentSearchModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.glycerophospholipidsearch.GPLipidSearchModule;
 import net.sf.mzmine.modules.peaklistmethods.identification.nist.NistMsSearchModule;
@@ -62,9 +63,12 @@ import net.sf.mzmine.modules.projectmethods.projectclose.ProjectCloseModule;
 import net.sf.mzmine.modules.projectmethods.projectload.ProjectLoadModule;
 import net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveAsModule;
 import net.sf.mzmine.modules.projectmethods.projectsave.ProjectSaveModule;
+import net.sf.mzmine.modules.rawdatamethods.filtering.alignscans.AlignScansModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.baselinecorrection.BaselineCorrectionModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.datasetfilters.DataSetFiltersModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.scanfilters.ScanFiltersModule;
+import net.sf.mzmine.modules.rawdatamethods.filtering.scansmoothing.ScanSmoothingModule;
+import net.sf.mzmine.modules.rawdatamethods.peakpicking.gridmass.GridMassModule;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.manual.ManualPeakPickerModule;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.massdetection.MassDetectionModule;
 import net.sf.mzmine.modules.rawdatamethods.peakpicking.msms.MsMsPeakPickerModule;
@@ -106,11 +110,14 @@ public class MZmineModulesList {
 	    ShoulderPeaksFilterModule.class,
 	    ListExportModule.class,
 	    ChromatogramBuilderModule.class,
+	    GridMassModule.class,
 	    ManualPeakPickerModule.class,
 	    MsMsPeakPickerModule.class,
 	    ScanFiltersModule.class,
 	    DataSetFiltersModule.class,
 	    BaselineCorrectionModule.class,
+	    AlignScansModule.class,
+	    ScanSmoothingModule.class,
 
 	    // Alignment
 	    JoinAlignerModule.class,
@@ -122,31 +129,25 @@ public class MZmineModulesList {
 	    XMLExportModule.class,
 	    XMLImportModule.class,
 	    SQLExportModule.class,
-
 	    // Gap filling
 	    PeakFinderModule.class,
 	    SameRangeGapFillerModule.class,
-
 	    // Isotopes
 	    IsotopeGrouperModule.class,
 	    IsotopePatternCalculator.class,
-
 	    // Peak detection
 	    SmoothingModule.class,
 	    DeconvolutionModule.class,
 	    ShapeModelerModule.class,
 	    PeakExtenderModule.class,
 	    TargetedPeakDetectionModule.class,
-
 	    // Peak list filtering
 	    DuplicateFilterModule.class,
 	    RowsFilterModule.class,
-
 	    // Normalization
 	    RTNormalizerModule.class,
 	    LinearNormalizerModule.class,
 	    StandardCompoundNormalizerModule.class,
-
 	    // Data analysis
 	    CVPlotModule.class,
 	    LogratioPlotModule.class,
@@ -155,10 +156,8 @@ public class MZmineModulesList {
 	    SammonsPlotModule.class,
 	    ClusteringModule.class,
 	    HeatMapModule.class,
-
 	    // Identification
-	    CustomDBSearchModule.class,
-	    FormulaPredictionModule.class,
+	    CustomDBSearchModule.class, FormulaPredictionModule.class,
 	    FragmentSearchModule.class,
 	    AdductSearchModule.class,
 	    ComplexSearchModule.class,
@@ -166,7 +165,7 @@ public class MZmineModulesList {
 	    GPLipidSearchModule.class,
         CameraSearchModule.class,
 	    NistMsSearchModule.class,
-
+	    FormulaPredictionPeakListModule.class,
 	    // Visualizers
 	    TICVisualizerModule.class, SpectraVisualizerModule.class,
 	    TwoDVisualizerModule.class, ThreeDVisualizerModule.class,
@@ -174,8 +173,6 @@ public class MZmineModulesList {
 	    IsotopePatternExportModule.class, MSMSExportModule.class,
 	    ScatterPlotVisualizerModule.class, HistogramVisualizerModule.class,
 	    InfoVisualizerModule.class, IntensityPlotModule.class,
-
 	    // Tools
 	    MzRangeCalculatorModule.class };
-
 }

@@ -65,7 +65,7 @@ public class ScatterPlotVisualizerModule implements MZmineProcessingModule {
 	}
 
 	ScatterPlotWindow newWindow = new ScatterPlotWindow(peakList);
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+		newWindow.setVisible(true);
 
 	return ExitCode.OK;
     }
@@ -92,8 +92,7 @@ public class ScatterPlotVisualizerModule implements MZmineProcessingModule {
 	}
 
 	ScatterPlotWindow newWindow = new ScatterPlotWindow(peakList);
-
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+		newWindow.setVisible(true);
 
     }
 

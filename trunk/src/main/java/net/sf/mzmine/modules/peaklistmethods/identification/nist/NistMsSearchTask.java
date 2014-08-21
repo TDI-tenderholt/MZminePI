@@ -68,8 +68,8 @@ import net.sf.mzmine.taskcontrol.TaskStatus;
 /**
  * Performs NIST MS Search.
  *
- * @author $Author$
- * @version $Revision$
+ * @author $Author: plusik $
+ * @version $Revision: 3293 $
  */
 public class NistMsSearchTask
         extends AbstractTask {
@@ -211,7 +211,7 @@ public class NistMsSearchTask
             }
 
             // Repaint the window to reflect the change in the peak list
-            MZmineCore.getDesktop().getMainFrame().repaint();
+            MZmineCore.getDesktop().getMainWindow().repaint();
         }
         catch (Throwable t) {
 

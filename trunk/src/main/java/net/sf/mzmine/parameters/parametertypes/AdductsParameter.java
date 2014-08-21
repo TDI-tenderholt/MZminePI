@@ -39,8 +39,8 @@ import org.w3c.dom.NodeList;
 /**
  * Adducts parameter.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3103 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class AdductsParameter extends MultiChoiceParameter<AdductType> {
 

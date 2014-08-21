@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.Polarity;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.util.CollectionUtils;
@@ -259,7 +260,7 @@ public class SimpleScan implements Scan {
 	/**
 	 * @see net.sf.mzmine.datamodel.Scan#getBasePeakMZ()
 	 */
-	public DataPoint getBasePeak() {
+	public DataPoint getHighestDataPoint() {
 		return basePeak;
 	}
 
@@ -360,5 +361,10 @@ public class SimpleScan implements Scan {
 	public int exportToFile(@Nonnull String massListName, @Nonnull String filename) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Polarity getPolarity() {
+		return Polarity.UNKNOWN;
 	}
 }

@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 import net.sf.mzmine.datamodel.MZmineProject;
@@ -36,6 +35,7 @@ import net.sf.mzmine.project.ProjectManager;
 import net.sf.mzmine.project.impl.MZmineProjectImpl;
 import net.sf.mzmine.taskcontrol.Task;
 import net.sf.mzmine.util.ExitCode;
+import net.sf.mzmine.util.GUIUtils;
 
 /**
  * This is a very simple module which adds the option to close a current project
@@ -64,7 +64,7 @@ public class ProjectCloseModule implements MZmineProcessingModule {
 	    @Nonnull Collection<Task> tasks) {
 
 	int selectedValue = JOptionPane.showInternalConfirmDialog(MZmineCore
-		.getDesktop().getMainFrame().getContentPane(),
+				.getDesktop().getMainWindow().getContentPane(),
 		"Are you sure you want to close the current project?",
 		"Close project", JOptionPane.YES_NO_OPTION,
 		JOptionPane.WARNING_MESSAGE);
@@ -72,13 +72,8 @@ public class ProjectCloseModule implements MZmineProcessingModule {
 	if (selectedValue != JOptionPane.YES_OPTION)
 	    return ExitCode.CANCEL;
 
-	// Close all open frames related to previous project
-	JInternalFrame frames[] = MZmineCore.getDesktop().getInternalFrames();
-	for (JInternalFrame frame : frames) {
-	    // Use doDefailtCloseAction() instead of dispose() to protect
-	    // the TaskProgressWindow from disposing
-	    frame.doDefaultCloseAction();
-	}
+		// Close all windows related to previous project
+		GUIUtils.closeAllWindows();
 
 	// Create a new, empty project
 	MZmineProject newProject = new MZmineProjectImpl();

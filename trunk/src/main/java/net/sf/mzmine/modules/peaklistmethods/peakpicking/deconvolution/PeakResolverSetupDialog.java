@@ -160,7 +160,7 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
 
                     comboPeakList.setSelectedIndex(0);
                 }
-                setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+                setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
             } else {
 
                 mainPanel.remove(pnlPlotXY);
@@ -310,6 +310,6 @@ public class PeakResolverSetupDialog extends ParameterSetupDialog {
 
         updateMinimumSize();
         pack();
-        setLocationRelativeTo(MZmineCore.getDesktop().getMainFrame());
+        setLocationRelativeTo(MZmineCore.getDesktop().getMainWindow());
     }
 }

@@ -62,8 +62,7 @@ public class TaskQueue extends AbstractTableModel {
 		int numOfWaitingTasks = 0;
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING)
-					|| (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
 				numOfWaitingTasks++;
 		}
 		return numOfWaitingTasks;
@@ -71,8 +70,7 @@ public class TaskQueue extends AbstractTableModel {
 
 	synchronized void addWrappedTask(WrappedTask task) {
 
-		logger.finest("Adding task \"" + task
-				+ "\" to the task controller queue");
+		logger.finest("Adding task \"" + task + "\" to the task controller queue");
 
 		// If the queue is full, make a bigger queue
 		if (size == queue.length) {
@@ -132,8 +130,7 @@ public class TaskQueue extends AbstractTableModel {
 	synchronized boolean allTasksFinished() {
 		for (int i = 0; i < size; i++) {
 			TaskStatus status = queue[i].getActualTask().getStatus();
-			if ((status == TaskStatus.PROCESSING)
-					|| (status == TaskStatus.WAITING))
+			if ((status == TaskStatus.PROCESSING) || (status == TaskStatus.WAITING))
 				return false;
 		}
 		return true;
@@ -147,8 +144,7 @@ public class TaskQueue extends AbstractTableModel {
 
 	/* TableModel implementation */
 
-	private static final String columns[] = { "Item", "Priority", "Status",
-			"% done" };
+	private static final String columns[] = { "Item", "Priority", "Status", "% done" };
 
 	/**
 	 * @see javax.swing.table.TableModel#getRowCount()

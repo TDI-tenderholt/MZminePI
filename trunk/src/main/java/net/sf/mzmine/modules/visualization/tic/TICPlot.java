@@ -25,6 +25,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -32,7 +33,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
@@ -333,7 +334,7 @@ public class TICPlot extends ChartPanel {
             final double yTick = yAxis.getTickUnit().getSize();
 
             // Set the range of these frames
-            for (final JInternalFrame frame : MZmineCore.getDesktop().getInternalFrames()) {
+            for (final Window frame : JFrame.getWindows()) {
                 if (frame instanceof TICVisualizerWindow) {
 
                     final TICVisualizerWindow ticFrame = (TICVisualizerWindow) frame;

@@ -72,7 +72,7 @@ public class TwoDVisualizerModule implements MZmineProcessingModule {
 	TwoDVisualizerWindow newWindow = new TwoDVisualizerWindow(dataFiles[0],
 		msLevel, rtRange, mzRange, parameters);
 
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+		newWindow.setVisible(true);
 
 	return ExitCode.OK;
     }
@@ -110,7 +110,7 @@ public class TwoDVisualizerModule implements MZmineProcessingModule {
 	TwoDVisualizerWindow newWindow = new TwoDVisualizerWindow(dataFile,
 		msLevel, rtRange, mzRange, parameters);
 
-	MZmineCore.getDesktop().addInternalFrame(newWindow);
+		newWindow.setVisible(true);
 
     }
 

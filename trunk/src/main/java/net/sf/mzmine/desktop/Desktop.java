@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.event.TreeModelListener;
 
 import net.sf.mzmine.datamodel.PeakList;
@@ -39,33 +38,12 @@ import net.sf.mzmine.util.ExitCode;
 public interface Desktop extends MZmineModule {
 
     /**
-     * Returns a reference to main application window.
-     * May return null if MZmine is running in headless (batch) mode.
+	 * Returns a reference to main application window. May return null if MZmine
+	 * is running in headless (batch) mode.
      * 
      * @return Main window frame
      */
-    public JFrame getMainFrame();
-
-    /**
-     * Adds a new internal frame (JInternalFrame) to the desktop pane
-     * 
-     * @param frame Internal frame to add
-     */
-    public void addInternalFrame(JInternalFrame frame);
-
-	/**
-	 * Returns all visible internal frames in the desktop pane
-	 * 
-	 * @return Array of all internal frames
-	 */
-    public JInternalFrame[] getInternalFrames();
-
-    /**
-     * Returns the currently selected frame or null if no frame is selected
-     * 
-     * @return Selected frame
-     */
-    public JInternalFrame getSelectedFrame();
+	public JFrame getMainWindow();
 
     /**
      * Displays a given text on the application status bar in black color
@@ -131,9 +109,14 @@ public interface Desktop extends MZmineModule {
      */
     public PeakList[] getSelectedPeakLists();
     
-    public void addProjectTreeListener(TreeModelListener listener);
+	public void addRawDataTreeListener(TreeModelListener listener);
     
-    public void removeProjectTreeListener(TreeModelListener listener);
+	public void addPeakListTreeListener(TreeModelListener listener);
+	
+	
+	public void removeRawDataTreeListener(TreeModelListener listener);
+    
+	public void removePeakListTreeListener(TreeModelListener listener);
 
     @Nonnull
     public ExitCode exitMZmine();

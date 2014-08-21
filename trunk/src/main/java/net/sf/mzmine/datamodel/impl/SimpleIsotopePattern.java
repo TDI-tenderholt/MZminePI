@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
+import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 
 /**
@@ -33,6 +34,7 @@ public class SimpleIsotopePattern implements IsotopePattern {
     private DataPoint dataPoints[], highestIsotope;
     private IsotopePatternStatus status;
     private String description;
+	private Range mzRange;
 
     public SimpleIsotopePattern(DataPoint dataPoints[],
 	    IsotopePatternStatus status, String description) {
@@ -43,6 +45,7 @@ public class SimpleIsotopePattern implements IsotopePattern {
 	this.dataPoints = dataPoints;
 	this.status = status;
 	this.description = description;
+		this.mzRange = ScanUtils.findMzRange(dataPoints);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class SimpleIsotopePattern implements IsotopePattern {
     }
 
     @Override
-    public int getNumberOfIsotopes() {
+	public int getNumberOfDataPoints() {
 	return dataPoints.length;
     }
 
@@ -61,7 +64,7 @@ public class SimpleIsotopePattern implements IsotopePattern {
     }
 
     @Override
-    public @Nonnull DataPoint getHighestIsotope() {
+	public @Nonnull DataPoint getHighestDataPoint() {
 	return highestIsotope;
     }
 
@@ -74,5 +77,35 @@ public class SimpleIsotopePattern implements IsotopePattern {
     public String toString() {
 	return "Isotope pattern: " + description;
     }
+
+	@Override
+	@Nonnull
+	public Range getMZRange() {
+		return mzRange;
+	}
+
+	@Override
+	public double getTIC() {
+		return 0;
+	}
+
+	@Override
+	public boolean isCentroided() {
+		return false;
+	}
+
+	@Override
+	@Nonnull
+	public DataPoint[] getDataPointsByMass(@Nonnull Range mzRange) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Nonnull
+	public DataPoint[] getDataPointsOverIntensity(double intensity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

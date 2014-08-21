@@ -242,7 +242,7 @@ public class SimplePeakList implements PeakList {
 		// We have to update the project tree model
 		MZmineProjectImpl project = (MZmineProjectImpl) MZmineCore
 				.getCurrentProject();
-		PeakListTreeModel treeModel = project.getTreeModel();
+		PeakListTreeModel treeModel = project.getPeakListTreeModel();
 		treeModel.removeObject(row);
 
 		updateMaxIntensity();

@@ -71,11 +71,10 @@ public class DataPointSorter implements Comparator<DataPoint> {
 				return result;
 			else
 				return -result;
-
-		}
-
-		// We should never get here, so throw exception
+		default:
+			// We should never get here, so throw an exception
 		throw (new IllegalStateException());
+		}
 
 	}
 }

@@ -21,6 +21,8 @@ package net.sf.mzmine.desktop.preferences;
 
 import java.text.DecimalFormat;
 
+import org.w3c.dom.Element;
+
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.Parameter;
 import net.sf.mzmine.parameters.ParameterSet;
@@ -30,8 +32,6 @@ import net.sf.mzmine.parameters.parametertypes.OptionalModuleParameter;
 import net.sf.mzmine.parameters.parametertypes.PasswordParameter;
 import net.sf.mzmine.parameters.parametertypes.StringParameter;
 import net.sf.mzmine.util.ExitCode;
-
-import org.w3c.dom.Element;
 
 public class MZminePreferences extends SimpleParameterSet {
 
@@ -84,7 +84,7 @@ public class MZminePreferences extends SimpleParameterSet {
 	    updateSystemProxySettings();
 
 	    // Repaint windows to update number formats
-	    MZmineCore.getDesktop().getMainFrame().repaint();
+	    MZmineCore.getDesktop().getMainWindow().repaint();
 	}
 
 	return retVal;
@@ -105,9 +105,11 @@ public class MZminePreferences extends SimpleParameterSet {
 		    ProxySettings.proxyAddress).getValue();
 	    String port = proxyParams.getParameter(ProxySettings.proxyPort)
 		    .getValue();
+	    System.setProperty("http.proxySet", "true");
 	    System.setProperty("http.proxyHost", address);
 	    System.setProperty("http.proxyPort", port);
 	} else {
+	    System.clearProperty("http.proxySet");
 	    System.clearProperty("http.proxyHost");
 	    System.clearProperty("http.proxyPort");
 	}

@@ -86,7 +86,7 @@ public class ThreeDVisualizerModule implements MZmineProcessingModule {
 	ParameterSet myParameters = MZmineCore.getConfiguration()
 		.getModuleParameters(ThreeDVisualizerModule.class);
 	try {
-	    desktop.addInternalFrame(new ThreeDVisualizerWindow(
+			ThreeDVisualizerWindow window = new ThreeDVisualizerWindow(
 		    dataFile,
 		    msLevel,
 		    rtRange,
@@ -95,7 +95,8 @@ public class ThreeDVisualizerModule implements MZmineProcessingModule {
 		    myParameters.getParameter(
 			    ThreeDVisualizerParameters.mzRange).getValue(),
 		    myParameters.getParameter(
-			    ThreeDVisualizerParameters.mzResolution).getValue()));
+							ThreeDVisualizerParameters.mzResolution).getValue());
+			window.setVisible(true);
 	} catch (RemoteException e) {
 
 	    final String msg = "Couldn't create 3D plot";
@@ -138,7 +139,8 @@ public class ThreeDVisualizerModule implements MZmineProcessingModule {
 	myParameters.getParameter(ThreeDVisualizerParameters.mzRange).setValue(
 		mzRange);
 	if (myParameters.showSetupDialog() == ExitCode.OK) {
-	    myInstance.runModule(myParameters.cloneParameter(), new ArrayList<Task>());
+			myInstance.runModule(myParameters.cloneParameter(),
+					new ArrayList<Task>());
 	}
     }
 

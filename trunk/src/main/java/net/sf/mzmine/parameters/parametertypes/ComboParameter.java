@@ -49,7 +49,7 @@ public class ComboParameter<ValueType> implements UserParameter<ValueType, JComb
 	}
 
 	/**
-	 * @see net.sf.mzmine.datamodel.Parameter#getDescription()
+	 * @see net.sf.mzmine.data.Parameter#getDescription()
 	 */
 	@Override
 	public String getDescription() {

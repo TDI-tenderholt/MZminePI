@@ -28,6 +28,8 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
@@ -353,6 +355,17 @@ public class ScanUtils {
 
     /**
      * Determines if the spectrum represented by given array of data points is
+     * centroided or continuous. The algorithm is based on the following
+     * assumption: centroided spectra have their data points unevenly
+     * distributed on the m/z scale, while continuous spectra have there data
+     * points quite regularly distributed. However, the density of the data
+     * points in continuous spectra may gradually change with increasing m/z
+     * value. Also, continuous spectra may contain areas with no data points, if
+     * zero-intensity data points were removed. We check the m/z distance
+     * between the each two data points, and if this distance is 2x bigger than
+     * the distance between the previous pair of data points, the spectrum
+     * should be centroided. In case we encounter a zero-intensity data point,
+     * the previous data point pair is ignored and checking starts again.
      */
     public static boolean isCentroided(DataPoint[] dataPoints) {
 
@@ -360,36 +373,27 @@ public class ScanUtils {
         if (dataPoints.length <= 10)
             return true;
 
-        boolean centroid = false;
-        Range mzRange = null;
-        boolean hasZeroDP = false;
+        double previousMzDifference = 0, currentMzDifference;
 
-        mzRange = new Range(dataPoints[0].getMZ());
-        for (DataPoint dp : dataPoints) {
-            mzRange.extendRange(dp.getMZ());
-            if (dp.getIntensity() == 0)
-                hasZeroDP = true;
+    	for (int i = 1; i < dataPoints.length; i++) {
+    	    currentMzDifference = dataPoints[i].getMZ() - dataPoints[i - 1].getMZ();
+    	    // If there is a previous data point pair (previousMzDifference >
+    	    // 0), check our condition for centroided spectra
+    	    if ((previousMzDifference > 0) && (currentMzDifference > previousMzDifference * 2)) {
+               return true;
         }
 
-        // If the spectrum has no zero data points, it should be centroid
-//        if (!hasZeroDP)
-//            return true;
+    	    // If we have a zero-intensity data point, ignore the next m/z
+    	    // distance. Otherwise, keep the current pair as
+    	    // previousMzDifference.
+    	    if (dataPoints[i].getIntensity() > 0)
+    	    	previousMzDifference = currentMzDifference;
+    	    else
+    	    	previousMzDifference = 0;
 
-        double massStep = mzRange.getSize() / dataPoints.length;
-        double tempdiff, diff = 0, previousMass = dataPoints[0].getMZ();
-        for (DataPoint dp : dataPoints) {
-            tempdiff = Math.abs(dp.getMZ() - previousMass);
-            previousMass = dp.getMZ();
-            if (dp.getIntensity() == 0)
-                continue;
-            if (tempdiff > (massStep * 1.5d)) {
-                centroid = true;
-                if (tempdiff > diff)
-                    diff = tempdiff;
-            }
         }
 
-        return centroid;
+        return false;
 
     }
 
@@ -415,7 +419,7 @@ public class ScanUtils {
 
             if (mzRange.contains(scan.getPrecursorMZ())) {
 
-                DataPoint basePeak = scan.getBasePeak();
+		DataPoint basePeak = scan.getHighestDataPoint();
 
                 // If there is no peak in the scan, basePeak can be null
                 if (basePeak == null)
@@ -497,7 +501,8 @@ public class ScanUtils {
      * Find the highest data point in array
      * 
      */
-    public static DataPoint findTopDataPoint(DataPoint dataPoints[]) {
+    public static @Nonnull DataPoint findTopDataPoint(
+	    @Nonnull DataPoint dataPoints[]) {
 
         DataPoint topDP = null;
 
@@ -508,6 +513,30 @@ public class ScanUtils {
         }
 
         return topDP;
+    }
+
+    /**
+     * Find the m/z range of the data points in the array. We assume there is at
+     * least one data point, and the data points are sorted by m/z.
+     */
+    public static @Nonnull Range findMzRange(@Nonnull DataPoint dataPoints[]) {
+
+	assert dataPoints.length > 0;
+
+	double lowMz = dataPoints[0].getMZ();
+	double highMz = dataPoints[0].getMZ();
+	for (int i = 1; i < dataPoints.length; i++) {
+	    if (dataPoints[i].getMZ() < lowMz) {
+		lowMz = dataPoints[i].getMZ();
+		continue;
+	    }
+	    if (dataPoints[i].getMZ() > highMz)
+		highMz = dataPoints[i].getMZ();
+	}
+
+	final Range mzRange = new Range(lowMz, highMz);
+
+	return mzRange;
     }
 
     public static byte[] encodeDataPointsToBytes(DataPoint dataPoints[]) {

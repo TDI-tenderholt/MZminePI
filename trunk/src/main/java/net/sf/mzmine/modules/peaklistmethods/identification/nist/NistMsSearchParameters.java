@@ -39,8 +39,8 @@ import net.sf.mzmine.parameters.parametertypes.RTToleranceParameter;
 /**
  * Holds NIST MS Search parameters.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3185 $
+ * @author $Author: plusik $
+ * @version $Revision: 3286 $
  */
 public class NistMsSearchParameters extends SimpleParameterSet {
 

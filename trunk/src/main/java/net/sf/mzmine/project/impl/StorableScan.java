@@ -36,9 +36,10 @@ import javax.swing.SwingUtilities;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.MassList;
+import net.sf.mzmine.datamodel.Polarity;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.Scan;
-import net.sf.mzmine.desktop.impl.projecttree.PeakListTreeModel;
+import net.sf.mzmine.desktop.impl.projecttree.RawDataTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.masslistmethods.listexport.ListExportTask;
 import net.sf.mzmine.util.Range;
@@ -89,7 +90,7 @@ public class StorableScan implements Scan {
 		this.fragmentScans = originalScan.getFragmentScanNumbers();
 		this.centroided = originalScan.isCentroided();
 		this.mzRange = originalScan.getMZRange();
-		this.basePeak = originalScan.getBasePeak();
+		this.basePeak = originalScan.getHighestDataPoint();
 		this.totalIonCurrent = originalScan.getTIC();
 
 	}
@@ -265,7 +266,7 @@ public class StorableScan implements Scan {
 	/**
 	 * @see net.sf.mzmine.datamodel.Scan#getBasePeakMZ()
 	 */
-	public DataPoint getBasePeak() {
+	public DataPoint getHighestDataPoint() {
 		if ((basePeak == null) && (numberOfDataPoints > 0))
 			updateValues();
 		return basePeak;
@@ -355,7 +356,7 @@ public class StorableScan implements Scan {
 
 		// Check if we are adding to the current project
 		if (Arrays.asList(project.getDataFiles()).contains(rawDataFile)) {
-			final PeakListTreeModel treeModel = project.getTreeModel();
+			final RawDataTreeModel treeModel = project.getRawDataTreeModel();
 			final MassList newMassList = storedMassList;
 			Runnable swingCode = new Runnable() {
 				@Override
@@ -391,7 +392,7 @@ public class StorableScan implements Scan {
 
 		// Check if we are using the current project
 		if (Arrays.asList(project.getDataFiles()).contains(rawDataFile)) {
-			final PeakListTreeModel treeModel = project.getTreeModel();
+			final RawDataTreeModel treeModel = project.getRawDataTreeModel();
 			Runnable swingCode = new Runnable() {
 				@Override
 				public void run() {
@@ -416,6 +417,12 @@ public class StorableScan implements Scan {
 		}
 		return null;
 	}
+	
+    @Override
+    public @Nonnull Polarity getPolarity() {
+            // TODO
+            return Polarity.UNKNOWN;
+    }
 
 	/**
 	 * Get the filename that the scan or mass list would be exported to by default

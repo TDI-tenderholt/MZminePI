@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.RawDataFileWriter;
 import net.sf.mzmine.datamodel.Scan;
@@ -35,7 +36,6 @@ import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimpleScan;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
-import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.taskcontrol.AbstractTask;
 import net.sf.mzmine.taskcontrol.TaskStatus;
 import net.sf.mzmine.util.RUtilities;
@@ -46,8 +46,8 @@ import org.rosuda.JRI.Rengine;
 /**
  * Task that performs baseline correction.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3232 $
+ * @author $Author: plusik $
+ * @version $Revision: 3293 $
  */
 public class BaselineCorrectionTask extends AbstractTask {
 

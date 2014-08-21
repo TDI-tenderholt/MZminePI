@@ -34,8 +34,8 @@ import net.sf.mzmine.modules.peaklistmethods.identification.adductsearch.ImportA
 /**
  * A component for selecting adducts.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3103 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class AdductsComponent extends MultiChoiceComponent {
 

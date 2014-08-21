@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -51,7 +51,7 @@ import visad.java3d.MouseBehaviorJ3D;
 /**
  * 3D visualizer frame.
  */
-public class ThreeDVisualizerWindow extends JInternalFrame implements
+public class ThreeDVisualizerWindow extends JFrame implements
                                                            MouseWheelListener, ActionListener {
 
     // Logger.
@@ -96,7 +96,7 @@ public class ThreeDVisualizerWindow extends JInternalFrame implements
                                   final Range rt, final int rtRes, final Range mz, final int mzRes)
             throws VisADException, RemoteException {
 
-        super(file.getName(), true, true, true, true);
+        super(file.getName());
 
         // Configure.
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -141,7 +141,7 @@ public class ThreeDVisualizerWindow extends JInternalFrame implements
                         bottomPanel),
                 TaskPriority.HIGH);
 
-        MZmineCore.getDesktop().addProjectTreeListener(bottomPanel);
+        MZmineCore.getDesktop().addPeakListTreeListener(bottomPanel);
     }
 
     /**
@@ -150,7 +150,7 @@ public class ThreeDVisualizerWindow extends JInternalFrame implements
     @Override public void dispose() {
 
         super.dispose();
-        MZmineCore.getDesktop().removeProjectTreeListener(bottomPanel);
+        MZmineCore.getDesktop().removePeakListTreeListener(bottomPanel);
 
         // Cleanup display.
         if (display != null) {

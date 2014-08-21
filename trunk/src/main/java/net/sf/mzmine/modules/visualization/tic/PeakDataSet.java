@@ -19,8 +19,8 @@
 
 package net.sf.mzmine.modules.visualization.tic;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.RawDataFile;
 
 import org.jfree.data.xy.AbstractXYDataset;

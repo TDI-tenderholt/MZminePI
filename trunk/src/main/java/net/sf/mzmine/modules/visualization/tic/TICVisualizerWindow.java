@@ -30,8 +30,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFrame;
 
 import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.RawDataFile;
@@ -49,7 +49,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 /**
  * Total ion chromatogram visualizer using JFreeChart library
  */
-public class TICVisualizerWindow extends JInternalFrame implements
+public class TICVisualizerWindow extends JFrame implements
                                                         ActionListener {
 
     // CSV extension.
@@ -79,7 +79,7 @@ public class TICVisualizerWindow extends JInternalFrame implements
                                Feature[] peaks,
                                Map<Feature, String> peakLabels) {
 
-        super(null, true, true, true, true);
+        super("");
 
         assert mzRange != null;
         assert rtRange != null;
@@ -91,7 +91,7 @@ public class TICVisualizerWindow extends JInternalFrame implements
         this.rtRange = rtRange;
         this.mzRange = mzRange;
 
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      //  setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBackground(Color.white);
 
         ticPlot = new TICPlot(this);

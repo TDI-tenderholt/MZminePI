@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import jmprojection.PCA;
@@ -227,7 +227,7 @@ public class ClusteringTask extends AbstractXYDataset implements
                                 } else {
                                         c = cluster;
                                 }
-                                JInternalFrame visualizationWindow = new JInternalFrame(clusterNumber, true, true, true, true);
+                                JFrame visualizationWindow = new JFrame(clusterNumber);
                                 visualizationWindow.setSize(600, 500);
                                 visualizationWindow.setLayout(new BorderLayout());
 
@@ -241,7 +241,7 @@ public class ClusteringTask extends AbstractXYDataset implements
                                 visualizationWindow.setVisible(true);
                                 visualizationWindow.pack();
 
-                                MZmineCore.getDesktop().addInternalFrame(visualizationWindow);
+                                visualizationWindow.setVisible(true);
                         }
                         progress = 100;
                 } else {
@@ -260,7 +260,7 @@ public class ClusteringTask extends AbstractXYDataset implements
                                         sampleNames,
                                         (Integer[]) clusteringResult.toArray(new Integer[0]),
                                         "Clustering Report");
-                                desktop.addInternalFrame(reportWindow);
+                                reportWindow.setVisible(true);
                         } else {
                                 String[] variableNames = new String[selectedRows.length];
                                 for (int i = 0; i < selectedRows.length; i++) {
@@ -278,7 +278,7 @@ public class ClusteringTask extends AbstractXYDataset implements
                                         variableNames,
                                         (Integer[]) clusteringResult.toArray(new Integer[0]),
                                         "Clustering Report");
-                                desktop.addInternalFrame(reportWindow);
+                                reportWindow.setVisible(true);
 
                         }
 
@@ -339,7 +339,7 @@ public class ClusteringTask extends AbstractXYDataset implements
 
                         ProjectionPlotWindow newFrame = new ProjectionPlotWindow(
                                 desktop.getSelectedPeakLists()[0], this, parameters);
-                        desktop.addInternalFrame(newFrame);
+                        newFrame.setVisible(true);
                 }
                 status = TaskStatus.FINISHED;
                 logger.info("Finished computing Clustering visualization.");

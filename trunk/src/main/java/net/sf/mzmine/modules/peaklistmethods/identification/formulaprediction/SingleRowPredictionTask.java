@@ -133,14 +133,6 @@ public class SingleRowPredictionTask extends AbstractTask {
                 if (rule.getMaxCount() == 0)
                     continue;
 
-                // Adjust the maximum numbers according to the mass we are
-                // searching
-                int maxCountAccordingToMass = (int) (massRange.getMax() / rule
-                        .getMass());
-                if (rule.getMaxCount() > maxCountAccordingToMass) {
-                    rule.setMaxCount(maxCountAccordingToMass);
-                }
-
                 rulesSet.add(rule);
 
             } catch (IllegalArgumentException e) {
@@ -184,7 +176,7 @@ public class SingleRowPredictionTask extends AbstractTask {
                 + MZmineCore.getConfiguration().getMZFormat()
                         .format(searchedMass), peakListRow, searchedMass,
                 charge, this);
-        MZmineCore.getDesktop().addInternalFrame(resultWindow);
+		resultWindow.setVisible(true);
 
         logger.finest("Starting search for formulas for " + massRange
                 + " Da, elements " + Arrays.toString(elementRules));
@@ -269,7 +261,7 @@ public class SingleRowPredictionTask extends AbstractTask {
                     IsotopePatternScoreParameters.isotopeNoiseLevel).getValue();
 
             final double detectedPatternHeight = detectedPattern
-                    .getHighestIsotope().getIntensity();
+					.getHighestDataPoint().getIntensity();
 
             final double minPredictedAbundance = isotopeNoiseLevel
                     / detectedPatternHeight;

@@ -88,11 +88,11 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 
 	    if (weHaveData) {
 
-		MZmineCore.getDesktop().addInternalFrame(
-			new TICVisualizerWindow(dataFiles, plotType, msLevel,
-				rtRange, mzRange, selectionPeaks,
+				TICVisualizerWindow window = new TICVisualizerWindow(dataFiles,
+						plotType, msLevel, rtRange, mzRange, selectionPeaks,
 				((TICVisualizerParameters) parameters)
-					.getPeakLabelMap()));
+								.getPeakLabelMap());
+				window.setVisible(true);
 
 	    } else {
 
@@ -126,8 +126,11 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 
 	assert allFiles != null;
 
-	final TICVisualizerModule myInstance = MZmineCore.getModuleInstance(TICVisualizerModule.class);
-	final TICVisualizerParameters myParameters = (TICVisualizerParameters) MZmineCore.getConfiguration().getModuleParameters(TICVisualizerModule.class);
+		final TICVisualizerModule myInstance = MZmineCore
+				.getModuleInstance(TICVisualizerModule.class);
+		final TICVisualizerParameters myParameters = (TICVisualizerParameters) MZmineCore
+				.getConfiguration().getModuleParameters(
+						TICVisualizerModule.class);
 	myParameters.getParameter(TICVisualizerParameters.MS_LEVEL).setValue(1);
 	myParameters.getParameter(TICVisualizerParameters.PLOT_TYPE).setValue(
 		PlotType.BASEPEAK);
@@ -165,9 +168,9 @@ public class TICVisualizerModule implements MZmineProcessingModule {
 	    final int msLevel, final PlotType plotType, final Range rtRange,
 	    final Range mzRange) {
 
-	MZmineCore.getDesktop().addInternalFrame(
-		new TICVisualizerWindow(dataFiles, plotType, msLevel, rtRange,
-			mzRange, selectionPeaks, peakLabels));
+		TICVisualizerWindow window = new TICVisualizerWindow(dataFiles,
+				plotType, msLevel, rtRange, mzRange, selectionPeaks, peakLabels);
+		window.setVisible(true);
     }
 
     @Override

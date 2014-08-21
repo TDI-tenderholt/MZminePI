@@ -54,7 +54,6 @@ import net.sf.mzmine.util.GUIUtils;
  */
 public class MainMenu extends JMenuBar implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
     private JMenu projectMenu, rawDataMenu, peakListMenu, visualizationMenu,
@@ -339,7 +338,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
 		if (src == projectSaveParameters) {
 		    JFileChooser chooser = new JFileChooser();
-		    int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop().getMainFrame());
+		    int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop().getMainWindow());
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File configFile = chooser.getSelectedFile();
 				try {
@@ -352,7 +351,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
 		if (src == projectLoadParameters) {
 		    JFileChooser chooser = new JFileChooser();
-		    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainFrame());
+		    int returnVal = chooser.showOpenDialog(MZmineCore.getDesktop().getMainWindow());
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File configFile = chooser.getSelectedFile();
 				try {

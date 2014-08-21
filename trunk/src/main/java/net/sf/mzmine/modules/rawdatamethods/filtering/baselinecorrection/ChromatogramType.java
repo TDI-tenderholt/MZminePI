@@ -27,7 +27,7 @@ package net.sf.mzmine.modules.rawdatamethods.filtering.baselinecorrection;
  * Chromatogram types.
  *
  * @author $Author: plusik $
- * @version $Revision: 2728 $
+ * @version $Revision: 3271 $
  */
 public enum ChromatogramType {
 

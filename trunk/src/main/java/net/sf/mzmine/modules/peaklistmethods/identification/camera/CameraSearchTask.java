@@ -58,7 +58,7 @@ import org.rosuda.JRI.Rengine;
  * A task to perform a CAMERA search.
  *
  * @author $Author: plusik $
- * @version $Revision: 3211 $
+ * @version $Revision: 3293 $
  */
 public class CameraSearchTask extends AbstractTask {
 
@@ -152,7 +152,7 @@ public class CameraSearchTask extends AbstractTask {
             }
 
             // Repaint the window to reflect the change in the peak list
-            MZmineCore.getDesktop().getMainFrame().repaint();
+            MZmineCore.getDesktop().getMainWindow().repaint();
         }
         catch (Throwable t) {
 

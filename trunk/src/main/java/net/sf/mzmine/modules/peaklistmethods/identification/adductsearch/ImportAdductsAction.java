@@ -46,8 +46,8 @@ import com.Ostermiller.util.CSVParser;
 /**
  * An action to handle importing adducts from a file.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3104 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 
 public class ImportAdductsAction extends AbstractAction {

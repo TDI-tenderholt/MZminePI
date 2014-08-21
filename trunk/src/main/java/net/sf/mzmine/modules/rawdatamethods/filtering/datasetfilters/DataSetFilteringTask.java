@@ -19,6 +19,8 @@
 
 package net.sf.mzmine.modules.rawdatamethods.filtering.datasetfilters;
 
+import java.util.ArrayList;
+
 import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.RawDataFileWriter;
 import net.sf.mzmine.main.MZmineCore;
@@ -37,7 +39,7 @@ class DataSetFilteringTask extends AbstractTask {
 
     // Raw Data Filter
     private MZmineProcessingStep<RawDataSetFilter> rawDataFilter;
-    private RawDataFile filteredRawDataFile;
+	private ArrayList<RawDataFile> filteredRawDataFiles;
 
     /**
      * @param dataFiles
@@ -48,6 +50,7 @@ class DataSetFilteringTask extends AbstractTask {
 
 	this.dataFiles = parameters.getParameter(
 		DataSetFiltersParameters.dataFiles).getValue();
+		this.filteredRawDataFiles = new ArrayList<RawDataFile>();
 
 	rawDataFilter = parameters
 		.getParameter(DataSetFiltersParameters.filter).getValue();
@@ -89,11 +92,12 @@ class DataSetFilteringTask extends AbstractTask {
 	    for (RawDataFile dataFile : dataFiles) {
 		RawDataFileWriter rawDataFileWriter = MZmineCore
 			.createNewFile(dataFile.getName() + " " + suffix);
-		filteredRawDataFile = rawDataFilter.getModule().filterDatafile(
-			dataFile, rawDataFileWriter,
+				RawDataFile filteredRawDataFile = rawDataFilter.getModule()
+						.filterDatafile(dataFile, rawDataFileWriter,
 			rawDataFilter.getParameterSet());
 		if (filteredRawDataFile != null) {
 		    MZmineCore.getCurrentProject().addFile(filteredRawDataFile);
+					filteredRawDataFiles.add(filteredRawDataFile);
 
 		    // Remove the original file if requested
 		    if (removeOriginal) {
@@ -113,8 +117,9 @@ class DataSetFilteringTask extends AbstractTask {
     }
 
     public Object[] getCreatedObjects() {
-	if (filteredRawDataFile == null)
+		if (filteredRawDataFiles == null)
 	    return null;
-	return new Object[] { filteredRawDataFile };
+		return filteredRawDataFiles.toArray();
+
     }
 }

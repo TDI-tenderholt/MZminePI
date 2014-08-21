@@ -44,8 +44,8 @@ import com.Ostermiller.util.CSVPrinter;
 /**
  * An action to handle exporting adducts to a file.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3104 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 
 public class ExportAdductsAction extends AbstractAction {

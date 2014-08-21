@@ -39,7 +39,7 @@ import net.sf.mzmine.parameters.parametertypes.StringParameter;
  * Holds baseline correction module parameters.
  * 
  * @author $Author: plusik $
- * @version $Revision: 2851 $
+ * @version $Revision: 3271 $
  */
 public class BaselineCorrectionParameters extends SimpleParameterSet {
 

@@ -25,8 +25,8 @@ import javax.annotation.Nonnull;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.IsotopePattern.IsotopePatternStatus;
 import net.sf.mzmine.datamodel.Polarity;
+import net.sf.mzmine.datamodel.IsotopePattern.IsotopePatternStatus;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimpleIsotopePattern;
 import net.sf.mzmine.main.MZmineCore;
@@ -130,7 +130,7 @@ public class IsotopePatternCalculator implements MZmineModule {
     public static IsotopePattern normalizeIsotopePattern(
 	    IsotopePattern pattern, double normalizedValue) {
 
-	DataPoint highestIsotope = pattern.getHighestIsotope();
+	DataPoint highestIsotope = pattern.getHighestDataPoint();
 	DataPoint dataPoints[] = pattern.getDataPoints();
 
 	double maxIntensity = highestIsotope.getIntensity();

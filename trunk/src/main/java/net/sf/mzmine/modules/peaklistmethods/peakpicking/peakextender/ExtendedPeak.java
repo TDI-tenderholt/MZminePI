@@ -179,6 +179,7 @@ public class ExtendedPeak implements Feature {
 	for (int i = 0; i < allScanNumbers.length; i++) {
 
 	    DataPoint mzPeak = dataPointsMap.get(allScanNumbers[i]);
+			Scan aScan = dataFile.getScan(allScanNumbers[i]);
 
 	    // Replace the MzPeak instance with an instance of SimpleDataPoint,
 	    // to reduce the memory usage. After we finish this extended peak,
@@ -190,14 +191,16 @@ public class ExtendedPeak implements Feature {
 	    if (i == 0) {
 		rawDataPointsIntensityRange = new Range(mzPeak.getIntensity());
 		rawDataPointsMZRange = new Range(mzPeak.getMZ());
+				rawDataPointsRTRange = new Range(aScan.getRetentionTime());
 	    } else {
 		rawDataPointsIntensityRange.extendRange(mzPeak.getIntensity());
 		rawDataPointsMZRange.extendRange(mzPeak.getMZ());
+				rawDataPointsRTRange.extendRange(aScan.getRetentionTime());
 	    }
 
 	    if (height < mzPeak.getIntensity()) {
 		height = mzPeak.getIntensity();
-		rt = dataFile.getScan(allScanNumbers[i]).getRetentionTime();
+				rt = aScan.getRetentionTime();
 		representativeScan = allScanNumbers[i];
 	    }
 	}
@@ -241,4 +244,11 @@ public class ExtendedPeak implements Feature {
 	this.charge = charge;
     }
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return PeakUtils.peakToString(this);
+	}
 }

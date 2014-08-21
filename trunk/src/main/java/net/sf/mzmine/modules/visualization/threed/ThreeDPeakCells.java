@@ -29,11 +29,11 @@ import visad.Data;
 import visad.DataReference;
 import visad.DataReferenceImpl;
 import visad.Display;
+import visad.DisplayImpl;
 import visad.GriddedSet;
 import visad.MathType;
 import visad.VisADException;
 import visad.bom.PickManipulationRendererJ3D;
-import visad.java3d.DisplayImplJ3D;
 
 /**
  * This class represents a 3D boxes which are displayed when user shift+clicks
@@ -41,7 +41,7 @@ import visad.java3d.DisplayImplJ3D;
  */
 public class ThreeDPeakCells extends CellImpl {
 
-    private final DisplayImplJ3D display;
+    private final DisplayImpl display;
     private Feature[] peaks;
     private DataReference[] references;
     private final MathType pointTupleType;
@@ -54,7 +54,7 @@ public class ThreeDPeakCells extends CellImpl {
      * @param pointType    the point tuple type.
      * @param pickRenderer pick renderer.
      */
-    public ThreeDPeakCells(final DisplayImplJ3D display3D,
+    public ThreeDPeakCells(final DisplayImpl display3D,
                            final MathType pointType,
                            final PickManipulationRendererJ3D pickRenderer) {
 

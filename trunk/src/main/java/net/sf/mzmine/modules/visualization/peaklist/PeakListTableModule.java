@@ -40,7 +40,7 @@ public class PeakListTableModule implements MZmineModule {
 		.getModuleParameters(PeakListTableModule.class);
 	PeakListTableWindow window = new PeakListTableWindow(peakList,
 		parameters);
-	MZmineCore.getDesktop().addInternalFrame(window);
+		window.setVisible(true);
     }
 
     @Override

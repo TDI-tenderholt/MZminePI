@@ -66,6 +66,7 @@ public class MSMSScoreCalculator {
 					+ " does not contain data for scan #"
 					+ msmsScan.getScanNumber());
 		}
+
 		// Sorted by mass in descending order
 		ArrayList<ElementRule> rulesSet = new ArrayList<ElementRule>();
 		for (IIsotope isotope : parentFormula.isotopes()) {
@@ -93,15 +94,22 @@ public class MSMSScoreCalculator {
 				}
 			}
 
+	    // If getPrecursorCharge() returns 0, it means charge is unknown. In
+	    // that case let's assume charge 1
+	    int precursorCharge = msmsScan.getPrecursorCharge();
+	    if (precursorCharge == 0)
+		precursorCharge = 1;
+
 			// We don't know the charge of the fragment, so we will simply
 			// assume 1
-			double neutralLoss = msmsScan.getPrecursorMZ()
-					* msmsScan.getPrecursorCharge() - dp.getMZ();
+	    double neutralLoss = msmsScan.getPrecursorMZ() * precursorCharge
+		    - dp.getMZ();
 
 			// Ignore negative neutral losses and parent ion, <5 may be a
 			// good threshold
-			if (neutralLoss < 5)
+	    if (neutralLoss < 5) {
 				continue;
+	    }
 
 			Range msmsTargetRange = msmsTolerance
 					.getToleranceRange(neutralLoss);
@@ -122,8 +130,9 @@ public class MSMSScoreCalculator {
 		}
 
 		// If we did not evaluate any MS/MS peaks, we cannot calculate a score
-		if (totalMSMSpeaks == 0)
+	if (totalMSMSpeaks == 0) {
 			return null;
+	}
 
 		double msmsScore = (double) interpretedMSMSpeaks / totalMSMSpeaks;
 

@@ -45,8 +45,8 @@ import net.sf.mzmine.util.ExitCode;
 /**
  * An action to add custom adducts.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3103 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class AddAdductsAction extends AbstractAction {
 

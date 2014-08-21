@@ -36,8 +36,8 @@ import net.sf.mzmine.parameters.parametertypes.PercentParameter;
 /**
  * Parameters for a <code>CameraSearchTask</code>.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3185 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class CameraSearchParameters extends SimpleParameterSet {
 

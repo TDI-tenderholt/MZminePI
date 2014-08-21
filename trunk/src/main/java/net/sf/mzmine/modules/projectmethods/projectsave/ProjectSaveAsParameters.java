@@ -58,7 +58,7 @@ public class ProjectSaveAsParameters extends SimpleParameterSet {
 		
 		chooser.setMultiSelectionEnabled(false);
 
-		int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop().getMainFrame());
+		int returnVal = chooser.showSaveDialog(MZmineCore.getDesktop().getMainWindow());
 		if (returnVal != JFileChooser.APPROVE_OPTION)
 			return ExitCode.CANCEL;
 
@@ -69,7 +69,7 @@ public class ProjectSaveAsParameters extends SimpleParameterSet {
 		}
 
 		if (selectedFile.exists()) {
-			int selectedValue = JOptionPane.showConfirmDialog(MZmineCore.getDesktop().getMainFrame(),
+			int selectedValue = JOptionPane.showConfirmDialog(MZmineCore.getDesktop().getMainWindow(),
 					selectedFile.getName() + " already exists, overwrite ?", "Question...",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (selectedValue != JOptionPane.YES_OPTION)

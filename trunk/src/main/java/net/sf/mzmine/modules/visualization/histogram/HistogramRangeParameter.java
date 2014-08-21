@@ -46,7 +46,7 @@ public class HistogramRangeParameter implements
 	}
 
 	/**
-	 * @see net.sf.mzmine.datamodel.Parameter#getName()
+	 * @see net.sf.mzmine.data.Parameter#getName()
 	 */
 	@Override
 	public String getName() {
@@ -54,7 +54,7 @@ public class HistogramRangeParameter implements
 	}
 
 	/**
-	 * @see net.sf.mzmine.datamodel.Parameter#getDescription()
+	 * @see net.sf.mzmine.data.Parameter#getDescription()
 	 */
 	@Override
 	public String getDescription() {

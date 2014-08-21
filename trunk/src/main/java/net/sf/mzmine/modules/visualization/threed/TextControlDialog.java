@@ -38,7 +38,7 @@ import visad.util.TextControlWidget;
  * A dialog that holds a VisAD TextControlWidget.
  *
  * @author $Author: plusik $
- * @version $Revision: 2728 $
+ * @version $Revision: 3271 $
  */
 public class TextControlDialog extends JDialog {
 

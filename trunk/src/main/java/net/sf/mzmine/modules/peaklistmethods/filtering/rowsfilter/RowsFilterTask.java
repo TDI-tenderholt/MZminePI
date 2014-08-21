@@ -38,9 +38,9 @@ import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
 import net.sf.mzmine.datamodel.MZmineProject;
 import net.sf.mzmine.datamodel.PeakList;
+import net.sf.mzmine.datamodel.PeakList.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.PeakListRow;
 import net.sf.mzmine.datamodel.RawDataFile;
-import net.sf.mzmine.datamodel.PeakList.PeakListAppliedMethod;
 import net.sf.mzmine.datamodel.impl.SimpleFeature;
 import net.sf.mzmine.datamodel.impl.SimplePeakList;
 import net.sf.mzmine.datamodel.impl.SimplePeakListAppliedMethod;
@@ -211,9 +211,9 @@ public class RowsFilterTask extends AbstractTask {
                         for (final Feature p : peaks) {
 
                                 final IsotopePattern pattern = p.getIsotopePattern();
-                                if (pattern != null && maxIsotopePatternSizeOnRow < pattern.getNumberOfIsotopes()) {
+                                if (pattern != null && maxIsotopePatternSizeOnRow < pattern.getNumberOfDataPoints()) {
 
-                                        maxIsotopePatternSizeOnRow = pattern.getNumberOfIsotopes();
+                                        maxIsotopePatternSizeOnRow = pattern.getNumberOfDataPoints();
                                 }
 
                                 avgDuration += p.getRawDataPointsRTRange().getSize();

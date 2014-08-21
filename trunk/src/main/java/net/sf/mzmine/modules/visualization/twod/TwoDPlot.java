@@ -223,4 +223,10 @@ class TwoDPlot extends ChartPanel {
 		}
 	}
 
+	public void setLogScale(boolean logscale) {
+		if (plot != null) {
+			plot.setLogScale(logscale);
+		}
+	}
+
 }
