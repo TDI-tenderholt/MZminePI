@@ -19,18 +19,13 @@
 
 package net.sf.mzmine.parameters.parametertypes;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.util.Collection;
-
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
-
 import net.sf.mzmine.parameters.UserParameter;
-
 import org.w3c.dom.Element;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.util.Collection;
 
 /**
  * Integer parameter. Note that we prefer to use JTextField rather than

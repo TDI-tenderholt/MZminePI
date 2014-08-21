@@ -88,7 +88,7 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
     public ParameterSetupDialog(ParameterSet parameters) {
 	
 		// Make dialog modal
-		super(MZmineCore.getDesktop().getMainWindow(),
+	super((Frame) null,
 			"Please set the parameters", true);
 	
 		this.parameterSet = parameters;
@@ -135,6 +135,7 @@ public class ParameterSetupDialog extends JDialog implements ActionListener, Doc
 		    UserParameter up = (UserParameter) p;
 
 		    JComponent comp = up.createEditingComponent();
+	    comp.setToolTipText(up.getDescription());
 	
 		    // Set the initial value
 		    Object value = up.getValue();
