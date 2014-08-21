@@ -32,7 +32,6 @@ import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.RawDataFile;
 
 class ProjectTreeEditor extends DefaultCellEditor {
-	private static final long serialVersionUID = 1L;
 
 	private JTree projectTree;
 

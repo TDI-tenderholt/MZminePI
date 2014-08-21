@@ -33,7 +33,6 @@ import javax.swing.tree.TreePath;
  * This class implements a selector of raw data files and peak lists
  */
 public class ProjectTree extends JTree {
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor
