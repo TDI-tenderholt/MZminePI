@@ -82,6 +82,8 @@ public class SimpleParameterSet implements ParameterSet {
     public void saveValuesToXML(Element xmlElement) {
 	Document parentDocument = xmlElement.getOwnerDocument();
 	for (Parameter param : parameters) {
+		if (param.getClass().getName().endsWith("PasswordParameter"))
+			continue;	// don't store passwords
 	    Element paramElement = parentDocument
 		    .createElement(parameterElement);
 	    paramElement.setAttribute(nameAttribute, param.getName());
