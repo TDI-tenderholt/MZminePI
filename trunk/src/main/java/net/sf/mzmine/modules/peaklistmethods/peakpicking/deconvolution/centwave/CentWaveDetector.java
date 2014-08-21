@@ -50,7 +50,7 @@ import org.rosuda.JRI.Rengine;
  * Use XCMS findPeaks.centWave to identify peaks.
  *
  * @author $Author: plusik $
- * @version $Revision: 3211 $
+ * @version $Revision: 3286 $
  */
 public class CentWaveDetector implements PeakResolver {
 

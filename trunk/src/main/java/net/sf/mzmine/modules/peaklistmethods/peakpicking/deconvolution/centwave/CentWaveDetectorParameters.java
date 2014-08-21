@@ -38,8 +38,8 @@ import net.sf.mzmine.util.Range;
 /**
  * Parameters used by CentWaveDetector.
  *
- * @author $Author: cpudney $
- * @version $Revision: 3153 $
+ * @author $Author: plusik $
+ * @version $Revision: 3271 $
  */
 public class CentWaveDetectorParameters extends SimpleParameterSet {
 
