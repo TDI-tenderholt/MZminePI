@@ -21,8 +21,8 @@ package net.sf.mzmine.modules.visualization.spectra.datasets;
 
 import java.util.Vector;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.PeakList;
 import net.sf.mzmine.datamodel.RawDataFile;
 
