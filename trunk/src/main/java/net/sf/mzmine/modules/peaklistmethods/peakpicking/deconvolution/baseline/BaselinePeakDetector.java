@@ -28,8 +28,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.DataPoint;
+import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.PeakResolver;
 import net.sf.mzmine.modules.peaklistmethods.peakpicking.deconvolution.ResolvedPeak;
 import net.sf.mzmine.parameters.ParameterSet;
