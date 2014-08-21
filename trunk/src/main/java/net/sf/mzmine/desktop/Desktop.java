@@ -70,23 +70,28 @@ public interface Desktop extends MZmineModule {
     /**
      * Displays a given text on the application status bar in black color
      * 
-     * @param text Text to show
+     * @param text
+     *            Text to show
      */
     public void setStatusBarText(String text);
 
     /**
      * Displays a given text on the application status bar in a given color
      * 
-     * @param text Text to show
-     * @param textColor Text color
+     * @param text
+     * 			  Text to show
+     * @param textColor
+     *            Text color
      */
     public void setStatusBarText(String text, Color textColor);
 
     /**
      * Displays a message box with a given text
      * 
-     * @param title Message box title
-     * @param msg Text to show
+     * @param title
+     *            Message box title
+     * @param msg
+     *            Text to show
      * @param log if not null logger
      */
     public void displayMessage(String msg);
@@ -96,8 +101,10 @@ public interface Desktop extends MZmineModule {
     /**
      * Displays an error message box with a given text
      * 
-     * @param title Message box title
-     * @param msg Text to show
+     * @param title
+     *            Message box title
+     * @param msg
+     *            Text to show
      * @param log if not null logger
      */
     public void displayErrorMessage(String msg);
