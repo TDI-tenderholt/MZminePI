@@ -23,7 +23,6 @@ import javax.annotation.Nonnull;
 
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.IsotopePattern;
-import net.sf.mzmine.datamodel.IsotopePatternStatus;
 import net.sf.mzmine.util.ScanUtils;
 
 /**

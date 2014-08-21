@@ -25,6 +25,19 @@ import javax.annotation.Nonnull;
  * This interface defines an isotope pattern which can be attached to a peak
  */
 public interface IsotopePattern {
+	public enum IsotopePatternStatus {
+
+		/**
+		 * Isotope pattern was detected by isotope grouper
+		 */
+		DETECTED,
+
+		/**
+		 * Isotope pattern was predicted by Isotope pattern calculator
+		 */
+		PREDICTED;
+
+	}
 
     /**
      * Returns the isotope pattern status.

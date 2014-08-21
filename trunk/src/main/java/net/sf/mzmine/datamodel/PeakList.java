@@ -146,8 +146,7 @@ public interface PeakList {
      * @param endRT
      *            End of the retention time range
      */
-    public Feature[] getPeaksInsideScanRange(RawDataFile file,
-	    Range rtRange);
+	public Feature[] getPeaksInsideScanRange(RawDataFile file, Range rtRange);
 
     /**
      * Returns all peaks in a given m/z range
@@ -157,8 +156,7 @@ public interface PeakList {
      * @param endMZ
      *            End of the m/z range
      */
-    public Feature[] getPeaksInsideMZRange(RawDataFile file,
-	    Range mzRange);
+	public Feature[] getPeaksInsideMZRange(RawDataFile file, Range mzRange);
 
     /**
      * Returns all peaks in a given m/z & retention time ranges
