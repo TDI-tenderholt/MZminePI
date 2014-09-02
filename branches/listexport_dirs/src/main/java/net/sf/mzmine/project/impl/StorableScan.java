@@ -465,11 +465,17 @@ public class StorableScan implements Scan {
 	 * @param filename			// if empty, filename will be generated from scan information
 	 * @return					// number of points, 0 if requested mass list not found not found
 	 */
-	public int exportToFile(String massListName, String filename)
+	public int exportToFile(String massListName, String saveDirectory, String filename)
 	{
 		int exported = 0;
+		
 		if (filename.isEmpty())
 			filename = exportFilename(massListName);
+		
+		if (!saveDirectory.isEmpty())
+		{
+			filename = saveDirectory + "/" + filename;
+		}
 
 		if (massListName.isEmpty())	// export scan
 		{
