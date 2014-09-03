@@ -2,7 +2,7 @@
  * Copyright 2013-2014 Veritomyx
  */
 
-package veritomyxSaaS;
+package net.sf.mzmine.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

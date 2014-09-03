@@ -42,12 +42,12 @@ import net.sf.mzmine.desktop.preferences.MZminePreferences;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.parameters.ParameterSet;
 import net.sf.mzmine.util.ExitCode;
+import net.sf.mzmine.util.FileChecksum;
 
 import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import veritomyxSaaS.FileChecksum;
 import veritomyxSaaS.VeritomyxSaaS;
 
 /**
