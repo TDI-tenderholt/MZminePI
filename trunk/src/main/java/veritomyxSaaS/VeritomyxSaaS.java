@@ -223,7 +223,7 @@ public class VeritomyxSaaS
 			}
 			else if ((action == JOB_RUN) && (jobID != null))	// run job request
 			{
-				page += "&Job=" + jobID
+				page += "&JobID=" + jobID
 					  + "&ArchiveType=tar"
 					  + "&CalibrationScans=0"
 					  + "&QoS=" + quality
@@ -231,12 +231,12 @@ public class VeritomyxSaaS
 			}
 			else if (jobID != null)	// all the rest require a jobID
 			{
-				page += "&Job=" + jobID;
+				page += "&JobID=" + jobID;
 			}
 			else
 			{
 				web_result = W_ERROR_JOB_TYPE;
-				web_str    = "Job ID, " + jobID + ", not defined";
+				web_str    = "JobID, " + jobID + ", not defined";
 				return web_result;
 			}
 
