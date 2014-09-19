@@ -51,6 +51,8 @@ public class DirectoryComponent extends JPanel implements ActionListener {
      */
     public DirectoryComponent() {
 
+    	super(new BorderLayout());
+
         // Create text field.
         txtDirectory = new JTextField();
         txtDirectory.setColumns(TEXT_FIELD_COLUMNS);
@@ -60,8 +62,8 @@ public class DirectoryComponent extends JPanel implements ActionListener {
         final JButton btnFileBrowser = new JButton("...");
         btnFileBrowser.addActionListener(this);
 
-        add(txtDirectory);
-        add(btnFileBrowser);
+        add(txtDirectory, BorderLayout.CENTER);
+        add(btnFileBrowser, BorderLayout.EAST);
     }
 
     public File getValue() {
