@@ -41,7 +41,7 @@ public class FileChecksum
 {
 	public static final String version = "1.0.1";
 	public  final String       prefix  = "# checksum:";
-	private final String       seed    = "Veritomyx hash seed!";
+	private final String       seed    = "Hash seed!";
 	private MessageDigest md;
 	private String        filename;
 	private File          file;
