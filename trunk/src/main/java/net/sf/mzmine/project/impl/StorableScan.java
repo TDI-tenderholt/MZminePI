@@ -42,12 +42,11 @@ import net.sf.mzmine.datamodel.Scan;
 import net.sf.mzmine.desktop.impl.projecttree.RawDataTreeModel;
 import net.sf.mzmine.main.MZmineCore;
 import net.sf.mzmine.modules.masslistmethods.listexport.ListExportTask;
+import net.sf.mzmine.util.FileChecksum;
 import net.sf.mzmine.util.Range;
 import net.sf.mzmine.util.ScanUtils;
 
 import org.apache.commons.io.FilenameUtils;
-
-import veritomyxSaaS.FileChecksum;
 
 /**
  * Implementation of the Scan interface which stores raw data points in a
