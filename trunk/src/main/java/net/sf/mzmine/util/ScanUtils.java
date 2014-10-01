@@ -474,14 +474,12 @@ public class ScanUtils {
             // Check the neighbouring data points, but only if the scan is not
             // centroided
             if (!centroided) {
-                if ((i > 0) && (dataPoints[i - 1].getIntensity() > 0)) {
+                if ((i == 0) ||
+                	(i == dataPoints.length - 1) ||
+                	(dataPoints[i - 1].getIntensity() > 0) ||
+                	(dataPoints[i + 1].getIntensity() > 0))
+                {
                     newDataPoints.add(dataPoints[i]);
-                    continue;
-                }
-                if ((i < dataPoints.length - 1)
-                        && (dataPoints[i + 1].getIntensity() > 0)) {
-                    newDataPoints.add(dataPoints[i]);
-                    continue;
                 }
             }
         }
