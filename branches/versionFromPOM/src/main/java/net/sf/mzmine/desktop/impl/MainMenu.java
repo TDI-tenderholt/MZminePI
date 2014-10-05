@@ -99,7 +99,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
 		projectMenu.addSeparator();
 
-		String programName = MZmineCore.MZmineName;
+		String programName = MZmineCore.getMZmineName();
 
 		projectSaveParameters = GUIUtils.addMenuItem(projectMenu, "Save " + programName + " parameters...", this);
 		projectLoadParameters = GUIUtils.addMenuItem(projectMenu, "Load " + programName + " parameters...", this);
@@ -194,7 +194,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		this.add(helpMenu);
 
-		showAbout = new JMenuItem("About " + programName + " " + MZmineCore.MZmineVersion + "...");
+		showAbout = new JMenuItem("About " + programName + " " + MZmineCore.getMZmineVersion() + "...");
 		showAbout.addActionListener(this);
 		addMenuItem(MZmineModuleCategory.HELPSYSTEM, showAbout);
     }

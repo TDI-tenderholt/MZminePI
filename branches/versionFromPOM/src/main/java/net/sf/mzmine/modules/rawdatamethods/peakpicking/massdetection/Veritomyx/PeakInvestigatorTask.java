@@ -78,7 +78,7 @@ public class PeakInvestigatorTask
 	public PeakInvestigatorTask(RawDataFile raw, String pickup_job, String target, ParameterSet parameters, int scanCount)
 	{
 		logger  = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(MZmineCore.VtmxDebug ? Level.INFO : Level.FINEST);
+		logger.setLevel(MZmineCore.debug ? Level.INFO : Level.FINEST);
 		logger.info("Initializing PeakInvestigator™ Task");
 		jobID   = null;
 		tarfile = null;
@@ -110,7 +110,7 @@ public class PeakInvestigatorTask
 
 		// make sure we have access to the Veritomyx Server
 		// this also gets the job_id and SFTP credentials
-		vtmx = new VeritomyxSaaS(MZmineCore.VtmxDebug, server);
+		vtmx = new VeritomyxSaaS(MZmineCore.debug, server);
 		while (true)
 		{
 			int status = vtmx.init(username, password, aid, pickup_job, scanCount);

@@ -65,7 +65,7 @@ public class HelpImpl {
         MZmineTOCView myTOC = new MZmineTOCView(hs, "TOC", "Table Of Contents",
                 helpMap, jarFile);
 
-        hs.setTitle(MZmineCore.MZmineName);
+        hs.setTitle(MZmineCore.getMZmineName());
         hs.addTOCView(myTOC);
 
     }

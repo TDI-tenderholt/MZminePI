@@ -253,7 +253,7 @@ public class ProjectSavingTask extends AbstractTask {
 
 	zipStream.putNextEntry(new ZipEntry(VERSION_FILENAME));
 
-	String MZmineVersion = MZmineCore.MZmineVersion;
+	String MZmineVersion = MZmineCore.getMZmineVersion();
 
 	zipStream.write(MZmineVersion.getBytes());
 

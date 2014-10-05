@@ -33,7 +33,8 @@ import net.sf.mzmine.util.ExitCode;
 public class ProjectSaveModule implements MZmineProcessingModule {
 
     private static final String MODULE_NAME = "Save project";
-    private static final String MODULE_DESCRIPTION = "This module saves the current " + MZmineCore.MZmineName + " project.";
+    private static final String MODULE_DESCRIPTION = "This module saves the current " 
+    													+ MZmineCore.getMZmineName() + " project.";
 
     @Override
     public @Nonnull String getName() { return MODULE_NAME; }

@@ -225,8 +225,8 @@ public class ProjectOpeningTask extends AbstractTask {
 
         logger.info("Checking project version");
 
-        String mzmineNameString    = MZmineCore.MZmineName + " ";
-        String mzmineVersionString = MZmineCore.MZmineVersion;
+        String mzmineNameString    = MZmineCore.getMZmineName() + " ";
+        String mzmineVersionString = MZmineCore.getMZmineVersion();
 
         ZipEntry versionEntry = zipFile
                 .getEntry(ProjectSavingTask.VERSION_FILENAME);
@@ -313,7 +313,8 @@ public class ProjectOpeningTask extends AbstractTask {
 
         if (configEntry == null) {
             throw new IOException(
-                    "This file is not valid " + MZmineCore.MZmineName + " project. It does not contain configuration data.");
+                    "This file is not valid " + MZmineCore.getMZmineName() + " project. "
+                    		+ "It does not contain configuration data.");
         }
 
         InputStream configInputStream = zipFile.getInputStream(configEntry);

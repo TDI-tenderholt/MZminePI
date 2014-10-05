@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -57,14 +58,11 @@ import net.sf.mzmine.util.ExitCode;
  */
 public final class MZmineCore
 {
-	public static final String MZmineName      = "MZmine PeakInvestigator™ Edition";
-	public static final String MZmineShortName = "MZminePI";
-
-	public static       boolean VtmxDebug      = false;
-	public static       String  MZmineVersion  = "2.11.1";
+	public static       boolean debug          = false;
 	public static final String  MZmineDate     = "2014-08-21";	// Java has no compile time variable
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
+	private static Properties properties = new Properties();
 
 	private static TaskControllerImpl taskController;
 	private static MZmineConfiguration configuration;
@@ -90,18 +88,31 @@ public final class MZmineCore
 		{
 			if (args[0].equals("-d"))
 			{
-				VtmxDebug = true;
-				MZmineVersion += "d";
+				debug = true;
 				if (args.length > 1)
 					param = args[1];
 			}
 			else
 				param = args[0];
 		}
+		
+		// Get project properties from POM
+		try {
+			ClassLoader myClassLoader = MZmineCore.class.getClassLoader();
+			InputStream inStream = myClassLoader
+					.getResourceAsStream("META-INF/maven/net.sf.mzmine/MZminePI/pom.properties");
+			if (inStream != null) {
+				properties.load(inStream);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Configure the logging properties before we start logging
 		try {
-			InputStream loggingProperties = new FileInputStream("resources/" + MZmineShortName + ".logging.properties");
+			InputStream loggingProperties = new FileInputStream("resources/" 
+																	+ MZmineCore.getMZmineShortName() 
+																	+ ".logging.properties");
 			LogManager logMan = LogManager.getLogManager();
 			logMan.readConfiguration(loggingProperties);
 			loggingProperties.close();
@@ -109,7 +120,8 @@ public final class MZmineCore
 			e.printStackTrace();
 		}
 
-		logger.info("Starting " + MZmineName + " " + MZmineVersion + " built " + MZmineDate);
+		logger.info("Starting " + MZmineCore.getMZmineName() + " " 
+						+ MZmineCore.getMZmineVersion() + " built " + MZmineDate);
 		logger.info("CWD is " + new File(".").getAbsolutePath());
 
 		// Remove old temporary files, if we find any
@@ -224,7 +236,8 @@ public final class MZmineCore
 			desktop.getMainWindow().setVisible(true);
 
 			// show the welcome message
-			desktop.setStatusBarText("Welcome to " + MZmineName + " " + MZmineVersion + " built " + MZmineDate);
+			desktop.setStatusBarText("Welcome to " + MZmineCore.getMZmineName() + " " 
+										+ MZmineCore.getMZmineVersion() + " built " + MZmineDate);
 
 			// register shutdown hook only if we have GUI - we don't want to
 			// save configuration on exit if we only run a batch
@@ -286,5 +299,20 @@ public final class MZmineCore
 	public static RawDataFileWriter createNewFile(String name)
 			throws IOException {
 		return new RawDataFileImpl(name);
+	}
+	
+	public static String getMZmineVersion() {
+		if (debug)
+			return properties.getProperty("version", "0.0") + "d";
+		else
+			return properties.getProperty("version", "0.0");
+	}
+	
+	public static String getMZmineName() {
+		return properties.getProperty("name", "MZmine");
+	}
+	
+	public static String getMZmineShortName() {
+		return properties.getProperty("artifactId", "MZmine");
 	}
 }

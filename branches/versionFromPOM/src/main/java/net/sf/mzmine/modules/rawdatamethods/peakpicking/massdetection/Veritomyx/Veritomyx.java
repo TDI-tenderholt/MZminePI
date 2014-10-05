@@ -40,7 +40,7 @@ public class Veritomyx implements MassDetector
 	public Veritomyx()
 	{
 		logger = Logger.getLogger(this.getClass().getName());
-		logger.setLevel(MZmineCore.VtmxDebug ? Level.INFO : Level.FINEST);
+		logger.setLevel(MZmineCore.debug ? Level.INFO : Level.FINEST);
 		logger.info("Initializing Veritomyx " + this.getName());
 		jobs = new ArrayList<PeakInvestigatorTask>();
 	}
