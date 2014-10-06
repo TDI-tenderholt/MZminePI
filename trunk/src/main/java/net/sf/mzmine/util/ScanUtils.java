@@ -354,48 +354,11 @@ public class ScanUtils {
     }
 
     /**
-     * Determines if the spectrum represented by given array of data points is
-     * centroided or continuous. The algorithm is based on the following
-     * assumption: centroided spectra have their data points unevenly
-     * distributed on the m/z scale, while continuous spectra have there data
-     * points quite regularly distributed. However, the density of the data
-     * points in continuous spectra may gradually change with increasing m/z
-     * value. Also, continuous spectra may contain areas with no data points, if
-     * zero-intensity data points were removed. We check the m/z distance
-     * between the each two data points, and if this distance is 2x bigger than
-     * the distance between the previous pair of data points, the spectrum
-     * should be centroided. In case we encounter a zero-intensity data point,
-     * the previous data point pair is ignored and checking starts again.
+     * This used to try to determine if a scan was centroided by looking at adjacent
+     * points to see if the mass difference bin spacing was greater than twice the prior spacing.
+     * This algorithm is fatally flawed since mass spec machines don't have consistent spacing.
      */
-    public static boolean isCentroided(DataPoint[] dataPoints) {
-
-        // If the spectrum has less than 10 data points, it should be centroid
-        if (dataPoints.length <= 10)
-            return true;
-
-        double previousMzDifference = 0, currentMzDifference;
-
-    	for (int i = 1; i < dataPoints.length; i++) {
-    	    currentMzDifference = dataPoints[i].getMZ() - dataPoints[i - 1].getMZ();
-    	    // If there is a previous data point pair (previousMzDifference >
-    	    // 0), check our condition for centroided spectra
-    	    if ((previousMzDifference > 0) && (currentMzDifference > previousMzDifference * 2)) {
-               return true;
-        }
-
-    	    // If we have a zero-intensity data point, ignore the next m/z
-    	    // distance. Otherwise, keep the current pair as
-    	    // previousMzDifference.
-    	    if (dataPoints[i].getIntensity() > 0)
-    	    	previousMzDifference = currentMzDifference;
-    	    else
-    	    	previousMzDifference = 0;
-
-        }
-
-        return false;
-
-    }
+    public static boolean isCentroided(DataPoint[] dataPoints) { return false; }
 
     /**
      * Finds the MS/MS scan with highest intensity, within given retention time
