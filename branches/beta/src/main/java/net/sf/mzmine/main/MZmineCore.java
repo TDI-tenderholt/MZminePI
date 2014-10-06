@@ -61,8 +61,8 @@ public final class MZmineCore
 	public static final String MZmineShortName = "MZminePI";
 
 	public static       boolean VtmxLive       = true;			// live or test server (also affects debug level)
-	public static       String  MZmineVersion  = "2.10.37";
-	public static final String  MZmineDate     = "2014-03-28";	// Java has no compile time variable
+	public static       String  MZmineVersion  = "2.10.38";
+	public static final String  MZmineDate     = "2014-10-06";	// Java has no compile time variable
 
 	private static Logger logger = Logger.getLogger(MZmineCore.class.getName());
 

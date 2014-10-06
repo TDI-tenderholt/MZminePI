@@ -352,46 +352,11 @@ public class ScanUtils {
     }
 
     /**
-     * Determines if the spectrum represented by given array of data points is
+     * This used to try to determine if a scan was centroided by looking at adjacent
+     * points to see if the mass difference bin spacing was greater than twice the prior spacing.
+     * This algorithm is fatally flawed since mass spec machines don't have consistent spacing.
      */
-    public static boolean isCentroided(DataPoint[] dataPoints) {
-
-        // If the spectrum has less than 10 data points, it should be centroid
-        if (dataPoints.length <= 10)
-            return true;
-
-        boolean centroid = false;
-        Range mzRange = null;
-        boolean hasZeroDP = false;
-
-        mzRange = new Range(dataPoints[0].getMZ());
-        for (DataPoint dp : dataPoints) {
-            mzRange.extendRange(dp.getMZ());
-            if (dp.getIntensity() == 0)
-                hasZeroDP = true;
-        }
-
-        // If the spectrum has no zero data points, it should be centroid
-//        if (!hasZeroDP)
-//            return true;
-
-        double massStep = mzRange.getSize() / dataPoints.length;
-        double tempdiff, diff = 0, previousMass = dataPoints[0].getMZ();
-        for (DataPoint dp : dataPoints) {
-            tempdiff = Math.abs(dp.getMZ() - previousMass);
-            previousMass = dp.getMZ();
-            if (dp.getIntensity() == 0)
-                continue;
-            if (tempdiff > (massStep * 1.5d)) {
-                centroid = true;
-                if (tempdiff > diff)
-                    diff = tempdiff;
-            }
-        }
-
-        return centroid;
-
-    }
+    public static boolean isCentroided(DataPoint[] dataPoints) { return false; }
 
     /**
      * Finds the MS/MS scan with highest intensity, within given retention time
@@ -470,14 +435,12 @@ public class ScanUtils {
             // Check the neighbouring data points, but only if the scan is not
             // centroided
             if (!centroided) {
-                if ((i > 0) && (dataPoints[i - 1].getIntensity() > 0)) {
+                if ((i == 0) ||
+                	(i == dataPoints.length - 1) ||
+                	(dataPoints[i - 1].getIntensity() > 0) ||
+                	(dataPoints[i + 1].getIntensity() > 0))
+                {
                     newDataPoints.add(dataPoints[i]);
-                    continue;
-                }
-                if ((i < dataPoints.length - 1)
-                        && (dataPoints[i + 1].getIntensity() > 0)) {
-                    newDataPoints.add(dataPoints[i]);
-                    continue;
                 }
             }
         }
