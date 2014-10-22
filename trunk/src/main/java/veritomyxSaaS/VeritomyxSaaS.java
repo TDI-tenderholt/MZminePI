@@ -331,8 +331,6 @@ public class VeritomyxSaaS
 		if (session == null)
 			return false;
 
-		try { sftp.rm(session, fname); } catch (Exception e) {}
-		try { sftp.rm(session, fname + ".filepart"); } catch (Exception e) {}
 		result = sftp.put(session, path, fname + ".filepart");
 		if (!result.getSuccessFlag())
 		{
