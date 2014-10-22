@@ -134,6 +134,16 @@ public class MainWindow extends JFrame implements MZmineModule, Desktop, WindowL
     public void displayException(Exception e) {
     	displayErrorMessage(ExceptionUtils.exceptionToString(e));
     }
+    
+    public int displayConfirmDialog(String title, String msg)
+    {
+		int selectedValue = JOptionPane.showInternalConfirmDialog(
+				this.getContentPane(), msg, title,
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (selectedValue == JOptionPane.YES_OPTION)
+			return 1;
+		return 0;
+    }
 
     private void displayMessage(String title, String msg, int type, Logger log) {
 		assert msg != null;

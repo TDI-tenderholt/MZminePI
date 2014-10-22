@@ -28,7 +28,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -173,13 +172,9 @@ public class ProjectTreeMouseHandler extends MouseAdapter implements ActionListe
 		{
 			for (RemoteJob job : getObjList(RemoteJob.class))
 			{
-				int selectedValue = JOptionPane.showInternalConfirmDialog(
-						MZmineCore.getDesktop().getMainWindow(),
-						"Unretrieved results, will be lost.\n" + "Are you sure you want to delete " + job.getName() + "?",
-						"Remove Job",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE);
-				if (selectedValue == 0)	// yes response
+				int confirm = MZmineCore.getDesktop().displayConfirmDialog("Remove Job",
+						"Unretrieved results, will be lost.\n" + "Are you sure you want to delete " + job.getName() + "?");
+				if (confirm == 1)	// yes response
 					job.getRawDataFile().removeJob(job.getName());
 			}
 		}

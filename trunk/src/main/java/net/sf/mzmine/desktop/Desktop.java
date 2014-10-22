@@ -76,6 +76,8 @@ public interface Desktop extends MZmineModule {
     public void displayMessage(String title, String msg);
 	public void displayMessage(String title, String msg, Logger log);
 
+	public int displayConfirmDialog(String title, String msg);
+
     /**
      * Displays an error message box with a given text
      * 
@@ -88,7 +90,7 @@ public interface Desktop extends MZmineModule {
     public void displayErrorMessage(String msg);
     public void displayErrorMessage(String title, String msg);
 	public void displayErrorMessage(String title, String msg, Logger log);
-    
+   
     /**
      * Displays an error message
      *

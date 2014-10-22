@@ -67,6 +67,12 @@ public class HeadLessDesktop implements Desktop {
 		log.info(title + ": " + msg);
 	}
 
+	@Override
+	public int displayConfirmDialog(String title, String msg) {
+		logger.info(msg);
+		return 1;
+	}
+
     @Override
     public void displayErrorMessage(String msg) {
 	logger.severe(msg);
