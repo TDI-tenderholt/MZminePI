@@ -38,10 +38,7 @@ public class RemoteJob implements RemoteJobInfo
 		jobID       = name;
 		rawDataFile = raw;
 		targetName  = target;
-//		if (vtmx != null)
-			vtmx = vtmxConn;
-//		else
-//			this.vtmx = new VeritomyxSaaS(username, password, pid, name);
+		vtmx        = vtmxConn;
 	}
 
     public String      getName()        { return jobID; }
