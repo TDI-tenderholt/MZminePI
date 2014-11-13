@@ -59,7 +59,7 @@ public class VeritomyxSaaS
 	private Logger log;
 	private String username;
 	private String password;
-	private int    aid;
+	private int    pid;
 	private String jobID;				// name of the job and the scans tar file
 	private String dir;
 	private String quality;
@@ -101,17 +101,17 @@ public class VeritomyxSaaS
 	 *  
 	 * @param email
 	 * @param passwd
-	 * @param account
+	 * @param project
 	 * @param existingJobName
 	 * @param scanCount
 	 * @return
 	 */
-	public int init(String email, String passwd, int account, String existingJobName, int scanCount)
+	public int init(String email, String passwd, int project, String existingJobName, int scanCount)
 	{
 		jobID    = null;	// if jobID is set, this is a valid job
 		username = email;
 		password = passwd;
-		aid      = account;
+		pid      = project;
 		boolean pickup = ((existingJobName != null) && (existingJobName.startsWith("vpi-") == true));
 
 		// make sure we have access to the Veritomyx Server
@@ -124,7 +124,7 @@ public class VeritomyxSaaS
 			// got a valid result from JOB_INIT, parse it
 			String sa[] = web_str.split("\\|");
 			jobID       = sa[1];
-			aid         = Integer.parseInt(sa[2]);
+			pid         = Integer.parseInt(sa[2]);
 			sftp_user   = sa[3];
 			sftp_pw     = sa[4];
 			String qos  = sa[6];
@@ -148,7 +148,7 @@ public class VeritomyxSaaS
 			// got a valid result from JOB_INIT, parse it
 			String sa[]        = web_str.split("\\|");
 			jobID              = sa[1];
-			aid                = Integer.parseInt(sa[2]);
+			pid                = Integer.parseInt(sa[2]);
 			sftp_user          = sa[3];
 			sftp_pw            = sa[4];
 			scans_in           = Integer.parseInt(sa[5]);
@@ -215,7 +215,7 @@ public class VeritomyxSaaS
 					+ "&Action="  + action;
 			if ((action == JOB_INIT) && (jobID == null))	// new job request
 			{
-				page += "&Account=" + aid
+				page += "&Project=" + pid
 					  + "&Command=" + "ckm"		// Centroid Set
 					  + "&Count="   + count
 					  + "&MinMass=" + minm
@@ -257,10 +257,10 @@ public class VeritomyxSaaS
 				if (web_result == W_UNDEFINED)
 				{
 					web_str = decodedString;
-					if      (web_str.startsWith("Info:"))    web_result = W_INFO;
-					else if (web_str.startsWith("Running:")) web_result = W_RUNNING;
-					else if (web_str.startsWith("Done:"))    web_result = W_DONE;
-					else if (web_str.startsWith("Deleted:")) web_result = W_DELETED;
+					if      (web_str.startsWith("Info|"))    web_result = W_INFO;
+					else if (web_str.startsWith("Running|")) web_result = W_RUNNING;
+					else if (web_str.startsWith("Done|"))    web_result = W_DONE;
+					else if (web_str.startsWith("Deleted|")) web_result = W_DELETED;
 					else if (web_str.startsWith("Error-"))   web_result = - Integer.parseInt(web_str.substring(6, web_str.indexOf(":"))); // "ERROR-#"
 					else                                     web_result = W_EXCEPTION;
 				}
@@ -279,7 +279,7 @@ public class VeritomyxSaaS
 	}
 
 	/**
-	 * Open the SFTP session and cd into the account/aid directory
+	 * Open the SFTP session and cd into the project directory
 	 * 
 	 * @return SftpSession
 	 */
@@ -294,8 +294,8 @@ public class VeritomyxSaaS
 			web_str    = "Cannot connect to SFTP server " + sftp_user + "@" + host;
 			return null;
 		}
-		dir = "accounts/" + aid;
-		SftpResult result = sftp.cd(session, dir);	// cd into the account directory
+		dir = "projects/" + pid;
+		SftpResult result = sftp.cd(session, dir);	// cd into the project directory
 		if (!result.getSuccessFlag())
 		{
 			web_result = W_ERROR_SFTP;
