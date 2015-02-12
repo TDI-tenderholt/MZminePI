@@ -385,16 +385,6 @@
 		<!-- Start of jars included with MZmine (internal repository) -->
 
 		<dependency>
-			<groupId>opensftp</groupId>
-			<artifactId>opensftp-api</artifactId>
-			<version>0.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>opensftp</groupId>
-			<artifactId>opensftp-impl</artifactId>
-			<version>0.3.0</version>
-		</dependency>
-		<dependency>
 			<groupId>soap-apis</groupId>
 			<artifactId>metlin-api</artifactId>
 			<version>1.0</version>
